@@ -1,0 +1,164 @@
+ <table width="90%" border="0">
+<tr>
+<th colspan="2" style="background-color: #0080C0; text-align: left; color: white;">
+Event Date and Time</th>
+</tr>
+<tr>
+<td width="25%">
+Date:
+</td>
+<td>
+<input type="text" name="startdate" size="12" id="startdatePicker" />
+</td></tr>
+<tr>
+<td>
+Start Time:
+</td>
+<td>
+<select name="starthour">
+<option value="">--</option>
+<?php
+for($h=1;$h<=12;$h++) {
+?>
+<option value="<?php echo $h ?>"><?php echo $h ?></option>
+<?php
+}
+?>
+</select>&nbsp;
+<select name="startminute">
+<option value="00">00</option>
+<?php
+for($m=01;$m<=59;$m++) {
+?>
+<option value="<?php if(strlen($m) < 2) { echo '0'.$m; } else { echo $m; } ?>"><?php if(strlen($m) < 2) { echo '0'.$m; } else { echo $m; } ?></option>
+<?php
+}
+?>
+</select>&nbsp;
+<select name="startampm">
+<option value="AM">AM</option>
+<option value="PM">PM</option>
+</select>
+</td></tr>
+<tr>
+<td>
+End Time:
+</td>
+<td>
+<select name="endhour">
+<option value="">--</option>
+<?php
+for($h=1;$h<=12;$h++) {
+?>
+<option value="<?php echo $h ?>"><?php echo $h ?></option>
+<?php
+}
+?>
+</select>&nbsp;
+<select name="endminute">
+<option value="00">00</option>
+<?php
+for($m=01;$m<=59;$m++) {
+?>
+<option value="<?php if(strlen($m) < 2) { echo '0'.$m; } else { echo $m; } ?>"><?php if(strlen($m) < 2) { echo '0'.$m; } else { echo $m; } ?></option>
+<?php
+}
+?>
+</select>&nbsp;
+<select name="endampm">
+<option value="AM">AM</option>
+<option value="PM">PM</option>
+</select>
+</td></tr>
+<tr>
+<th colspan="2" style="background-color: #0080C0; text-align: left; color: white;">
+Recurring
+</th>
+</tr>
+<tr>
+<td valign="top">
+Repeat Every:
+</td>
+<td>
+<select name="intervaltype" id="intervaltype" onchange="runJavas1()">
+<option value="N" selected="selected">None</option>
+<option value="D">Day</option>
+<option value="W">Week</option>
+<option value="M">Month</option>
+<option value="Y">Year</option>
+</select>&nbsp;
+for the next&nbsp;
+<input type="text" name="repeatinterval" size="3" maxlength="3" />&nbsp;
+<span id="selected_text">None</span><br /><br />
+</td>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<b>OR</b>
+</tr>
+<tr>
+<td valign="top">
+Repeat Every:
+</td>
+<td>
+<select name="weekmonth" id="weekmonth" onchange="runJavas2()">
+<option value="N">None</option>
+<option value="W">Week</option>
+<option value="M">Month</option>
+</select>&nbsp;on<br />
+<blockquote>
+<input type="checkbox" name="sun" value="1" />&nbsp;Sunday&nbsp;&nbsp;
+<input type="checkbox" name="mon" value="1" />&nbsp;Monday&nbsp;&nbsp;
+<input type="checkbox" name="tue" value="1" />&nbsp;Tuesday&nbsp;&nbsp;
+<input type="checkbox" name="wed" value="1" />&nbsp;Wednesday<br />
+<input type="checkbox" name="thu" value="1" />&nbsp;Thursday&nbsp;&nbsp;
+<input type="checkbox" name="fri" value="1" />&nbsp;Friday&nbsp;&nbsp;
+<input type="checkbox" name="sat" value="1" />&nbsp;Saturday
+</blockquote>
+of the&nbsp;
+<select name="weekno">
+<option value="1">First</option>
+<option value="2">Second</option>
+<option value="3">Third</option>
+<option value="4">Fourth</option>
+<option value="5">Fifth</option>
+</select>&nbsp;week for&nbsp;
+<input type="text" name="totalweekmonth" size="3" maxlength="3" /> <span id="week_months">None</span>
+</td>
+</tr>
+<tr>
+<th colspan="2" style="background-color: #0080C0; text-align: left; color: white;">
+Event Details
+</th></tr>
+<tr>
+<td>
+Color:
+</td>
+<td>
+<input type="text" name="eventcolor" size="8" class="color {pickerPosition:'right', hash:true}" />
+</td>
+</tr>
+<tr>
+<td>
+Title:
+</td>
+<td>
+<input type="text" name="eventtitle" size="50" />
+</td></tr>
+<tr>
+<td valign="top">
+Description:
+</td>
+<td>
+<textarea name="eventdesc"></textarea>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+<input type="submit" name="createnewevent" value=" Save " style="background-color: blue; color: white;" />
+</td>
+</tr>
+</table>
+</form>
