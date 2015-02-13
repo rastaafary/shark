@@ -32,8 +32,12 @@ Route::get('/part/delete/{var?}', 'PartController@deletePart');
 Route::get('/customer/add', 'CustomerController@addCust');
 // Invoice
 Route::get('/invoice/add', 'InvoiceController@addInvoice');
-Route::get('/invoice/list', 'InvoiceController@listInvoice');
+Route::get('/invoice', 'InvoiceController@listInvoice');
 Route::get('/invoice/view', 'InvoiceController@viewInvoice');
+// Purchase Order Customer
+Route::get('/PO/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
+Route::get('/PO', 'PurchaseOrderCustomerController@listPurchaseOrder');
+Route::get('/PO/view', 'PurchaseOrderCustomerController@viewPurchaseOrder');
 /*Route::get('/customer/add', array('prefix' => 'customer','as' => 'customer.add',
     'uses' => 'Customer\customerController@addCustomer'));
  * 

@@ -7,7 +7,7 @@
             <section class="panel">
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
-                        <li><a href="/invoice/list">List</a></li>
+                        <li><a href="/invoice">List</a></li>
                         <li><a href="/invoice/add">Add</a></li>
                         <li class="active"><a href="#View">View</a></li>
                     </ul>
