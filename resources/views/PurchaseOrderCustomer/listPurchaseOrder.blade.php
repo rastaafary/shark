@@ -8,8 +8,8 @@
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#List">List</a></li>
-                        <li><a href="/PO/add">Add</a></li>
-                        <li><a href="/PO/view">View</a></li>
+                        <li><a href="/po/add">Add</a></li>
+                        <li><a href="/po/view">View</a></li>
                     </ul>
                 </header>
                 <div class="panel-body">
@@ -19,6 +19,9 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel panel-default">                                                            
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title"><i class="fa fa-bars"></i> Purchase Order List</h3>
+                                            </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
                                                     <table class="table">

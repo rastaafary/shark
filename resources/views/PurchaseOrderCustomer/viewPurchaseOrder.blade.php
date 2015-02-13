@@ -7,29 +7,21 @@
             <section class="panel">
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
-                        <li><a href="/PO">List</a></li>
-                        <li><a href="/PO/add">Add</a></li>
+                        <li><a href="/po">List</a></li>
+                        <li><a href="/po/add">Add</a></li>
                         <li  class="active"><a href="#View">View</a></li>
                     </ul>
                 </header>
                 <div class="panel-body">
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="View">
-                            <form class="form-horizontal">
-                                <div class="media usr-info">
-                                    <div class="pull-left">                                        
-                                        {!! HTML::image('images/user-avatar.png', 'a picture', array('class' => 'thumb')) !!}
-                                    </div>                                    
-                                    <div class="media-body">
-                                        <h3 class="media-heading">John Doe</h3>
-                                        <span>Senior UI Designer</span>
-                                        <p>I use to design websites and applications for the web.</p>
-                                    </div>
-                                </div>
-                                <br>
+                            <form class="form-horizontal"> 
                                <div class="row">
                                     <div class="col-md-12">
-                                        <div class="panel panel-default">                                                            
+                                        <div class="panel panel-default"> 
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title"><i class="fa fa-bars"></i> Purchase Order List</h3>
+                                            </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
                                                     <table class="table">

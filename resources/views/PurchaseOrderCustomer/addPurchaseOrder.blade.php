@@ -7,9 +7,9 @@
             <section class="panel">
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
-                        <li><a href="/PO">List</a></li>
+                        <li><a href="/po">List</a></li>
                         <li class="active"><a href="#Add">Add</a></li>
-                        <li><a href="/PO/view">View</a></li>
+                        <li><a href="/po/view">View</a></li>
                     </ul>
                 </header>
                 <div class="panel-body">
