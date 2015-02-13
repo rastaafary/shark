@@ -9,8 +9,7 @@
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="{{ action('CustomerController@listCust') }}">List</a></li>
-                        <li><a href="{{ action('CustomerController@addCust') }}">Add</a></li>
-                        <li><a href="/customer/view">View</a></li>
+                        <li><a href="{{ action('CustomerController@addCust') }}">Add</a></li>                       
                     </ul>
                 </header>
                 <div class="panel-body">

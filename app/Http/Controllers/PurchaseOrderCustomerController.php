@@ -14,10 +14,5 @@ class PurchaseOrderCustomerController extends Controller
     {
         return view('PurchaseOrderCustomer.listPurchaseOrder');
     }
-    
-    public function viewPurchaseOrder()
-    {
-        return view('PurchaseOrderCustomer.viewPurchaseOrder');
-    }
-
+   
 }

@@ -8,8 +8,7 @@
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#List">List</a></li>
-                        <li><a href="/invoice/add">Add</a></li>
-                        <li><a href="/invoice/view">View</a></li>
+                        <li><a href="/invoice/add">Add</a></li>                      
                     </ul>
                 </header>
                 <div class="panel-body">
@@ -19,7 +18,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group text-right">
-                                            <div class="col-sm-offset-8 col-sm-4">
+                                            <div class="col-sm-offset-9 col-sm-3">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" id="searchInvoice" placeholder="Search by invoice">                                                   
                                                 </div>
@@ -72,8 +71,7 @@
                         </div>                       
                     </div>
                 </div>
-            </section>
-
+            </section>  
         </div>
     </div>
 </div>

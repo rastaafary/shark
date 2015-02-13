@@ -48,7 +48,7 @@
         <!--sidebar nav start-->
         <ul class="nav nav-pills nav-stacked custom-nav">
             <li><a href="index.html"><i class="fa fa-home"></i> <span>Manage User</span></a></li>
-            <li><a href="{{action('PartController@addPart')}}"><i class="fa fa-user"></i> <span>Part Number</span></a></li>
+            <li><a href="{{action('PartController@partList')}}"><i class="fa fa-user"></i> <span>Part Number</span></a></li>
             <li><a href="{{action('InvoiceController@listInvoice')}}"><i class="fa fa-bars"></i> <span>Invoice</span></a></li>
             <li><a href=""><i class="fa fa-money"></i> <span>Payments</span></a></li>
             <li><a href=""><i class="fa fa-bar-chart-o"></i> <span>PL's </span></a></li>

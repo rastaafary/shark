@@ -8,8 +8,7 @@
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
                         <li><a href="/po">List</a></li>
-                        <li class="active"><a href="#Add">Add</a></li>
-                        <li><a href="/po/view">View</a></li>
+                        <li class="active"><a href="#Add">Add</a></li>                       
                     </ul>
                 </header>
                 <div class="panel-body">
@@ -21,9 +20,7 @@
                                         {!! HTML::image('images/user-avatar.png', 'a picture', array('class' => 'thumb')) !!}
                                     </div>                                    
                                     <div class="media-body">
-                                        <h3 class="media-heading">John Doe</h3>
-                                        <span>Senior UI Designer</span>
-                                        <p>I use to design websites and applications for the web.</p>
+                                        <h3 class="media-heading">John Doe</h3>                                       
                                     </div>
                                 </div>
                                 <br>

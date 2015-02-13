@@ -13,11 +13,5 @@ class InvoiceController extends Controller
     public function listInvoice()
     {
         return view('invoice.listInvoice');
-    }
-    
-    public function viewInvoice()
-    {
-        return view('invoice.viewInvoice');
-    }
-
+    }    
 }
