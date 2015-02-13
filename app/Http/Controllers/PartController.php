@@ -35,7 +35,7 @@ class PartController extends Controller
      */
     public function partList()
     {
-        return view('Part.Part');
+        return view('Part.Parteditlist');
     }
 
     /*
@@ -86,6 +86,7 @@ class PartController extends Controller
             $partlist = DB::table('part_number')->get();
             return view('Part.Parteditlist')->with('partlist', $partlist);
         }
+        return view('Part.Partedit');
     }
     /*
      * Add part
