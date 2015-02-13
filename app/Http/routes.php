@@ -29,7 +29,11 @@ Route::post('/part/add', 'PartController@addPart');
 //edit part
 Route::get('/part/delete/{var?}', 'PartController@deletePart');
 //Add Customer
-Route::get('/customer/add', 'customerController@addCust');
+Route::get('/customer/add', 'CustomerController@addCust');
+// Invoice
+Route::get('/invoice/add', 'InvoiceController@addInvoice');
+Route::get('/invoice/list', 'InvoiceController@listInvoice');
+Route::get('/invoice/view', 'InvoiceController@viewInvoice');
 /*Route::get('/customer/add', array('prefix' => 'customer','as' => 'customer.add',
     'uses' => 'Customer\customerController@addCustomer'));
  * 

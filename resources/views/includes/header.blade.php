@@ -49,11 +49,11 @@
         <ul class="nav nav-pills nav-stacked custom-nav">
             <li><a href="index.html"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
             <li><a href=""><i class="fa fa-shopping-cart"></i> <span>Part Number</span></a></li>
-            <li><a href=""><i class="fa fa-bars"></i> <span>Invoice</span></a></li>
+            <li><a href="{{action('InvoiceController@listInvoice')}}"><i class="fa fa-bars"></i> <span>Invoice</span></a></li>
             <li><a href=""><i class="fa fa-money"></i> <span>Payments</span></a></li>
             <li><a href=""><i class="fa fa-bar-chart-o"></i> <span>PL's </span></a></li>
             <li class="active"><a href="PurchaseOrder.html"><i class="fa fa-user"></i> <span>PO Customers</span></a></li>
-            <li><a href="{{action('customerController@addCust')}}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
+            <li><a href="{{action('CustomerController@addCust')}}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
         </ul>
         <!--sidebar nav end-->
 
