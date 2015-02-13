@@ -30,6 +30,8 @@ Route::post('/part/add', 'PartController@addPart');
 Route::get('/part/delete/{var?}', 'PartController@deletePart');
 //Add Customer
 Route::get('/customer/add', 'CustomerController@addCust');
+//List Customer
+Route::get('/customer/list', 'CustomerController@listCust');
 // Invoice
 Route::get('/invoice/add', 'InvoiceController@addInvoice');
 Route::get('/invoice', 'InvoiceController@listInvoice');

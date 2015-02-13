@@ -8,17 +8,14 @@
             <section class="panel">
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
-                        <li ><a href="{{ action('CustomerController@listCust') }}" data-toggle="tab">List</a></li>
-                        <li class="active"><a href="{{ action('CustomerController@addCust') }}" data-toggle="tab">Add</a></li>
-                            <li><a href="/customer/edit" data-toggle="tab">Edit</a></li>
+                        <li><a href="#List" data-toggle="tab">List</a></li>
+                        <li><a href="#Add" data-toggle="tab">Add</a></li>
+                        <li class="active"><a href="#View" data-toggle="tab">Edit</a></li>
                     </ul>
                 </header>
                 <div class="panel-body">
                     <div class="tab-content">
-                        <div class="tab-pane" id="List">
-                            List
-                        </div>
-                        <div class="tab-pane active" id="Add">
+                        <div class="tab-pane active" id="edit">
                             <form class="form-horizontal">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -176,9 +173,6 @@
                                     </div>
                                 </div>
                         </div>
-                        <div class="tab-pane" id="View">
-                            Edit
-                        </div>
                     </div>
                 </div>
             </section>
@@ -187,4 +181,3 @@
 </div>
 <!--body wrapper end-->
 @endsection
-

@@ -53,7 +53,7 @@
             <li><a href=""><i class="fa fa-money"></i> <span>Payments</span></a></li>
             <li><a href=""><i class="fa fa-bar-chart-o"></i> <span>PL's </span></a></li>
             <li class="active"><a href="{{action('PurchaseOrderCustomerController@listPurchaseOrder')}}"><i class="fa fa-user"></i> <span>PO Customers</span></a></li>
-            <li><a href="{{action('CustomerController@addCust')}}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
+            <li><a href="{{action('CustomerController@listCust')}}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
         </ul>
         <!--sidebar nav end-->
 
