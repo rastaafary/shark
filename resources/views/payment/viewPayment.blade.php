@@ -16,6 +16,50 @@
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="View">
                             <form class="form-horizontal">
+                                <!-- Modal Start -->
+                                <div class="modal fade" id="editInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">Edit Invoice</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="table-responsive">
+                                                    <div class="form-group">
+                                                        <label for="editDate" class="col-sm-4 control-label">Date :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="editDate" placeholder="7/19/2015">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="editAmount" class="col-sm-4 control-label">Amount :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="editAmount" placeholder="100">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="editReference" class="col-sm-4 control-label">Reference :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="editReference" placeholder="93485U">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="editComments" class="col-sm-4 control-label">Comments :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="editComments" placeholder="PAGAME PUTO">
+                                                        </div>
+                                                    </div>                                                    
+                                                </div> 
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal End -->
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel panel-default">
@@ -72,7 +116,7 @@
                                                             <td>93485U</td>
                                                             <td>PAGAME PUTO</td>
                                                             <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                <a href="#" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>  
+                                                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editInvoiceModal"><span class="fa fa-pencil"></span></a></td>  
                                                         </tr> 
                                                         <tr>
                                                             <td>8/8/2015</td>
@@ -80,7 +124,7 @@
                                                             <td>93U39487</td>
                                                             <td>LAKSDJF</td>
                                                             <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                <a href="#" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
+                                                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editInvoiceModal"><span class="fa fa-pencil"></span></a></td>
                                                         </tr> 
                                                     </table>
                                                 </div>      

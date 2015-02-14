@@ -54,14 +54,14 @@
                                                             <td>Barcelona FC sport Jersey</td>
                                                             <td>13</td>
                                                             <td>USA</td>
-                                                            <td><a href="#" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
+                                                            <td><a href="{{action('PartController@addPart')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
                                                         </tr>
                                                         <tr>
                                                             <td>MA0011</td>
                                                             <td>Barcelona FC sport Jersey</td>
                                                             <td>17</td>
                                                             <td>USA</td>
-                                                            <td><a href="#" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
+                                                            <td><a href="{{action('PartController@addPart')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
                                                         </tr>
                                                     </table>
                                                 </div>

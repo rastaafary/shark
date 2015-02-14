@@ -66,7 +66,7 @@
                                                             <td>90049</td>
                                                             <td>USA</td>
                                                             <td>7895446332</td>
-                                                            <td><a href="#" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                                                            <td><a href="{{action('CustomerController@addCust')}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                                                         </tr>
                                                         <tfoot>
                                                             <tr>
@@ -80,7 +80,7 @@
                                                                 <td>78701</td>
                                                                 <td>USA</td>
                                                                 <td>54136985255</td>
-                                                                <td><a href="#" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>                                                                         
+                                                                <td><a href="{{action('CustomerController@addCust')}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>                                                                         
                                                             </tr>
                                                         </tfoot>
                                                     </table>

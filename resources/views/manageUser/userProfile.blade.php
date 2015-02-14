@@ -41,7 +41,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="reTypePassword" class="col-sm-4 control-label">Retype Password :</label>
+                                                    <label for="reTypePassword" class="col-sm-4 control-label">Re Type Password :</label>
                                                     <div class="col-sm-4">
                                                         <input type="text" class="form-control" id="reTypePassword" placeholder="Retype New Password">
                                                     </div>

@@ -15,6 +15,62 @@
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="Add">
                             <form class="form-horizontal">
+                                 <!-- Modal Start -->
+                                <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">Edit Product</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="table-responsive">
+                                                    <div class="form-group">
+                                                        <label for="editSku" class="col-sm-4 control-label">SKU :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="editSku" placeholder="BF0013">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="editDescription" class="col-sm-4 control-label">Description :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="editDescription" placeholder="Barcelona FC sport Jersey">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="editQty" class="col-sm-4 control-label">Qty :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="editQty" placeholder="50">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="editUnitPrice" class="col-sm-4 control-label">Unit Price :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="editUnitPrice" placeholder="13">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="editDiscount" class="col-sm-4 control-label">Discount :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="editDiscount" placeholder="0">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="editAmount" class="col-sm-4 control-label">Amount :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="editAmount" placeholder="5000">
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal End -->
                                 <div class="media usr-info">
                                     <div class="pull-left">                                        
                                         {!! HTML::image('images/user-avatar.png', 'a picture', array('class' => 'thumb')) !!}
@@ -204,7 +260,7 @@
                                                             <td>13</td>
                                                             <td>$5000</td>
                                                             <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                <a href="#" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
+                                                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editProductModal"><span class="fa fa-pencil"></span></a></td>
                                                         </tr>
                                                         <tfoot>
                                                             <tr>

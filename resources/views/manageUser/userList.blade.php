@@ -27,21 +27,21 @@
                                                             <td>ABC</td>
                                                             <td>abc@gmail.com</td>
                                                             <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                <a href="#" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
+                                                                <a href="{{action('ManageUserController@userProfile')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
                                                             
                                                         </tr>
                                                         <tr>
                                                             <td>XYZ</td>
                                                             <td>XYZ@gmail.com</td>
                                                             <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                <a href="#" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
+                                                                <a href="{{action('ManageUserController@userProfile')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
                                                             
                                                         </tr>
                                                         <tr>
                                                             <td>PQR</td>
                                                             <td>pqr@gmail.com</td>
                                                             <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                <a href="#" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
+                                                                <a href="{{action('ManageUserController@userProfile')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
                                                             
                                                         </tr>
                                                     </table>                                                                   
