@@ -33,7 +33,19 @@
                                                     <div class="col-sm-4">
                                                         <input type="text" class="form-control" id="userPhone" placeholder="Phone No">
                                                     </div>
-                                                </div> 
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="changePassword" class="col-sm-4 control-label">Change Password :</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" id="changePassword" placeholder="New Password">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="reTypePassword" class="col-sm-4 control-label">Retype Password :</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" id="reTypePassword" placeholder="Retype New Password">
+                                                    </div>
+                                                </div>
                                                 <div class="form-group">
                                                     <label for="userRole" class="col-sm-4 control-label">Role :</label>
                                                     <div class="col-sm-4">
