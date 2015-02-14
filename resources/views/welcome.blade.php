@@ -23,7 +23,7 @@
 
 <div class="container">
 
-    <form class="form-signin" action="{{action('LoginController@index')}}">
+    <form class="form-signin" action="{{action('PartController@partList')}}">
         <div class="form-signin-heading text-center">
             <h1 class="sign-title">Sign In</h1>
             <img src="images/login-logo.png" alt=""/>
