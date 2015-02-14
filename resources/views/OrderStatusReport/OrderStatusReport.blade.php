@@ -41,8 +41,8 @@
                                                         <th>Actions</th>
                                                     </tr>                                                                
                                                     <tr>
-                                                        <td><input id="contactBirthdate" type="text" value="" size="16" class="form-control default-date-picker"></td>
-                                                        <td><input type="text" class="form-control" placeholder="Qty"> </td>
+                                                        <td><input id="contactBirthdate" type="text" value="" size="7" class="form-control default-date-picker"></td>
+                                                        <td><input type="text" class="form-control" size="3" placeholder="Qty"> </td>
                                                         <td>
                                                             <table>
                                                                 <tr>

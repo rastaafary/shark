@@ -38,7 +38,7 @@
                                                             <td>FA342</td>
                                                             <td>Sports LLC</td>
                                                             <td>$1256.00</td>                                                            
-                                                            <td><button class="btn btn-default" id="btnDetails" ><i class="fa fa-bars"></i>
+                                                            <td><button class="btn btn-primary" id="btnDetails" ><i class="fa fa-bars"></i>
                                                                     Details
                                                                 </button></td> 
                                                         </tr>
@@ -48,7 +48,7 @@
                                                                 <td>FA361</td>
                                                                 <td>ESPN INC</td>                                                               
                                                                 <td>$1500</td>                                                               
-                                                                <td><button class="btn btn-default" id="btnDetails" ><i class="fa fa-bars"></i>
+                                                                <td><button class="btn btn-primary" id="btnDetails" ><i class="fa fa-bars"></i>
                                                                         Details
                                                                     </button></td>                                                                         
                                                             </tr>
@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-offset-10 col-sm-2">
-                                        <a href="#" class="btn btn-default"> View PO </a>
+                                        <a href="#" class="btn btn-primary"> View PO </a>
                                     </div>
                                 </div>
                             </form>

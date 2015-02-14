@@ -122,7 +122,7 @@
                                         <div class="col-md-14">
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
-                                                    <h3 class="panel-title"><i class="fa fa-truck"></i> Contact Details</h3>
+                                                    <h3 class="panel-title"><i class="fa fa-phone"></i> Contact Details</h3>
                                                 </div>
                                                 <div class="panel-body">
                                                     <div class="col-md-6">

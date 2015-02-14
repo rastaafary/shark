@@ -49,7 +49,7 @@
                                                             <td>$250</td>
                                                             <td>$966</td>
                                                             <td>15 days</td> 
-                                                            <td><a href="#" class="btn btn-default"> Details </a></td>
+                                                            <td><a href="#" class="btn btn-primary"> Details </a></td>
                                                         </tr>
                                                         <tfoot>
                                                             <tr>
@@ -58,7 +58,7 @@
                                                                 <td>$100</td>                                                               
                                                                 <td>$200</td>
                                                                 <td>20 days Due</td>
-                                                                <td><a href="#" class="btn btn-default"> Details </a></td>                                                                         
+                                                                <td><a href="#" class="btn btn-primary"> Details </a></td>                                                                         
                                                             </tr>
                                                         </tfoot>
                                                     </table>
