@@ -50,6 +50,7 @@ Route::get('/PLReport/view', 'OrderStatusReportController@viewReport');
   'uses' => 'Customer\customerController@addCustomer'));
  * 
  */
+
 Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',

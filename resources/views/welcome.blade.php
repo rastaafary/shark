@@ -37,10 +37,7 @@
             </button>
 
             <div class="registration">
-                Not a member yet?
-                <a class="" href="registration.html">
-                    Signup
-                </a>
+              
             </div>
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"> Remember me

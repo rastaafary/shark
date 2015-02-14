@@ -18,7 +18,11 @@
 <meta name="author" content="ThemeBucket">
 <link rel="shortcut icon" href="#" type="image/png">
 
-<title>{{$name}}</title>
+<title>
+    @if(isset($page_title))
+    {{$page_title}}
+    @endif
+</title>
 
 
 {!! HTML::style('css/style.css') !!}

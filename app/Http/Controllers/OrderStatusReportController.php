@@ -7,6 +7,6 @@ class OrderStatusReportController extends Controller
 
     public function viewReport()
     {
-        return view('OrderStatusReport.OrderStatusReport',['name'=>"PL's"]);
+        return view('OrderStatusReport.OrderStatusReport',['page_title'=>"PL's"]);
     }
 }
