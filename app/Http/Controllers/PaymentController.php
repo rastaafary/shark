@@ -14,5 +14,10 @@ class PaymentController extends Controller
     {
         return view('payment.listPayment');
     }
+    
+     public function viewPayment()
+    {
+        return view('payment.viewPayment');
+    }
 
 }

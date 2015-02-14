@@ -9,7 +9,8 @@
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#List">List</a></li>
-                        <li><a href="/payment/add">Add</a></li>                      
+                        <li><a href="/payment/add">Add</a></li> 
+                       <li><a href="/payment/view">View</a></li> 
                     </ul>
                 </header>
                 <div class="panel-body">
@@ -37,7 +38,9 @@
                                                             <td>FA342</td>
                                                             <td>Sports LLC</td>
                                                             <td>$1256.00</td>                                                            
-                                                            <td><a href="#" class="btn btn-default"> Details </a></td>
+                                                            <td><button class="btn btn-default" id="btnDetails" ><i class="fa fa-bars"></i>
+                                                                    Details
+                                                                </button></td> 
                                                         </tr>
                                                         <tfoot>
                                                             <tr>
@@ -45,7 +48,9 @@
                                                                 <td>FA361</td>
                                                                 <td>ESPN INC</td>                                                               
                                                                 <td>$1500</td>                                                               
-                                                                <td><a href="#" class="btn btn-default"> Details </a></td>                                                                         
+                                                                <td><button class="btn btn-default" id="btnDetails" ><i class="fa fa-bars"></i>
+                                                                        Details
+                                                                    </button></td>                                                                         
                                                             </tr>
                                                         </tfoot>
                                                     </table>
@@ -55,7 +60,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                     <div class="col-sm-offset-10 col-sm-2">
+                                    <div class="col-sm-offset-10 col-sm-2">
                                         <a href="#" class="btn btn-default"> View PO </a>
                                     </div>
                                 </div>
