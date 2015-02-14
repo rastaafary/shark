@@ -23,7 +23,8 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
+                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                        <thead>
                                                         <tr>
                                                             <th>Sequence</th>
                                                             <th>PO Number</th>
@@ -33,8 +34,10 @@
                                                             <th>PO Qty</th>
                                                             <th>Pcs Made</th>
                                                             <th>Balance</th>
-                                                        </tr>                                                                       
-                                                        <tr>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr class="gradeX">
                                                             <td>1</td>
                                                             <td>032-0024</td>
                                                             <td>BF0012</td>
@@ -44,7 +47,7 @@
                                                             <td>0</td>
                                                             <td>50</td>
                                                         </tr>
-                                                        <tr>
+                                                        <tr class="gradeX">
                                                             <td>2</td>
                                                             <td>030-0022</td>
                                                             <td>BF0013</td>
@@ -54,6 +57,7 @@
                                                             <td>25</td>
                                                             <td>25</td>
                                                         </tr>
+                                                        </tbody>
                                                     </table>                                                                   
                                                 </div>                                   
                                             </div>

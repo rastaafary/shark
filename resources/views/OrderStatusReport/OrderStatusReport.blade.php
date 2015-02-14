@@ -74,33 +74,35 @@
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <table class="table">
-                                                    <tr>
-                                                        <th>Sequence</th>
-                                                        <th>PO Number</th>
-                                                        <th>Part Number</th>
-                                                        <th>Required Date</th>
-                                                        <th>Estimated Shipping Date</th>
-                                                        <th>PO Qty</th>
-                                                        <th>Pcs Made</th>
-                                                        <th>Balance</th>
-                                                        <th>Mark Pieces Made</th>
-                                                    </tr>                                                                
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>032-0024</td>
-                                                        <td>BF0012</td>
-                                                        <td>15/05/2015</td>
-                                                        <td>10/05/2015</td>
-                                                        <td>50</td>
-                                                        <td> <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
-                                                                0
-                                                            </button> </td>
-                                                        <td>50</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tfoot>
+                                                <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                    <thead>
                                                         <tr>
+                                                            <th>Sequence</th>
+                                                            <th>PO Number</th>
+                                                            <th>Part Number</th>
+                                                            <th>Required Date</th>
+                                                            <th>Estimated Shipping Date</th>
+                                                            <th>PO Qty</th>
+                                                            <th>Pcs Made</th>
+                                                            <th>Balance</th>
+                                                            <th>Mark Pieces Made</th>
+                                                        </tr> 
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="gradeX">
+                                                            <td>1</td>
+                                                            <td>032-0024</td>
+                                                            <td>BF0012</td>
+                                                            <td>15/05/2015</td>
+                                                            <td>10/05/2015</td>
+                                                            <td>50</td>
+                                                            <td> <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                                                                    0
+                                                                </button> </td>
+                                                            <td>50</td>
+                                                            <td>0</td>
+                                                        </tr>
+                                                        <tr class="gradeX">
                                                             <td>2</td>
                                                             <td>030-0022</td>
                                                             <td>BF0013</td>
@@ -113,7 +115,7 @@
                                                             <td>25</td>
                                                             <td>0</td>
                                                         </tr>
-                                                    </tfoot>
+                                                    <tbody>
                                                 </table>
                                             </div> 
                                         </div>

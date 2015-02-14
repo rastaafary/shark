@@ -68,19 +68,23 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
+                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                        <thead>
                                                         <tr>
                                                             <th>Invoice ID</th>
                                                             <th>Invoice Value</th>
                                                             <th>Paid</th>
                                                             <th>Balance</th>                                                                
-                                                        </tr>                                                         
-                                                        <tr>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr class="gradeX">
                                                             <td>FA342</td>
                                                             <td>$1216.00</td>
                                                             <td>$250</td>
                                                             <td>$966</td>                                                               
-                                                        </tr>                                                            
+                                                        </tr> 
+                                                        </tbody>
                                                     </table>
                                                 </div>      
                                             </div>
@@ -95,7 +99,8 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
+                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                        <thead>
                                                         <tr>
                                                             <th>Date</th>
                                                             <th>Amount</th>
@@ -103,14 +108,16 @@
                                                             <th>Comments</th>
                                                             <th>Actions</th>
                                                         </tr> 
-                                                        <tr>                                                           
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr class="gradeX">                                                           
                                                             <td><input type="text" class="form-control default-date-picker" id="searchDate" placeholder="22/01/2015" size="5"></td>
                                                             <td><input type="text" class="form-control" id="searchAmount" placeholder="$$$" size="3"></td>
                                                             <td><input type="text" class="form-control" id="searchReference" placeholder="Reference" size="5"></td>
                                                             <td><input type="text" class="form-control" id="searchComment" placeholder="Comments" size="5"></td>                                                        
                                                             <td><a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>
                                                         </tr>
-                                                        <tr>
+                                                        <tr class="gradeX">
                                                             <td>7/19/2015</td>
                                                             <td>$100</td>
                                                             <td>93485U</td>
@@ -118,7 +125,7 @@
                                                             <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
                                                                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editInvoiceModal"><span class="fa fa-pencil"></span></a></td>  
                                                         </tr> 
-                                                        <tr>
+                                                        <tr class="gradeX">
                                                             <td>8/8/2015</td>
                                                             <td>$150</td>
                                                             <td>93U39487</td>
@@ -126,6 +133,7 @@
                                                             <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
                                                                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editInvoiceModal"><span class="fa fa-pencil"></span></a></td>
                                                         </tr> 
+                                                        </tbody>
                                                     </table>
                                                 </div>      
                                             </div>

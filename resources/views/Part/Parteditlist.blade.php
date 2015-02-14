@@ -15,23 +15,7 @@
                 <div class="panel-body">
                     <div class="tab-content">
                         <div class="tab-pane active" id="List">
-                            <form class="form-horizontal">
-                                <div class="row">
-                                    <div class="col-sm-offset-8 col-sm-4">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search By:">
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" >Select <span class="caret"></span></button>
-                                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                                    <li><a href="#">Link 1</a></li>
-                                                    <li><a href="#">Link 2</a></li>
-                                                    <li><a href="#">Link 3</a></li>
-                                                    <li><a href="#">Link 4</a></li>
-                                                </ul>
-                                            </div>
-                                        </div><br />
-                                    </div>
-                                </div>
+                            <form class="form-horizontal">                               
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel panel-default">
@@ -41,28 +25,31 @@
                                             <div class="panel-body">
 
                                                 <div class="table-responsive">
-                                                    <table class="table">
-                                                        <tr>
+                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                        <thead>
                                                             <th>SKU</th>
                                                             <th>Description</th>
                                                             <th>Cost</th>
                                                             <th>Currency</th>
                                                             <th>Action</th>
                                                         </tr> 
-                                                        <tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr class="gradeX">
                                                             <td>BF0013</td>
                                                             <td>Barcelona FC sport Jersey</td>
                                                             <td>13</td>
                                                             <td>USA</td>
                                                             <td><a href="{{action('PartController@addPart')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
                                                         </tr>
-                                                        <tr>
+                                                        <tr class="gradeX">
                                                             <td>MA0011</td>
                                                             <td>Barcelona FC sport Jersey</td>
                                                             <td>17</td>
                                                             <td>USA</td>
                                                             <td><a href="{{action('PartController@addPart')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
                                                         </tr>
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>

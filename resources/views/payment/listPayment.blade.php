@@ -25,30 +25,32 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
+                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                        <thead>
                                                         <tr>
                                                             <th>Payment ID</th>
                                                             <th>Invoice ID</th>
                                                             <th>Customer</th>
                                                             <th>Amount</th>
                                                             <th>Details</th>                                                           
-                                                        </tr>                                                                
-                                                        <tr>
+                                                        </tr> 
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr class="gradeX">
                                                             <td>P0015</td>
                                                             <td>FA342</td>
                                                             <td>Sports LLC</td>
                                                             <td>$1256.00</td>                                                            
                                                             <td><a href="{{action('PaymentController@viewPayment')}}" class="fa fa-bars btn btn-primary"> Details </a></td>                                                                   
                                                         </tr>
-                                                        <tfoot>
-                                                            <tr>
-                                                                <td>P0018</td>
-                                                                <td>FA361</td>
-                                                                <td>ESPN INC</td>                                                               
-                                                                <td>$1500</td>                                                               
-                                                                <td><a href="{{action('PaymentController@viewPayment')}}" class="fa fa-bars btn btn-primary"> Details </a></td>                                                                         
-                                                            </tr>
-                                                        </tfoot>
+                                                        <tr class="gradeX">
+                                                            <td>P0015</td>
+                                                            <td>FA342</td>
+                                                            <td>Sports LLC</td>
+                                                            <td>$1256.00</td>                                                            
+                                                            <td><a href="{{action('PaymentController@viewPayment')}}" class="fa fa-bars btn btn-primary"> Details </a></td>                                                                   
+                                                        </tr> 
+                                                        </tbody>                                                        
                                                     </table>
                                                 </div>                                                        
                                             </div>                                                    

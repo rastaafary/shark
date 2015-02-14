@@ -15,24 +15,7 @@
                 <div class="panel-body">
                     <div class="tab-content">
                         <div class="tab-pane active" id="List">
-                            <form class="form-horizontal">
-                                <div class="row">
-                                    <div class="col-sm-offset-8 col-sm-4">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search By:">
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" >Select <span class="caret"></span></button>
-                                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                                    <li><a href="#">ID</a></li>
-                                                    <li><a href="#">Company Name</a></li>
-                                                    <li><a href="#">Link 3</a></li>
-                                                    <li><a href="#">Link 4</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
+                            <form class="form-horizontal">                                
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel panel-default">
@@ -41,7 +24,8 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
+                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                        <thead>
                                                         <tr>
                                                             <th>ID</th>
                                                             <th>Company Name</th>
@@ -54,8 +38,10 @@
                                                             <th>Country</th>
                                                             <th>Phone Number</th>
                                                             <th>Actions</th>
-                                                        </tr>                                                                
-                                                        <tr>
+                                                        </tr> 
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr class="gradeX">
                                                             <td>032</td>
                                                             <td>Craft SA de CV</td>
                                                             <td>124</td>
@@ -67,9 +53,8 @@
                                                             <td>USA</td>
                                                             <td>7895446332</td>
                                                             <td><a href="{{action('CustomerController@addCust')}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
-                                                        </tr>
-                                                        <tfoot>
-                                                            <tr>
+                                                        </tr>                                                       
+                                                            <tr class="gradeX">
                                                                 <td>041</td>
                                                                 <td>Sports LLC</td>
                                                                 <td>58</td>
@@ -82,7 +67,7 @@
                                                                 <td>54136985255</td>
                                                                 <td><a href="{{action('CustomerController@addCust')}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>                                                                         
                                                             </tr>
-                                                        </tfoot>
+                                                       </tbody>
                                                     </table>
                                                 </div> 
                                             </div>

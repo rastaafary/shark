@@ -194,40 +194,43 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>SKU</th>
-                                                            <th>Description</th>
-                                                            <th>Qty</th>
-                                                            <th>Unit Price</th>
-                                                            <th>DIscount %</th>
-                                                            <th>Amount</th>
-                                                            <th>Action</th>
-                                                        </tr> 
-                                                        <tr>
-                                                            <td></td>
-                                                            <td><input type="text" class="form-control" id="searchSKU" placeholder="SKU" size="4"></td>
-                                                            <td><input type="text" class="form-control" id="searchDescription"></td>
-                                                            <td><input type="text" class="form-control" id="searchQty" size="3"></td>
-                                                            <td><input type="text" class="form-control" id="searchUnitPrice" size="3"></td>
-                                                            <td><input type="text" class="form-control" id="searchDiscout" size="3"></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>BF0013</td>
-                                                            <td>Barcelona FC sport Jersey</td>
-                                                            <td>50</td>
-                                                            <td>13</td>
-                                                            <td>0%</td>
-                                                            <td>$5000</td>
-                                                            <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                <a href="#" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
-                                                        </tr>
-                                                        <tfoot>
+                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                        <thead>
                                                             <tr>
+                                                                <th>#</th>
+                                                                <th>SKU</th>
+                                                                <th>Description</th>
+                                                                <th>Qty</th>
+                                                                <th>Unit Price</th>
+                                                                <th>DIscount %</th>
+                                                                <th>Amount</th>
+                                                                <th>Action</th>
+                                                            </tr> 
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="gradeX">
+                                                                <td></td>
+                                                                <td><input type="text" class="form-control" id="searchSKU" placeholder="SKU" size="4"></td>
+                                                                <td><input type="text" class="form-control" id="searchDescription"></td>
+                                                                <td><input type="text" class="form-control" id="searchQty" size="3"></td>
+                                                                <td><input type="text" class="form-control" id="searchUnitPrice" size="3"></td>
+                                                                <td><input type="text" class="form-control" id="searchDiscout" size="3"></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr class="gradeX">
+                                                                <td>1</td>
+                                                                <td>BF0013</td>
+                                                                <td>Barcelona FC sport Jersey</td>
+                                                                <td>50</td>
+                                                                <td>13</td>
+                                                                <td>0%</td>
+                                                                <td>$5000</td>
+                                                                <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
+                                                                    <a href="#" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
+                                                            </tr>
+
+                                                            <tr class="gradeX">
                                                                 <td></td>
                                                                 <td></td>
                                                                 <td align="right">Total Qty :</td>                                                               
@@ -237,7 +240,7 @@
                                                                 <td><input type="text" class="form-control" id="totalAmount" placeholder="$5000" size="5"></td>
                                                                 <td></td>
                                                             </tr>
-                                                        </tfoot>
+                                                        </tbody>
                                                     </table>
 
                                                 </div>                                

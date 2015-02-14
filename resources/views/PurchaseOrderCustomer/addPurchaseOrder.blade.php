@@ -15,7 +15,7 @@
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="Add">
                             <form class="form-horizontal">
-                                 <!-- Modal Start -->
+                                <!-- Modal Start -->
                                 <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -232,50 +232,55 @@
                                                 <h3 class="panel-title"><i class="fa fa-bars"></i> Products</h3>
                                             </div>
                                             <div class="panel-body">
-                                                <div class="table-responsive">
-                                                    <table class="table">
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>SKU</th>
-                                                            <th>Description</th>
-                                                            <th>Qty</th>
-                                                            <th>Unit Price</th>
-                                                            <th>Amount</th>
-                                                            <th>Action</th>
-                                                        </tr> 
-                                                        <tr>
-                                                            <td></td>
-                                                            <td><input type="text" class="form-control" id="searchSKU" placeholder="SKU"></td>
-                                                            <td><input type="text" class="form-control" id="searchDescription"></td>
-                                                            <td><input type="text" class="form-control" id="searchQty" size="3"></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td><a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>BF0013</td>
-                                                            <td>Barcelona FC sport Jersey</td>
-                                                            <td>50</td>
-                                                            <td>13</td>
-                                                            <td>$5000</td>
-                                                            <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editProductModal"><span class="fa fa-pencil"></span></a></td>
-                                                        </tr>
-                                                        <tfoot>
-                                                            <tr>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td align="right">Total Qty :</td>                                                               
-                                                                <td><input type="text" class="form-control" id="totalQty" placeholder="50" size="3"></td>
-                                                                <td align="right">Total Amount:</td> 
-                                                                <td><input type="text" class="form-control" id="totalAmount" placeholder="$5000" size="5"></td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </tfoot>
-                                                    </table>
-
-                                                </div>                                       
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="table-responsive">
+                                                            <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>#</th>
+                                                                        <th>SKU</th>
+                                                                        <th>Description</th>
+                                                                        <th>Qty</th>
+                                                                        <th>Unit Price</th>
+                                                                        <th>Amount</th>
+                                                                        <th>Action</th>
+                                                                    </tr> 
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr class="gradeX">
+                                                                        <td></td>
+                                                                        <td><input type="text" class="form-control" id="searchSKU" placeholder="SKU"></td>
+                                                                        <td><input type="text" class="form-control" id="searchDescription"></td>
+                                                                        <td><input type="text" class="form-control" id="searchQty" size="3"></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td><a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>
+                                                                    </tr>
+                                                                    <tr class="gradeX">
+                                                                        <td>1</td>
+                                                                        <td>BF0013</td>
+                                                                        <td>Barcelona FC sport Jersey</td>
+                                                                        <td>50</td>
+                                                                        <td>13</td>
+                                                                        <td>$5000</td>
+                                                                        <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
+                                                                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editProductModal"><span class="fa fa-pencil"></span></a></td>
+                                                                    </tr>
+                                                                    <tr class="gradeX">
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td align="right">Total Qty :</td>                                                               
+                                                                        <td><input type="text" class="form-control" id="totalQty" placeholder="50" size="3"></td>
+                                                                        <td align="right">Total Amount:</td> 
+                                                                        <td><input type="text" class="form-control" id="totalAmount" placeholder="$5000" size="5"></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div> 
+                                                    </div>
+                                                </div>
                                                 <div class="form-group">
                                                     <label for="comment" class="col-sm-2 col-md-1 control-label">Comment:</label>
                                                     <div class="col-sm-10 col-md-11">                                                            

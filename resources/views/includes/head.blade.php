@@ -25,13 +25,20 @@
 </title>
 
 
-{!! HTML::style('css/style.css') !!}
-{!! HTML::style('css/style-responsive.css') !!}
+
 
 {!! HTML::style('css/bootstrap-datepicker/css/datepicker-custom.css') !!}
 {!! HTML::style('css/bootstrap-timepicker/css/timepicker.css') !!}
 {!! HTML::style('css/bootstrap-daterangepicker/daterangepicker-bs3.css') !!}
 {!! HTML::style('css/bootstrap-datetimepicker/css/datetimepicker-custom.css') !!}
+<!--dynamic table-->
+{!! HTML::style('js/advanced-datatable/css/demo_page.css') !!}
+{!! HTML::style('js/advanced-datatable/css/demo_table.css') !!}
+{!! HTML::style('js/data-tables/DT_bootstrap.css') !!}
+
+{!! HTML::style('css/style.css') !!}
+{!! HTML::style('css/style-responsive.css') !!}
+
 
 <!--pickers css-->
 <!--<link href="public/css/style.css" rel="stylesheet">
@@ -40,6 +47,8 @@
 <link rel="stylesheet" type="text/css" href="css/bootstrap-timepicker/css/timepicker.css" />
 <link rel="stylesheet" type="text/css" href="css/bootstrap-daterangepicker/daterangepicker-bs3.css" />
 <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker/css/datetimepicker-custom.css" />
+
+ 
 -->
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->

@@ -2223,13 +2223,13 @@ ul.user-states li {
 
 .dataTables_paginate.paging_bootstrap.pagination li:hover a, .dataTables_paginate.paging_bootstrap.pagination li.active a {
     color: #fff;
-    background: #65cea7;
+    background: #444444;
     text-decoration: none;
 }
 
 .dataTables_paginate.paging_bootstrap.pagination li:hover,
 .dataTables_paginate.paging_bootstrap.pagination li.active {
-    border-color: #65cea7;
+    border-color:  #222222;
 }
 
 .dataTables_paginate.paging_bootstrap.pagination li.disabled:hover,

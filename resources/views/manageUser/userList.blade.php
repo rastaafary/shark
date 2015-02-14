@@ -17,33 +17,37 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
+                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                        <thead>
                                                         <tr>
                                                             <th>Name</th>
                                                             <th>Email</th>
                                                             <th>Action</th>                                                            
-                                                        </tr>                                                                       
-                                                        <tr>
+                                                        </tr> 
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr class="gradeX">
                                                             <td>ABC</td>
                                                             <td>abc@gmail.com</td>
                                                             <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
                                                                 <a href="{{action('ManageUserController@userProfile')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
                                                             
                                                         </tr>
-                                                        <tr>
+                                                        <tr class="gradeX">
                                                             <td>XYZ</td>
                                                             <td>XYZ@gmail.com</td>
                                                             <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
                                                                 <a href="{{action('ManageUserController@userProfile')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
                                                             
                                                         </tr>
-                                                        <tr>
+                                                        <tr class="gradeX">
                                                             <td>PQR</td>
                                                             <td>pqr@gmail.com</td>
                                                             <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
                                                                 <a href="{{action('ManageUserController@userProfile')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
                                                             
                                                         </tr>
+                                                        </tbody>
                                                     </table>                                                                   
                                                 </div>                                   
                                             </div>

@@ -71,19 +71,23 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
-                                                        <tr>
+                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                        <thead>
+                                                            <tr>
                                                             <th>Invoice ID</th>
                                                             <th>Invoice Value</th>
                                                             <th>Paid</th>
                                                             <th>Balance</th>                                                                
-                                                        </tr>                                                             
-                                                        <tr>
+                                                        </tr> 
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr class="gradeX">
                                                             <td>FA342</td>
                                                             <td>$1216.00</td>
                                                             <td>$250</td>
                                                             <td>$966</td>                                                               
-                                                        </tr>                                                            
+                                                        </tr>
+                                                        </tbody>
                                                     </table>
                                                 </div>      
                                             </div>
@@ -98,25 +102,29 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
+                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                        <thead>
                                                         <tr>
                                                             <th>Date</th>
                                                             <th>Amount</th>
                                                             <th>Reference</th>
                                                             <th>Comments</th>                                                           
-                                                        </tr>                                                             
-                                                        <tr>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr class="gradeX">
                                                             <td>7/19/2015</td>
                                                             <td>$100</td>
                                                             <td>93485U</td>
                                                             <td>PAGAME PUTO</td>                                                            
                                                         </tr> 
-                                                        <tr>
+                                                        <tr class="gradeX">
                                                             <td>8/8/2015</td>
                                                             <td>$150</td>
                                                             <td>93U39487</td>
                                                             <td>LAKSDJF</td>                                                            
                                                         </tr> 
+                                                        </tbody>
                                                     </table>
                                                 </div>      
                                             </div>

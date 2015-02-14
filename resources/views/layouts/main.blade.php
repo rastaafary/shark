@@ -58,6 +58,12 @@
         <!--pickers initialization-->
         {!! HTML::script('js/pickers-init.js') !!}
 
+        <!--dynamic table-->
+        {!! HTML::script('js/advanced-datatable/js/jquery.dataTables.js') !!}
+        {!! HTML::script('js/data-tables/DT_bootstrap.js') !!}
+       <!--dynamic table initialization -->
+        {!! HTML::script('js/dynamic_table_init.js') !!}       
+        
         <!--common scripts for all pages-->
         {!! HTML::script('js/scripts.js') !!}
     </body>

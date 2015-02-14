@@ -40,15 +40,17 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
-                                                        <tr>
+                                                   <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                        <thead>
                                                             <th>SKU</th>
                                                             <th>Description</th>
                                                             <th>Cost</th>
                                                             <th>Currency</th>
                                                             <th>Action</th>
                                                         </tr> 
-                                                        <tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr class="gradeX">
                                                             <td><input type="text" class="form-control" id="SKU" placeholder="SKU"></td>
                                                             <td><input type="text" class="form-control" id="Description"></td>
                                                             <td><input type="text" class="form-control" id="Cost" size="3"></td>
@@ -60,6 +62,7 @@
                                                             </td>
                                                             <td><a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>
                                                         </tr>
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
