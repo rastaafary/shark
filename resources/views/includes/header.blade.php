@@ -47,7 +47,6 @@
 
         <!--sidebar nav start-->
         <ul class="nav nav-pills nav-stacked custom-nav">
-            <li class="logout"><a href="#"><i class="fa fa-key"></i> <span>Log Out</span></a></li>
             <li class="menu-list"><a href=""><i class="fa fa-home"></i> <span>Manage User</span></a>
                 <ul class="sub-menu-list" style="display: none;">
                     <li><a href="#"> User List</a></li>
@@ -55,12 +54,13 @@
                 </ul>
             </li>
 
-            <li><a href="{{action('PartController@partList')}}"><i class="fa fa-user"></i> <span>Part Number</span></a></li>
+            <li class="active"><a href="{{action('PartController@partList')}}"><i class="fa fa-user"></i> <span>Part Number</span></a></li>
             <li><a href="{{action('InvoiceController@listInvoice')}}"><i class="fa fa-bars"></i> <span>Invoice</span></a></li>
             <li><a href="{{action('PaymentController@listPayment')}}"><i class="fa fa-money"></i> <span>Payments</span></a></li>
             <li><a href="{{action('OrderStatusReportController@viewReport')}}"><i class="fa fa-bar-chart-o"></i> <span>PL's </span></a></li>
             <li><a href="{{action('PurchaseOrderCustomerController@listPurchaseOrder')}}"><i class="fa fa-user"></i> <span>PO Customers</span></a></li>
             <li><a href="{{action('CustomerController@listCust')}}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
+            <li><a href="#"><i class="fa fa-key"></i> <span>Log Out</span></a></li>
         </ul>
         <!--sidebar nav end-->
 
