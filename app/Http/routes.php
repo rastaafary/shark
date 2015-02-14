@@ -38,6 +38,9 @@ Route::get('/invoice', 'InvoiceController@listInvoice');
 // Purchase Order Customer
 Route::get('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
 Route::get('/po', 'PurchaseOrderCustomerController@listPurchaseOrder');
+// Payment
+Route::get('/payment', 'PaymentController@listPayment');
+Route::get('/payment/add', 'PaymentController@addPayment');
 /*Route::get('/customer/add', array('prefix' => 'customer','as' => 'customer.add',
     'uses' => 'Customer\customerController@addCustomer'));
  * 
