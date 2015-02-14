@@ -29,7 +29,7 @@
     <!--logo and iconic logo start-->
     <div class="logo">
         <a class="logo-img" href="index.html">{!! HTML::image('images/logo.png') !!}</a>
-        
+
         <!--toggle button start-->
         <a class="toggle-btn"><i class="fa fa-bars"></i></a>
         <!--toggle button end-->
@@ -51,7 +51,7 @@
             <li><a href="{{action('PartController@partList')}}"><i class="fa fa-user"></i> <span>Part Number</span></a></li>
             <li><a href="{{action('InvoiceController@listInvoice')}}"><i class="fa fa-bars"></i> <span>Invoice</span></a></li>
             <li><a href="{{action('PaymentController@listPayment')}}"><i class="fa fa-money"></i> <span>Payments</span></a></li>
-            <li><a href=""><i class="fa fa-bar-chart-o"></i> <span>PL's </span></a></li>
+            <li><a href="{{action('OrderStatusReportController@viewReport')}}"><i class="fa fa-bar-chart-o"></i> <span>PL's </span></a></li>
             <li class="active"><a href="{{action('PurchaseOrderCustomerController@listPurchaseOrder')}}"><i class="fa fa-user"></i> <span>PO Customers</span></a></li>
             <li><a href="{{action('CustomerController@listCust')}}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
         </ul>
