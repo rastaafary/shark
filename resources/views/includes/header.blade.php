@@ -49,8 +49,8 @@
         <ul class="nav nav-pills nav-stacked custom-nav">
             <li class="menu-list"><a href=""><i class="fa fa-home"></i> <span>Manage User</span></a>
                 <ul class="sub-menu-list" style="display: none;">
-                    <li><a href="#"> User List</a></li>
-                    <li><a href="#"> Profile</a></li>
+                    <li><a href="{{action('ManageUserController@userList')}}"> User List</a></li>
+                    <li><a href="{{action('ManageUserController@userProfile')}}"> Profile</a></li>
                 </ul>
             </li>
 
