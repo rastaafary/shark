@@ -35,7 +35,7 @@ class PartController extends Controller
      */
     public function partList()
     {
-        return view('Part.Parteditlist',['name'=>'Part Number']);
+        return view('Part.Parteditlist',['page_title'=>'Part Number']);
     }
 
     /*
@@ -86,7 +86,7 @@ class PartController extends Controller
             $partlist = DB::table('part_number')->get();
             return view('Part.Parteditlist')->with('partlist', $partlist);
         }
-        return view('Part.Partedit');
+        return view('Part.Partedit',['page_title'=>'Edit Part Number']);
     }
     /*
      * Add part
@@ -122,7 +122,7 @@ class PartController extends Controller
             Session::flash('alert-success', 'success');
             return redirect('/part');
         }
-        return view('Part.Partadd');
+        return view('Part.Partadd',['page_title'=>'Add Part Number']);
     }
     /*
      *  Add part

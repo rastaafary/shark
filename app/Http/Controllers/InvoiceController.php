@@ -7,11 +7,11 @@ class InvoiceController extends Controller
 
     public function addInvoice()
     {
-        return view('invoice.addInvoice');
+        return view('invoice.addInvoice',['page_title'=>'Add Invoice']);
     }
     
     public function listInvoice()
     {
-        return view('invoice.listInvoice',['name'=>'Invoice']);
+        return view('invoice.listInvoice',['page_title'=>'Invoice']);
     }    
 }
