@@ -12,7 +12,7 @@ class PaymentController extends Controller
 
     public function listPayment()
     {
-        return view('payment.listPayment');
+        return view('payment.listPayment',['name'=>'Payment']);
     }
     
      public function viewPayment()

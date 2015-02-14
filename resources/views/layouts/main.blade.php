@@ -22,10 +22,11 @@
 
                 <!-- page heading start-->
                 <div class="page-heading">
-                    <h3>Customer</h3>
+
+                    <h3>{{$name}}</h3>
                     <ul class="breadcrumb">
                         <li>
-                            <a href="index.html">Home</a>
+                            <a href="">Home</a>
                         </li>
                         <li class="active">New Customer</li>
                     </ul>

@@ -35,7 +35,7 @@ class PartController extends Controller
      */
     public function partList()
     {
-        return view('Part.Parteditlist');
+        return view('Part.Parteditlist',['name'=>'Part Number']);
     }
 
     /*

@@ -12,6 +12,6 @@ class InvoiceController extends Controller
     
     public function listInvoice()
     {
-        return view('invoice.listInvoice');
+        return view('invoice.listInvoice',['name'=>'Invoice']);
     }    
 }

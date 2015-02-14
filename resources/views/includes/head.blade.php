@@ -18,7 +18,7 @@
 <meta name="author" content="ThemeBucket">
 <link rel="shortcut icon" href="#" type="image/png">
 
-<title>Customer</title>
+<title>{{$name}}</title>
 
 
 {!! HTML::style('css/style.css') !!}

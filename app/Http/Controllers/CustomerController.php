@@ -14,7 +14,7 @@ class CustomerController extends Controller
 
     public function listCust()
     {
-        return view('customer.listCustomer');
+        return view('customer.listCustomer',['name'=>'Customers']);
     }
 
 }

@@ -12,7 +12,7 @@ class PurchaseOrderCustomerController extends Controller
     
     public function listPurchaseOrder()
     {
-        return view('PurchaseOrderCustomer.listPurchaseOrder');
+        return view('PurchaseOrderCustomer.listPurchaseOrder',['name'=>'Purchase Order']);
     }
    
 }
