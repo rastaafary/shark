@@ -47,8 +47,15 @@
 
         <!--sidebar nav start-->
         <ul class="nav nav-pills nav-stacked custom-nav">
-            <li><a href="index.html"><i class="fa fa-home"></i> <span>Manage User</span></a></li>
-            <li  class="active"><a href="{{action('PartController@partList')}}"><i class="fa fa-user"></i> <span>Part Number</span></a></li>
+            <li class="logout"><a href="#"><i class="fa fa-key"></i> <span>Log Out</span></a></li>
+            <li class="menu-list"><a href=""><i class="fa fa-home"></i> <span>Manage User</span></a>
+                <ul class="sub-menu-list" style="display: none;">
+                    <li><a href="#"> User List</a></li>
+                    <li><a href="#"> Profile</a></li>
+                </ul>
+            </li>
+
+            <li><a href="{{action('PartController@partList')}}"><i class="fa fa-user"></i> <span>Part Number</span></a></li>
             <li><a href="{{action('InvoiceController@listInvoice')}}"><i class="fa fa-bars"></i> <span>Invoice</span></a></li>
             <li><a href="{{action('PaymentController@listPayment')}}"><i class="fa fa-money"></i> <span>Payments</span></a></li>
             <li><a href="{{action('OrderStatusReportController@viewReport')}}"><i class="fa fa-bar-chart-o"></i> <span>PL's </span></a></li>
