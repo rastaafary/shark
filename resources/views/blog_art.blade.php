@@ -32,7 +32,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">PO#:</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control">
+                                        <label class="control-label">ITM0101</label>
                                     </div>
                                 </div>
                             </div>
@@ -52,9 +52,15 @@
                             </div>
                             <div class="attach">
                                 <span class="name" href="#">Image Preview:</span>
-                                <img class="attach-img" src="images/photos/user1.png">
-                                <img class="attach-img" src="images/photos/user1.png">
-                                <img class="attach-img" src="images/photos/user1.png">
+                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
+                                    <img class="attach-img" src="images/photos/user1.png">
+                                </a>
+                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
+                                    <img class="attach-img" src="images/photos/user2.png">
+                                </a>
+                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
+                                    <img class="attach-img" src="images/photos/user3.png">
+                                </a>
                             </div>
                         </li>
                         <li class="out">
@@ -69,9 +75,15 @@
                             </div>
                             <div class="attach">
                                 <span class="name" href="#">Image Preview:</span>
-                                <img class="attach-img" src="images/photos/user1.png">
-                                <img class="attach-img" src="images/photos/user1.png">
-                                <img class="attach-img" src="images/photos/user1.png">
+                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
+                                    <img class="attach-img" src="images/photos/user1.png">
+                                </a>
+                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
+                                    <img class="attach-img" src="images/photos/user2.png">
+                                </a>
+                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
+                                    <img class="attach-img" src="images/photos/user3.png">
+                                </a>
                             </div>
                         </li>
                         <li class="in">
@@ -106,7 +118,7 @@
                                     </div>
                                     <button class="btn btn-danger"><i class="fa fa-minus"></i> </button>
                                 </div>
-                                
+
                             </div>
                             <button class="btn btn-primary" type="submit">Send</button>
                         </form>
@@ -116,6 +128,17 @@
         </div>
     </div>
 
+</div>
+
+<div id="lightbox" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <button type="button" class="close hidden" data-dismiss="modal" aria-hidden="true">×</button>
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="" alt="" />
+            </div>
+        </div>
+    </div>
 </div>
 <!--body wrapper end-->
 @endsection
