@@ -40,7 +40,7 @@
               
             </div>
             <label class="checkbox">
-                <input type="checkbox" value="remember-me"> Remember me
+                <!--<input type="checkbox" value="remember-me"> Remember me-->
                 <span class="pull-right">
                     <a data-toggle="modal" href="#myModal"> Forgot Password?</a>
 

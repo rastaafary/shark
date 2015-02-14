@@ -23,8 +23,7 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
-                                                        <thead>
+                                                    <table class="table">
                                                         <tr>
                                                             <th>Sequence</th>
                                                             <th>PO Number</th>
@@ -34,10 +33,9 @@
                                                             <th>PO Qty</th>
                                                             <th>Pcs Made</th>
                                                             <th>Balance</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr class="gradeX">
+                                                            <th>Action</th>
+                                                        </tr>                                                                       
+                                                        <tr>
                                                             <td>1</td>
                                                             <td>032-0024</td>
                                                             <td>BF0012</td>
@@ -46,8 +44,9 @@
                                                             <td>50</td>
                                                             <td>0</td>
                                                             <td>50</td>
+                                                            <td><button class="btn btn-primary"><i class="fa fa-pencil"></i></button>
                                                         </tr>
-                                                        <tr class="gradeX">
+                                                        <tr>
                                                             <td>2</td>
                                                             <td>030-0022</td>
                                                             <td>BF0013</td>
@@ -56,8 +55,8 @@
                                                             <td>50</td>
                                                             <td>25</td>
                                                             <td>25</td>
+                                                            <td><button class="btn btn-primary"><i class="fa fa-pencil"></i></button>
                                                         </tr>
-                                                        </tbody>
                                                     </table>                                                                   
                                                 </div>                                   
                                             </div>
@@ -68,10 +67,11 @@
                         </div>
                     </div>                       
                 </div>
+            </section>
         </div>
-        </section>
+
 
     </div>
 </div>
-</div>
+
 @endsection
