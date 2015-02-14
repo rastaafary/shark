@@ -12,7 +12,6 @@
                         <li><a href="/part/add">Add</a></li>
                     </ul>
                 </header>
-
                 <div class="panel-body">
                     <div class="tab-content">
                         <div class="tab-pane active" id="List">
@@ -74,7 +73,6 @@
                         </div>
                     </div>
                 </div>
-
             </section>
         </div>
     </div>
