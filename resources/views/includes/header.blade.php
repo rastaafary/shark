@@ -28,7 +28,7 @@
 
     <!--logo and iconic logo start-->
     <div class="logo">
-        <a class="logo-img" href="index.html">{!! HTML::image('images/logo.png') !!}</a>
+        <a class="logo-img" href="/">{!! HTML::image('images/logo.png') !!}</a>
 
         <!--toggle button start-->
         <a class="toggle-btn"><i class="fa fa-bars"></i></a>
