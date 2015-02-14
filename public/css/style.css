@@ -876,7 +876,7 @@ h5.left-nav-title {
 }
 
 .sticky-header .main-content {
-/*    padding-top: 50px;*/
+    /*    padding-top: 50px;*/
 }
 
 .sticky-header .menu-right {
@@ -3763,7 +3763,7 @@ ul.activity-list .activity-desk h5 a {
     margin-bottom: 10px;
     text-align: center;
     background: #51d4cc;
-   margin-left: -15px;
+    margin-left: -15px;
     margin-right: -15px;
     margin-top: -15px;
     padding: 56px 20px;
@@ -3793,7 +3793,7 @@ ul.activity-list .activity-desk h5 a {
 }
 
 .clndr-previous-button{
-   position: relative;
+    position: relative;
     top: -30px;
 }
 
@@ -4515,7 +4515,7 @@ ol.comment-list {
     list-style: none;
     padding: 8px 0 5px;
     margin: 7px auto;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .chats li img.avatar {
@@ -4555,7 +4555,8 @@ ol.comment-list {
     position: relative;
 }
 
-.chats li.in .message {
+.chats li.in .message,
+.chats li.in .attach{
     text-align: left;
     margin-left: 65px;
 }
@@ -4582,7 +4583,8 @@ ol.comment-list {
     border-left: 8px solid #EFF0F4;
 }
 
-.chats li.out .message {
+.chats li.out .message,
+.chats li.out .attach{
     border-right: 2px solid #EFF0F4;
     margin-right: 65px;
     text-align: right;
@@ -4670,10 +4672,10 @@ ol.comment-list {
 }
 
 .normal-chat li.in .name {
-    color: #65CEA7 !important;
+    color: #080808 !important;
 }
 .normal-chat li.out .name {
-    color: #424F63 !important;
+    color: #080808 !important;
 }
 .normal-chat li .datetime {
     color: #ADADAD;
@@ -4682,12 +4684,25 @@ ol.comment-list {
 }
 
 .chat-form .form-group {
-    width: 83%;
-    margin-right: 2%;
-    float: left;
+    width: 100%;
+    /*    margin-right: 2%;
+      float: left;*/
 }
-
-
+.chats li .attach{
+    margin-top: 5px;
+}
+.chats li .attach .attach-img{
+    width: 30px;
+}
+.chat-form .attachment{
+    margin-top:5px;
+}
+.chat-form .attachment .form-group{
+    margin-bottom: 5px;
+}
+.chat-form .attachment .form-group .form-control{
+    height: 38px;
+}
 .chats li.out .name {
     color: #333;
 }
@@ -5392,11 +5407,11 @@ ul.iconic-list li a:hover, ul.iconic-list li.active a {
 .nav-stacked > li.logout{
     background: #ffffff;
     text-align: center;
-   
+
 }
 .nav-stacked > li.logout a{
     color: #000000;
-     padding:0;
+    padding:0;
 }
 .custom-nav > li.logout > a:hover, 
 .custom-nav > li.logout > a:active,

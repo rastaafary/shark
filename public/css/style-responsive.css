@@ -194,6 +194,15 @@
     .mail-list {
         height: auto;
     }
+    .chat-form .attachment .form-group .form-control{
+        float: left;
+        width: 82%;
+        margin-right: 1px;
+        
+    }
+    .chat-form .attachment .form-group{
+        margin-bottom: 10px;
+    }
 
 }
 
