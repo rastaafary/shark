@@ -103,22 +103,19 @@
                                                             <th>Date</th>
                                                             <th>Amount</th>
                                                             <th>Reference</th>
-                                                            <th>Comments</th>
-                                                            <th>Actions</th>
+                                                            <th>Comments</th>                                                           
                                                         </tr>                                                             
                                                         <tr>
                                                             <td>7/19/2015</td>
                                                             <td>$100</td>
                                                             <td>93485U</td>
-                                                            <td>PAGAME PUTO</td>
-                                                            <td></td>  
+                                                            <td>PAGAME PUTO</td>                                                            
                                                         </tr> 
                                                         <tr>
                                                             <td>8/8/2015</td>
                                                             <td>$150</td>
                                                             <td>93U39487</td>
-                                                            <td>LAKSDJF</td>
-                                                            <td></td>
+                                                            <td>LAKSDJF</td>                                                            
                                                         </tr> 
                                                     </table>
                                                 </div>      

@@ -38,9 +38,7 @@
                                                             <td>FA342</td>
                                                             <td>Sports LLC</td>
                                                             <td>$1256.00</td>                                                            
-                                                            <td><button class="btn btn-primary" id="btnDetails" ><i class="fa fa-bars"></i>
-                                                                    Details
-                                                                </button></td> 
+                                                            <td><a href="{{action('PaymentController@viewPayment')}}" class="fa fa-bars btn btn-primary"> Details </a></td>                                                                   
                                                         </tr>
                                                         <tfoot>
                                                             <tr>
@@ -48,9 +46,7 @@
                                                                 <td>FA361</td>
                                                                 <td>ESPN INC</td>                                                               
                                                                 <td>$1500</td>                                                               
-                                                                <td><button class="btn btn-primary" id="btnDetails" ><i class="fa fa-bars"></i>
-                                                                        Details
-                                                                    </button></td>                                                                         
+                                                                <td><a href="{{action('PaymentController@viewPayment')}}" class="fa fa-bars btn btn-primary"> Details </a></td>                                                                         
                                                             </tr>
                                                         </tfoot>
                                                     </table>
