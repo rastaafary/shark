@@ -40,6 +40,8 @@ Route::get('/invoice', 'InvoiceController@listInvoice');
 // Purchase Order Customer
 Route::get('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
 Route::get('/po', 'PurchaseOrderCustomerController@listPurchaseOrder');
+// Blog Art
+Route::get('/blogArt', 'BlogartController@viewBlog');
 // Payment
 Route::get('/payment', 'PaymentController@listPayment');
 Route::get('/payment/add', 'PaymentController@addPayment');

@@ -162,7 +162,7 @@
                                                         <input id="uploadArtPDF" type="file">                                                                                                                                               
                                                     </div>
                                                 </div>                                                                                                                                
-                                                <a class="btn btn-link" href="#" role="button"><strong>Blog Art</strong></a>                                          
+                                                <a class="btn btn-link" href="{{ action('BlogartController@viewBlog')}}" role="button"><strong>Blog Art</strong></a>                                          
                                             </div>                                                       
                                         </div>
                                     </div>

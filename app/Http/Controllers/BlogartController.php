@@ -11,6 +11,6 @@ class BlogartController extends Controller {
 	 */
 	public function viewBlog()
 	{
-		return view('blog_art');
+		return view('blog_art',['page_title'=>'Blog Art']);
 	}
 }
