@@ -29,7 +29,7 @@
                         <li>
                             <a href="">Home</a>
                         </li>
-                        <li class="active">List </li>
+                        <li class="active"> {{$page_title}}</li>
                     </ul>
                 </div>
                 <!-- page heading end-->
