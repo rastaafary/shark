@@ -20,7 +20,10 @@
                                         {!! HTML::image('images/user-avatar.png', 'a picture', array('class' => 'thumb')) !!}
                                     </div>                                    
                                     <div class="media-body">
-                                        <h3 class="media-heading">John Doe</h3>                                       
+                                        <h3 class="media-heading">@if( Auth::check() )
+                                            {{ Auth::user()->name }}
+                                            @endif
+                                        </h3>                                       
                                     </div>
                                 </div>
                                 <br>

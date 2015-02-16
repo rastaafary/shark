@@ -23,13 +23,19 @@
                 <!-- page heading start-->
                 <div class="page-heading">
                     <h3>
-                        {{$page_title}}
+                        @if(isset($page_title))
+                            {{$page_title}}
+                            @endif
                     </h3>
                     <ul class="breadcrumb">
                         <li>
                             <a href="">Home</a>
                         </li>
-                        <li class="active"> {{$page_title}}</li>
+                        <li class="active">  
+                            @if(isset($page_title))
+                            {{$page_title}}
+                            @endif
+                        </li>
                     </ul>
                 </div>
                 <!-- page heading end-->
