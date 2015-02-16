@@ -15,7 +15,9 @@ Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
 // Login
-Route::get('/login', 'LoginController@index');
+Route::post('/login', 'LoginController@login');
+//logout
+Route::get('logout','LoginController@logout');
 //get list of avilable part
 Route::get('/part', 'PartController@partList');
 //get part data
