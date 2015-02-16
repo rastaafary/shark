@@ -6,7 +6,7 @@ use DB;
 use View;
 use Input;
 use Session;
-
+use Validator;
 class ManageUserController extends Controller
 {
     /*
@@ -35,6 +35,28 @@ class ManageUserController extends Controller
         if (isset($post['_token'])) {
             unset($post['_token']);
             //if (isset($post['SKU']) && $post['SKU'] != null) {
+            $rules = array(
+                'email' => 'required',
+                'password' => 'required',
+                'name' => 'required',
+                'birthdate' => 'required',
+                'mobileno' => 'required',
+                'position' => 'required',
+                'role' => 'required',
+                );
+
+            $validator = Validator::make(Input::all(), $rules);
+            if ($validator->fails()) {
+                $messages = $validator->messages();
+
+                if (!empty($messages)) {
+                    foreach ($messages->all() as $error) {
+                        Session::flash('message', $error);
+                        Session::flash('alert-class', 'alert-danger');
+                        return redirect('/userList');
+                    }
+                }
+            }
 
             DB::table('user')->insert(
                     array($post)

@@ -44,22 +44,7 @@
                                                                 </td>
 
                                                             </tr>
-                                                               @endforeach
-                                                            <!--   
-                                                            <tr class="gradeX">
-                                                                <td>XYZ</td>
-                                                                <td>XYZ@gmail.com</td>
-                                                                <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                    <a href="{{action('ManageUserController@userProfile')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
-
-                                                            </tr>
-                                                            <tr class="gradeX">
-                                                                <td>PQR</td>
-                                                                <td>pqr@gmail.com</td>
-                                                                <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                    <a href="{{action('ManageUserController@userProfile')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
-
-                                                            </tr>-->
+                                                               @endforeach                                                           
                                                         </tbody>
                                                     </table>                                                                   
                                                 </div>                                   
@@ -142,14 +127,14 @@
                             <label for="addImage" class="col-sm-4 control-label">Image :</label>                           
                             <div class="col-sm-6">                              
                                <!--  <input id="addImage" type="file"> -->
-                                 {!! Form::file('image', '' ,array('placeholder' => 'Position')) !!}
-                            </div>`
+                                 {!! Form::file('image', '') !!}
+                            </div>
                         </div>
                     </div> 
                 </div>
                 <div class="modal-footer">
                    <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Save</button> -->
-                    {!! Form::submit('Save',array('class'=>'btn btn-primary')) !!}
+                    {!! Form::submit('Save',array('class'=>'btn btn-primary','id'=>'btnSave')) !!}
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
            {!! Form::close() !!}
