@@ -40,6 +40,20 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <label for="addPosition" class="col-sm-4 control-label">Position :</label>
+                                                <div class="col-sm-4">
+                                                    <!-- <input type="text" class="form-control" id="addPosition" placeholder="Position"> -->
+                                                    {!! Form::text('position', '' ,array('class'=>'form-control', 'placeholder' => 'Position')) !!}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="addPosition" class="col-sm-4 control-label">Role :</label>
+                                                <div class="col-sm-4">
+                                                    <!-- <input type="text" class="form-control" id="addPosition" placeholder="Position"> -->
+                                                    {!! Form::select('role', array('A' => 'Admin', 'C' => 'Customer'),null ,array('class'=>'form-control', 'placeholder' => 'Role')) !!}                               
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="changePassword" class="col-sm-4 control-label">Change Password :</label>
                                                 <div class="col-sm-4">
                                                     <input type="text" class="form-control" id="changePassword" placeholder="New Password">
@@ -51,19 +65,18 @@
                                                     <input type="text" class="form-control" id="reTypePassword" placeholder="Retype New Password">
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="userRole" class="col-sm-4 control-label">Role :</label>
-                                                <div class="col-sm-4">
-                                                    <select class="form-control" id="userRole">
-                                                        <option>Admin</option>
-                                                    </select>
-                                                </div>
+                                          <div class="form-group">
+                                                <label for="addImage" class="col-sm-4 control-label">Image :</label>                           
+                                                <div class="col-sm-4">                              
+                                                   <!--  <input id="addImage" type="file"> -->
+                                                    {!! Form::file('image', '') !!}
+                                                </div>`
                                             </div>
                                             <div class="form-group" align="center">
                                                 <div class="col-sm-11">
                                                     <!--<a href="#" class="btn btn-primary"> </a>-->
                                                     <!--<span class="fa fa-save">-->
-                                                        {!! Form::submit('Save',array('class'=>'fa fa-save','class'=>'btn btn-primary')) !!}
+                                                    {!! Form::submit('Save',array('class'=>'fa fa-save','class'=>'btn btn-primary')) !!}
                                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                                     <a href="#" class="btn btn-primary"> Cancel</a>
                                                 </div>

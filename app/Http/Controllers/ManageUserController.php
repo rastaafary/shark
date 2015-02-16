@@ -54,7 +54,7 @@ class ManageUserController extends Controller
             DB::table('user')
                     ->where('id', $post['id'])
                     ->update($post);
-            Session::flash('message', 'Part Update Successfully!!');
+            Session::flash('message', 'Profile Update Successfully!!');
             /* Session::flash('alert-warning', 'warning');
              * Session::flash('alert-info', 'info'); */
             Session::flash('alert-success', 'success');
