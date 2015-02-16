@@ -39,7 +39,7 @@
         <!--toggle button start-->
         <a class="toggle-btn"><i class="fa fa-bars"></i></a>
         <!--toggle button end-->
-        <a href="index.html">{!! HTML::image('images/logo_icon.png') !!}</a>
+        <a href="/">{!! HTML::image('images/logo_icon.png') !!}</a>
     </div>
     <!--logo and iconic logo end-->
 
