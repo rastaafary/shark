@@ -22,9 +22,10 @@ class LoginController extends Controller
      */
     public function index()
     {
+        
         /*
  //echo var_dump(Config::get('session.lifetime'));exit;
-        //echo '<pre>';print_r(Session::all());exit;
+       
          *          */
         //	return view('login');
     }
@@ -43,16 +44,8 @@ class LoginController extends Controller
         $credentials = Input::all();
         $email = $credentials['email'];
         $password = $credentials['password'];
-        if (Auth::validate(array('email' => $email, 'password' => $password)) && Auth::attempt(array('email' => $email, 'password' => $password), true)) {
+        if (Auth::validate(array('email' => $email, 'password' => $password)) && Auth::attempt(array('email' => $email, 'password' => $password), false)) {
             Session::flash('message', 'Login Successfully!!!');
-            Auth::user();
-           $_SESSION['luser'] = Auth::user();
-            $_SESSION['start'] = time(); // Taking now logged in time.
-            // Ending a session in 30 minutes from the starting time.
-            $_SESSION['expire'] = $_SESSION['start'] + (60 * 60);
-            
-          //  Session::flash('alert-success', 'success');
-           // echo '<pre>';print_r(Session::all());exit;
             return Redirect::intended('/part');
         } else {
             $error = 'wrong email or password..';
