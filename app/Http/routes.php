@@ -49,6 +49,10 @@ Route::get('/payment/view', 'PaymentController@viewPayment');
 // Manage User
 Route::get('/userList', 'ManageUserController@userList');
 Route::get('/userProfile', 'ManageUserController@userProfile');
+//get edit User data
+Route::get('/userProfile/edit/{var?}', 'ManageUserController@editUser');
+//save edit User
+Route::post('/userProfile/edit', 'ManageUserController@editUser');
 //View Order Status Report
 Route::get('/PLReport/view', 'OrderStatusReportController@viewReport');
 /* Route::get('/customer/add', array('prefix' => 'customer','as' => 'customer.add',
