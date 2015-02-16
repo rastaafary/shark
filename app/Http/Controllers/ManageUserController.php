@@ -21,6 +21,27 @@ class ManageUserController extends Controller
     {
         return view('manageUser.userProfile', ['page_title' => 'Manage User']);
     }
+    
+    /*
+     * Add User
+     */
+    public function addUser()
+    {
+        $post = Input::all();
+        if (isset($post['_token'])) {
+            unset($post['_token']);
+            //if (isset($post['SKU']) && $post['SKU'] != null) {
+            
+            DB::table('user')->insert(
+                    array($post)
+            );
+            Session::flash('message', 'User Added Successfully!!');
+            Session::flash('alert-success', 'success');
+            return redirect('/userList');
+        }
+        return view('manageUser.userList',['page_title'=>'User List']);
+    }
+            
 
     public function editUser($id = null)
     {
@@ -44,5 +65,16 @@ class ManageUserController extends Controller
         }
         return view('manageUser.userProfile', ['page_title' => 'Edit User']);
     }
+     /*
+     * delete User
+     */
+    public function deleteUser($id = null)
+    {
+        DB::table('user')->where('id', $id)->delete();
+        Session::flash('message', 'User Delete Successfully!!');
+        Session::flash('alert-success', 'success');
+        return redirect('/userList');
+    }
+    
 
 }

@@ -5,24 +5,14 @@
 <a href="{{ action('PartController@addPart')}}">Add</a> 
 <a href="{{ action('PartController@editPart')}}">Edit</a> 
 <br/>
-<table id="part-list">
+<table id="dynamic-table" class="display table table-bordered table-striped">
     <thead>
         <tr>
-            <th>
-                SKU
-            </th>
-            <th>
-                description
-            </th>
-            <th>
-                cost
-            </th>
-            <th>
-                currency
-            </th>
-            <th>
-                Action
-            </th>
+            <th>SKU</th>
+            <th>description</th>
+            <th>cost</th>
+            <th>currency</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
