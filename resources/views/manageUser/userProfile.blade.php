@@ -10,7 +10,7 @@
                         <div class="tab-pane active" id="List">
                             <!--<form class="form-horizontal">-->
                             {!! Form::open(array('class'=>'form-horizontal','url'=>'/userProfile/edit')) !!}
-                            {!! Form::hidden(Input::old('id',isset($user->id) ? $user->id : 2)) !!}
+                            {!! Form::hidden('id',Input::old('value',isset($user->id) ? $user->id : '')) !!}
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">                                                            
@@ -43,14 +43,14 @@
                                                 <label for="addPosition" class="col-sm-4 control-label">Position :</label>
                                                 <div class="col-sm-4">
                                                     <!-- <input type="text" class="form-control" id="addPosition" placeholder="Position"> -->
-                                                    {!! Form::text('position', '' ,array('class'=>'form-control', 'placeholder' => 'Position')) !!}
+                                                    {!! Form::text('position', Input::old('value',isset($user->position) ? $user->position : ''),array('class'=>'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="addPosition" class="col-sm-4 control-label">Role :</label>
                                                 <div class="col-sm-4">
                                                     <!-- <input type="text" class="form-control" id="addPosition" placeholder="Position"> -->
-                                                    {!! Form::select('role', array('A' => 'Admin', 'C' => 'Customer'),null ,array('class'=>'form-control', 'placeholder' => 'Role')) !!}                               
+                                                    {!! Form::label('role',Input::old('value',isset($user->role) ? $user->role : '') ) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
