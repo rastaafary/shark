@@ -56,16 +56,25 @@
                                             <div class="form-group">
                                                 <label for="changePassword" class="col-sm-4 control-label">Change Password :</label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" class="form-control" id="changePassword" placeholder="New Password">
+                                                    <input type="text" class="form-control" id="password" placeholder="New Password">
+                                                    <!--{!! Form::text('changePassword','',array('class'=>'form-control', 'placeholder' => 'New Password')) !!}-->
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="reTypePassword" class="col-sm-4 control-label">Re Type Password :</label>
                                                 <div class="col-sm-4">
                                                     <input type="text" class="form-control" id="reTypePassword" placeholder="Retype New Password">
+                                                    <!--{!! Form::text('reTypePassword','',array('class'=>'form-control', 'placeholder' => 'Retype New Password')) !!}-->
                                                 </div>
                                             </div>
-                                          <div class="form-group">
+                                            <div class="form-group">
+                                                <label for="addBirthDate" class="col-sm-4 control-label">Birth Date :</label>
+                                                <div class="col-sm-4">
+                                                  <!-- <input type="text" class="form-control" id="addBirthDate" placeholder="Birth Date"> -->
+                                                    {!! Form::text('birthdate',Input::old('value',isset($user->birthdate) ? $user->birthdate : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => 'Birth Date')) !!}
+                                                </div>
+                                            </div>     
+                                            <div class="form-group">
                                                 <label for="addImage" class="col-sm-4 control-label">Image :</label>                           
                                                 <div class="col-sm-4">                              
                                                    <!--  <input id="addImage" type="file"> -->
