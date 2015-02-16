@@ -117,6 +117,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="customer image" class="col-sm-4 control-label">Customer Image:</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="uploadCustomerImage" type="file">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>  
                                         </div>
                                         <div class="col-md-14">
