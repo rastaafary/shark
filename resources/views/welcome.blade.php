@@ -28,12 +28,12 @@
                 <h1 class="sign-title">Sign In</h1>
                 <img src="images/login-logo.png" alt=""/>
             </div>
-            @if(Session::has('message'))
+            @if(Session::has('messagelogin'))
             <div class="alert alert-block alert-danger" style="display: block;">
                 <button data-dismiss="alert" class="close close-sm" type="button">
                     <i class="fa fa-times"></i>
                 </button>
-                <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+                <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('messagelogin') }}</p>
             </div>
             @endif
             <div class="login-wrap">

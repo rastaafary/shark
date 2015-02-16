@@ -45,12 +45,18 @@ class LoginController extends Controller
         $password = $credentials['password'];
         if (Auth::validate(array('email' => $email, 'password' => $password)) && Auth::attempt(array('email' => $email, 'password' => $password), true)) {
             Session::flash('message', 'Login Successfully!!!');
-            Session::flash('alert-success', 'success');
+            Auth::user();
+           $_SESSION['luser'] = Auth::user();
+            $_SESSION['start'] = time(); // Taking now logged in time.
+            // Ending a session in 30 minutes from the starting time.
+            $_SESSION['expire'] = $_SESSION['start'] + (60 * 60);
             
+          //  Session::flash('alert-success', 'success');
+           // echo '<pre>';print_r(Session::all());exit;
             return Redirect::intended('/part');
         } else {
             $error = 'wrong email or password..';
-            Session::flash('message', $error);
+            Session::flash('messagelogin', $error);
             Session::flash('alert-class', 'alert-danger');
             return redirect('/')
                             ->withInput($request->only('email', 'remember'));
@@ -60,6 +66,7 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
+         return redirect('/');
     }
             
     /**
