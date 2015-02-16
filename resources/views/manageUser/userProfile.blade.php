@@ -10,7 +10,7 @@
                         <div class="tab-pane active" id="List">
                             <!--<form class="form-horizontal">-->
                             {!! Form::open(array('class'=>'form-horizontal','url'=>'/userProfile/edit')) !!}
-                            {!! Form::hidden('id', Input::old('value',isset($user->id) ? $user->id : 2)) !!}
+                            {!! Form::hidden(Input::old('id',isset($user->id) ? $user->id : 2)) !!}
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">                                                            
@@ -22,21 +22,21 @@
                                                 <label for="userName" class="col-sm-4 control-label">Name :</label>
                                                 <div class="col-sm-4">
                                                     <!--<input type="text" class="form-control" id="userName" placeholder="Name">-->
-                                                    {!! Form::text('userName', Input::old('value',isset($user->name) ? $user->name : ''),array('class'=>'form-control')) !!}
+                                                    {!! Form::text('name', Input::old('value',isset($user->name) ? $user->name : ''),array('class'=>'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="userEmail" class="col-sm-4 control-label">Email :</label>
                                                 <div class="col-sm-4">
                                                     <!--<input type="text" class="form-control" id="userEmail" placeholder="Email ID">-->
-                                                    {!! Form::text('userEmail', Input::old('value',isset($user->email) ? $user->email : ''),array('class'=>'form-control')) !!}
+                                                    {!! Form::text('email', Input::old('value',isset($user->email) ? $user->email : ''),array('class'=>'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="userPhone" class="col-sm-4 control-label">Phone No :</label>
                                                 <div class="col-sm-4">
                                                   <!-- <input type="text" class="form-control" id="userPhone" placeholder="Phone No">-->
-                                                    {!! Form::text('userPhone', Input::old('value',isset($user->mobileno) ? $user->mobileno : ''),array('class'=>'form-control')) !!}
+                                                    {!! Form::text('mobileno', Input::old('value',isset($user->mobileno) ? $user->mobileno : ''),array('class'=>'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -62,9 +62,8 @@
                                             <div class="form-group" align="center">
                                                 <div class="col-sm-11">
                                                     <!--<a href="#" class="btn btn-primary"> </a>-->
-                                                    <span class="fa fa-save">
-                                                        {!! Form::submit('Save',array('class'=>'btn btn-primary')) !!}
-                                                    </span>
+                                                    <!--<span class="fa fa-save">-->
+                                                        {!! Form::submit('Save',array('class'=>'fa fa-save','class'=>'btn btn-primary')) !!}
                                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                                     <a href="#" class="btn btn-primary"> Cancel</a>
                                                 </div>

@@ -12,7 +12,9 @@ class ManageUserController extends Controller
 
     public function userList()
     {
-        return view('manageUser.userList', ['page_title' => 'Manage User']);
+        $userlist = DB::table('user')->get();
+        return view('manageUser.userList',['page_title' => 'Manage User'])->with('userlist', $userlist);
+        //return view('manageUser.userList', ['page_title' => 'Manage User']);
     }
 
     public function userProfile()
@@ -20,9 +22,11 @@ class ManageUserController extends Controller
         return view('manageUser.userProfile', ['page_title' => 'Manage User']);
     }
 
-    public function editUser($id = 2)
+    public function editUser($id = null)
     {
+
         $post = Input::all();
+
         if (isset($post['_token']))
             unset($post['_token']);
         if (isset($post['id']) && $post['id'] != null) {
