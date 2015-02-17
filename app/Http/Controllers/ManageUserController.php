@@ -33,11 +33,11 @@ class ManageUserController extends Controller
 
     public function addUser()
     {
-       
+
         $post = Input::all();
         if (isset($post['_token'])) {
             unset($post['_token']);
-       
+
             $rules = array(
                 'email' => 'required|Email|unique:user,email',
                 'password' => 'required',
@@ -57,8 +57,8 @@ class ManageUserController extends Controller
                     foreach ($messages->all() as $error) {
                         Session::flash('message', $error);
                         Session::flash('alert-class', 'alert-danger');
-                         return View::make('manageUser.addUser')->with('post', $post);
-                      //  return redirect('/userList/add')->with('post', $post);
+                        return View::make('manageUser.addUser')->with('post', $post);
+                        //  return redirect('/userList/add')->with('post', $post);
                     }
                 }
             }
@@ -68,7 +68,7 @@ class ManageUserController extends Controller
             );
             Session::flash('alert-success', 'success');
             Session::flash('message', 'User Added Successfully!!');
-           // Session::flash('alert-success', 'success');
+            // Session::flash('alert-success', 'success');
             return redirect('/userList');
         }
         return view('manageUser.addUser', ['page_title' => 'Add User']);
@@ -81,28 +81,22 @@ class ManageUserController extends Controller
     public function editUser($id = null)
     {
         $post = Input::all();
-
-
+        // echo '<pre>';print_r($post);exit;
         if (isset($post['_token']))
             unset($post['_token']);
         if (isset($post['id']) && $post['id'] != null) {
-            /* if ($post['changePassword'] != null && $post['changePassword'] == $post['reTypePassword']) {
-              print_r('callll');
-              exit;
-              } else {
-              print_r('rrrr');
-              exit;
-              } */
-            
             $rules = array(
-                'name' => 'required',
-                'email' => 'required',
-                'mobileno' => 'required',
-                'position' => 'required');
-
+                'name' => 'required|Alpha|Min:5',
+                'email' => 'required|Email',
+                'mobileno' => 'required|Size:10',
+                'position' => 'required',
+                //'password' => 'confirmed',
+                'reTypePassword' => 'same:password|required_with:password,value',
+            );
             $validator = Validator::make(Input::all(), $rules);
 
             if ($validator->fails()) {
+                //exit('fail');
                 $messages = $validator->messages();
 
                 if (!empty($messages)) {
@@ -113,6 +107,14 @@ class ManageUserController extends Controller
                     }
                 }
             } else {
+                //exit('call');
+                
+                if ($post['password'] == null && $post['reTypePassword']==null) {
+                    unset($post['reTypePassword']);
+                    $myquery = DB::table('user')->select('password')->where('id', $post['id'])->first();
+                    $post['password'] = $myquery->password;
+                }
+                unset($post['reTypePassword']);
                 DB::table('user')
                         ->where('id', $post['id'])
                         ->update($post);

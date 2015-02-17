@@ -9,7 +9,7 @@
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="List">
                             <!--<form class="form-horizontal">-->
-                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/userProfile/edit')) !!}
+                            {!! Form::open(array('id'=>'editUser','class'=>'form-horizontal','url'=>'/userProfile/edit')) !!}
                             {!! Form::hidden('id',Input::old('value',isset($user->id) ? $user->id : '')) !!}
                             <div class="row">
                                 <div class="col-md-12">
@@ -56,21 +56,21 @@
                                             <div class="form-group">
                                                 <label for="changePassword" class="col-sm-4 control-label">Change Password :</label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" class="form-control" id="password" placeholder="New Password">
-                                                    <!--{!! Form::text('changePassword','',array('class'=>'form-control', 'placeholder' => 'New Password')) !!}-->
+                                                    <!--<input type="text" class="form-control" id="password" placeholder="New Password">-->
+                                                    {!! Form::password('password',array('class'=>'form-control', 'placeholder' => 'New Password')) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="reTypePassword" class="col-sm-4 control-label">Re Type Password :</label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" class="form-control" id="reTypePassword" placeholder="Retype New Password">
-                                                    <!--{!! Form::text('reTypePassword','',array('class'=>'form-control', 'placeholder' => 'Retype New Password')) !!}-->
+                                                    <!--<input type="text" class="form-control" id="reTypePassword" placeholder="Retype New Password">-->
+                                                    {!! Form::password('reTypePassword',array('class'=>'form-control', 'placeholder' => 'Retype New Password')) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="addBirthDate" class="col-sm-4 control-label">Birth Date :</label>
                                                 <div class="col-sm-4">
-                                                  <!-- <input type="text" class="form-control" id="addBirthDate" placeholder="Birth Date"> -->
+                                                  <!--<input type="text" class="form-control" id="addBirthDate" placeholder="Birth Date">-->
                                                     {!! Form::text('birthdate',Input::old('value',isset($user->birthdate) ? $user->birthdate : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => 'Birth Date')) !!}
                                                 </div>
                                             </div>     
