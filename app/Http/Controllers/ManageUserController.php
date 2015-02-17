@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Hash;
 
 use DB;
 use View;
@@ -117,6 +118,7 @@ class ManageUserController extends Controller
                     $post['password'] = $myquery->password;
                 }
                 unset($post['reTypePassword']);
+                 $post['password']=Hash::make($post['password']);
                 DB::table('user')
                         ->where('id', $post['id'])
                         ->update($post);
