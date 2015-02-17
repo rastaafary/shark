@@ -146,12 +146,6 @@ class ManageUserController extends Controller
         Session::flash('alert-success', 'success');
         return redirect('/userList');
     }
-     public function getUserData()
-    {       
-        $userlist = DB::table('user')->select(array('name', 'email', 'cost','id'));
-        return Datatables::of($userlist)
-                        ->editColumn("id", '<a href="part/delete/{{ $id }}">delete</a>&nbsp<a href="part/edit/{{ $id }}">Update</a>')
-                        ->make();
-    }
+    
 
 }
