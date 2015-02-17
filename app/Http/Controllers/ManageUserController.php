@@ -8,7 +8,7 @@ use Input;
 use Session;
 use Validator;
 use Datatables;
-
+use Auth;
 class ManageUserController extends Controller
 {
     /*
@@ -33,11 +33,11 @@ class ManageUserController extends Controller
 
     public function addUser()
     {
-
+       
         $post = Input::all();
         if (isset($post['_token'])) {
             unset($post['_token']);
-
+       
             $rules = array(
                 'email' => 'required|Email|unique:user,email',
                 'password' => 'required',
@@ -45,9 +45,12 @@ class ManageUserController extends Controller
                 'birthdate' => 'required',
                 'mobileno' => 'required|Size:10',
                 'position' => 'required',
-                'role' => 'required',
-                'image' => 'Image',
+                'role' => 'required',                
             );
+            $dt = $post['birthdate'];
+            $my_date = date('m/d/y', strtotime($dt));
+            $time = strtotime($my_date);
+            $date = date('Y/m/d', $time);
 
             $validator = Validator::make(Input::all(), $rules);
             if ($validator->fails()) {
@@ -57,18 +60,22 @@ class ManageUserController extends Controller
                     foreach ($messages->all() as $error) {
                         Session::flash('message', $error);
                         Session::flash('alert-class', 'alert-danger');
-                        return View::make('manageUser.addUser')->with('post', $post);
-                        //  return redirect('/userList/add')->with('post', $post);
+                         return View::make('manageUser.addUser')->with('post', $post);
+                      //  return redirect('/userList/add')->with('post', $post);
                     }
                 }
             }
 
-            DB::table('user')->insert(
+          /*  DB::table('user')->insert(
                     array($post)
+            ); */
+            DB::table('user')->insert(
+                    array('email' => $post['email'], 'password' => Hash::make($post['password']), 'name' => $post['name'], 'birthdate' => $date, 'mobileno' => $post['mobileno'], 'role' => $post['role'], 'position' => $post['position'],'image' => $post['image'])
             );
+            
             Session::flash('alert-success', 'success');
             Session::flash('message', 'User Added Successfully!!');
-            // Session::flash('alert-success', 'success');
+           // Session::flash('alert-success', 'success');
             return redirect('/userList');
         }
         return view('manageUser.addUser', ['page_title' => 'Add User']);
@@ -136,6 +143,13 @@ class ManageUserController extends Controller
         Session::flash('message', 'User Delete Successfully!!');
         Session::flash('alert-success', 'success');
         return redirect('/userList');
+    }
+     public function getUserData()
+    {       
+        $userlist = DB::table('user')->select(array('name', 'email', 'cost','id'));
+        return Datatables::of($userlist)
+                        ->editColumn("id", '<a href="part/delete/{{ $id }}">delete</a>&nbsp<a href="part/edit/{{ $id }}">Update</a>')
+                        ->make();
     }
 
 }
