@@ -10,7 +10,7 @@
                         <div class="tab-pane active" id="List">
                             <!--<form class="form-horizontal">-->
                             {!! Form::open(array('id'=>'editUser','class'=>'form-horizontal','url'=>'/userProfile/edit')) !!}
-                            {!! Form::hidden('id',Input::old('value',isset($user->id) ? $user->id : '')) !!}
+                            {!! Form::hidden('id',Input::old('value',isset( Auth::user()->id) ?  Auth::user()->id : '')) !!}
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">                                                            
@@ -50,7 +50,11 @@
                                                 <label for="addPosition" class="col-sm-4 control-label">Role :</label>
                                                 <div class="col-sm-4">
                                                     <!-- <input type="text" class="form-control" id="addPosition" placeholder="Position"> -->
-                                                    {!! Form::label('role',Input::old('value',isset($user->role) ? $user->role : '') ) !!}
+                                                    @if($user->role==1)
+                                                    {!! Form::label('role',Input::old('value','Customer') ) !!}
+                                                    @else
+                                                    {!! Form::label('role',Input::old('value','Admin') ) !!}
+                                                    @endif
                                                 </div>
                                             </div>
                                             <div class="form-group">

@@ -50,7 +50,7 @@
             <li class="menu-list"><a href=""><i class="fa fa-home"></i> <span>Manage User</span></a>
                 <ul class="sub-menu-list" style="display: none;">
                     <li><a href="{{action('ManageUserController@userList')}}"> User List</a></li>
-                    <li><a href="{{action('ManageUserController@userProfile')}}"> Profile</a></li>
+                    <li><a href="/userProfile/edit/{{Auth::user()->id}}"> Profile</a></li>
                 </ul>
             </li>
 
@@ -60,7 +60,7 @@
             <li><a href="{{action('OrderStatusReportController@viewReport')}}"><i class="fa fa-bar-chart-o"></i> <span>PL's </span></a></li>
             <li><a href="{{action('PurchaseOrderCustomerController@listPurchaseOrder')}}"><i class="fa fa-user"></i> <span>PO Customers</span></a></li>
             <li><a href="{{action('CustomerController@listCust')}}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
-            <li><a href="logout"><i class="fa fa-key"></i> <span>Log Out</span></a></li>
+            <li><a href="{{action('LoginController@logout')}}"><i class="fa fa-key"></i> <span>Log Out</span></a></li>
         </ul>
         <!--sidebar nav end-->
 
