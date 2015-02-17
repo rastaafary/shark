@@ -54,7 +54,8 @@ Route::get('/payment/add', 'PaymentController@addPayment');
 Route::get('/payment/view', 'PaymentController@viewPayment');
 // Manage User
 Route::get('/userList', 'ManageUserController@userList');
-Route::post('/userList', 'ManageUserController@addUser');
+Route::get('/userList/add', 'ManageUserController@addUser');
+Route::post('/userList/add', 'ManageUserController@addUser');
 Route::get('/userProfile', 'ManageUserController@userProfile');
 //get edit User data
 Route::get('/userProfile/edit/{var?}', 'ManageUserController@editUser');

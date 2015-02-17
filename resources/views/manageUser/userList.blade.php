@@ -18,7 +18,7 @@
                                             <div class="panel-body">
                                                  <div class="row">
                                                     <div class="col-md-12">
-                                                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal"><span class="fa fa-plus"></span> Add  User</a>
+                                                        <a href="{{ action('ManageUserController@addUser')}}" class="btn btn-primary"><span class="fa fa-plus"></span> Add  User</a>
                                                     </div>
                                                 </div><br>
                                                 <div class="table-responsive">
@@ -72,6 +72,15 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Add User</h4>
                 </div>
+            
+                <div class="alert alert-block alert-danger" style="display: none;" id='errormsg'>
+                    <span id='errorMessageSpan'></span>
+                    <button data-dismiss="alert" class="close close-sm" type="button">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    
+                </div>
+               
                 <div class="modal-body">
                     <div class="table-responsive">
                         <div class="form-group">

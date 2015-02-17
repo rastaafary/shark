@@ -19,13 +19,20 @@
 
                 </div>
                 <!-- header section end-->
-
+                @if(Session::has('message'))
+                <div class="alert alert-block alert-danger" style="display: block;">
+                    <span class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</span>
+                    <button data-dismiss="alert" class="close close-sm" type="button">
+                        <i class="fa fa-times"></i>
+                    </button>                    
+                </div>
+                @endif
                 <!-- page heading start-->
                 <div class="page-heading">
                     <h3>
                         @if(isset($page_title))
-                            {{$page_title}}
-                            @endif
+                        {{$page_title}}
+                        @endif
                     </h3>
                     <ul class="breadcrumb">
                         <li>
@@ -46,7 +53,7 @@
         </section>
 
         <!-- Placed js at the end of the document so the pages load faster -->
-     
+
         {!! HTML::script('js/jquery/jquery.min.js') !!}
         {!! HTML::script('js/validation/jquery.validate.js') !!}
         {!! HTML::script('js/jquery-ui-1.9.2.custom.min.js') !!}
@@ -69,9 +76,9 @@
         <!--dynamic table-->
         {!! HTML::script('js/advanced-datatable/js/jquery.dataTables.js') !!}
         {!! HTML::script('js/data-tables/DT_bootstrap.js') !!}
-       <!--dynamic table initialization -->
+        <!--dynamic table initialization -->
         {!! HTML::script('js/dynamic_table_init.js') !!}       
-        
+
         <!--common scripts for all pages-->
         {!! HTML::script('js/scripts.js') !!}
     </body>

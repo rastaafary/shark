@@ -1,6 +1,8 @@
 $(document).ready(function () {
-         
- /*   $("#dynamic-table").dataTable({
+
+
+
+    $("#dynamic-table").dataTable({
         "processing": true,
         "serverSide": true,
         "ajax": "http://localhost.shark/userList",
@@ -10,7 +12,6 @@ $(document).ready(function () {
                 orderable: false
             }]
     });
-
     //add user validation
     $('#addUser').validate({
         rules: {
@@ -80,6 +81,5 @@ $(document).ready(function () {
         errorPlacement: function (error, element) {
             error.insertAfter(element);
         }
-    });*/
-
+    });
 });

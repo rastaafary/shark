@@ -33,17 +33,20 @@ class ManageUserController extends Controller
 
     public function addUser()
     {
+       
         $post = Input::all();
         if (isset($post['_token'])) {
             unset($post['_token']);
-            //if (isset($post['SKU']) && $post['SKU'] != null) {
+       
             $rules = array(
-                'email' => 'required',
-                'name' => 'required',
+                'email' => 'required|Email|unique:user,email',
+                'password' => 'required',
+                'name' => 'required|Alpha',
                 'birthdate' => 'required',
-                'mobileno' => 'required',
+                'mobileno' => 'required|Size:10',
                 'position' => 'required',
                 'role' => 'required',
+                'image' => 'Image',
             );
 
             $validator = Validator::make(Input::all(), $rules);
@@ -54,7 +57,8 @@ class ManageUserController extends Controller
                     foreach ($messages->all() as $error) {
                         Session::flash('message', $error);
                         Session::flash('alert-class', 'alert-danger');
-                        return redirect('/userList');
+                         return View::make('manageUser.addUser')->with('post', $post);
+                      //  return redirect('/userList/add')->with('post', $post);
                     }
                 }
             }
@@ -62,11 +66,12 @@ class ManageUserController extends Controller
             DB::table('user')->insert(
                     array($post)
             );
-            Session::flash('message', 'User Added Successfully!!');
             Session::flash('alert-success', 'success');
+            Session::flash('message', 'User Added Successfully!!');
+           // Session::flash('alert-success', 'success');
             return redirect('/userList');
         }
-        return view('manageUser.userList', ['page_title' => 'User List']);
+        return view('manageUser.addUser', ['page_title' => 'Add User']);
     }
 
     /*
