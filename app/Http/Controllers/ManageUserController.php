@@ -81,24 +81,20 @@ class ManageUserController extends Controller
     public function editUser($id = null)
     {
         $post = Input::all();
-        // echo '<pre>';print_r($post);exit;
         if (isset($post['_token']))
             unset($post['_token']);
         if (isset($post['id']) && $post['id'] != null) {
             $rules = array(
                 'name' => 'required|Alpha|Min:5',
-                'email' => 'required|Email',
-                'mobileno' => 'required|Size:10',
+                'email' => 'required|Email|unique:user,email,' . $post['id'],
+                'mobileno' => 'required|size:10',
                 'position' => 'required',
-                //'password' => 'confirmed',
+                'birthdate' => 'required',
                 'reTypePassword' => 'same:password|required_with:password,value',
             );
             $validator = Validator::make(Input::all(), $rules);
-
             if ($validator->fails()) {
-                //exit('fail');
                 $messages = $validator->messages();
-
                 if (!empty($messages)) {
                     foreach ($messages->all() as $error) {
                         Session::flash('message', $error);
@@ -107,9 +103,8 @@ class ManageUserController extends Controller
                     }
                 }
             } else {
-                //exit('call');
-                
-                if ($post['password'] == null && $post['reTypePassword']==null) {
+                // check the passowrd and reTypePassword is not blank
+                if ($post['password'] == null && $post['reTypePassword'] == null) {
                     unset($post['reTypePassword']);
                     $myquery = DB::table('user')->select('password')->where('id', $post['id'])->first();
                     $post['password'] = $myquery->password;
@@ -125,9 +120,7 @@ class ManageUserController extends Controller
                 return redirect('/userList');
             }
         } else if (isset($id) && $id != null) {
-
             $user = DB::table('user')->where('id', $id)->first();
-
             return View::make('manageUser.userProfile', ['page_title' => 'Edit User'])->with('user', $user);
         }
         return view('manageUser.userProfile', ['page_title' => 'Edit User']);

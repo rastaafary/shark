@@ -82,4 +82,61 @@ $(document).ready(function () {
             error.insertAfter(element);
         }
     });
+    
+    //edit user validation
+    $('#editUser').validate({
+        rules: {
+            'email': {
+                required: true,
+                email: true,
+            },
+            'name': {
+                required: true,
+            },
+            'birthdate': {
+                required: true,
+            },
+            'mobileno': {
+                required: true,
+                digits: true,
+                maxlength: 10,
+                minlength: 10
+            },
+            'position': {
+                required: true,
+            },
+        },
+        messages: {
+            'email': {
+                required: 'Please enter Email.',
+                email: 'Please enter valid Email.'
+            },
+            'name': {
+                required: 'Please enter name.'
+            },
+            'birthdate': {
+                required: 'Please enter birthdate.'
+            },
+            'mobileno': {
+                required: 'Please enter mobileno.',
+                digits: 'Please enter only Digits.',
+                maxlength: 'please enter 10 Digits only.',
+                minlength: 'please enter 10 Digits only'
+            },
+            'position': {
+                required: 'Please enter position.'
+            },
+        },
+        highlight: function (element) {
+            $(element).removeClass("textinput");
+            $(element).addClass("errorHighlight");
+        },
+        unhighlight: function (element) {
+            $(element).removeClass("errorHighlight");
+            $(element).addClass("textinput");
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        }
+    });
 });
