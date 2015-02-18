@@ -15,22 +15,24 @@ $(document).ready(function () {
             });
         },
     });
-    
+
     $('#birthdate').datepicker({
         format: 'mm/dd/yyyy',
         autoclose: true,
         todayBtn: true,
-        todayHighlight: true,      
+        todayHighlight: true,
     });
+
+
 
     jQuery.validator.addMethod("onlyname", function (value, element) {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
-    
+
     jQuery.validator.addMethod("onlyposition", function (value, element) {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid position.");
-    
+
     jQuery.validator.addMethod("mobileNo", function (value, element) {
         return this.optional(element) || /^[0-9 \-\(\)\+]+$/.test(value);
     }, "Please enter valid mobile no.");
@@ -40,7 +42,7 @@ $(document).ready(function () {
         rules: {
             'email': {
                 required: true,
-                email: true,
+                email: true
             },
             'password': {
                 required: true,
@@ -51,7 +53,7 @@ $(document).ready(function () {
                 onlyname: true
             },
             'birthdate': {
-                required: true,
+                required: true
             },
             'mobileno': {
                 required: true,
@@ -62,7 +64,7 @@ $(document).ready(function () {
                 onlyposition: true
             },
             'role': {
-                required: true,
+                required: true
             }
         },
         messages: {
@@ -81,14 +83,14 @@ $(document).ready(function () {
                 required: 'Please enter birthdate.'
             },
             'mobileno': {
-                required: 'Please enter mobileno.'                
+                required: 'Please enter mobileno.'
             },
             'position': {
                 required: 'Please enter position.'
             },
             'role': {
                 required: 'Please enter role.'
-            },
+            }
         },
         highlight: function (element) {
             $(element).removeClass("textinput");
@@ -108,23 +110,23 @@ $(document).ready(function () {
         rules: {
             'email': {
                 required: true,
-                email: true,
+                email: true
             },
             'name': {
                 required: true,
                 onlyname: true
             },
             'birthdate': {
-                required: true,
+                required: true
             },
             'mobileno': {
                 required: true,
-                mobileNo: true               
+                mobileNo: true
             },
             'position': {
                 required: true,
                 onlyposition: true
-            },
+            }
         },
         messages: {
             'email': {
@@ -138,11 +140,11 @@ $(document).ready(function () {
                 required: 'Please enter birthdate.'
             },
             'mobileno': {
-                required: 'Please enter mobileno.',                
+                required: 'Please enter mobileno.'
             },
             'position': {
                 required: 'Please enter position.'
-            },
+            }
         },
         highlight: function (element) {
             $(element).removeClass("textinput");
@@ -157,3 +159,19 @@ $(document).ready(function () {
         }
     });
 });
+
+function confirmDelete(id) {
+    if (confirm("Are You Sure You Want To Delete This Record ?")) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function confirmEdit(id) {
+    if (confirm("Are You Sure You Want To Edit This Record ?")) {
+        return true;
+    } else {
+        return false;
+    }
+}
