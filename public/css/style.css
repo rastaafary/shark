@@ -2263,7 +2263,7 @@ ul.user-states li {
 }
 
 .dataTable tr.odd.gradeA td.sorting_1, .dataTable tr.odd td.sorting_1, .dataTable tr.even.gradeA td.sorting_1 {
-    background: none;
+/*    background: none;*/
 }
 
 .dataTable td.details {

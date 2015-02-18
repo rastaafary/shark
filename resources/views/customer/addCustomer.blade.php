@@ -175,7 +175,7 @@
                                                         </div>
                                                     </div>
                                                 </div>    
-                                                <?php /*  @if(!isset($cust->user_id)) */ ?>
+                                                 @if(!isset($cust->user_id))
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="contactPassword" class="col-sm-4 control-label">Contact Password:</label>
@@ -185,7 +185,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <?php /* <!--  @endif --> */ ?>
+                                               @endif
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="contactMobile" class="col-sm-4 control-label">Contact Mobile:</label>

@@ -26,6 +26,11 @@ $(document).ready(function () {
     jQuery.validator.addMethod("onlyname", function (value, element) {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
+    
+    jQuery.validator.addMethod("onlyposition", function (value, element) {
+        return this.optional(element) || /^[a-z A-Z]+$/.test(value);
+    }, "Please enter valid position.");
+    
     jQuery.validator.addMethod("mobileNo", function (value, element) {
         return this.optional(element) || /^[0-9 \-\(\)\+]+$/.test(value);
     }, "Please enter valid mobile no.");
@@ -54,6 +59,7 @@ $(document).ready(function () {
             },
             'position': {
                 required: true,
+                onlyposition: true
             },
             'role': {
                 required: true,
@@ -117,6 +123,7 @@ $(document).ready(function () {
             },
             'position': {
                 required: true,
+                onlyposition: true
             },
         },
         messages: {

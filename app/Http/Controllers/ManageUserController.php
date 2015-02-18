@@ -77,18 +77,13 @@ class ManageUserController extends Controller
               $filename = $post['id'] . '_' . $post['image']->getClientOriginalName();
               Input::file('image')->move($destinationPath, $filename);
               $post['image'] = $filename; */
-            $flag = DB::table('user')->insert(
+            DB::table('user')->insert(
                     array($post)
             );
-            if ($flag) {
-                Session::flash('alert-success', 'success');
-                Session::flash('message', 'User Added Successfully!!');
-                return redirect('/userList');
-            } else {
-                Session::flash('alert-success', 'success');
-                Session::flash('message', 'Something Went Wrong!!');
-                return redirect('/userList');
-            }
+
+            Session::flash('alert-success', 'success');
+            Session::flash('message', 'User Added Successfully!!');
+            return redirect('/userList');
         }
         return view('manageUser.addUser', ['page_title' => 'Add User']);
     }
@@ -163,8 +158,9 @@ class ManageUserController extends Controller
                 DB::table('user')
                         ->where('id', $post['id'])
                         ->update($post);
-                Session::flash('message', 'Profile Update Successfully!!');
+
                 Session::flash('alert-success', 'success');
+                Session::flash('message', 'Profile Update Successfully!!');
                 return redirect('/userList');
             }
         } else if (isset($id) && $id != null) {
@@ -181,6 +177,7 @@ class ManageUserController extends Controller
     public function deleteUser($id = null)
     {
         DB::table('user')->where('id', $id)->delete();
+
         Session::flash('message', 'User Delete Successfully!!');
         Session::flash('alert-success', 'success');
         return redirect('/userList');

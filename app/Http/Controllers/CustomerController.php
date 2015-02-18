@@ -77,15 +77,15 @@ class CustomerController extends Controller
         $post = Input::all();
         if (isset($post['_token']))
             unset($post['_token']);
-        
+
         if (isset($post['id']) && $post['id'] != null) {
 
             $dt = $post['contact_birthdate'];
             $my_date = date('m/d/Y', strtotime($dt));
             $time = strtotime($my_date);
             $date = date('Y/m/d', $time);
-            
-            
+
+
             DB::table('user')
                     ->where('id', $post['id'])
                     ->update(array('email' => $post['contact_email'], 'name' => $post['contact_name'], 'birthdate' => $date, 'mobileno' => $post['contact_mobile']));
@@ -108,6 +108,7 @@ class CustomerController extends Controller
     public function deleteCust($id = null)
     {
         DB::table('customers')->where('user_id', $id)->delete();
+
         Session::flash('message', 'Customer Deleted Successfully!!');
         Session::flash('alert-success', 'success');
         return redirect('/customer');
