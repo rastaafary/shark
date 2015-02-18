@@ -9,7 +9,7 @@
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="List">
                             <!--<form class="form-horizontal">-->
-                            {!! Form::open(array('id'=>'editUser','class'=>'form-horizontal','url'=>'/userProfile/edit')) !!}
+                            {!! Form::open(array('id'=>'editUser','class'=>'form-horizontal','url'=>'/userProfile/edit','files' => true)) !!}
                             {!! Form::hidden('id',Input::old('value',isset($user->id) ?  $user->id : '')) !!}
                             <div class="row">
                                 <div class="col-md-12">
