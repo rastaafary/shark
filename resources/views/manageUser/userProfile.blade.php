@@ -91,7 +91,7 @@
                                                     <!--<span class="fa fa-save">-->
                                                     {!! Form::submit('Save',array('class'=>'fa fa-save','class'=>'btn btn-primary')) !!}
                                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <a href="#" class="btn btn-primary"> Cancel</a>
+                                                    <a href="{{ action('ManageUserController@userList') }}" class="btn btn-default"> Cancel</a>
                                                 </div>
                                                 <div class="col-sm-8">
 
