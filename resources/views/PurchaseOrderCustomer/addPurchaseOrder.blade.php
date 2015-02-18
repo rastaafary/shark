@@ -17,7 +17,7 @@
                             <form class="form-horizontal">                                 
                                 <div class="media usr-info">
                                     <div class="pull-left">                                        
-                                        {!! HTML::image('images/user-avatar.png', 'a picture', array('class' => 'thumb')) !!}
+                                        {!! HTML::image('images/user/'. Auth::user()->image, 'a picture', array('class' => 'thumb')) !!}
                                     </div>                                    
                                     <div class="media-body">
                                         <h3 class="media-heading">@if( Auth::check() )

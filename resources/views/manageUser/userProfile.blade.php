@@ -82,6 +82,7 @@
                                                 <label for="addImage" class="col-sm-4 control-label">Image :</label>                           
                                                 <div class="col-sm-4">                              
                                                    <!--  <input id="addImage" type="file"> -->
+                                                    {!! HTML::image('images/user/'.$user->image, 'a picture', array('height'=>'30')) !!}
                                                     {!! Form::file('image', '') !!}
                                                 </div>`
                                             </div>

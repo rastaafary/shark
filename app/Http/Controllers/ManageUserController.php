@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use File;
 use Hash;
 use DB;
 use View;
@@ -10,6 +11,8 @@ use Session;
 use Validator;
 use Datatables;
 use Auth;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Image;
 
 class ManageUserController extends Controller
 {
@@ -68,6 +71,12 @@ class ManageUserController extends Controller
             $post['password'] = Hash::make($post['password']);
             $post['birthdate'] = $date;
 
+            //Upload the image
+            /* $file = Input::file('image');
+              $destinationPath = 'images/user';
+              $filename = $post['id'] . '_' . $post['image']->getClientOriginalName();
+              Input::file('image')->move($destinationPath, $filename);
+              $post['image'] = $filename; */
             $flag = DB::table('user')->insert(
                     array($post)
             );
@@ -101,6 +110,7 @@ class ManageUserController extends Controller
                 'mobileno' => 'required',
                 'position' => 'required',
                 'birthdate' => 'required',
+                //'image'=>'image|mimes:jpeg,jpg,png',
                 'reTypePassword' => 'same:password|required_with:password,value',
             );
             $validator = Validator::make(Input::all(), $rules);
@@ -119,20 +129,41 @@ class ManageUserController extends Controller
                     unset($post['reTypePassword']);
                     $myquery = DB::table('user')->select('password')->where('id', $post['id'])->first();
                     $post['password'] = $myquery->password;
+                } else {
+                    $post['password'] = Hash::make($post['password']);
                 }
                 unset($post['reTypePassword']);
-                
+                /* echo '<pre>';
+                  print_r($post['password']);
+                  echo '<br>';
+                  print_r($post['password']);
+                  exit;
+                 */
+
+                //Upload the image
+                /* $file = Input::file('image');
+                  $destinationPath = 'images/user'; */
+                //$filename = $post['image']->getClientOriginalName();
+                //delete old image
+                /* if ($post['image'] != null) {
+                  $myimage = DB::table('user')->select('image')->where('id', $post['id'])->first();
+                  print_r($myimage);exit;
+                  File::delete('images/user' . $myimage);
+                  } */
+                /* $filename = $post['id'] . '_' . $post['image']->getClientOriginalName();
+                  Input::file('image')->move($destinationPath, $filename);
+                  $post['image'] = $filename; */
+                unset($post['reTypePassword']);
+
                 $dt = $post['birthdate'];
                 $my_date = date('m/d/Y', strtotime($dt));
                 $time = strtotime($my_date);
                 $date = date('Y/m/d', $time);
-                
                 $post['birthdate'] = $date;
-                $post['password'] = Hash::make($post['password']);
                 DB::table('user')
                         ->where('id', $post['id'])
                         ->update($post);
-                Session::flash('message', 'Profile Update Successfully!!');                
+                Session::flash('message', 'Profile Update Successfully!!');
                 Session::flash('alert-success', 'success');
                 return redirect('/userList');
             }
