@@ -15,14 +15,13 @@
                 <div class="panel-body">
                     <div class="tab-content">
                         <div class="tab-pane active" id="Add">
-                            <?php if(isset($cust)){
-                            print_r($cust);} ?>
-                            @if(!isset($cust->user_id))
-                            
+                          
+                            @if(!isset($id))
+                           
                             {!! Form::open(array('class'=>'form-horizontal','url'=>'/customer/add','name'=>'addCustomer','id'=>'addCustomer')) !!}
                             @else                             
-                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/customer/edit/'.$cust->user_id,'name'=>'addCustomer','id'=>'addCustomer')) !!}
-                             {!! Form::hidden('id',Input::old('value',isset($cust->user_id) ?  $cust->user_id : '')) !!}
+                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/customer/edit/'.$id,'name'=>'addCustomer','id'=>'addCustomer')) !!}
+                            
                             @endif
                             <div class="row">
                                 <div class="col-md-12">
@@ -36,7 +35,7 @@
                                                     <label for="companyName" class="col-sm-4 control-label">Company Name:</label>
                                                     <div class="col-sm-8">
                                                         <!-- <input type="text" class="form-control" id="companyName" placeholder="Company Name"> -->
-                                                        {!! Form::text('comp_name',Input::old('value',isset($cust['comp_name']) ? $cust['comp_name'] : '') ,array('class'=>'form-control', 'placeholder' => 'Company Name')) !!}
+                                                        {!! Form::text('comp_name',Input::old('value',isset($cust->comp_name) ? $cust->comp_name : '') ,array('class'=>'form-control', 'placeholder' => 'Company Name')) !!}
                                                     </div>
                                                 </div>
                                             </div>

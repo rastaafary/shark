@@ -27,30 +27,35 @@ class CustomerController extends Controller
         if (isset($post['_token'])) {
             unset($post['_token']);
 
-            /* $rules = array(
-              'email' => 'required|Email|unique:user,email',
-              'password' => 'required',
-              'name' => 'required|Alpha',
-              'birthdate' => 'required',
-              'mobileno' => 'required|Size:10',
-              'position' => 'required',
-              'role' => 'required',
-              'image' => 'Image',
-              );
+            $rules = array(
+                'comp_name' => 'required',
+                'zipcode' => 'required',
+                'building_no' => 'required',
+                'street_addrs' => 'required',
+                'phone_no' => 'required',
+                'interior_no' => 'required',                
+                'city' => 'required',                
+                'state' => 'required',
+                'contact_name' => 'required',
+                'position' => 'required',
+                'contact_email' => 'required|Email|unique:user,email',
+                'password' => 'required',
+                'contact_mobile' => 'required',
+                'contact_birthdate' => 'required',
+            );
 
-              $validator = Validator::make(Input::all(), $rules);
-              if ($validator->fails()) {
-              $messages = $validator->messages();
+            $validator = Validator::make(Input::all(), $rules);
+            if ($validator->fails()) {
+                $messages = $validator->messages();
+                if (!empty($messages)) {
+                    foreach ($messages->all() as $error) {
+                        Session::flash('message', $error);
+                        Session::flash('alert-class', 'alert-danger');
+                        return View::make('customer.addCustomer')->with('cust', $post);
+                    }
+                }
+            }
 
-              if (!empty($messages)) {
-              foreach ($messages->all() as $error) {
-              Session::flash('message', $error);
-              Session::flash('alert-class', 'alert-danger');
-              return View::make('manageUser.addUser')->with('post', $post);
-              //  return redirect('/userList/add')->with('post', $post);
-              }
-              }
-              } */
             $dt = $post['contact_birthdate'];
             $my_date = date('m/d/Y', strtotime($dt));
             $time = strtotime($my_date);
@@ -77,14 +82,43 @@ class CustomerController extends Controller
         $post = Input::all();
         if (isset($post['_token']))
             unset($post['_token']);
+       
+        if (isset($post['comp_name'])) {
 
-        if (isset($post['id']) && $post['id'] != null) {
+            $rules = array(
+                'comp_name' => 'required',
+                'zipcode' => 'required',
+                'building_no' => 'required',
+                'street_addrs' => 'required',
+                'phone_no' => 'required',
+                'interior_no' => 'required',               
+                'city' => 'required',               
+                'state' => 'required',
+                'contact_name' => 'required',
+                'position' => 'required',
+                'contact_email' => 'required|Email|unique:user,email',
+                'password' => 'required',
+                'contact_mobile' => 'required',
+                'contact_birthdate' => 'required',
+            );
+
+            $validator = Validator::make(Input::all(), $rules);
+            if ($validator->fails()) {
+                $messages = $validator->messages();
+
+                if (!empty($messages)) {
+                    foreach ($messages->all() as $error) {
+                        Session::flash('message', $error);
+                        Session::flash('alert-class', 'alert-danger');                       
+                        return View::make('customer.addCustomer',['page_title' => 'Edit Customer','id'=>$id]);
+                    }
+                }
+            }
 
             $dt = $post['contact_birthdate'];
             $my_date = date('m/d/Y', strtotime($dt));
             $time = strtotime($my_date);
             $date = date('Y/m/d', $time);
-
 
             DB::table('user')
                     ->where('id', $post['id'])
@@ -98,9 +132,9 @@ class CustomerController extends Controller
             Session::flash('message', 'Customer Updated Successfully!!');
             Session::flash('alert-success', 'success');
             return redirect('/customer');
-        } else if (isset($id) && $id != null) {
+        } else if (isset($id)) {
             $cust = DB::table('customers')->where('user_id', $id)->first();
-            return View::make('customer.addCustomer', ['page_title' => 'Edit Customer'])->with('cust', $cust);
+            return View::make('customer.addCustomer', ['page_title' => 'Edit Customer','id'=>$id])->with('cust', $cust);
         }
         return view('customer.addCustomer', ['page_title' => 'List Customer']);
     }
