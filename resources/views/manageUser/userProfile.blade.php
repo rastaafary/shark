@@ -51,9 +51,9 @@
                                                 <div class="col-sm-4">
                                                     <!-- <input type="text" class="form-control" id="addPosition" placeholder="Position"> -->
                                                     @if($user->role==1)
-                                                    {!! Form::label('role',Input::old('value','Customer') ) !!}
-                                                    @else
                                                     {!! Form::label('role',Input::old('value','Admin') ) !!}
+                                                    @elseif($user->role==2)
+                                                    {!! Form::label('role',Input::old('value','Manager') ) !!}
                                                     @endif
                                                 </div>
                                             </div>

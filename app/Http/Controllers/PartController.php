@@ -35,6 +35,8 @@ class PartController extends Controller
      */
     public function partList()
     {
+        //$path = base_path();
+        //echo $path;exit;
         return view('Part.Parteditlist',['page_title'=>'Part Number']);
     }
 
@@ -146,8 +148,8 @@ class PartController extends Controller
      * get all part listing
      */
     public function getPartData()
-    {
-        $partlist = DB::table('part_number')->select(array('SKU', 'description', 'cost', 'currency', 'id'));
+    {       
+        $partlist = DB::table('part_number')->select(array('SKU', 'description', 'cost','id'));
         return Datatables::of($partlist)
                         ->editColumn("id", '<a href="part/delete/{{ $id }}">delete</a>&nbsp<a href="part/edit/{{ $id }}">Update</a>')
                         ->make();

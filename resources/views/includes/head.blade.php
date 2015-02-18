@@ -26,13 +26,16 @@
 
 
 
-   {!! HTML::script('js/jquery-1.10.2.min.js') !!}
+   <!--{!! HTML::script('js/jquery-1.10.2.min.js') !!}-->
+   {!! HTML::script('js/jquery/jquery.min.js') !!}
 {!! HTML::style('css/bootstrap-datepicker/css/datepicker-custom.css') !!}
 {!! HTML::style('css/bootstrap-timepicker/css/timepicker.css') !!}
 {!! HTML::style('css/bootstrap-daterangepicker/daterangepicker-bs3.css') !!}
 {!! HTML::style('css/bootstrap-datetimepicker/css/datetimepicker-custom.css') !!}
 <!--dynamic table-->
-
+  
+  {!! HTML::script('js/advanced-datatable/js/jquery.dataTables.js') !!}
+        {!! HTML::script('js/data-tables/DT_bootstrap.js') !!}
 {!! HTML::style('js/advanced-datatable/css/demo_page.css') !!}
 {!! HTML::style('js/advanced-datatable/css/demo_table.css') !!}
 {!! HTML::style('js/data-tables/DT_bootstrap.css') !!}
@@ -42,6 +45,7 @@
 
 {!! HTML::script('js/part.js') !!}
 {!! HTML::script('js/manageUser.js') !!}
+<!--{!! HTML::script('js/customer.js') !!}-->
 
 
 <!--pickers css-->

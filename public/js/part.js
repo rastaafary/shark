@@ -1,15 +1,20 @@
 $(document).ready(function() {
-    //display part list
+   
     $("#part-list").dataTable({
-        "processing": true,
-        "serverSide": true,
-        "ajax": "partdata",
-        "order": [[0, 'desc']],
-        "columnDefs": [{//this prevents errors if the data is null
-                "targets": 4,
-                orderable: false
-            }]
-
+        "bProcessing": true,
+        "bServerSide": true,
+        "sAjaxSource": "/partdata",
+        "aaSorting": [[7, "desc"]],
+        "fnServerData": function (sSource, aoData, fnCallback) {
+            $.ajax({
+                "dataType": 'json',
+                "type": "GET",
+                "url": sSource,
+                "data": aoData,
+                "success": fnCallback
+            });
+        },
+       
     });
     //cost validation
     jQuery.validator.addMethod("amountValidation", function(value, element) {

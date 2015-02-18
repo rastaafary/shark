@@ -24,50 +24,43 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                    <table  class="display table table-bordered table-striped" id="dynamic-tablek">
                                                         <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Company Name</th>
-                                                            <th>Building Number</th>
-                                                            <th>Street Address</th>
-                                                            <th>Interior Number</th>
-                                                            <th>City</th>
-                                                            <th>State</th>
-                                                            <th>ZipCode</th>
-                                                            <th>Country</th>
-                                                            <th>Phone Number</th>
-                                                            <th>Actions</th>
-                                                        </tr> 
+                                                            <tr>
+                                                                <th>ID</th>
+                                                               <!-- <th>Company Name</th>
+                                                                <th>Building Number</th>
+                                                                <th>Street Address</th>
+                                                                <th>Interior Number</th>
+                                                                <th>City</th>
+                                                                <th>State</th>
+                                                                <th>ZipCode</th>
+                                                                <th>Country</th>
+                                                                <th>Phone Number</th>
+                                                                <th>Actions</th> -->
+                                                            </tr> 
                                                         </thead>
                                                         <tbody>
-                                                        <tr class="gradeX">
-                                                            <td>032</td>
-                                                            <td>Craft SA de CV</td>
-                                                            <td>124</td>
-                                                            <td>Always alive</td>
-                                                            <td>32</td>
-                                                            <td>Los Angeles</td>
-                                                            <td>California</td>
-                                                            <td>90049</td>
-                                                            <td>USA</td>
-                                                            <td>7895446332</td>
-                                                            <td><a href="{{action('CustomerController@addCust')}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
-                                                        </tr>                                                       
+                                                           <?php /* @foreach ($customerlist as $value)
                                                             <tr class="gradeX">
-                                                                <td>041</td>
-                                                                <td>Sports LLC</td>
-                                                                <td>58</td>
-                                                                <td>Centre Ville</td>
-                                                                <td>2</td>
-                                                                <td>Austin</td>
-                                                                <td>Texas</td>
-                                                                <td>78701</td>
-                                                                <td>USA</td>
-                                                                <td>54136985255</td>
-                                                                <td><a href="{{action('CustomerController@addCust')}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>                                                                         
-                                                            </tr>
-                                                       </tbody>
+                                                                <td>{{ $value->id }}</td>
+                                                                <td>{{ $value->comp_name }}</td>
+                                                                <td>{{ $value->building_no }}</td>
+                                                                <td>{{ $value->street_addrs }}</td>
+                                                                <td>{{ $value->interior_no}}</td>
+                                                                <td>{{ $value->city }}</td>
+                                                                <td>{{ $value->state }}</td>
+                                                                <td>{{ $value->zipcode }}</td>
+                                                                <td>{{ $value->country }}</td>
+                                                                <td>{{ $value->phone_no }}</td>
+                                                                <td>@if (isset($value->id))
+                                                                    <a href="{{ action('CustomerController@deleteCust')}}/{{$value->user_id}}" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
+                                                                    <a href="{{ action('CustomerController@editCust')}}/{{$value->user_id}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>                                                      
+                                                            @endforeach*/?>
+                                                        </tbody>
                                                     </table>
                                                 </div> 
                                             </div>

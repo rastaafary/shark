@@ -1,17 +1,27 @@
 $(document).ready(function () {
-
-
-
-    $("#dynamic-table").dataTable({
-        "processing": true,
-        "serverSide": true,
-        "ajax": "http://localhost.shark/userList",
-        "order": [[0, 'desc']],
-        "columnDefs": [{
-                "targets": 4,
-                orderable: false
-            }]
+    $("#user-list").dataTable({
+        "bProcessing": true,
+        "bServerSide": true,
+        "sAjaxSource": "/userdata",
+        "aaSorting": [[7, "desc"]],
+        "fnServerData": function (sSource, aoData, fnCallback) {
+            $.ajax({
+                "dataType": 'json',
+                "type": "GET",
+                "url": sSource,
+                "data": aoData,
+                "success": fnCallback
+            });
+        },
     });
+
+    jQuery.validator.addMethod("onlyname", function (value, element) {
+        return this.optional(element) || /^[a-z A-Z]+$/.test(value);
+    }, "Please enter valid name.");
+    jQuery.validator.addMethod("mobileNo", function (value, element) {
+        return this.optional(element) || /^[0-9 \-\(\)\+]+$/.test(value);
+    }, "Please enter valid mobile no.");
+
     //add user validation
     $('#addUser').validate({
         rules: {
@@ -25,15 +35,14 @@ $(document).ready(function () {
             },
             'name': {
                 required: true,
+                onlyname: true
             },
             'birthdate': {
                 required: true,
             },
             'mobileno': {
                 required: true,
-                digits: true,
-                maxlength: 10,
-                minlength: 10
+                mobileNo: true                
             },
             'position': {
                 required: true,
@@ -58,10 +67,7 @@ $(document).ready(function () {
                 required: 'Please enter birthdate.'
             },
             'mobileno': {
-                required: 'Please enter mobileno.',
-                digits: 'Please enter only Digits.',
-                maxlength: 'please enter 10 Digits only.',
-                minlength: 'please enter 10 Digits only'
+                required: 'Please enter mobileno.'              
             },
             'position': {
                 required: 'Please enter position.'
@@ -82,7 +88,7 @@ $(document).ready(function () {
             error.insertAfter(element);
         }
     });
-    
+
     //edit user validation
     $('#editUser').validate({
         rules: {

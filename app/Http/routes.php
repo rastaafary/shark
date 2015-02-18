@@ -38,8 +38,16 @@ Route::post('/part/add', 'PartController@addPart');
 Route::get('/part/delete/{var?}', 'PartController@deletePart');
 //Add Customer
 Route::get('/customer/add', 'CustomerController@addCust');
+//Add Save Customer
+Route::post('/customer/add', 'CustomerController@addCust');
 //List Customer
-Route::get('/customer/list', 'CustomerController@listCust');
+Route::get('/customer', 'CustomerController@listCust');
+//get edit Customer data
+Route::get('/customer/edit/{var?}', 'CustomerController@editCust');
+//save edit Customer
+Route::post('/customer/edit', 'CustomerController@editCust');
+// Delete Customer
+Route::get('/customer/delete/{var?}', 'CustomerController@deleteCust');
 // Invoice
 Route::get('/invoice/add', 'InvoiceController@addInvoice');
 Route::get('/invoice', 'InvoiceController@listInvoice');
@@ -56,11 +64,16 @@ Route::get('/payment/view', 'PaymentController@viewPayment');
 Route::get('/userList', 'ManageUserController@userList');
 Route::get('/userList/add', 'ManageUserController@addUser');
 Route::post('/userList/add', 'ManageUserController@addUser');
+Route::get('/userList/delete/{var?}', 'ManageUserController@deleteUser');
+Route::get('/userList/edit/{var?}', 'ManageUserController@editUser');
+Route::post('/userList/edit/{var?}', 'ManageUserController@editUser');
 Route::get('/userProfile', 'ManageUserController@userProfile');
 //get edit User data
 Route::get('/userProfile/edit/{var?}', 'ManageUserController@editUser');
+Route::get('/customerlist', 'CustomerController@getcustomer');
 //save edit User
 Route::post('/userProfile/edit', 'ManageUserController@editUser');
+Route::get('/userdata', 'ManageUserController@getUserData');
 // Delete User
 Route::get('/userProfile/delete/{var?}', 'ManageUserController@deleteUser');
 //View Order Status Report

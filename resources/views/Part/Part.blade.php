@@ -5,21 +5,8 @@
 <a href="{{ action('PartController@addPart')}}">Add</a> 
 <a href="{{ action('PartController@editPart')}}">Edit</a> 
 <br/>
-<table id="dynamic-table" class="display table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>SKU</th>
-            <th>description</th>
-            <th>cost</th>
-            <th>currency</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table> 
-<?php
-/*
+
+
 <div class="wrapper">
     <div class="row">
         <div class="col-md-12">
@@ -43,7 +30,7 @@
                                             <div class="panel-body">
 
                                                 <div class="table-responsive">
-                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                    <table  class="display table table-bordered table-striped" id="part-list">
                                                         <thead>
                                                         <tr>
                                                             <th>SKU</th>
@@ -53,23 +40,7 @@
                                                             <th>Action</th>
                                                         </tr> 
                                                         </thead>
-                                                        <tbody>
-                                                       <?php 
-                                                        /*<tr class="gradeX">
-                                                            <td>BF0013</td>
-                                                            <td>Barcelona FC sport Jersey</td>
-                                                            <td>13</td>
-                                                            <td>USA</td>
-                                                            <td><a href="{{action('PartController@addPart')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
-                                                        </tr>
-                                                        <tr class="gradeX">
-                                                            <td>MA0011</td>
-                                                            <td>Barcelona FC sport Jersey</td>
-                                                            <td>17</td>
-                                                            <td>USA</td>
-                                                            <td><a href="{{action('PartController@addPart')}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a></td>
-                                                        </tr>
-                                                         
+                                                        <tbody>                                                       
                                                         </tbody>
                                                     </table>
                                                 </div>
