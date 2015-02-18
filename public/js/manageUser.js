@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     $("#user-list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
@@ -13,6 +14,13 @@ $(document).ready(function () {
                 "success": fnCallback
             });
         },
+    });
+    
+    $('#birthdate').datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: true,
+        todayBtn: true,
+        todayHighlight: true,      
     });
 
     jQuery.validator.addMethod("onlyname", function (value, element) {
@@ -42,7 +50,7 @@ $(document).ready(function () {
             },
             'mobileno': {
                 required: true,
-                mobileNo: true                
+                mobileNo: true
             },
             'position': {
                 required: true,
@@ -67,7 +75,7 @@ $(document).ready(function () {
                 required: 'Please enter birthdate.'
             },
             'mobileno': {
-                required: 'Please enter mobileno.'              
+                required: 'Please enter mobileno.'                
             },
             'position': {
                 required: 'Please enter position.'
@@ -98,15 +106,14 @@ $(document).ready(function () {
             },
             'name': {
                 required: true,
+                onlyname: true
             },
             'birthdate': {
                 required: true,
             },
             'mobileno': {
                 required: true,
-                digits: true,
-                maxlength: 10,
-                minlength: 10
+                mobileNo: true               
             },
             'position': {
                 required: true,
@@ -124,10 +131,7 @@ $(document).ready(function () {
                 required: 'Please enter birthdate.'
             },
             'mobileno': {
-                required: 'Please enter mobileno.',
-                digits: 'Please enter only Digits.',
-                maxlength: 'please enter 10 Digits only.',
-                minlength: 'please enter 10 Digits only'
+                required: 'Please enter mobileno.',                
             },
             'position': {
                 required: 'Please enter position.'

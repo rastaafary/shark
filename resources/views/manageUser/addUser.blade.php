@@ -52,7 +52,7 @@
                                                     <label for="addBirthDate" class="col-sm-4 control-label">Birth Date :</label>
                                                     <div class="col-sm-6">
                                                        <!-- <input type="text" class="form-control" id="addBirthDate" placeholder="Birth Date"> -->
-                                                        {!! Form::text('birthdate', Input::old('value',isset($post['birthdate']) ? $post['birthdate'] : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => 'Birth Date')) !!}
+                                                        {!! Form::text('birthdate', Input::old('value',isset($post['birthdate']) ? $post['birthdate'] : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => 'Birth Date', 'id' => 'birthdate')) !!}
                                                     </div>
                                                 </div>                                                    
                                                 <div class="form-group">

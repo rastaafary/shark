@@ -19,8 +19,6 @@ class ManageUserController extends Controller
 
     public function userList()
     {
-        //$userlist = DB::table('user')->get();
-        //return view('manageUser.userList', ['page_title' => 'Manage User'])->with('userlist', $userlist);
         return view('manageUser.userList', ['page_title' => 'Manage User']);
     }
 
@@ -50,7 +48,7 @@ class ManageUserController extends Controller
                 'role' => 'required',
             );
             $dt = $post['birthdate'];
-            $my_date = date('m/d/y', strtotime($dt));
+            $my_date = date('m/d/Y', strtotime($dt));
             $time = strtotime($my_date);
             $date = date('Y/m/d', $time);
 
@@ -69,17 +67,19 @@ class ManageUserController extends Controller
             }
             $post['password'] = Hash::make($post['password']);
             $post['birthdate'] = $date;
-            /*  DB::table('user')->insert(
-              array($post)
-              ); */
-            DB::table('user')->insert(
+
+            $flag = DB::table('user')->insert(
                     array($post)
             );
-
-            Session::flash('alert-success', 'success');
-            Session::flash('message', 'User Added Successfully!!');
-            // Session::flash('alert-success', 'success');
-            return redirect('/userList');
+            if ($flag) {
+                Session::flash('alert-success', 'success');
+                Session::flash('message', 'User Added Successfully!!');
+                return redirect('/userList');
+            } else {
+                Session::flash('alert-success', 'success');
+                Session::flash('message', 'Something Went Wrong!!');
+                return redirect('/userList');
+            }
         }
         return view('manageUser.addUser', ['page_title' => 'Add User']);
     }
@@ -97,7 +97,7 @@ class ManageUserController extends Controller
             $emailId = $post['id'];
             $rules = array(
                 'name' => 'required',
-                'email' => 'required|Email|unique:user,email,'.$emailId,
+                'email' => 'required|Email|unique:user,email,' . $emailId,
                 'mobileno' => 'required',
                 'position' => 'required',
                 'birthdate' => 'required',
@@ -121,13 +121,18 @@ class ManageUserController extends Controller
                     $post['password'] = $myquery->password;
                 }
                 unset($post['reTypePassword']);
+                
+                $dt = $post['birthdate'];
+                $my_date = date('m/d/Y', strtotime($dt));
+                $time = strtotime($my_date);
+                $date = date('Y/m/d', $time);
+                
+                $post['birthdate'] = $date;
                 $post['password'] = Hash::make($post['password']);
                 DB::table('user')
                         ->where('id', $post['id'])
                         ->update($post);
-                Session::flash('message', 'Profile Update Successfully!!');
-                /* Session::flash('alert-warning', 'warning');
-                 * Session::flash('alert-info', 'info'); */
+                Session::flash('message', 'Profile Update Successfully!!');                
                 Session::flash('alert-success', 'success');
                 return redirect('/userList');
             }
@@ -154,7 +159,7 @@ class ManageUserController extends Controller
     {
         $userlist = DB::table('user')->select(array('name', 'email', 'id'))->where('role', '!=', '3');
         /* $queries = DB::getQueryLog();
-        $last_query = end($queries); */
+          $last_query = end($queries); */
 
         return Datatables::of($userlist)
                         ->editColumn("id", '<a href="/userList/delete/{{ $id }}" class="btn btn-danger"><span class="fa fa-trash-o"></span></a>&nbsp<a href="/userList/edit/{{ $id }}" class="btn btn-primary"><span class="fa fa-pencil"></span></a>')
