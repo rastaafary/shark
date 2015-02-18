@@ -10,7 +10,7 @@
                         <div class="tab-pane active" id="List">
                             <!--<form class="form-horizontal">-->
                             {!! Form::open(array('id'=>'editUser','class'=>'form-horizontal','url'=>'/userProfile/edit')) !!}
-                            {!! Form::hidden('id',Input::old('value',isset( Auth::user()->id) ?  Auth::user()->id : '')) !!}
+                            {!! Form::hidden('id',Input::old('value',isset($user->id) ?  $user->id : '')) !!}
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">                                                            
