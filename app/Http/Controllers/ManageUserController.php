@@ -80,7 +80,7 @@ class ManageUserController extends Controller
             $filename = str_replace(' ', '', $post['name']) . time() . '_' . $post['image']->getClientOriginalName();
             Input::file('image')->move($destinationPath, $filename);
             $post['image'] = $filename;
-            
+
             DB::table('user')->insert(
                     array($post)
             );
@@ -136,10 +136,10 @@ class ManageUserController extends Controller
                 $file = Input::file('image');
                 $destinationPath = 'images/user';
                 //delete old image
-                if (isset($post['image']) != null) {
+                if ($post['image'] != null) {
                     $myimage = DB::table('user')->select('image')->where('id', $post['id'])->first();
                     File::delete('images/user/' . $myimage->image);
-                }
+                } 
                 $filename = str_replace(' ', '', $post['name']) . time() . '_' . $post['image']->getClientOriginalName();
                 Input::file('image')->move($destinationPath, $filename);
                 $post['image'] = $filename;
