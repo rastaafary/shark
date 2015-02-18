@@ -16,8 +16,12 @@
                         <div class="tab-pane active" id="Add">
                             <form class="form-horizontal">                                 
                                 <div class="media usr-info">
-                                    <div class="pull-left">                                        
-                                        {!! HTML::image('images/user/'. Auth::user()->image, 'a picture', array('class' => 'thumb')) !!}
+                                    <div class="pull-left">
+                                        @if(Auth::user()->image)
+                                        {!! HTML::image('images/user/'.Auth::user()->image, 'a picture', array('class' => 'thumb')) !!}
+                                        @else
+                                        {!! HTML::image('images/user/default.jpg', 'a picture', array('class' => 'thumb')) !!}
+                                        @endif
                                     </div>                                    
                                     <div class="media-body">
                                         <h3 class="media-heading">@if( Auth::check() )
@@ -252,11 +256,11 @@
     </div>
 </div>
 
-    <!-- Modal Start -->
-    <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form class="form-horizontal">
+<!-- Modal Start -->
+<div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Edit Product</h4>
@@ -299,9 +303,9 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
-    <!-- Modal End -->  
-    @endsection
+</div>
+<!-- Modal End -->  
+@endsection
