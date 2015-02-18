@@ -17,11 +17,8 @@ class CustomerController extends Controller
 {
 
     public function listCust()
-    {       
-        header('Content-type: application/json');
-        //$customerlist = DB::table('customers')->get();
-      
-       return view('customer.listCustomer', ['page_title' => 'Customer List']);//->with('customerlist', $customerlist);
+    {
+        return view('customer.listCustomer', ['page_title' => 'Customer List']);
     }
 
     public function addCust()
@@ -55,12 +52,13 @@ class CustomerController extends Controller
               }
               } */
             $dt = $post['contact_birthdate'];
-            $my_date = date('m/d/y', strtotime($dt));
+            $my_date = date('m/d/Y', strtotime($dt));
             $time = strtotime($my_date);
             $date = date('Y/m/d', $time);
 
+
             DB::table('user')->insert(
-                    array('role' => '1', 'email' => $post['contact_email'], 'password' => Hash::make($post['password']), 'name' => $post['contact_name'], 'birthdate' => $date, 'mobileno' => $post['contact_mobile'])
+                    array('role' => '3', 'email' => $post['contact_email'], 'password' => Hash::make($post['password']), 'name' => $post['contact_name'], 'birthdate' => $date, 'mobileno' => $post['contact_mobile'])
             );
             $last_id = DB::table('user')->orderBy('id', 'desc')->first();
 
@@ -80,33 +78,22 @@ class CustomerController extends Controller
         if (isset($post['_token']))
             unset($post['_token']);
         
-           
         if (isset($post['id']) && $post['id'] != null) {
-            /*     $rules = array(
-              'name' => 'required|Alpha|Min:5',
-              'email' => 'required|Email|unique:user,email,' . $post['id'],
-              'mobileno' => 'required|size:10',
-              'position' => 'required',
-              'birthdate' => 'required',
-              'reTypePassword' => 'same:password|required_with:password,value',
-              );
-              $validator = Validator::make(Input::all(), $rules);
-              if ($validator->fails()) {
-              $messages = $validator->messages();
-              if (!empty($messages)) {
-              foreach ($messages->all() as $error) {
-              Session::flash('message', $error);
-              Session::flash('alert-class', 'alert-danger');
-              return redirect('/customer');
-              }
-              }
-              } */
 
-            var_dump($post['id']);
-            exit("post id");
+            $dt = $post['contact_birthdate'];
+            $my_date = date('m/d/Y', strtotime($dt));
+            $time = strtotime($my_date);
+            $date = date('Y/m/d', $time);
+            
+            
+            DB::table('user')
+                    ->where('id', $post['id'])
+                    ->update(array('email' => $post['contact_email'], 'name' => $post['contact_name'], 'birthdate' => $date, 'mobileno' => $post['contact_mobile']));
+
             DB::table('customers')
                     ->where('user_id', $post['id'])
-                    ->update($post);
+                    ->update(array('comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date)
+            );
 
             Session::flash('message', 'Customer Updated Successfully!!');
             Session::flash('alert-success', 'success');
@@ -118,16 +105,19 @@ class CustomerController extends Controller
         return view('customer.addCustomer', ['page_title' => 'List Customer']);
     }
 
-    public function deleteCust()
+    public function deleteCust($id = null)
     {
-        return view('customer.addCustomer', ['page_title' => 'Delete Customers']);
+        DB::table('customers')->where('user_id', $id)->delete();
+        Session::flash('message', 'Customer Deleted Successfully!!');
+        Session::flash('alert-success', 'success');
+        return redirect('/customer');
     }
-    public function getcustomer()
+
+    public function getCustData()
     {
-        header('Content-type: application/json');
-         $partlist = DB::table('customers')->select('comp_name');
-        return Datatables::of($partlist)
-                        //->editColumn("id", '<a href="part/delete/{{ $id }}">delete</a>&nbsp<a href="part/edit/{{ $id }}">Update</a>')
+        $custlist = DB::table('customers')->select(array('id', 'comp_name', 'building_no', 'street_addrs', 'interior_no', 'city', 'state', 'zipcode', 'country', 'phone_no', 'user_id'));
+        return Datatables::of($custlist)
+                        ->editColumn("user_id", '<a href="/customer/delete/{{ $user_id }}" class="btn btn-danger"><span class="fa fa-trash-o"></span></a><a href="/customer/edit/{{ $user_id }}" class="btn btn-primary"><span class="fa fa-pencil"></span></a>')
                         ->make();
     }
 

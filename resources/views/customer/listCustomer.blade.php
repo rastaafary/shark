@@ -24,11 +24,11 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table  class="display table table-bordered table-striped" id="dynamic-tablek">
+                                                    <table  class="display table table-bordered table-striped" id="customer-list">
                                                         <thead>
                                                             <tr>
                                                                 <th>ID</th>
-                                                               <!-- <th>Company Name</th>
+                                                                <th>Company Name</th>
                                                                 <th>Building Number</th>
                                                                 <th>Street Address</th>
                                                                 <th>Interior Number</th>
@@ -37,30 +37,31 @@
                                                                 <th>ZipCode</th>
                                                                 <th>Country</th>
                                                                 <th>Phone Number</th>
-                                                                <th>Actions</th> -->
+                                                                <th>Actions</th>
                                                             </tr> 
                                                         </thead>
                                                         <tbody>
-                                                           <?php /* @foreach ($customerlist as $value)
-                                                            <tr class="gradeX">
-                                                                <td>{{ $value->id }}</td>
-                                                                <td>{{ $value->comp_name }}</td>
-                                                                <td>{{ $value->building_no }}</td>
-                                                                <td>{{ $value->street_addrs }}</td>
-                                                                <td>{{ $value->interior_no}}</td>
-                                                                <td>{{ $value->city }}</td>
-                                                                <td>{{ $value->state }}</td>
-                                                                <td>{{ $value->zipcode }}</td>
-                                                                <td>{{ $value->country }}</td>
-                                                                <td>{{ $value->phone_no }}</td>
-                                                                <td>@if (isset($value->id))
-                                                                    <a href="{{ action('CustomerController@deleteCust')}}/{{$value->user_id}}" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                    <a href="{{ action('CustomerController@editCust')}}/{{$value->user_id}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a>
-                                                                    @endif
-                                                                </td>
-                                                            </tr>                                                      
-                                                            @endforeach*/?>
                                                         </tbody>
+                                                        <?php /* @foreach ($customerlist as $value)
+                                                          <tr class="gradeX">
+                                                          <td>{{ $value->id }}</td>
+                                                          <td>{{ $value->comp_name }}</td>
+                                                          <td>{{ $value->building_no }}</td>
+                                                          <td>{{ $value->street_addrs }}</td>
+                                                          <td>{{ $value->interior_no}}</td>
+                                                          <td>{{ $value->city }}</td>
+                                                          <td>{{ $value->state }}</td>
+                                                          <td>{{ $value->zipcode }}</td>
+                                                          <td>{{ $value->country }}</td>
+                                                          <td>{{ $value->phone_no }}</td>
+                                                          <td>@if (isset($value->id))
+                                                          <a href="{{ action('CustomerController@deleteCust')}}/{{$value->user_id}}" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a>
+                                                          <a href="{{ action('CustomerController@editCust')}}/{{$value->user_id}}" class="btn btn-primary"><span class="fa fa-pencil"></span></a>
+                                                          @endif
+                                                          </td>
+                                                          </tr>
+                                                          @endforeach */ ?>
+
                                                     </table>
                                                 </div> 
                                             </div>
