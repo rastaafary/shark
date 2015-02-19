@@ -147,7 +147,10 @@ class PartController extends Controller
 
     public function deletePart($id = null)
     {
-        DB::table('part_number')->where('id', $id)->delete();
+        //DB::table('part_number')->where('id', $id)->delete();
+        DB::table('part_number')
+                ->where('id', $id)
+                ->update(array('is_deleted' => '1'));
         Session::flash('message', 'Part delete Successfully!!');
         Session::flash('alert-success', 'success');
         return redirect('/part');
@@ -159,7 +162,9 @@ class PartController extends Controller
 
     public function getPartData()
     {
-        $partlist = DB::table('part_number')->select(array('SKU', 'description', 'cost', 'id'));
+        $partlist = DB::table('part_number')
+                ->select(array('SKU', 'description', 'cost', 'id'))
+                ->where('is_deleted', ' !=', '1');
         return Datatables::of($partlist)
                         ->editColumn("id", '<a href="part/delete/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                 . '<span class="fa fa-trash-o"></span></a>'
