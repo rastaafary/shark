@@ -67,8 +67,7 @@ class PartController extends Controller
                 if (!empty($messages)) {
                     foreach ($messages->all() as $error) {
                         return redirect('/part/edit/' . $post['id'])
-                                        ->withErrors($validator)
-                                        ->withInput(Input::except('password'));
+                                        ->withErrors($validator);
                         //return redirect('/userProfile/edit/' . $post['id']);
                     }
                 }
@@ -116,8 +115,7 @@ class PartController extends Controller
                 if (!empty($messages)) {
                     foreach ($messages->all() as $error) {
                         return redirect('/part/add')
-                                        ->withErrors($validator)
-                                        ->withInput(Input::except('password'));
+                                        ->withErrors($validator);
                         //return redirect('/userProfile/edit/' . $post['id']);
                     }
                 }
