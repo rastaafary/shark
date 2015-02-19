@@ -54,9 +54,9 @@ class PartController extends Controller
         if (isset($post['id']) && $post['id'] != null) {
             $rules = array(
                 'id' => 'required',
-                'SKU' => 'required',
+                'SKU' => 'required|alpha_num|unique:part_number,SKU,' . $post['id'],
                 'description' => 'required',
-                'cost' => 'required',
+                'cost' => 'required|numeric',
                 'currency_id' => 'required');
 
             $validator = Validator::make(Input::all(), $rules);
@@ -66,9 +66,10 @@ class PartController extends Controller
 
                 if (!empty($messages)) {
                     foreach ($messages->all() as $error) {
-                        Session::flash('message', $error);
-                        Session::flash('alert-class', 'alert-danger');
-                        return redirect('/part');
+                        return redirect('/part/edit/' . $post['id'])
+                                        ->withErrors($validator)
+                                        ->withInput(Input::except('password'));
+                        //return redirect('/userProfile/edit/' . $post['id']);
                     }
                 }
             } else {
@@ -102,9 +103,9 @@ class PartController extends Controller
             unset($post['_token']);
             //if (isset($post['SKU']) && $post['SKU'] != null) {
             $rules = array(
-                'SKU' => 'required',
+                'SKU' => 'required|alpha_num|unique:part_number,SKU,' . $post['id'],
                 'description' => 'required',
-                'cost' => 'required',
+                'cost' => 'required|numeric',
                 'currency_id' => 'required'
             );
 
@@ -114,9 +115,10 @@ class PartController extends Controller
 
                 if (!empty($messages)) {
                     foreach ($messages->all() as $error) {
-                        Session::flash('message', $error);
-                        Session::flash('alert-class', 'alert-danger');
-                        return redirect('/part');
+                        return redirect('/part/add')
+                                        ->withErrors($validator)
+                                        ->withInput(Input::except('password'));
+                        //return redirect('/userProfile/edit/' . $post['id']);
                     }
                 }
             }

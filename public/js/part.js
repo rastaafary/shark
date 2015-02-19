@@ -1,5 +1,5 @@
-$(document).ready(function() {
-   
+$(document).ready(function () {
+
     $("#list-parts").dataTable({
         "bProcessing": true,
         "bServerSide": true,
@@ -14,24 +14,30 @@ $(document).ready(function() {
                 "success": fnCallback
             });
         },
-       
     });
-    //cost validation
-    jQuery.validator.addMethod("amountValidation", function(value, element) {
-            return this.optional(element) || /^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(value);
-        }, "Please enter valid cost");
+
+    //cost validation    
+    jQuery.validator.addMethod("amountValidation", function (value, element) {
+        return this.optional(element) || /^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(value);
+    }, "Please enter valid cost");
+
+    $.validator.addMethod("alphaNum", function (value, element) {
+        return this.optional(element) || /^[a-z0-9\\]+$/i.test(value)
+    }, "Please enter valid SKU");
+
     //edit part validation
     $('#editpart').validate({
         rules: {
             'SKU': {
                 required: true,
+                alphaNum: true
             },
             'description': {
                 required: true,
             },
             'cost': {
                 required: true,
-                amountValidation:true
+                amountValidation: true,
             }
         },
         messages: {
@@ -43,35 +49,35 @@ $(document).ready(function() {
             },
             'cost': {
                 required: 'Please enter cost.'
-                
+
             }
         },
-        highlight: function(element) {
+        highlight: function (element) {
             $(element).removeClass("textinput");
             $(element).addClass("errorHighlight");
         },
-        unhighlight: function(element) {
+        unhighlight: function (element) {
             $(element).removeClass("errorHighlight");
             $(element).addClass("textinput");
         },
-        errorPlacement: function(error, element) {
+        errorPlacement: function (error, element) {
             error.insertAfter(element);
         }
     });
     //add part validation
     $('#addpart').validate({
-       
         rules: {
             'SKU': {
                 required: true,
+                 alphaNum: true
             },
             'description': {
-                required: true,
+                required: true
             },
             'cost': {
                 required: true,
-                amountValidation:true
-            },
+                amountValidation: true
+            }
         },
         messages: {
             'SKU': {
@@ -82,17 +88,18 @@ $(document).ready(function() {
             },
             'cost': {
                 required: 'Please enter cost.'
+
             }
         },
-        highlight: function(element) {
+        highlight: function (element) {
             $(element).removeClass("textinput");
             $(element).addClass("errorHighlight");
         },
-        unhighlight: function(element) {
+        unhighlight: function (element) {
             $(element).removeClass("errorHighlight");
             $(element).addClass("textinput");
         },
-        errorPlacement: function(error, element) {
+        errorPlacement: function (error, element) {
             error.insertAfter(element);
         }
     });

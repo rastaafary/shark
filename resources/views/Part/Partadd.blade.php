@@ -33,21 +33,23 @@
                         <div class="tab-pane active" id="Add">
                             <!--<form class="form-horizontal">-->
                             <div class="row">
+
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
+                                        {!! HTML::ul($errors->all()) !!}
                                         <div class="panel-heading">
                                             <h3 class="panel-title"><i class="fa fa-bars"></i> Part Number</h3>
                                         </div>
                                         <div class="panel-body">
+                                            @if(!isset($part->id))
+                                            {!! Form::open(array('url'=>'/part/add', 'id'=>'addpart')) !!}
+                                            {!! Form::hidden('id', Input::old('value',isset($part->id) ? $part->id : '')) !!}
+                                            @else
+                                            {!! Form::open(array('url'=>'/part/edit/'.$part->id, 'id'=>'editpart')) !!}
+                                            {!! Form::hidden('id', Input::old('value',isset($part->id) ? $part->id : '')) !!}
+                                            @endif
                                             <div class="table-responsive">
                                                 <table  class="display table">
-                                                    @if(!isset($part->id))
-                                                    {!! Form::open(array('url'=>'/part/add', 'id'=>'addpart')) !!}
-                                                    {!! Form::hidden('id', Input::old('value',isset($part->id) ? $part->id : '')) !!}
-                                                    @else
-                                                    {!! Form::open(array('url'=>'/part/edit/'.$part->id, 'id'=>'editpart')) !!}
-                                                    {!! Form::hidden('id', Input::old('value',isset($part->id) ? $part->id : '')) !!}
-                                                    @endif
                                                     <thead>
                                                     <th>SKU</th>
                                                     <th>Description</th>
@@ -75,10 +77,9 @@
                                                                 {!! Form::submit('Save',array('class'=>'btn btn-primary')) !!}</td>
                                                         </tr>
                                                     </tbody>
-                                                    {!! Form::close() !!}
                                                 </table>
                                             </div>
-
+                                            {!! Form::close() !!}
                                         </div>
                                     </div>
                                 </div>
