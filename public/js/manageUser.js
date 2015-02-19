@@ -105,7 +105,7 @@ $(document).ready(function () {
         }
     });
 
-    //edit user validation
+   //edit user validation
     $('#editUser').validate({
         rules: {
             'email': {

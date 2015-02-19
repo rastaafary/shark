@@ -17,7 +17,7 @@
                         <div class="tab-pane active" id="Add">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">                                                            
+                                    <div class="panel panel-default">                                       
                                         <div class="panel-heading">
                                             <h3 class="panel-title"><i class="fa fa-bars"></i> Add User</h3>
                                         </div>
@@ -31,7 +31,7 @@
                                                         <label for="addEmail" class="col-sm-4 control-label">Email :</label>
                                                         <div class="col-sm-6">
                                                             <!-- <input type="text" class="form-control" id="addEmail" placeholder="Email ID"> -->
-                                                            {!! Form::text('email',Input::old('value',isset($post['email']) ? $post['email'] : '') ,array('class'=>'form-control', 'placeholder' => 'Email ID')) !!}
+                                                            {!! Form::text('email',Input::old('email',isset($post['email']) ? $post['email'] : '') ,array('class'=>'form-control', 'placeholder' => 'Email ID')) !!}
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -45,28 +45,28 @@
                                                         <label for="addName" class="col-sm-4 control-label">Name :</label>
                                                         <div class="col-sm-6">
                                                             <!-- <input type="text" class="form-control" id="addName" placeholder="Name"> -->
-                                                            {!! Form::text('name', Input::old('value',isset($post['name']) ? $post['name'] : '') ,array('class'=>'form-control', 'placeholder' => 'Name')) !!}
+                                                            {!! Form::text('name', Input::old('name',isset($post['name']) ? $post['name'] : '') ,array('class'=>'form-control', 'placeholder' => 'Name')) !!}
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="addBirthDate" class="col-sm-4 control-label">Birth Date :</label>
                                                         <div class="col-sm-6">
                                                            <!-- <input type="text" class="form-control" id="addBirthDate" placeholder="Birth Date"> -->
-                                                            {!! Form::text('birthdate', Input::old('value',isset($post['birthdate']) ? $post['birthdate'] : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => 'Birth Date', 'id' => 'birthdate')) !!}
+                                                            {!! Form::text('birthdate', Input::old('birthdate',isset($post['birthdate']) ? $post['birthdate'] : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => 'Birth Date', 'id' => 'birthdate')) !!}
                                                         </div>
                                                     </div>                                                    
                                                     <div class="form-group">
                                                         <label for="addMobileNo" class="col-sm-4 control-label">Mobile No :</label>
                                                         <div class="col-sm-6">
                                                             <!-- <input type="text" class="form-control" id="addMobileNo" placeholder="Mobile No"> -->
-                                                            {!! Form::text('mobileno', Input::old('value',isset($post['mobileno']) ? $post['mobileno'] : '') ,array('class'=>'form-control', 'placeholder' => 'Mobile No')) !!}
+                                                            {!! Form::text('mobileno', Input::old('mobileno',isset($post['mobileno']) ? $post['mobileno'] : '') ,array('class'=>'form-control', 'placeholder' => 'Mobile No')) !!}
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="addPosition" class="col-sm-4 control-label">Position :</label>
                                                         <div class="col-sm-6">
                                                             <!-- <input type="text" class="form-control" id="addPosition" placeholder="Position"> -->
-                                                            {!! Form::text('position', Input::old('value',isset($post['position']) ? $post['position'] : '') ,array('class'=>'form-control', 'placeholder' => 'Position')) !!}
+                                                            {!! Form::text('position', Input::old('position',isset($post['position']) ? $post['position'] : '') ,array('class'=>'form-control', 'placeholder' => 'Position')) !!}
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
