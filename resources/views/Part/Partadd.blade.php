@@ -31,45 +31,52 @@
                 <div class="panel-body">
                     <div class="tab-content">                                        
                         <div class="tab-pane active" id="Add">
-                            <form class="form-horizontal">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title"><i class="fa fa-bars"></i> Part Number</h3>
-                                            </div>
-                                            <div class="panel-body">
-                                                <div class="table-responsive">
-                                                   <table  class="display table table-bordered table-striped" id="dynamic-table">
-                                                        <thead>
-                                                            <th>SKU</th>
-                                                            <th>Description</th>
-                                                            <th>Cost</th>
-                                                            <th>Currency</th>
-                                                            <th>Action</th>
-                                                        </tr> 
-                                                        </thead>
-                                                        <tbody>
+                            <!--<form class="form-horizontal">-->
+                            {!! Form::open(array('url'=>'/part/add/', 'id'=>'addpart')) !!}
+                            {!! Form::hidden('id', Input::old('value',isset($part->id) ? $part->id : '')) !!}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-bars"></i> Part Number</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                    <thead>
+                                                    <th>SKU</th>
+                                                    <th>Description</th>
+                                                    <th>Cost</th>
+                                                    <th>Currency</th>
+                                                    <th>Action</th>
+                                                    </tr> 
+                                                    </thead>
+                                                    <tbody>
                                                         <tr class="gradeX">
-                                                            <td><input type="text" class="form-control" id="SKU" placeholder="SKU"></td>
-                                                            <td><input type="text" class="form-control" id="Description"></td>
-                                                            <td><input type="text" class="form-control" id="Cost" size="3"></td>
-                                                            <td><select class="form-control" id="Currncy">       
-                                                                    <option>Select</option>
+                                                            <td><!--<input type="text" class="form-control" id="SKU" placeholder="SKU">-->
+                                                                {!! Form::text('SKU', Input::old('value',isset($part->SKU) ? $part->SKU : ''),array('class'=>'form-control','placeholder'=>'SKU')) !!}<br/></td>
+                                                            <td><!--<input type="text" class="form-control" id="Description">-->
+                                                                {!! Form::text('description', Input::old('value',isset($part->description) ? $part->description : ''),array('class'=>'form-control','placeholder'=>'Description')) !!}<br/></td>
+                                                            <td><!--<input type="text" class="form-control" id="Cost" size="3">-->
+                                                                {!! Form::text('cost', Input::old('value',isset($part->cost) ? $part->cost : ''),array('class'=>'form-control','placeholder'=>'Cost')) !!}<br/></td>
+                                                            <td><!--<select class="form-control" id="Currncy">       
                                                                     <option>USA</option>
                                                                     <option>MXN</option>
-                                                                </select>
+                                                                </select>-->
+                                                                {!! Form::select('currency',array('USD' => 'USD', 'MXN' => 'MXN'), null, array('class' => 'form-control')) !!}
                                                             </td>
-                                                            <td><a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>
+                                                            <td><!--<a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a>-->
+                                                                {!! Form::submit('Save',array('class'=>'btn btn-primary')) !!}</td>
                                                         </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                            <!--</form>-->
+                            {!! Form::close() !!}
                         </div>
                     </div>
                 </div>

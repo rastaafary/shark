@@ -13,7 +13,8 @@
                             {!! Form::hidden('id',Input::old('value',isset($user->id) ?  $user->id : '')) !!}
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">                                                            
+                                    <div class="panel panel-default">   
+                                        {!! HTML::ul($errors->all()) !!}
                                         <div class="panel-heading">
                                             <h3 class="panel-title"><i class="fa fa-bars"></i> User Profile</h3>
                                         </div>

@@ -37,7 +37,7 @@ class PartController extends Controller
     {
         //$path = base_path();
         //echo $path;exit;
-        return view('Part.Parteditlist',['page_title'=>'Part Number']);
+        return view('Part.Parteditlist', ['page_title' => 'Part Number']);
     }
 
     /*
@@ -88,11 +88,13 @@ class PartController extends Controller
             $partlist = DB::table('part_number')->get();
             return view('Part.Parteditlist')->with('partlist', $partlist);
         }
-        return view('Part.Partedit',['page_title'=>'Edit Part Number']);
+        return view('Part.Partedit', ['page_title' => 'Edit Part Number']);
     }
+
     /*
      * Add part
      */
+
     public function addPart()
     {
         $post = Input::all();
@@ -103,7 +105,7 @@ class PartController extends Controller
                 'SKU' => 'required',
                 'description' => 'required',
                 'cost' => 'required',
-                'description' => 'required');
+                'currency' => 'required');
 
             $validator = Validator::make(Input::all(), $rules);
             if ($validator->fails()) {
@@ -124,19 +126,22 @@ class PartController extends Controller
             Session::flash('alert-success', 'success');
             return redirect('/part');
         }
-        return view('Part.Partadd',['page_title'=>'Add Part Number']);
+        return view('Part.Partadd', ['page_title' => 'Add Part Number']);
     }
+
     /*
      *  Add part
      */
+
     public function partAdddata()
     {
         return view('Part.Partadd');
     }
-    
+
     /*
      * delete part 
      */
+
     public function deletePart($id = null)
     {
         DB::table('part_number')->where('id', $id)->delete();
@@ -144,14 +149,19 @@ class PartController extends Controller
         Session::flash('alert-success', 'success');
         return redirect('/part');
     }
+
     /*
      * get all part listing
      */
+
     public function getPartData()
-    {       
-        $partlist = DB::table('part_number')->select(array('SKU', 'description', 'cost','id'));
+    {
+        $partlist = DB::table('part_number')->select(array('SKU', 'description', 'cost', 'id'));
         return Datatables::of($partlist)
-                        ->editColumn("id", '<a href="part/delete/{{ $id }}">delete</a>&nbsp<a href="part/edit/{{ $id }}">Update</a>')
+                        ->editColumn("id", '<a href="part/delete/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
+                                . '<span class="fa fa-trash-o"></span></a>'
+                                . '&nbsp<a href="part/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
+                                . '<span class="fa fa-pencil"></span></a>')
                         ->make();
     }
 

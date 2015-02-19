@@ -1,6 +1,6 @@
 $(document).ready(function() {
    
-    $("#part-list").dataTable({
+    $("#list-parts").dataTable({
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "/partdata",

@@ -116,9 +116,10 @@ class ManageUserController extends Controller
                 $messages = $validator->messages();
                 if (!empty($messages)) {
                     foreach ($messages->all() as $error) {
-                        Session::flash('message', $error);
-                        Session::flash('alert-class', 'alert-danger');
-                        return redirect('/userList');
+                        return redirect('/userProfile/edit/' . $post['id'])
+                                        ->withErrors($validator)
+                                        ->withInput(Input::except('password'));
+                        //return redirect('/userProfile/edit/' . $post['id']);
                     }
                 }
             } else {
@@ -136,7 +137,7 @@ class ManageUserController extends Controller
                 $file = Input::file('image');
                 $destinationPath = 'images/user';
                 //delete old image
-                if ($post['image'] != null) {
+                if (isset($post['image'])) {
                     $myimage = DB::table('user')->select('image')->where('id', $post['id'])->first();
                     File::delete('images/user/' . $myimage->image);
                 }

@@ -25,7 +25,7 @@
                                             <div class="panel-body">
 
                                                 <div class="table-responsive">
-                                                    <table  class="display table table-bordered table-striped" id="abc">
+                                                    <table  class="display table table-bordered table-striped" id="list-parts">
                                                         <thead>
                                                             <tr>
                                                             <th>SKU</th>
