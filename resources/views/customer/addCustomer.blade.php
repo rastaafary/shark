@@ -66,7 +66,8 @@
                                                             <option>USA</option>
                                                             <option>Germany</option>
                                                         </select> -->
-                                                        {!! Form::select('country', array('USA' => 'USA', 'Germany' => 'Germany'),null ,array('class'=>'form-control', 'placeholder' => 'Country')) !!}                               
+                                                      <!--  {!! Form::select('country', array('USA' => 'USA', 'Germany' => 'Germany'),null ,array('class'=>'form-control', 'placeholder' => 'Country')) !!} -->
+                                                        {!! Form::select('country', ['USA' => 'USA', 'Germany' => 'Germany'], isset($cust->country) ? $cust->country:'USA', array('class' => 'form-control')) !!}
                                                     </div>
                                                 </div>
                                             </div>

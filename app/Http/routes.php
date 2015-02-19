@@ -17,10 +17,12 @@ Route::get('home', 'HomeController@index');
 // Login
 Route::post('/login', 'LoginController@login');
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('/part', 'PartController@partList');
+Route::get('/part', 'PartController@partList');
 });
 //logout
 Route::get('logout', 'LoginController@logout');
+Route::get('/forgotpassword', 'LoginController@forgotPassword');
+Route::post('/forgotpassword', 'LoginController@forgotPassword');
 //get list of avilable part
 //Route::get('/part', 'PartController@partList');
 //get part data

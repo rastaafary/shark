@@ -45,7 +45,9 @@
 
 {!! HTML::script('js/part.js') !!}
 {!! HTML::script('js/manageUser.js') !!}
+  {!! HTML::script('js/forgotpassword.js') !!}
 {!! HTML::script('js/customer.js') !!}
+
 
 
 <!--pickers css-->
