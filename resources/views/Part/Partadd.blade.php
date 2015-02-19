@@ -71,7 +71,8 @@
                                                                     <option>USA</option>
                                                                     <option>MXN</option>
                                                                 </select>-->
-                                                                {!! Form::select('currency_id',array('1' => 'USD', '2' => 'MXN'), null, array('class' => 'form-control')) !!}
+                                                                {!! Form::select('currency_id', ['1' => 'USD', '2' => 'MXN'], isset($part->currency_id) ? $part->currency_id:'1', array('class' => 'form-control')) !!}
+                                                                <!--{!! Form::select('currency_id',array('1' => 'USD', '2' => 'MXN'), null, array('class' => 'form-control')) !!}-->
                                                             </td>
                                                             <td><!--<a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a>-->
                                                                 {!! Form::submit('Save',array('class'=>'btn btn-primary')) !!}</td>
