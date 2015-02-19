@@ -125,8 +125,8 @@
                                                         <select class="form-control col-sm-6" id="shippingInfo">
                                                             <option>Select Shipping Information</option>
                                                         </select>
-                                                        <label for="shippingInfo" class="control-label">Or Add New Shipping Information :</label>
                                                     </div>
+                                                    <label for="shippingInfo" class="control-label">Or Add New Shipping Information :</label>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="companyName" class="col-sm-4 control-label">Company Name:</label>
@@ -242,31 +242,28 @@
                                                             </tr>
                                                         </tbody>
                                                     </table>
+                                                </div>                               
 
-                                                </div>                                
-
-                                                <div class="form-group col-sm-4">
-                                                    <label for="shippingMethod" class="col-sm-6 control-label">Shipping Method:</label>
-                                                    <div class="col-sm-6">
-                                                        <select class="form-control col-sm-4" id="shippingMethod">
+                                                <div class="form-group col-sm-12">
+                                                    <label for="shippingMethod" class="control-label col-sm-2" >Shipping Method:</label>
+                                                    <div class="col-sm-3">
+                                                        <select class="form-control" id="shippingMethod">
                                                             <option>Air, Express</option>
                                                         </select>
                                                     </div>
+                                                    <div class="col-sm-7">
+                                                        <label for="shippingMethod" class="control-label">Payment Term:</label>
+                                                        <label for="shippingMethod" class="control-label">Information From PO</label>&nbsp;&nbsp;&nbsp;
+                                                        <label for="shippingMethod" class="control-label">Due Date:</label>
+                                                        <label for="shippingMethod" class="control-label">18/01/2015 + PO date</label>
+                                                    </div>
                                                 </div>
-                                                <div class="form-group col-sm-8">
-                                                    <label for="shippingMethod" class="control-label">Payment Term:</label>
-                                                    <label for="shippingMethod" class="control-label">Information From PO</label>&nbsp;&nbsp;&nbsp;
-                                                    <label for="shippingMethod" class="control-label">Due Date:</label>
-                                                    <label for="shippingMethod" class="control-label">18/01/2015 + PO date</label>
-                                                </div>
-
                                                 <div class="form-group">
                                                     <div class="col-sm-12 text-center">
                                                         <input type="submit" value="Generate / Update" id="btnSubmit" class="btn btn-primary" style="margin-top: 10px;">
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -275,7 +272,6 @@
                     </div>
                 </div>
             </section>
-
         </div>
     </div>
 </div>
