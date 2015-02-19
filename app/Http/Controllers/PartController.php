@@ -57,7 +57,7 @@ class PartController extends Controller
                 'SKU' => 'required',
                 'description' => 'required',
                 'cost' => 'required',
-                'currency' => 'required');
+                'currency_id' => 'required');
 
             $validator = Validator::make(Input::all(), $rules);
 
@@ -83,12 +83,12 @@ class PartController extends Controller
             }
         } else if (isset($id) && $id != null) {
             $part = DB::table('part_number')->where('id', $id)->first();
-            return View::make('Part.Partedit')->with('part', $part);
+            return View::make('Part.Partadd')->with('part', $part);
         } else {
             $partlist = DB::table('part_number')->get();
-            return view('Part.Parteditlist')->with('partlist', $partlist);
+            return view('Part.Part')->with('partlist', $partlist);
         }
-        return view('Part.Partedit', ['page_title' => 'Edit Part Number']);
+        return view('Part.Part', ['page_title' => 'Edit Part Number']);
     }
 
     /*
@@ -105,7 +105,8 @@ class PartController extends Controller
                 'SKU' => 'required',
                 'description' => 'required',
                 'cost' => 'required',
-                'currency' => 'required');
+                'currency_id' => 'required'
+            );
 
             $validator = Validator::make(Input::all(), $rules);
             if ($validator->fails()) {

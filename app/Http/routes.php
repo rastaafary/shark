@@ -16,12 +16,11 @@ Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
 // Login
 Route::post('/login', 'LoginController@login');
-Route::group(['middleware' => 'auth'], function()
-{
+Route::group(['middleware' => 'auth'], function() {
     Route::get('/part', 'PartController@partList');
 });
 //logout
-Route::get('logout','LoginController@logout');
+Route::get('logout', 'LoginController@logout');
 //get list of avilable part
 //Route::get('/part', 'PartController@partList');
 //get part data
@@ -31,7 +30,8 @@ Route::get('/part/edit/{var?}', 'PartController@editPart');
 //add part
 Route::get('/part/add', 'PartController@addPart');
 //save edit part
-Route::post('/part/edit', 'PartController@editPart');
+Route::get('/part/edit/{var?}', 'PartController@editPart');
+Route::post('/part/edit/{var?}', 'PartController@editPart');
 //save add part
 Route::post('/part/add', 'PartController@addPart');
 //edit part

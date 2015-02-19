@@ -32,8 +32,6 @@
                     <div class="tab-content">                                        
                         <div class="tab-pane active" id="Add">
                             <!--<form class="form-horizontal">-->
-                            {!! Form::open(array('url'=>'/part/add/', 'id'=>'addpart')) !!}
-                            {!! Form::hidden('id', Input::old('value',isset($part->id) ? $part->id : '')) !!}
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
@@ -42,7 +40,14 @@
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                <table  class="display table">
+                                                    @if(!isset($part->id))
+                                                    {!! Form::open(array('url'=>'/part/add', 'id'=>'addpart')) !!}
+                                                    {!! Form::hidden('id', Input::old('value',isset($part->id) ? $part->id : '')) !!}
+                                                    @else
+                                                    {!! Form::open(array('url'=>'/part/edit/'.$part->id, 'id'=>'editpart')) !!}
+                                                    {!! Form::hidden('id', Input::old('value',isset($part->id) ? $part->id : '')) !!}
+                                                    @endif
                                                     <thead>
                                                     <th>SKU</th>
                                                     <th>Description</th>
@@ -52,6 +57,7 @@
                                                     </tr> 
                                                     </thead>
                                                     <tbody>
+
                                                         <tr class="gradeX">
                                                             <td><!--<input type="text" class="form-control" id="SKU" placeholder="SKU">-->
                                                                 {!! Form::text('SKU', Input::old('value',isset($part->SKU) ? $part->SKU : ''),array('class'=>'form-control','placeholder'=>'SKU')) !!}<br/></td>
@@ -63,20 +69,22 @@
                                                                     <option>USA</option>
                                                                     <option>MXN</option>
                                                                 </select>-->
-                                                                {!! Form::select('currency',array('USD' => 'USD', 'MXN' => 'MXN'), null, array('class' => 'form-control')) !!}
+                                                                {!! Form::select('currency_id',array('1' => 'USD', '2' => 'MXN'), null, array('class' => 'form-control')) !!}
                                                             </td>
                                                             <td><!--<a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a>-->
                                                                 {!! Form::submit('Save',array('class'=>'btn btn-primary')) !!}</td>
                                                         </tr>
                                                     </tbody>
+                                                    {!! Form::close() !!}
                                                 </table>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!--</form>-->
-                            {!! Form::close() !!}
+
                         </div>
                     </div>
                 </div>
