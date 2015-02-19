@@ -178,7 +178,10 @@ class CustomerController extends Controller
 
     public function deleteCust($id = null)
     {
-        DB::table('customers')->where('user_id', $id)->delete();
+      //  DB::table('customers')->where('user_id', $id)->delete();
+        DB::table('customers')
+                        ->where('user_id', $id)
+                        ->update(array('is_deleted' => '1'));
 
         Session::flash('message', 'Customer Deleted Successfully!!');
         Session::flash('alert-success', 'success');
@@ -187,7 +190,9 @@ class CustomerController extends Controller
 
     public function getCustData()
     {
-        $custlist = DB::table('customers')->select(array('id', 'comp_name', 'building_no', 'street_addrs', 'interior_no', 'city', 'state', 'zipcode', 'country', 'phone_no', 'user_id'));
+        $custlist = DB::table('customers')
+                ->select(array('id', 'comp_name', 'building_no', 'street_addrs', 'interior_no', 'city', 'state', 'zipcode', 'country', 'phone_no', 'user_id'))
+                ->where('is_deleted','!=', '1');
         return Datatables::of($custlist)
                         ->editColumn("user_id", '<a href="/customer/delete/{{ $user_id }}" class="btn btn-danger"><span class="fa fa-trash-o" onClick = "return confirmDelete({{ $id }})" id="btnDelete"></span></a><a href="/customer/edit/{{ $user_id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit"><span class="fa fa-pencil"></span></a>')
                         ->make();

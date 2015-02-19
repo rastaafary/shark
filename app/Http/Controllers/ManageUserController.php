@@ -172,7 +172,10 @@ class ManageUserController extends Controller
 
     public function deleteUser($id = null)
     {
-        DB::table('user')->where('id', $id)->delete();
+        //DB::table('user')->where('id', $id)->delete();
+         DB::table('user')
+                        ->where('id', $id)
+                        ->update(array('is_deleted' => '1'));
 
         Session::flash('message', 'User Delete Successfully!!');
         Session::flash('alert-success', 'success');
@@ -181,7 +184,10 @@ class ManageUserController extends Controller
 
     public function getUserData()
     {
-        $userlist = DB::table('user')->select(array('name', 'email', 'id'))->where('role', '!=', '3');
+        $userlist = DB::table('user')
+                ->select(array('name', 'email', 'id'))
+                ->where('role', '!=', '3')
+                ->where('is_deleted','!=', '1');
         /* $queries = DB::getQueryLog();
           $last_query = end($queries); */
 
