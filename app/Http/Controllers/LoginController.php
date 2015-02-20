@@ -12,6 +12,7 @@ use Auth;
 use Redirect;
 use View;
 use Mail;
+use DateTime;
 //use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -85,7 +86,7 @@ class LoginController extends Controller
                                 ->where('email', $post['email'])->first();
 
                 if (!empty($user)) {
-                    $token = md5(uniqid(rand(), true));
+                    $token = md5(uniqid(time(), true));
                     $to = $post['email'];
                     $subject = 'Forgot Password';
                     $link = action('LoginController@resetPassword', array('id' => $user->id, 'token' => $token));
@@ -102,7 +103,7 @@ class LoginController extends Controller
 
                     $db_status = DB::table('user')
                             ->where('id', $user->id)
-                            ->update(array('email_token' => $token));
+                            ->update(array('email_token' => $token, 'time' => date('Y-m-d H:i:s')));
 
                     if ($mail_status && $db_status) {
                         $error = 'Reset password link is send to your Email address.';
@@ -128,8 +129,22 @@ class LoginController extends Controller
     public function resetPassword()
     {
         $id = Input::get('id');
-        $token = Input::get('token');
-        //   $userforgetdata = array();
+        $token = Input::get('token');        
+        if (isset($id) && isset($token)) {          
+            $dbTime = DB::table('user')
+                    ->select(array('time'))
+                    ->where('id', $id)
+                    ->where('email_token', $token)
+                    ->first();
+            $time = strtotime($dbTime->time);
+            $dbTime = strtotime('+24 hour', $time);
+            if (strtotime(date('Y-m-d H:i:s')) > $dbTime) {
+                $error = 'Sorry, Your reset password link has been expired..!!';
+                Session::flash('messagelogin', $error);
+                Session::flash('alert-class', 'alert-danger');
+                return redirect('/');
+            }
+        }
         $userforgetdata['id'] = $id;
         $userforgetdata['email_token'] = $token;
         $post = Input::all();
@@ -208,7 +223,8 @@ class LoginController extends Controller
               Session::flash('alert-class', 'alert-danger');
               }
               } */
-        } 
+        }
+
         return view('resetPassword')->with('userforgetdata', $userforgetdata);
     }
 
