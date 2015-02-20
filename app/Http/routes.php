@@ -52,6 +52,10 @@ Route::get('/invoice', 'InvoiceController@listInvoice');
 // Purchase Order Customer
 Route::get('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
 Route::get('/po', 'PurchaseOrderCustomerController@listPurchaseOrder');
+
+//when Customer Login
+Route::get('/po/add/{var?}', 'PurchaseOrderCustomerController@userDetails');
+
 // Blog Art
 Route::get('/blogArt', 'BlogartController@viewBlog');
 // Payment

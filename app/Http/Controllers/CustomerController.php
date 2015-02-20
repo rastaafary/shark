@@ -67,7 +67,7 @@ class CustomerController extends Controller
                 $imageName = $post['image']->getClientOriginalName();
 
                 $file = Input::file('image');
-                $destinationPath = 'images/customer';
+                $destinationPath = 'images/user';
                 $filename = str_replace(' ', '', $post['contact_name']) . time() . '_' . $imageName;
                 Input::file('image')->move($destinationPath, $filename);
                 $post['image'] = $filename;
@@ -146,7 +146,7 @@ class CustomerController extends Controller
 
             //Upload the image
             $file = Input::file('image');
-            $destinationPath = 'images/customer';
+            $destinationPath = 'images/user';
             $imageName = $post['image']->getClientOriginalName();
             //delete old image
             if (isset($post['image'])) {
