@@ -11,6 +11,7 @@ use Hash;
 use Auth;
 use Redirect;
 use View;
+use Mail;
 //use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -39,6 +40,7 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
+
         $rules = array(
             'email' => 'required|email',
             'password' => 'required',
@@ -64,7 +66,7 @@ class LoginController extends Controller
         return redirect('/');
     }
 
-    public function forgotPassword()
+    public function forgotPassword(Request $request)
     {
         $post = Input::all();
         unset($post['_token']);
@@ -81,11 +83,37 @@ class LoginController extends Controller
             } else {
                 $user = DB::table('user')
                                 ->where('email', $post['email'])->first();
-                if (!empty($user)) {                    
-                    $error = 'Reset password link is send to your Email address.';
-                    Session::flash('messagelogin', $error);
-                    Session::flash('alert-class', 'alert-danger');
-                    return redirect('/');
+
+                if (!empty($user)) {
+                    $token = md5(uniqid(rand(), true));
+                    $to = $post['email'];
+                    $subject = 'Forgot Password';
+                    $link = action('LoginController@resetPassword', array('id' => $user->id, 'token' => $token));
+                    $body = View::make('resetPassword', ['link' => $link, 'username' => $user->name]);
+                    $data = array(
+                        'username' => $user->name,
+                        'link' => $link,
+                    );    // $bodyK = view('resetPassword', ['link' => $link, 'username' => $user->name ]);                    
+
+                    $mail_status = Mail::send('mailTemplet', $data, function($m) {
+                                $m->to('wamasoftware5@gmail.com', 'Hiiii.....');
+                                $m->subject('Forgot Password');
+                            });
+
+                    $db_status = DB::table('user')
+                            ->where('id', $user->id)
+                            ->update(array('email_token' => $token));
+
+                    if ($mail_status && $db_status) {
+                        $error = 'Reset password link is send to your Email address.';
+                        Session::flash('messagelogin', $error);
+                        Session::flash('alert-class', 'alert-danger');
+                        return redirect('/');
+                    } else {
+                        $error = 'Something went wrong.';
+                        Session::flash('messagelogin', $error);
+                        Session::flash('alert-class', 'alert-danger');
+                    }
                 } else {
                     $error = 'Email address not registered with us.';
                     Session::flash('messagelogin', $error);
@@ -94,30 +122,94 @@ class LoginController extends Controller
             }
             return redirect('/forgotpassword');
         }
-        /* if (!empty($user)) {     //If user available
-          // Send Mail to user
-          $hostname = $request->getHttpHost();
-          $mailer = $this->get('my_mailer');
-          $to = $post['email'];
-          $subject = 'Forgot Password';
-          $link = 'http://' . $hostname . $this->generateUrl('resetpassword', array('userid' => $userDetails->getId(), 'token' => $token));
-          $body = $this->renderView('AcmeTMSBundle:Mail_Template:forgot_password.html.twig', array('link' => $link, 'username' => $userDetails->getFirstName()));
-
-          $from = 'donotreplay@classcare.in';
-          $headers = "From: " . strip_tags($from) . "\r\n";
-          $headers .= "MIME-Version: 1.0\r\n";
-          $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-          $mailer->allsendmail($to, $subject, $body, $headers);
-
-          return Redirect::to('/')
-          ->withErrors("Reset password link is send to your Email address.");
-          } else {
-          //exit("Sucess Fail");
-          return Redirect::to('/')
-          ->withErrors("Email address not registered with us.");
-          }
-          //   return redirect('/forgotpassword'); */
         return view('forgotPassword');
+    }
+
+    public function resetPassword()
+    {
+        $id = Input::get('id');
+        $token = Input::get('token');
+        //   $userforgetdata = array();
+        $userforgetdata['id'] = $id;
+        $userforgetdata['email_token'] = $token;
+        $post = Input::all();
+        $checkUser = null;
+        if (isset($post['id']) && isset($post['email_token'])) {
+
+            $checkUser = DB::table('user')
+                    ->select(array('id', 'email_token'))
+                    ->where('id', $post['id'])
+                    ->where('email_token', $post['email_token'])
+                    ->first();
+            if (!isset($checkUser)) {
+                $error = 'Invalid token';
+                Session::flash('messagelogin', $error);
+                Session::flash('alert-class', 'alert-danger');
+                return redirect('/forgotpassword');
+            }
+        }
+
+        /* $rules = array(
+          'password' => 'required',
+          'repassword' => 'same:password|required_with:password,value'
+          ); */
+        if (isset($post['password']) && isset($post['repassword'])) {
+            $userforgetdata['id'] = $post['id'];
+            $userforgetdata['email_token'] = $post['email_token'];
+            if (($post['password'] === $post['repassword'])) {
+                $userUpdate = DB::table('user')
+                        ->where('id', $checkUser->id)
+                        ->update(array('password' => Hash::make($post['password'])));
+                if (isset($userUpdate)) {
+                    $tokenUpdate = DB::table('user')
+                            ->where('id', $checkUser->id)
+                            ->update(array('email_token' => ''));
+                    if (isset($tokenUpdate)) {
+                        $error = 'Password successfully reset. Login from here.';
+                        Session::flash('messagelogin', $error);
+                        Session::flash('alert-class', 'alert-danger');
+                        return redirect('/');
+                    } else {
+                        $error = 'Whoops, Something went to wrong. Try again!!.';
+                        Session::flash('messagelogin', $error);
+                        Session::flash('alert-class', 'alert-danger');
+                    }
+                } else {
+                    $error = 'Whoops, Something went to wrong. Try again!!.';
+                    Session::flash('messagelogin', $error);
+                    Session::flash('alert-class', 'alert-danger');
+                }
+            } else {
+                $error = 'Password and Re-Type password cannot be different.';
+                Session::flash('messagelogin', $error);
+                Session::flash('alert-class', 'alert-danger');
+            }
+            /*  $validator = Validator::make(Input::all(), $rules);
+              if ($validator->fails()) {
+              $error = 'Password do not match.';
+              Session::flash('messagelogin', $error);
+              Session::flash('alert-class', 'alert-danger');
+              } else {
+              var_dump($id);
+              $user = DB::table('user')
+              ->where('id', $id)
+              ->update(array('password' => $post['password']));
+              var_dump($user);
+              exit("sdh");
+
+              if ($user == '1') {
+              $error = 'Password has been changed.';
+              Session::flash('messagelogin', $error);
+              Session::flash('alert-class', 'alert-danger');
+              return redirect('/');
+              } else {
+              $error = 'Something went wrong.';
+              Session::flash('messagelogin', $error);
+              Session::flash('alert-class', 'alert-danger');
+              }
+              } */
+        } 
+        return view('resetPassword')->with('userforgetdata', $userforgetdata);
     }
 
     /**

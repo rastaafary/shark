@@ -23,6 +23,8 @@ Route::get('/part', 'PartController@partList');
 Route::get('logout', 'LoginController@logout');
 Route::get('/forgotpassword', 'LoginController@forgotPassword');
 Route::post('/forgotpassword', 'LoginController@forgotPassword');
+Route::get('/resetpassword', 'LoginController@resetPassword');
+Route::post('/resetpassword', 'LoginController@resetPassword');
 //get list of avilable part
 //Route::get('/part', 'PartController@partList');
 //get part data

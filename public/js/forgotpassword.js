@@ -26,5 +26,36 @@ $(document).ready(function () {
             error.insertAfter(element);
         }
     });
+    
+     $('#frmResetPassword').validate({
+        rules: {
+            'password': {
+                required: true                
+            },
+            'repassword': {
+                required: true                
+            }
+        },
+        messages: {
+            'password': {
+                required: 'Please enter password.'                
+            },
+            'repassword': {
+                required: 'Please retype password.'
+               
+            }
+        },
+        highlight: function (element) {
+            $(element).removeClass("textinput");
+            $(element).addClass("errorHighlight");
+        },
+        unhighlight: function (element) {
+            $(element).removeClass("errorHighlight");
+            $(element).addClass("textinput");
+        },
+       errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        }
+    });
 });
 
