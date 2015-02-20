@@ -1,5 +1,6 @@
 $(document).ready(function () {
- 
+  //  alert("Hi");
+
     $('#frmForgotPassword').validate({
         rules: {
             'email': {
@@ -21,7 +22,7 @@ $(document).ready(function () {
             $(element).removeClass("errorHighlight");
             $(element).addClass("textinput");
         },
-        errorPlacement: function (error, element) {
+       errorPlacement: function (error, element) {
             error.insertAfter(element);
         }
     });

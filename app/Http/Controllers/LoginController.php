@@ -78,27 +78,22 @@ class LoginController extends Controller
                 $error = 'please enter valid email address.';
                 Session::flash('messagelogin', $error);
                 Session::flash('alert-class', 'alert-danger');
-            }else{                
-             $user = DB::table('user')
-                ->where('email', $post['email'])->first();
-             if (!empty($user)) {
-                 var_dump($user);
-                  $error = 'Reset password link is send to your Email address.';
-                Session::flash('messagelogin', $error);
-                Session::flash('alert-class', 'alert-danger');
-             }
-             else{
-                  $error = 'Email address not registered with us.';
-                Session::flash('messagelogin', $error);
-                Session::flash('alert-class', 'alert-danger');
-             }
+            } else {
+                $user = DB::table('user')
+                                ->where('email', $post['email'])->first();
+                if (!empty($user)) {                    
+                    $error = 'Reset password link is send to your Email address.';
+                    Session::flash('messagelogin', $error);
+                    Session::flash('alert-class', 'alert-danger');
+                    return redirect('/');
+                } else {
+                    $error = 'Email address not registered with us.';
+                    Session::flash('messagelogin', $error);
+                    Session::flash('alert-class', 'alert-danger');
+                }
             }
-
             return redirect('/forgotpassword');
         }
-
-
-
         /* if (!empty($user)) {     //If user available
           // Send Mail to user
           $hostname = $request->getHttpHost();
