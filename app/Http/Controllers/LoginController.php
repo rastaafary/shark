@@ -136,6 +136,12 @@ class LoginController extends Controller
                     ->where('id', $id)
                     ->where('email_token', $token)
                     ->first();
+            if (!isset($dbTime)) {
+                $error = 'Invalid token';
+                Session::flash('messagelogin', $error);
+                Session::flash('alert-class', 'alert-danger');
+                return redirect('/forgotpassword');
+            }
             $time = strtotime($dbTime->time);
             $dbTime = strtotime('+24 hour', $time);
             if (strtotime(date('Y-m-d H:i:s')) > $dbTime) {
