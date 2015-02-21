@@ -15,7 +15,6 @@
                 <div class="panel-body">
                     <div class="tab-content">
                         <div class="tab-pane active" id="Add">
-
                             @if(!isset($id))
                             {!! Form::open(array('class'=>'form-horizontal','url'=>'/customer/add','name'=>'addCustomer','id'=>'addCustomer','files' => true)) !!}
                             {!! Form::hidden('id',Input::old('id',isset($cust->user_id) ?  $cust->user_id : '')) !!}

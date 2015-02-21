@@ -120,7 +120,7 @@ class CustomerController extends Controller
                                 ->withErrors($validator)
                                 ->withInput(Input::except('password'));
 
-                if (!empty($messages)) {
+             /*   if (!empty($messages)) {
                     foreach ($messages->all() as $error) {
                         return Redirect::to('customer/edit/' . $id)
                                         ->withInput(Input::except('password'));
@@ -129,7 +129,7 @@ class CustomerController extends Controller
                         // return View::make('customer.addCustomer', ['page_title' => 'Edit Customer', 'id' => $id])->with('post', $post);
                         ;
                     }
-                }
+                } */
             }
 
             $dt = $post['contact_birthdate'];

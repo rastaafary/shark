@@ -62,15 +62,15 @@ class PartController extends Controller
             $validator = Validator::make(Input::all(), $rules);
 
             if ($validator->fails()) {
-                $messages = $validator->messages();
-
-                if (!empty($messages)) {
+                // $messages = $validator->messages();
+                return redirect('/part/edit/' . $post['id'])
+                                ->withErrors($validator);
+             /*   if (!empty($messages)) {
                     foreach ($messages->all() as $error) {
-                        return redirect('/part/edit/' . $post['id'])
-                                        ->withErrors($validator);
+
                         //return redirect('/userProfile/edit/' . $post['id']);
                     }
-                }
+                }*/
             } else {
                 DB::table('part_number')
                         ->where('id', $post['id'])
@@ -110,15 +110,9 @@ class PartController extends Controller
 
             $validator = Validator::make(Input::all(), $rules);
             if ($validator->fails()) {
-                $messages = $validator->messages();
-
-                if (!empty($messages)) {
-                    foreach ($messages->all() as $error) {
-                        return redirect('/part/add')
-                                        ->withErrors($validator);
-                        //return redirect('/userProfile/edit/' . $post['id']);
-                    }
-                }
+                return redirect('/part/add')
+                                        ->withErrors($validator)
+                                        ->withInput(Input::all());               
             }
             DB::table('part_number')->insert(
                     array($post)

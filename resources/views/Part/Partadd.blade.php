@@ -31,9 +31,15 @@
                 <div class="panel-body">
                     <div class="tab-content">                                        
                         <div class="tab-pane active" id="Add">
-                            <!--<form class="form-horizontal">-->
-                            <div class="row">
+                            @if(!isset($part->id))                            
+                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/part/add','name'=>'addpart','id'=>'addpart','files' => true)) !!}
+                            {!! Form::hidden('id', Input::old('id',isset($part->id) ? $part->id : '')) !!}
+                            @else
+                            {!! Form::open(array('url'=>'/part/edit/'.$part->id, 'id'=>'editpart')) !!}
+                            {!! Form::hidden('id', Input::old('id',isset($part->id) ? $part->id : '')) !!}
+                            @endif
 
+                            <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
                                         {!! HTML::ul($errors->all()) !!}
@@ -41,43 +47,35 @@
                                             <h3 class="panel-title"><i class="fa fa-bars"></i> Part Number</h3>
                                         </div>
                                         <div class="panel-body">
-                                            @if(!isset($part->id))
-                                            {!! Form::open(array('url'=>'/part/add', 'id'=>'addpart')) !!}
-                                            {!! Form::hidden('id', Input::old('value',isset($part->id) ? $part->id : '')) !!}
-                                            @else
-                                            {!! Form::open(array('url'=>'/part/edit/'.$part->id, 'id'=>'editpart')) !!}
-                                            {!! Form::hidden('id', Input::old('value',isset($part->id) ? $part->id : '')) !!}
-                                            @endif
+
                                             <div class="table-responsive">
                                                 <table  class="display table">
-                                                    <thead>
-                                                    <th>SKU</th>
-                                                    <th>Description</th>
-                                                    <th>Cost</th>
-                                                    <th>Currency</th>
-                                                    <th>Action</th>
+                                                    <tr>
+                                                        <th>SKU</th>
+                                                        <th>Description</th>
+                                                        <th>Cost</th>
+                                                        <th>Currency</th>
+                                                        <th>Action</th>
                                                     </tr> 
-                                                    </thead>
-                                                    <tbody>
 
-                                                        <tr class="gradeX">
-                                                            <td><!--<input type="text" class="form-control" id="SKU" placeholder="SKU">-->
-                                                                {!! Form::text('SKU', Input::old('value',isset($part->SKU) ? $part->SKU : ''),array('class'=>'form-control','placeholder'=>'SKU','minlength'=>'6')) !!}<br/></td>
-                                                            <td><!--<input type="text" class="form-control" id="Description">-->
-                                                                {!! Form::text('description', Input::old('value',isset($part->description) ? $part->description : ''),array('class'=>'form-control','placeholder'=>'Description')) !!}<br/></td>
-                                                            <td><!--<input type="text" class="form-control" id="Cost" size="3">-->
-                                                                {!! Form::text('cost', Input::old('value',isset($part->cost) ? $part->cost : ''),array('class'=>'form-control','placeholder'=>'Cost')) !!}<br/></td>
-                                                            <td><!--<select class="form-control" id="Currncy">       
-                                                                    <option>USA</option>
-                                                                    <option>MXN</option>
-                                                                </select>-->
-                                                                {!! Form::select('currency_id', ['1' => 'USD', '2' => 'MXN'], isset($part->currency_id) ? $part->currency_id:'1', array('class' => 'form-control')) !!}
-                                                                <!--{!! Form::select('currency_id',array('1' => 'USD', '2' => 'MXN'), null, array('class' => 'form-control')) !!}-->
-                                                            </td>
-                                                            <td><!--<a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a>-->
-                                                                {!! Form::submit('Save',array('class'=>'btn btn-primary')) !!}</td>
-                                                        </tr>
-                                                    </tbody>
+                                                    <tr>
+                                                        <td><!--<input type="text" class="form-control" id="SKU" placeholder="SKU">-->
+                                                            {!! Form::text('SKU', Input::old('SKU',isset($part->SKU) ? $part->SKU : ''),array('class'=>'form-control','placeholder'=>'SKU','minlength'=>'6')) !!}<br/></td>
+                                                        <td><!--<input type="text" class="form-control" id="Description">-->
+                                                            {!! Form::text('description', Input::old('description',isset($part->description) ? $part->description : ''),array('class'=>'form-control','placeholder'=>'Description')) !!}<br/></td>
+                                                        <td><!--<input type="text" class="form-control" id="Cost" size="3">-->
+                                                            {!! Form::text('cost', Input::old('cost',isset($part->cost) ? $part->cost : ''),array('class'=>'form-control','placeholder'=>'Cost')) !!}<br/></td>
+                                                        <td><!--<select class="form-control" id="Currncy">       
+                                                                <option>USA</option>
+                                                                <option>MXN</option>
+                                                            </select>-->
+                                                            {!! Form::select('currency_id', ['1' => 'USD', '2' => 'MXN'], isset($part->currency_id) ? $part->currency_id:'1', array('class' => 'form-control')) !!}
+                                                            <!--{!! Form::select('currency_id',array('1' => 'USD', '2' => 'MXN'), null, array('class' => 'form-control')) !!}-->
+                                                        </td>
+                                                        <td><!--<a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a>-->
+                                                            {!! Form::submit('Save',array('class'=>'btn btn-primary')) !!}</td>
+                                                    </tr>
+
                                                 </table>
                                             </div>
                                             {!! Form::close() !!}
