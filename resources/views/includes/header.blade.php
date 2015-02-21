@@ -46,9 +46,7 @@
     <div class="left-side-inner">
 
         <!--sidebar nav start-->
-         <?php $path = Request::path(); 
-        
-         ?>
+         <?php $path = Request::path();?>
         
         <ul class="nav nav-pills nav-stacked custom-nav">
             <li class="menu-list <?php if($path == 'userList'||$path == 'userList/add'||$path == 'userProfile/edit/'.Auth::user()->id){ echo 'active'; } ?>"><a href=""><i class="fa fa-home"></i> <span>Manage User</span></a>

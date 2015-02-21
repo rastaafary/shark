@@ -62,7 +62,7 @@
 
                                                         <tr class="gradeX">
                                                             <td><!--<input type="text" class="form-control" id="SKU" placeholder="SKU">-->
-                                                                {!! Form::text('SKU', Input::old('value',isset($part->SKU) ? $part->SKU : ''),array('class'=>'form-control','placeholder'=>'SKU')) !!}<br/></td>
+                                                                {!! Form::text('SKU', Input::old('value',isset($part->SKU) ? $part->SKU : ''),array('class'=>'form-control','placeholder'=>'SKU','minlength'=>'6')) !!}<br/></td>
                                                             <td><!--<input type="text" class="form-control" id="Description">-->
                                                                 {!! Form::text('description', Input::old('value',isset($part->description) ? $part->description : ''),array('class'=>'form-control','placeholder'=>'Description')) !!}<br/></td>
                                                             <td><!--<input type="text" class="form-control" id="Cost" size="3">-->

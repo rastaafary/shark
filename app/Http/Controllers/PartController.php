@@ -54,7 +54,7 @@ class PartController extends Controller
         if (isset($post['id']) && $post['id'] != null) {
             $rules = array(
                 'id' => 'required',
-                'SKU' => 'required|alpha_num|unique:part_number,SKU,' . $post['id'],
+                'SKU' => 'required|Min:6|alpha_num|unique:part_number,SKU,' . $post['id'],
                 'description' => 'required',
                 'cost' => 'required|numeric',
                 'currency_id' => 'required');
@@ -102,7 +102,7 @@ class PartController extends Controller
             unset($post['_token']);
             //if (isset($post['SKU']) && $post['SKU'] != null) {
             $rules = array(
-                'SKU' => 'required|alpha_num|unique:part_number,SKU,' . $post['id'],
+                'SKU' => 'required|Min:6|alpha_num|unique:part_number,SKU,' . $post['id'],
                 'description' => 'required',
                 'cost' => 'required|numeric',
                 'currency_id' => 'required'
