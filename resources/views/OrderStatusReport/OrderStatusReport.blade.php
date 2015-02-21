@@ -86,6 +86,7 @@
                                                             <th>Pcs Made</th>
                                                             <th>Balance</th>
                                                             <th>Mark Pieces Made</th>
+                                                            <th>Status</th>
                                                         </tr> 
                                                     </thead>
                                                     <tbody>
@@ -101,6 +102,12 @@
                                                                 </button> </td>
                                                             <td>50</td>
                                                             <td>0</td>
+                                                            <td>
+                                                                <select id="status" class="form-control">
+                                                                    <option value="Open">Open</option>
+                                                                    <option value="Closed">Closed</option>
+                                                                </select>
+                                                            </td>
                                                         </tr>
                                                         <tr class="gradeX">
                                                             <td>2</td>
@@ -114,6 +121,12 @@
                                                                 </button>  </td>
                                                             <td>25</td>
                                                             <td>0</td>
+                                                            <td>
+                                                                <select id="status" class="form-control">
+                                                                    <option value="Open">Open</option>
+                                                                    <option value="Closed">Closed</option>
+                                                                </select>
+                                                            </td>
                                                         </tr>
                                                     <tbody>
                                                 </table>
