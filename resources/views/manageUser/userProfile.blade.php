@@ -83,9 +83,9 @@
                                                 <label for="addImage" class="col-sm-4 control-label">Image :</label>                           
                                                 <div class="col-sm-4">                              
                                                    <!--  <input id="addImage" type="file"> -->
-                                                    {!! HTML::image('images/user/'.$user->image, 'a picture', array('height'=>'30')) !!}
+                                                 <!--   {!! HTML::image('images/user/'.$user->image, 'a picture', array('height'=>'30')) !!} -->
                                                     {!! Form::file('image', '') !!}
-                                                </div>`
+                                                </div>
                                             </div>
                                             <div class="form-group" align="center">
                                                 <div class="col-sm-11">

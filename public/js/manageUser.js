@@ -17,7 +17,7 @@ $(document).ready(function () {
     });
 
     $('#birthdate').datepicker({
-        format: 'mm/dd/yyyy',
+        format: 'yyyy-mm-dd',        
         autoclose: true,
         todayBtn: true,
         todayHighlight: true,
