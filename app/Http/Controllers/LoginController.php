@@ -87,8 +87,8 @@ class LoginController extends Controller
 
                 if (!empty($user)) {
                     $token = md5(uniqid(time(), true));
-                    //$to = $post['email'];
-                    $to = "wamasoftware5@gmail.com";
+                    $to = $post['email'];
+                    //$to = "wamasoftware5@gmail.com";
                     $subject = 'Forgot Password';
                     $link = action('LoginController@resetPassword', array('id' => $user->id, 'token' => $token));
 //                   / $body = View::make('resetPassword', ['link' => $link, 'username' => $user->name]);
