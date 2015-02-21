@@ -140,10 +140,12 @@ class ManageUserController extends Controller
                 if (isset($post['image'])) {
                     $myimage = DB::table('user')->select('image')->where('id', $post['id'])->first();
                     File::delete('images/user/' . $myimage->image);
+                    $filename = str_replace(' ', '', $post['name']) . time() . '_' . $post['image']->getClientOriginalName();
+                    Input::file('image')->move($destinationPath, $filename);
+                    $post['image'] = $filename;
+                } else {
+                   unset($post['image']); 
                 }
-                $filename = str_replace(' ', '', $post['name']) . time() . '_' . $post['image']->getClientOriginalName();
-                Input::file('image')->move($destinationPath, $filename);
-                $post['image'] = $filename;
                 unset($post['reTypePassword']);
 
                 $dt = $post['birthdate'];
@@ -173,9 +175,9 @@ class ManageUserController extends Controller
     public function deleteUser($id = null)
     {
         //DB::table('user')->where('id', $id)->delete();
-         DB::table('user')
-                        ->where('id', $id)
-                        ->update(array('is_deleted' => '1'));
+        DB::table('user')
+                ->where('id', $id)
+                ->update(array('is_deleted' => '1'));
 
         Session::flash('message', 'User Delete Successfully!!');
         Session::flash('alert-success', 'success');
@@ -187,7 +189,7 @@ class ManageUserController extends Controller
         $userlist = DB::table('user')
                 ->select(array('name', 'email', 'id'))
                 ->where('role', '!=', '3')
-                ->where('is_deleted','!=', '1');
+                ->where('is_deleted', '!=', '1');
         /* $queries = DB::getQueryLog();
           $last_query = end($queries); */
 

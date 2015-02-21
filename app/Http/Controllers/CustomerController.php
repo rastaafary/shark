@@ -95,8 +95,8 @@ class CustomerController extends Controller
             unset($post['_token']);
 
         if (isset($post['comp_name'])) {
-            $emailId = $post['id'];     
-           
+            $emailId = $post['id'];
+
             $rules = array(
                 'comp_name' => 'required',
                 'zipcode' => 'required',
@@ -120,24 +120,24 @@ class CustomerController extends Controller
                                 ->withErrors($validator)
                                 ->withInput(Input::except('password'));
 
-             /*   if (!empty($messages)) {
-                    foreach ($messages->all() as $error) {
-                        return Redirect::to('customer/edit/' . $id)
-                                        ->withInput(Input::except('password'));
-                        Session::flash('message', $error);
-                        Session::flash('alert-class', 'alert-danger');
-                        // return View::make('customer.addCustomer', ['page_title' => 'Edit Customer', 'id' => $id])->with('post', $post);
-                        ;
-                    }
-                } */
+                /*   if (!empty($messages)) {
+                  foreach ($messages->all() as $error) {
+                  return Redirect::to('customer/edit/' . $id)
+                  ->withInput(Input::except('password'));
+                  Session::flash('message', $error);
+                  Session::flash('alert-class', 'alert-danger');
+                  // return View::make('customer.addCustomer', ['page_title' => 'Edit Customer', 'id' => $id])->with('post', $post);
+                  ;
+                  }
+                  } */
             }
 
             $dt = $post['contact_birthdate'];
             $my_date = date('m/d/Y', strtotime($dt));
             $time = strtotime($my_date);
             $date = date('Y/m/d', $time);
-           
-            if (isset($post['password'])) {           
+
+            if (isset($post['password'])) {
                 $myquery = DB::table('user')->select('password')->where('id', $post['id'])->first();
                 $post['password'] = $myquery->password;
             } else {
@@ -147,16 +147,19 @@ class CustomerController extends Controller
             //Upload the image
             $file = Input::file('image');
             $destinationPath = 'images/user';
-            $imageName = $post['image']->getClientOriginalName();
+            
             //delete old image
             if (isset($post['image'])) {
+                $imageName = $post['image']->getClientOriginalName();
                 $myimage = DB::table('customers')->select('customer_image')->where('user_id', $post['id'])->first();
-                File::delete('images/customer/' . $myimage->customer_image);
+                File::delete('images/user/' . $myimage->customer_image);               
+                $filename = str_replace(' ', '', $post['contact_name']) . time() . '_' . $imageName;
+                Input::file('image')->move($destinationPath, $filename);
+                $post['image'] = $filename;              
+            } else { 
+                $myimage = DB::table('customers')->select('customer_image')->where('user_id', $post['id'])->first();
+                $post['image'] = $myimage->customer_image;               
             }
-            $filename = str_replace(' ', '', $post['contact_name']) . time() . '_' . $imageName;
-            Input::file('image')->move($destinationPath, $filename);
-            $post['image'] = $filename;
-
             DB::table('user')
                     ->where('id', $post['id'])
                     ->update(array('email' => $post['contact_email'], 'name' => $post['contact_name'], 'birthdate' => $date, 'mobileno' => $post['contact_mobile'], 'password' => $post['password'], 'image' => $post['image']));
@@ -178,10 +181,10 @@ class CustomerController extends Controller
 
     public function deleteCust($id = null)
     {
-      //  DB::table('customers')->where('user_id', $id)->delete();
+        //  DB::table('customers')->where('user_id', $id)->delete();
         DB::table('customers')
-                        ->where('user_id', $id)
-                        ->update(array('is_deleted' => '1'));
+                ->where('user_id', $id)
+                ->update(array('is_deleted' => '1'));
 
         Session::flash('message', 'Customer Deleted Successfully!!');
         Session::flash('alert-success', 'success');
@@ -192,7 +195,7 @@ class CustomerController extends Controller
     {
         $custlist = DB::table('customers')
                 ->select(array('id', 'comp_name', 'building_no', 'street_addrs', 'interior_no', 'city', 'state', 'zipcode', 'country', 'phone_no', 'user_id'))
-                ->where('is_deleted','!=', '1');
+                ->where('is_deleted', '!=', '1');
         return Datatables::of($custlist)
                         ->editColumn("user_id", '<a href="/customer/delete/{{ $user_id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete"><span class="fa fa-trash-o" ></span></a><a href="/customer/edit/{{ $user_id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit"><span class="fa fa-pencil"></span></a>')
                         ->make();
