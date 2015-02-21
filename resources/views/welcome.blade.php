@@ -9,9 +9,14 @@
 
         <title>Login</title>
 
-        <link href="css/style.css" rel="stylesheet">
-        <link href="css/style-responsive.css" rel="stylesheet">       
-      
+        {!! HTML::style('css/style.css') !!}
+        {!! HTML::style('css/style-responsive.css') !!}
+        {!! HTML::script('js/scripts.js') !!} 
+        {!! HTML::script('js/jquery/jquery.min.js') !!}
+        {!! HTML::script('js/validation/jquery.validate.js') !!} 
+        {!! HTML::script('js/login.js') !!} 
+
+
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -63,27 +68,27 @@
             </div>
 
             <!-- Modal -->
-<!--            <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-                
-                <div class="modal-dialog">
-                    {!! Form::open(array('url' => '/forgotpassword','method'=>'POST','id'=>'frmForgotPassword')) !!}
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">Forgot Password ?</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>Enter your e-mail address below to reset your password.</p>                          
-                            {!! Form::text('email','' ,array('class'=>'form-control', 'placeholder' => 'Email ID')) !!}
-                        </div>
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-default" type="reset">Cancel</button>
-                             {!! Form::submit('Submit',array('class'=>'btn btn-primary','id'=>'btnSubmit')) !!}                          
-                        </div>
-                    </div>
-                    {!! Form::close() !!}
-                </div>
-            </div>-->
+            <!--            <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+                            
+                            <div class="modal-dialog">
+                                {!! Form::open(array('url' => '/forgotpassword','method'=>'POST','id'=>'frmForgotPassword')) !!}
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">Forgot Password ?</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Enter your e-mail address below to reset your password.</p>                          
+                                        {!! Form::text('email','' ,array('class'=>'form-control', 'placeholder' => 'Email ID')) !!}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button data-dismiss="modal" class="btn btn-default" type="reset">Cancel</button>
+                                         {!! Form::submit('Submit',array('class'=>'btn btn-primary','id'=>'btnSubmit')) !!}                          
+                                    </div>
+                                </div>
+                                {!! Form::close() !!}
+                            </div>
+                        </div>-->
             <!-- modal -->
 
             <?php /*      </form> */ ?>
@@ -95,10 +100,9 @@
         <!-- Placed js at the end of the document so the pages load faster -->
 
         <!-- Placed js at the end of the document so the pages load faster -->
-        <script src="js/setActiveLink.js"></script>
-        <script src="js/jquery-1.10.2.min.js"></script>
+
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/modernizr.min.js"></script>     
+
 
     </body>
 </html>

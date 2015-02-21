@@ -17,7 +17,7 @@ Route::get('home', 'HomeController@index');
 // Login
 Route::post('/login', 'LoginController@login');
 Route::group(['middleware' => 'auth'], function() {
-Route::get('/part', 'PartController@partList');
+    Route::get('/part', 'PartController@partList');
 });
 //logout
 Route::get('logout', 'LoginController@logout');
@@ -54,6 +54,8 @@ Route::get('/invoice', 'InvoiceController@listInvoice');
 // Purchase Order Customer
 Route::get('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
 Route::get('/po', 'PurchaseOrderCustomerController@listPurchaseOrder');
+Route::get('/po/add/{var?}', 'PurchaseOrderCustomerController@addPurchaseOrder');
+Route::post('/po/add/{var?}', 'PurchaseOrderCustomerController@addPurchaseOrder');
 
 //when Customer Login
 Route::get('/po/add/{var?}', 'PurchaseOrderCustomerController@userDetails');
