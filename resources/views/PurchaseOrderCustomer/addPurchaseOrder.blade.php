@@ -68,7 +68,12 @@
                                             <div class="form-group">
                                                 <label for="shippingDetails" class="col-sm-4 control-label">Shipping Details:</label>
                                                 <div class="col-sm-8">
-                                                    {!! Form::select('shippingDetails', [$shipping->identifier=>$shipping->identifier],'', array('class' => 'form-control')) !!}
+                                                    <!--{!! Form::select('shippingDetails', ['1'=>'1'],'', array('class' => 'form-control')) !!}-->
+                                                    <select class="form-control">
+                                                    @foreach($shipping as $value)
+                                                    <option value="{{$value->id}}">{{$value->identifier}}</option>
+                                                    @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -77,7 +82,7 @@
                                                     {!! Form::checkbox('addNew','','',array('value'=>'Add New','id'=>'addNew')) !!}
                                                 </div>
                                             </div>
-                                            <div id='newdetails' style="display: none;">;
+                                            <div id='newdetails' style="display: none;">
                                                 <div class="form-group">
                                                     <label for="companyName" class="col-sm-4 control-label">Company Name:</label>
                                                     <div class="col-sm-8">
@@ -132,7 +137,7 @@
                                                     <div class="col-sm-8">
                                                         <!--<input type="text" class="form-control" id="country" placeholder="Country">-->
                                                         <!--{!! Form::select('country', ['USA' => 'USA', 'Germany' => 'Germany'], isset($cust->country) ? $cust->country:'USA', array('class' => 'form-control')) !!}-->
-                                                        {!! Form::select('country',['USA'=>'UAS','Germany'=>'Germany'],'', array('class' => 'form-control'))!!}
+                                                        {!! Form::select('country',['USA'=>'USA','Germany'=>'Germany'],'', array('class' => 'form-control'))!!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
