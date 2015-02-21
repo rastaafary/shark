@@ -283,7 +283,7 @@
 
                                             <div class="form-group" align="center">
                                                 <!--<input type="submit" value="Submit" id="btnSubmit" class="btn btn-primary" style="margin-top: 10px;">-->
-                                                {!! Form::submit('Save',array('class'=>'btn btn-primary')) !!}
+                                                {!! Form::submit('Save',array('class'=>'btn btn-primary', 'id'=>'btnSubmit')) !!}
                                             </div>
                                         </div>
 
