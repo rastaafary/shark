@@ -64,15 +64,16 @@
                                         <div class="panel-heading">
                                             <h3 class="panel-title"><i class="fa fa-home"></i> Address Details</h3>
                                         </div>
+                                         {!! HTML::ul($errors->all()) !!}
                                         <div class="panel-body">
                                             <div class="form-group">
                                                 <label for="shippingDetails" class="col-sm-4 control-label">Shipping Details:</label>
                                                 <div class="col-sm-8">
                                                     <!--{!! Form::select('shippingDetails', ['1'=>'1'],'', array('class' => 'form-control')) !!}-->
                                                     <select class="form-control">
-                                                    @foreach($shipping as $value)
-                                                    <option value="{{$value->id}}">{{$value->identifier}}</option>
-                                                    @endforeach
+                                                        @foreach($shipping as $value)
+                                                        <option value="{{$value->id}}">{{$value->identifier}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>

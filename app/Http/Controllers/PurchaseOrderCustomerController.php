@@ -42,6 +42,33 @@ class PurchaseOrderCustomerController extends Controller
 
             if (isset($post['addNew'])) {
 
+                // Server side Validations
+
+                $rules = array(
+                    'comp_name' => 'required',
+                    'building_no' => 'required',
+                    'street_addrs' => 'required',
+                    'interior_no' => 'required',
+                    'city' => 'required',
+                    'state' => 'required',
+                    'zipcode' => 'required',
+                    'country' => 'required',
+                    'phone_no' => 'required',
+                    'identifer' => 'required',
+                );
+                $validator = Validator::make(Input::all(), $rules);
+                if ($validator->fails()) {
+                    $uid = Auth::user()->id;
+                    $cust = DB::table('customers')->where('user_id', $uid)->first();
+                    $cust_id = $cust->id;
+                    $shipping = DB::table('shipping_info')->where('customer_id', $cust_id)->get();
+
+                    return redirect('/po/add')
+                                    ->withErrors($validator)
+                                    ->withInput(Input::all());
+                    //->with(array("shipping" => $shipping, $validator));
+                }
+                //Set the Date Format
                 $dt = $post['require_date'];
                 $my_date = date('m/d/Y', strtotime($dt));
                 $time = strtotime($my_date);
