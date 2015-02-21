@@ -233,10 +233,10 @@
                                                             <tr class="gradeX">
                                                                 <td></td>
                                                                 <td></td>
-                                                                <td align="right">Total Qty :</td>                                                               
+                                                                <td align="right"><label class="control-label">Total Qty :</label></td>                                                               
                                                                 <td><input type="text" class="form-control" id="totalQty" placeholder="50" size="3"></td>
                                                                 <td></td>
-                                                                <td align="right">Total Amount:</td> 
+                                                                <td align="right"><label class="control-label">Total Amount:</label></td> 
                                                                 <td><input type="text" class="form-control" id="totalAmount" placeholder="$5000" size="5"></td>
                                                                 <td></td>
                                                             </tr>

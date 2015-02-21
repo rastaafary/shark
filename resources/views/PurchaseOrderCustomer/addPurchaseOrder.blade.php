@@ -64,7 +64,7 @@
                                         <div class="panel-heading">
                                             <h3 class="panel-title"><i class="fa fa-home"></i> Address Details</h3>
                                         </div>
-                                         {!! HTML::ul($errors->all()) !!}
+                                        {!! HTML::ul($errors->all()) !!}
                                         <div class="panel-body">
                                             <div class="form-group">
                                                 <label for="shippingDetails" class="col-sm-4 control-label">Shipping Details:</label>
@@ -230,48 +230,50 @@
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <table class="table">
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>SKU</th>
-                                                        <th>Description</th>
-                                                        <th>Qty</th>
-                                                        <th>Unit Price</th>
-                                                        <th>Amount</th>
-                                                        <th>Action</th>
-                                                    </tr> 
-                                                    <tr>
-                                                        <td></td>
-                                                        <td><input type="text" class="form-control" id="searchSKU" placeholder="SKU"></td>
-                                                        <td><input type="text" class="form-control" id="searchDescription"></td>
-                                                        <td><input type="text" class="form-control" id="searchQty" size="3"></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td><a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>BF0013</td>
-                                                        <td>Barcelona FC sport Jersey</td>
-                                                        <td>50</td>
-                                                        <td>13</td>
-                                                        <td>$5000</td>
-                                                        <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editProductModal"><span class="fa fa-pencil"></span></a></td>
-                                                    </tr>
-                                                    <tfoot>
+                                                <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                    <thead>
                                                         <tr>
+                                                            <th>#</th>
+                                                            <th>SKU</th>
+                                                            <th>Description</th>
+                                                            <th>Qty</th>
+                                                            <th>Unit Price</th>
+                                                            <th>Amount</th>
+                                                            <th>Action</th>
+                                                        </tr> 
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="gradeX">
+                                                            <td></td>
+                                                            <td><input type="text" class="form-control" id="searchSKU" placeholder="SKU"></td>
+                                                            <td><input type="text" class="form-control" id="searchDescription"></td>
+                                                            <td><input type="text" class="form-control" id="searchQty" size="3"></td>
                                                             <td></td>
                                                             <td></td>
-                                                            <td align="right">Total Qty :</td>                                                               
+                                                            <td><a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>
+                                                        </tr>
+                                                        <tr class="gradeX">
+                                                            <td>1</td>
+                                                            <td>BF0013</td>
+                                                            <td>Barcelona FC sport Jersey</td>
+                                                            <td>50</td>
+                                                            <td>13</td>
+                                                            <td>$5000</td>
+                                                            <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
+                                                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editProductModal"><span class="fa fa-pencil"></span></a></td>
+                                                        </tr>                                                 
+                                                        <tr class="gradeX">
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td align="right"><label class="control-label">Total Qty :</label></td>                                                               
                                                             <td><input type="text" class="form-control" id="totalQty" placeholder="50" size="3"></td>
-                                                            <td align="right">Total Amount:</td> 
+                                                            <td></td>
+                                                            <td align="right"><label class="control-label">Total Amount:</label></td> 
                                                             <td><input type="text" class="form-control" id="totalAmount" placeholder="$5000" size="5"></td>
                                                             <td></td>
-                                                        </tr>
-                                                    </tfoot>
+                                                        </tr> 
+                                                    </tbody>
                                                 </table>
-
                                             </div>                                       
                                             <div class="form-group">
                                                 <label for="comment" class="col-sm-2 col-md-1 control-label">Comment:</label>
