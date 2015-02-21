@@ -41,7 +41,7 @@
                     <div class="form-group">
                         <label for="password" class="col-sm-4 control-label">Password:</label>
                         <div class="col-sm-8">                          
-                            {!! Form::text('password','',array('class'=>'form-control', 'placeholder' => 'New Password.')) !!}
+                            {!! Form::password('password',array('class'=>'form-control', 'placeholder' => 'New Password.')) !!}
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                     <div class="form-group">
                         <label for="repasseord" class="col-sm-4 control-label">Re-Type Password:</label>
                         <div class="col-sm-8">
-                            {!! Form::text('repassword','' ,array('class'=>'form-control', 'placeholder' => 'ReType New Password.')) !!}
+                            {!! Form::password('repassword',array('class'=>'form-control', 'placeholder' => 'ReType New Password.')) !!}
                         </div>
                     </div>
                 </div>

@@ -87,20 +87,37 @@ class LoginController extends Controller
 
                 if (!empty($user)) {
                     $token = md5(uniqid(time(), true));
-                    $to = $post['email'];
+                    //$to = $post['email'];
+                    $to = "wamasoftware5@gmail.com";
                     $subject = 'Forgot Password';
                     $link = action('LoginController@resetPassword', array('id' => $user->id, 'token' => $token));
-                    $body = View::make('resetPassword', ['link' => $link, 'username' => $user->name]);
-                    $data = array(
-                        'username' => $user->name,
-                        'link' => $link,
-                    );    // $bodyK = view('resetPassword', ['link' => $link, 'username' => $user->name ]);                    
+//                   / $body = View::make('resetPassword', ['link' => $link, 'username' => $user->name]);
+                    /*  $data = array(
+                      'username' => $user->name,
+                      'link' => $link,
+                      );    // $bodyK = view('resetPassword', ['link' => $link, 'username' => $user->name ]); */
 
-                    $mail_status = Mail::send('mailTemplet', $data, function($m) {
-                                $m->to('wamasoftware5@gmail.com', 'Hiiii.....');
-                                $m->subject('Forgot Password');
-                            });
+                    $message = '<html>
+                                <head>
+                                    <meta charset="utf-8">
+                                </head>
+                                <body>
+                                    <h2>Forgot Password</h2>
 
+                                    <div>
+                                        Dear '.$user->name.', <a href='.$link.'>Click Here</a> to reset your password. 
+                                    </div>
+                                </body>
+                            </html>';
+                    $headers = 'MIME-Version: 1.0' . "\r\n";
+                    $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+
+                    $mail_status = mail($to, $subject, $message,$headers);
+                    /*   $mail_status = Mail::send('mailTemplet', $data, function($m) {
+                      $m->to('wamasoftware5@gmail.com', 'Hiiii.....');
+                      $m->subject('Forgot Password');
+                      });
+                     */
                     $db_status = DB::table('user')
                             ->where('id', $user->id)
                             ->update(array('email_token' => $token, 'time' => date('Y-m-d H:i:s')));
@@ -129,8 +146,8 @@ class LoginController extends Controller
     public function resetPassword()
     {
         $id = Input::get('id');
-        $token = Input::get('token');        
-        if (isset($id) && isset($token)) {          
+        $token = Input::get('token');
+        if (isset($id) && isset($token)) {
             $dbTime = DB::table('user')
                     ->select(array('time'))
                     ->where('id', $id)
