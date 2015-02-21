@@ -54,7 +54,6 @@ Route::get('/invoice', 'InvoiceController@listInvoice');
 // Purchase Order Customer
 Route::get('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
 Route::get('/po', 'PurchaseOrderCustomerController@listPurchaseOrder');
-Route::get('/po/add/{var?}', 'PurchaseOrderCustomerController@addPurchaseOrder');
 Route::post('/po/add/{var?}', 'PurchaseOrderCustomerController@addPurchaseOrder');
 
 //when Customer Login

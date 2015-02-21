@@ -1,8 +1,9 @@
 $(document).ready(function () {
+
     $("#POCustomer-list").dataTable({
         //"bProcessing": true,
         "bServerSide": false,
-       // "sAjaxSource": "",
+        // "sAjaxSource": "",
         "aaSorting": [[7, "desc"]],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
@@ -13,5 +14,9 @@ $(document).ready(function () {
                 "success": fnCallback
             });
         },
+    });
+
+    $("#addNew").click(function () {
+        if ($('#addNew').is(':checked')? $("#newdetails").show():$("#newdetails").hide());
     });
 });

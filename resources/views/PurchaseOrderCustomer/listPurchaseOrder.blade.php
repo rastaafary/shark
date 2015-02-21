@@ -8,7 +8,7 @@
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#List">List</a></li>
-                        <li><a href="{{'/po/add/'.Auth::user()->id}}" >Add</a></li>                       
+                        <li><a href="{{action('PurchaseOrderCustomerController@addPurchaseOrder')}}" >Add</a></li>
                     </ul>
                 </header>
                 <div class="panel-body">
