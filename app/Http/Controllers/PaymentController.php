@@ -5,19 +5,24 @@ namespace App\Http\Controllers;
 class PaymentController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function addPayment()
     {
-        return view('payment.addPayment',['page_title'=>'Add Payment']);
+        return view('payment.addPayment', ['page_title' => 'Add Payment']);
     }
 
     public function listPayment()
     {
-        return view('payment.listPayment',['page_title'=>'Payment']);
+        return view('payment.listPayment', ['page_title' => 'Payment']);
     }
-    
-     public function viewPayment()
+
+    public function viewPayment()
     {
-        return view('payment.viewPayment',['page_title'=>'View Payment']);
+        return view('payment.viewPayment', ['page_title' => 'View Payment']);
     }
 
 }

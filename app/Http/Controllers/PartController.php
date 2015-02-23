@@ -11,6 +11,12 @@ use Datatables;
 
 class PartController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /*
       |--------------------------------------------------------------------------
       | Home Controller
@@ -65,12 +71,12 @@ class PartController extends Controller
                 // $messages = $validator->messages();
                 return redirect('/part/edit/' . $post['id'])
                                 ->withErrors($validator);
-             /*   if (!empty($messages)) {
-                    foreach ($messages->all() as $error) {
+                /*   if (!empty($messages)) {
+                  foreach ($messages->all() as $error) {
 
-                        //return redirect('/userProfile/edit/' . $post['id']);
-                    }
-                }*/
+                  //return redirect('/userProfile/edit/' . $post['id']);
+                  }
+                  } */
             } else {
                 DB::table('part_number')
                         ->where('id', $post['id'])
@@ -111,8 +117,8 @@ class PartController extends Controller
             $validator = Validator::make(Input::all(), $rules);
             if ($validator->fails()) {
                 return redirect('/part/add')
-                                        ->withErrors($validator)
-                                        ->withInput(Input::all());               
+                                ->withErrors($validator)
+                                ->withInput(Input::all());
             }
             DB::table('part_number')->insert(
                     array($post)

@@ -22,6 +22,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class CustomerController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function listCust()
     {
         return view('customer.listCustomer', ['page_title' => 'Customer List']);
@@ -147,18 +152,18 @@ class CustomerController extends Controller
             //Upload the image
             $file = Input::file('image');
             $destinationPath = 'images/user';
-            
+
             //delete old image
             if (isset($post['image'])) {
                 $imageName = $post['image']->getClientOriginalName();
                 $myimage = DB::table('customers')->select('customer_image')->where('user_id', $post['id'])->first();
-                File::delete('images/user/' . $myimage->customer_image);               
+                File::delete('images/user/' . $myimage->customer_image);
                 $filename = str_replace(' ', '', $post['contact_name']) . time() . '_' . $imageName;
                 Input::file('image')->move($destinationPath, $filename);
-                $post['image'] = $filename;              
-            } else { 
+                $post['image'] = $filename;
+            } else {
                 $myimage = DB::table('customers')->select('customer_image')->where('user_id', $post['id'])->first();
-                $post['image'] = $myimage->customer_image;               
+                $post['image'] = $myimage->customer_image;
             }
             DB::table('user')
                     ->where('id', $post['id'])

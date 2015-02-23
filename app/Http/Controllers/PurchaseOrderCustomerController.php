@@ -20,6 +20,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class PurchaseOrderCustomerController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function userDetails()
     {
         $post = Input::all();
@@ -34,8 +39,6 @@ class PurchaseOrderCustomerController extends Controller
 
     public function addPurchaseOrder($id = null)
     {
-
-
         $post = Input::all();
         if (isset($post['_token'])) {
             unset($post['_token']);

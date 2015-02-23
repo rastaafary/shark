@@ -18,6 +18,12 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ManageUserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /*
      * List of Users
      */
@@ -144,7 +150,7 @@ class ManageUserController extends Controller
                     Input::file('image')->move($destinationPath, $filename);
                     $post['image'] = $filename;
                 } else {
-                   unset($post['image']); 
+                    unset($post['image']);
                 }
                 unset($post['reTypePassword']);
 
