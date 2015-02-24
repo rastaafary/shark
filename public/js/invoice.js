@@ -28,7 +28,18 @@ $(document).ready(function () {
                 $("#searchQty").prop("disabled", false);
             }
         });
-    });   
+        $.ajax({
+            type: 'GET',
+            url: '/invoice/paymentTerm',
+            data: 'id=' + id,
+            async: false,
+            success: function (responce)
+            {
+                var jason = $.parseJSON(responce);
+                $('#paymentTerm').html(jason.payment_terms);              
+            }
+        });
+    });
 
     $("#Invoice-list").dataTable({
         "bProcessing": true,
@@ -45,7 +56,7 @@ $(document).ready(function () {
             });
         }
     });
-  
+
     jQuery.validator.addMethod("onlyname", function (value, element) {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
@@ -104,7 +115,7 @@ $(document).ready(function () {
             'shpstate': {
                 required: true
             }
-            
+
         },
         messages: {
             'comp_name': {
@@ -159,7 +170,6 @@ $(document).ready(function () {
             'shpzipcode': {
                 required: 'Please enter zipcode.'
             },
-            
         },
         highlight: function (element) {
             $(element).removeClass("textinput");
@@ -172,8 +182,8 @@ $(document).ready(function () {
         errorPlacement: function (error, element) {
             error.insertAfter(element);
         }
-    }); 
-      /*
+    });
+    /*
      var bestPictures = new Bloodhound({
      datumTokenizer: Bloodhound.tokenizers.obj.whitespace('SKU'),
      queryTokenizer: Bloodhound.tokenizers.whitespace,

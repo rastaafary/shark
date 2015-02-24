@@ -72,6 +72,15 @@ class InvoiceController extends Controller
                 ->get();
         return Response(json_encode($shipping_data));
     }
+    
+    public function paymentTerm(){
+        $id = Input::get('id');
+        $cust_data = DB::table('purchase_order')
+                ->select('payment_terms')
+                ->where('id', $id)
+                ->first();
+        return Response(json_encode($cust_data));
+    }
 
     public function listInvoice()
     {

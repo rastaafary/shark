@@ -274,7 +274,7 @@
                                                     </div>
                                                     <div class="col-sm-7">
                                                         <label for="shippingMethod" class="control-label">Payment Term:</label>
-                                                        <label for="shippingMethod" class="control-label">Information From PO</label>&nbsp;&nbsp;&nbsp;
+                                                        <label id="paymentTerm" for="paymentTerm" class="control-label"></label>&nbsp;&nbsp;&nbsp;
                                                         <label for="shippingMethod" class="control-label">Due Date:</label>
                                                         <label for="shippingMethod" class="control-label">18/01/2015 + PO date</label>
                                                     </div>

@@ -53,6 +53,7 @@ Route::get('/invoice/add', 'InvoiceController@addInvoice');
 Route::post('/invoice/add', 'InvoiceController@addInvoice');
 Route::get('/invoice', 'InvoiceController@listInvoice');
 Route::get('/invoice/listShipingInfo', 'InvoiceController@listShipingInfo');
+Route::get('/invoice/paymentTerm', 'InvoiceController@paymentTerm');
 
 // Purchase Order Customer
 Route::get('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
