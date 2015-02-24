@@ -51,6 +51,7 @@ class LoginController extends Controller
         $password = $credentials['password'];
         if (Auth::validate(array('email' => $email, 'password' => $password)) && Auth::attempt(array('email' => $email, 'password' => $password), false)) {
             Session::flash('message', 'Login Successfully!!!');
+         
             return Redirect::intended('/part');
         } else {
             $error = 'wrong email or password..';

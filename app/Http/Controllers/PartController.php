@@ -8,7 +8,7 @@ use View;
 use Validator;
 use Session;
 use Datatables;
-
+use Auth;
 class PartController extends Controller
 {
 

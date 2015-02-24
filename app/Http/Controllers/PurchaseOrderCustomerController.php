@@ -13,7 +13,8 @@ use Validator;
 use Datatables;
 use Auth;
 use Response;
-use Illuminate\Http\Request;
+use Request;
+//use Illuminate\Http\Request;
 use App\Http\Controllers\Image;
 use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -221,12 +222,46 @@ class PurchaseOrderCustomerController extends Controller
 
         return view('PurchaseOrderCustomer.listPurchaseOrder', ['page_title' => 'Purchase Order']);
     }
-    
+
     public function searchSKU()
     {
-       $name =  Input::get('name');
-       $data = $cust = DB::table('part_number')->get();     
-       return Response(json_encode($data));       
+        $sku = Request::segment(4);
+        $data = DB::table('part_number')->select('SKU')->where('SKU', 'like', '%' . $sku . '%')->get();
+        return Response(json_encode($data));
     }
+    
+    /**
+     * get description by sku
+     */
 
+    public function getDescription()
+    {
+        $sku = Input::get('description');
+        $data = DB::table('part_number')->select('description','cost')->where('SKU', $sku)->get();
+        return Response(json_encode($data));
+    }
+    
+    /**
+     * 
+     */
+    public function addOrder()
+    {
+        exit("hi");
+       /* $last_PO_id = DB::table('purchase_order')->orderBy('id', 'desc')->first();
+        $customer = DB::table('customers')->where('user_id', $post['id'])->first();
+        $SKU = DB::table('part_number')
+                ->where('SKU', $post['searchSKU'])
+                ->get();
+        if (!empty($SKU)) {
+            $add_Order = DB::table('order_list')->insert(
+                    array('part_id' => $SKU->id,
+                        'description' => $SKU->description,
+                        'qty' => $post['Qty'],
+                        'amount' => $post['Amount'],
+                        'po_id' => $last_PO_id->id,
+                        'customer_id' => $customer->id
+                    )
+            );
+        } */
+    }
 }
