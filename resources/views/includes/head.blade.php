@@ -47,6 +47,7 @@
 {!! HTML::script('js/manageUser.js') !!}
 {!! HTML::script('js/forgotpassword.js') !!}
 {!! HTML::script('js/customer.js') !!}
+{!! HTML::script('js/invoice.js') !!}
 {!! HTML::script('js/PoCustomer.js') !!}
 
 

@@ -14,13 +14,22 @@
                 <div class="panel-body">
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="Add">
-                            <form class="form-horizontal">                             
+                           {!! Form::open(array('class'=>'form-horizontal','url'=>'/invoice/add','name'=>'Invoice','id'=>'Invoice','files' => true)) !!}
+                            {!! Form::hidden('id',Input::old('id',isset(Auth::user()->id) ? Auth::user()->id : '')) !!}                         
                                 <div class="media usr-info">
                                     <div class="pull-left">                                        
-                                        {!! HTML::image('images/user-avatar.png', 'a picture', array('class' => 'thumb')) !!}
+                                        @if(Auth::user()->image)
+                                        {!! HTML::image('images/user/'.Auth::user()->image, 'a picture', array('class' => 'thumb')) !!}
+                                        @else
+                                        {!! HTML::image('images/user/default.jpg', 'a picture', array('class' => 'thumb')) !!}
+                                        @endif
                                     </div>                                    
                                     <div class="media-body">
-                                        <h3 class="media-heading">John Doe</h3>                                      
+                                        <h3 class="media-heading">
+                                            @if( Auth::check() )
+                                            {{ Auth::user()->name }}
+                                            @endif
+                                        </h3>                                      
                                     </div>
                                 </div>
                                 <br>
@@ -29,20 +38,24 @@
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h3 class="panel-title"><i class="fa fa-table"></i> Invoice Details</h3>
-                                            </div>
+                                            </div>                                            
                                             <div class="panel-body">
                                                 <div class="form-inline">
-                                                    <div class="form-group col-sm-5 col-md-5">
+                                                    <div class="form-group col-sm-4 col-md-4">
                                                         <label for="invoiceId">Invoice ID# : </label>
                                                         <input type="text" class="form-control" id="invoiceId" placeholder="IN0025">
                                                     </div>
-                                                    <div class="form-group col-sm-5 col-md-5">
+                                                    <div class="form-group col-sm-4 col-md-4">
                                                         <label class="control-label" for="invoiceDateTime">Date/Time : </label>
-                                                        <label class="control-label" id="invoiceDateTime"> 18/01/2015 1035:00AM</label>
+                                                        <label class="control-label" id="invoiceDateTime"><?php echo date('d/m/Y h:i:s A'); ?></label>
                                                     </div>  
-                                                    <div class="form-group col-sm-2 col-md-2">                                                                
+                                                    <div class="form-group col-sm-4  col-md-4"> 
+                                                        <label class="control-label" for="selectPO">Select PO : </label>
                                                         <select class="form-control" id="selectPO">
-                                                            <option>Select PO</option>
+                                                            <option value="">Select PO</option>
+                                                            @foreach($po as $value)
+                                                            <option value="{{$value->id}}">{{$value->id}}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -56,59 +69,60 @@
                                             <div class="panel-heading">
                                                 <h3 class="panel-title"><i class="fa fa-home"></i> Billing Info:</h3>
                                             </div>
+                                             {!! HTML::ul($errors->all()) !!}
                                             <div class="panel-body">
                                                 <div class="form-group">
                                                     <label for="companyName" class="col-sm-4 control-label">Company Name:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="companyName" placeholder="Company Name">
+                                                        {!! Form::text('comp_name',Input::old('comp_name',isset($cust->comp_name) ? $cust->comp_name : '') ,array('class'=>'form-control', 'placeholder' => 'Company Name')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="buildingNumber" class="col-sm-4 control-label">Building Number:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="buildingNumber" placeholder="Building Number">
+                                                        {!! Form::text('building_no',Input::old('building_no',isset($cust->building_no) ? $cust->building_no : '') ,array('class'=>'form-control', 'placeholder' => 'Building Number')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="streetAddress" class="col-sm-4 control-label">Street Address:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="streetAddress" placeholder="Street Address">
+                                                        {!! Form::text('street_addrs',Input::old('street_addrs',isset($cust->street_addrs) ? $cust->street_addrs : '') ,array('class'=>'form-control', 'placeholder' => 'Street Address')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="interiorNumber" class="col-sm-4 control-label">Interior Number:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="interiorNumber" placeholder="Interior Number">
+                                                        {!! Form::text('interior_no',Input::old('interior_no',isset($cust->interior_no) ? $cust->interior_no : '') ,array('class'=>'form-control', 'placeholder' => 'Interior Number')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="city" class="col-sm-4 control-label">City:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="city" placeholder="City">
+                                                        {!! Form::text('city',Input::old('city',isset($cust->city) ? $cust->city : '') ,array('class'=>'form-control', 'placeholder' => 'City')) !!}
                                                     </div>                                                               
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="state" class="col-sm-4 control-label">State:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="state" placeholder="State">
+                                                        {!! Form::text('state',Input::old('state',isset($cust->state) ? $cust->state : '') ,array('class'=>'form-control', 'placeholder' => 'State')) !!} 
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="zipCode" class="col-sm-4 control-label">ZipCode:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="zipCode" placeholder="ZipCode">
+                                                        {!! Form::text('zipcode',Input::old('zipcode',isset($cust->zipcode) ? $cust->zipcode : '') ,array('class'=>'form-control', 'placeholder' => 'ZipCode')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="country" class="col-sm-4 control-label">Country:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="country" placeholder="Country">
+                                                        {!! Form::select('country',['USA'=>'USA','Germany'=>'Germany'],'', array('class' => 'form-control'))!!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="phoneNumber" class="col-sm-4 control-label">Phone Number:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number">
+                                                        {!! Form::text('phone_no',Input::old('phone_no',isset($cust->phone_no) ? $cust->phone_no : '') ,array('class'=>'form-control', 'placeholder' => 'Phone Number')) !!}
                                                     </div>
                                                 </div>
                                             </div>                                                       
@@ -120,69 +134,76 @@
                                                 <h3 class="panel-title"><i class="fa fa-truck"></i> Shipping Info:</h3>
                                             </div>
                                             <div class="panel-body">
-                                                <div class="form-group">                                                                    
+                                                <div class="form-group">  
+                                                    <label for="oldShippingInfo" class="col-sm-4 control-label">Select Shipping Details :</label>
                                                     <div class="col-sm-6">
-                                                        <select class="form-control col-sm-6" id="shippingInfo">
-                                                            <option>Select Shipping Information</option>
+                                                        <select class="form-control col-sm-6" id="oldShippingInfo">                                                            
                                                         </select>
                                                     </div>
-                                                    <label for="shippingInfo" class="control-label">Or Add New Shipping Information :</label>
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group"> 
+                                                    <div class="col-sm-10">
+                                                        <label for="shippingInfo" class="control-label">Or Add New Shipping Information :</label>
+                                                        {!! Form::checkbox('addNew','','',array('value'=>'Add New','id'=>'addNew')) !!}
+                                                    </div>
+                                                </div>
+                                                <div id='newdetails' style="display: none;">
+                                                    <div class="form-group">
                                                     <label for="companyName" class="col-sm-4 control-label">Company Name:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="companyName" placeholder="Company Name">
+                                                        {!! Form::text('shpcomp_name',Input::old('shpcomp_name',isset($cust->comp_name) ? $cust->comp_name : '') ,array('class'=>'form-control', 'placeholder' => 'Company Name')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="buildingNumber" class="col-sm-4 control-label">Building Number:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="buildingNumber" placeholder="Building Number">
+                                                        {!! Form::text('shpbuilding_no',Input::old('shpbuilding_no',isset($cust->building_no) ? $cust->building_no : '') ,array('class'=>'form-control', 'placeholder' => 'Building Number')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="streetAddress" class="col-sm-4 control-label">Street Address:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="streetAddress" placeholder="Street Address">
+                                                        {!! Form::text('shpstreet_addrs',Input::old('shpstreet_addrs',isset($cust->street_addrs) ? $cust->street_addrs : '') ,array('class'=>'form-control', 'placeholder' => 'Street Address')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="interiorNumber" class="col-sm-4 control-label">Interior Number:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="interiorNumber" placeholder="Interior Number">
+                                                        {!! Form::text('shpinterior_no',Input::old('shpinterior_no',isset($cust->interior_no) ? $cust->interior_no : '') ,array('class'=>'form-control', 'placeholder' => 'Interior Number')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="city" class="col-sm-4 control-label">City:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="city" placeholder="City">
+                                                        {!! Form::text('shpcity',Input::old('shpcity',isset($cust->city) ? $cust->city : '') ,array('class'=>'form-control', 'placeholder' => 'City')) !!}
                                                     </div>                                                               
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="state" class="col-sm-4 control-label">State:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="state" placeholder="State">
+                                                        {!! Form::text('shpstate',Input::old('shpstate',isset($cust->state) ? $cust->state : '') ,array('class'=>'form-control', 'placeholder' => 'State')) !!} 
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="zipCode" class="col-sm-4 control-label">ZipCode:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="zipCode" placeholder="ZipCode">
+                                                        {!! Form::text('shpzipcode',Input::old('shpzipcode',isset($cust->zipcode) ? $cust->zipcode : '') ,array('class'=>'form-control', 'placeholder' => 'ZipCode')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="country" class="col-sm-4 control-label">Country:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="country" placeholder="Country">
+                                                        {!! Form::select('shpcountry',['USA'=>'USA','Germany'=>'Germany'],'', array('class' => 'form-control'))!!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="phoneNumber" class="col-sm-4 control-label">Phone Number:</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number">
+                                                        {!! Form::text('shpphone_no',Input::old('shpphone_no',isset($cust->phone_no) ? $cust->phone_no : '') ,array('class'=>'form-control', 'placeholder' => 'Phone Number')) !!}
                                                     </div>
                                                 </div>                                                                                                                                                                                   
-                                            </div>                                                       
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

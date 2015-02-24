@@ -50,7 +50,10 @@ Route::get('/customer/delete/{var?}', 'CustomerController@deleteCust');
 Route::get('/customerdata', 'CustomerController@getCustData');
 // Invoice
 Route::get('/invoice/add', 'InvoiceController@addInvoice');
+Route::post('/invoice/add', 'InvoiceController@addInvoice');
 Route::get('/invoice', 'InvoiceController@listInvoice');
+Route::get('/invoice/listShipingInfo', 'InvoiceController@listShipingInfo');
+
 // Purchase Order Customer
 Route::get('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
 Route::get('/po', 'PurchaseOrderCustomerController@listPurchaseOrder');
