@@ -1,6 +1,9 @@
 @extends('layouts.main')
 
 @section('content')
+{!! HTML::style('js/jquery-ui-1.11.3.custom/jquery-ui.css') !!}
+{!! HTML::script('js/jquery-ui-1.11.3.custom/jquery-ui.js') !!}
+
 <div class="wrapper">
     <div class="row">
         <div class="col-md-12">
@@ -47,7 +50,8 @@
                                                 </div>
                                                 <div class="form-group col-sm-6 col-md-4">
                                                     <label for="orderDate">Date : </label>
-                                                    <input id="orderDate" type="text" value="" size="16" class="form-control default-date-picker">
+                                                    <!-- <input id="orderDate" type="text" value="" size="16" class="form-control default-date-picker"> -->
+                                                    {!! Form::text('orderDate',Input::old('orderDate',isset($cust->orderDate) ? $cust->orderDate : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => 'Date', 'id' => 'orderDate')) !!}
                                                 </div>
                                                 <div class="form-group col-sm-6 col-md-4">
                                                     <label for="orderTime">Time : </label>
@@ -70,9 +74,9 @@
                                                 <label for="shippingDetails" class="col-sm-4 control-label">Shipping Details:</label>
                                                 <div class="col-sm-8">
                                                     <!--{!! Form::select('shippingDetails', ['1'=>'1'],'', array('class' => 'form-control')) !!}-->
-                                                    <select class="form-control">
+                                                    <select class="form-control" id='oldIdentifire' name='oldIdentifire'>
                                                         @foreach($shipping as $value)
-                                                        <option value="{{$value->id}}">{{$value->identifier}}</option>
+                                                        <option value="{{$value->identifier}}">{{$value->identifier}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -206,14 +210,14 @@
                                                 <label for="uploadArtPDF" class="col-sm-4 control-label">Upload Art PDF:</label>
                                                 <div class="col-md-8">
                                                     <!--<input id="uploadArtPDF" type="file">-->
-                                                    {!! Form::file('PDF', '') !!}
+                                                    {!! Form::file('PDF', Input::old('PDF',isset($cust->PDF) ? $cust->PDF : '')) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="uploadArtPDF" class="col-sm-4 control-label">Upload Art Ai:</label>
                                                 <div class="col-md-8">
                                                     <!--<input id="uploadArtAi" type="file">-->
-                                                    {!! Form::file('Ai', '') !!}
+                                                    {!! Form::file('Ai',  Input::old('Ai',isset($cust->Ai) ? $cust->Ai : '')) !!}
                                                 </div>
                                             </div>                                                                                                                                
                                             <a class="btn btn-link" href="{{ action('BlogartController@viewBlog')}}" role="button"><strong>Blog Art</strong></a>                                          
@@ -230,7 +234,7 @@
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                <table  class="display table table-bordered table-striped">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
@@ -241,11 +245,10 @@
                                                             <th>Amount</th>
                                                             <th>Action</th>
                                                         </tr> 
-                                                    </thead>
-                                                    <tbody>
+                                                    </thead>                                                    
                                                         <tr class="gradeX">
                                                             <td></td>
-                                                            <td><input type="text" class="form-control" id="searchSKU" placeholder="SKU"></td>
+                                                            <td><input type="text" class="form-control typeahead" id="searchSKU" placeholder="SKU"></td>
                                                             <td><input type="text" class="form-control" id="searchDescription"></td>
                                                             <td><input type="text" class="form-control" id="searchQty" size="3"></td>
                                                             <td></td>
@@ -279,7 +282,7 @@
                                                 <label for="comment" class="col-sm-2 col-md-1 control-label">Comment:</label>
                                                 <div class="col-sm-10 col-md-11">                                                            
                                                     <!--<textarea class="form-control" rows="3" placeholder="Company Name" id="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</textarea>-->
-                                                    {!! Form::textarea('description', null, array('class'=>'form-control','rows'=>'3','placeholder'=>'Comment'))!!}
+                                                    {!! Form::textarea('comments',Input::old('phone_no',isset($cust->phone_no) ? $cust->phone_no : ''), array('class'=>'form-control','rows'=>'3','placeholder'=>'Comments','id' => 'comments'))!!}
                                                 </div>
                                             </div>
 

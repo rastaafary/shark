@@ -12,6 +12,7 @@ use View;
 use Validator;
 use Datatables;
 use Auth;
+use Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Image;
 use Illuminate\Database\Query\Builder;
@@ -43,45 +44,66 @@ class PurchaseOrderCustomerController extends Controller
         if (isset($post['_token'])) {
             unset($post['_token']);
 
+            $rules = array(
+                'orderDate' => 'required',
+                'shippingMethod' => 'required',
+                'payment_terms' => 'required',
+                'require_date' => 'required',
+                'PDF' => 'mimes:pdf|max:1024',
+                'Ai' => 'mimes:pdf|max:1024'
+            );
+            $validator = Validator::make(Input::all(), $rules);
+            if ($validator->fails()) {
+                return redirect('/po/add')
+                                ->withErrors($validator)
+                                ->withInput(Input::all());
+                //->with(array("shipping" => $shipping, $validator));
+            }
+
+            $dt = $post['require_date'];
+            $my_date = date('m/d/Y', strtotime($dt));
+            $time = strtotime($my_date);
+            $reqDate = date('Y/m/d', $time);
+
+            $dt = $post['orderDate'];
+            $my_date = date('m/d/Y', strtotime($dt));
+            $time = strtotime($my_date);
+            $ordDate = date('Y/m/d', $time);
+
             if (isset($post['addNew'])) {
 
                 // Server side Validations
 
-                $rules = array(
-                    'comp_name' => 'required',
-                    'building_no' => 'required',
-                    'street_addrs' => 'required',
-                    'interior_no' => 'required',
-                    'city' => 'required',
-                    'state' => 'required',
-                    'zipcode' => 'required',
-                    'country' => 'required',
-                    'phone_no' => 'required',
-                    'identifer' => 'required',
-                );
-                $validator = Validator::make(Input::all(), $rules);
-                if ($validator->fails()) {
-                    $uid = Auth::user()->id;
-                    $cust = DB::table('customers')->where('user_id', $uid)->first();
-                    $cust_id = $cust->id;
-                    $shipping = DB::table('shipping_info')->where('customer_id', $cust_id)->get();
+                /*    $rules = array(
+                  'comp_name' => 'required',
+                  'building_no' => 'required',
+                  'street_addrs' => 'required',
+                  'interior_no' => 'required',
+                  'city' => 'required',
+                  'state' => 'required',
+                  'zipcode' => 'required',
+                  'country' => 'required',
+                  'phone_no' => 'required',
+                  'identifer' => 'required',
+                  );
+                  $validator = Validator::make(Input::all(), $rules);
+                  if ($validator->fails()) {
+                  $uid = Auth::user()->id;
+                  $cust = DB::table('customers')->where('user_id', $uid)->first();
+                  $cust_id = $cust->id;
+                  $shipping = DB::table('shipping_info')->where('customer_id', $cust_id)->get();
 
-                    return redirect('/po/add')
-                                    ->withErrors($validator)
-                                    ->withInput(Input::all());
-                    //->with(array("shipping" => $shipping, $validator));
-                }
-                //Set the Date Format
-                $dt = $post['require_date'];
-                $my_date = date('m/d/Y', strtotime($dt));
-                $time = strtotime($my_date);
-                $date = date('Y/m/d', $time);
+                  return redirect('/po/add')
+                  ->withErrors($validator)
+                  ->withInput(Input::all());
+                  //->with(array("shipping" => $shipping, $validator));
+                  } */
 
                 //Get Customer ID
                 $customer = DB::table('customers')->where('user_id', $post['id'])->first();
 
                 // Add New Shipping Information
-                DB::table('shipping_info')->insert(
+                $shp_info = DB::table('shipping_info')->insert(
                         array('customer_id' => $customer->id,
                             'comp_name' => $post['comp_name'],
                             'building_no' => $post['building_no'],
@@ -94,16 +116,20 @@ class PurchaseOrderCustomerController extends Controller
                             'phone_no' => $post['phone_no'],
                             'identifier' => $post['identifer'],
                             'type' => $post['shippingMethod'],
-                            'date' => $date,
+                            'date' => $ordDate,
+                            'invoice_id' => '',
                 ));
             } else {
-
                 //Get Customer ID
-                $customer = DB::table('customers')->where('user_id', $post['id'])->first();
+                $customer_data = DB::table('customers')->where('user_id', $post['id'])->first();
+                $customer = DB::table('shipping_info')
+                        ->where('customer_id', $customer_data->id)
+                        ->where('identifier', $post['oldIdentifire'])
+                        ->first();
 
                 // Add Old Shipping Information
-                DB::table('shipping_info')->insert(
-                        array('customer_id' => $customer->id,
+                $shp_info = DB::table('shipping_info')->insert(
+                        array('customer_id' => $customer->customer_id,
                             'comp_name' => $customer->comp_name,
                             'building_no' => $customer->building_no,
                             'street_addrs' => $customer->street_addrs,
@@ -113,118 +139,73 @@ class PurchaseOrderCustomerController extends Controller
                             'zipcode' => $customer->zipcode,
                             'country' => $customer->country,
                             'phone_no' => $customer->phone_no,
-                            'identifier' => 'idef',
+                            'identifier' => $post['oldIdentifire'],
                             'type' => $post['shippingMethod'],
-                            'date' => $date,
+                            'date' => $ordDate,
+                            'invoice_id' => '',
                 ));
             }
 
-            /*
-              $rules = array(
-              'comp_name' => 'required',
-              'zipcode' => 'required',
-              'building_no' => 'required',
-              'street_addrs' => 'required',
-              'phone_no' => 'required',
-              'interior_no' => 'required',
-              'city' => 'required',
-              'state' => 'required',
-              'contact_name' => 'required',
-              'position' => 'required',
-              'contact_email' => 'required|Email|unique:user,email',
-              'password' => 'required',
-              'contact_mobile' => 'required',
-              'contact_birthdate' => 'required',
-              );
+            //Get the Customer Details
+            // $customer = DB::table('customers')->where('user_id', $id)->first();
+            $customer = DB::table('customers')->where('user_id', $post['id'])->first();
 
-              $validator = Validator::make(Input::all(), $rules);
-              if ($validator->fails()) {
-              return Redirect::to('customer/add')
-              ->withErrors($validator)
-              ->withInput(Input::except('password'));
-              }
-             */
-            /*   $dt = $post['require_date'];
-              $my_date = date('m/d/Y', strtotime($dt));
-              $time = strtotime($my_date);
-              $date = date('Y/m/d', $time);
+            //$blogfiles = '';
+            //Upload the PDF
+            if (isset($post['PDF'])) {
+                $pdfName = $post['PDF']->getClientOriginalName();
+                $file = Input::file('PDF');
+                $destinationPath = 'images/Blog_art';
+                $pdfFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $pdfName;
+                Input::file('PDF')->move($destinationPath, $pdfFilename);
+                $post['PDF'] = $pdfFilename;
+                //$blogfiles = $blogfiles . ' ' . $filename;
+            }
 
-              //Get the Customer Details
-              $customer = DB::table('customers')->where('user_id', $id)->first();
+            //Upload the Ai
+            if (isset($post['Ai'])) {
+                $aiName = $post['Ai']->getClientOriginalName();
+                $file = Input::file('Ai');
+                $destinationPath = 'images/Blog_art';
+                $aiFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $aiName;
+                Input::file('Ai')->move($destinationPath, $aiFilename);
+                $post['Ai'] = $aiFilename;
+                //$aiFile = $blogfiles . ' ' . $filename;
+            }
 
-              $blogfiles = '';
-              //Upload the PDF
-              if (isset($post['PDF'])) {
-              $imageName = $post['PDF']->getClientOriginalName();
+            // Get Shipping Id
+            //$shipping = DB::table('shipping_info')->where('customer_id', $id)->last();
+            $shipping = DB::table('shipping_info')->orderBy('id', 'desc')->first();
 
-              $file = Input::file('PDF');
-              $destinationPath = 'images/Blog_art';
-              $filename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $imageName;
-              Input::file('PDF')->move($destinationPath, $filename);
-              //$post['PDF'] = $filename;
-              $blogfiles = $blogfiles . ' ' . $filename;
-              }
+            //Add Purchase Order
+            $po = DB::table('purchase_order')->insert(
+                    array('customer_id' => $customer->id,
+                        'shipping_id' => $shipping->id,
+                        'date' => $ordDate,
+                        'payment_terms' => $post['payment_terms'],
+                        'require_date' => $reqDate,
+                        'comments' => $post['comments']
+                    )
+            );
+            $last_PO_id = DB::table('purchase_order')->orderBy('id', 'desc')->first();
 
-              //Upload the Ai
-              if (isset($post['Ai'])) {
-              $imageName = $post['Ai']->getClientOriginalName();
+            //Add Blog Art Data
+            $blog_art = DB::table('blog_art_file')->insert(
+                    array('po_id' => $last_PO_id->id,
+                        'customer_id' => $customer->id,
+                        'name' => '',
+                        'pdf' => $pdfFilename,
+                        'ai' => $aiFilename)
+            );
 
-              $file = Input::file('Ai');
-              $destinationPath = 'images/Blog_art';
-              $filename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $imageName;
-              Input::file('Ai')->move($destinationPath, $filename);
-              //$post['Ai'] = $filename;
-              $blogfiles = $blogfiles . ' ' . $filename;
-              }
-
-              // Add Shipping Information
-              DB::table('shipping_info')->insert(
-              array('customer_id' => $customer->id,
-              'comp_name' => $customer->comp_name,
-              'building_no' => $customer->building_no,
-              'street_addrs' => $customer->street_addrs,
-              'interior_no' => $customer->interior_no,
-              'city' => $customer->city,
-              'state' => $customer->state,
-              'zipcode' => $customer->zipcode,
-              'country' => $customer->country,
-              'phone_no' => $customer->phone_no,
-              'identifier' => 'idef',
-              'type' => $post['shippingMethod'],
-              'date' => $date,
-              )
-              );
-
-              // Get Shipping Id
-              $shipping = DB::table('shipping_info')->where('customer_id', $id)->last();
-
-              //Add Purchase Order
-              $po = DB::table('purchase_order')->insert(
-              array('customer_id' => $customer->id,
-              'shipping_id' => $customer->comp_name,
-              'building_no' => $customer->building_no,
-              )
-              );
-
-              //Add Blog Art Data
-              DB::table('blog_art_file')->insert(
-              array('po_id' => $po->id,
-              'customer_id' => $customer->id,
-              'name' => $customer->$blogfiles)
-              );
-             */
+            Session::flash('message', "PO Customer Added Sucessfully.");
+            Session::flash('alert-class', 'alert-danger');
+            return View::make('PurchaseOrderCustomer.listPurchaseOrder');
             //$last_id = DB::table('user')->orderBy('id', 'desc')->first();
-
-            /* DB::table('customers')->insert(
-              array('user_id' => $last_id->id, 'customer_image' => $post['image'], 'comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date)
-              );
-              Session::flash('alert-success', 'success');
-              Session::flash('message', 'Customer Added Successfully!!');
-              return redirect('/customer'); */
         }
-        //$shipping = DB::table('shipping_info')->where('customer_id', $id)->fisrt();
         //return redirect('/userList/add')->with('identifier', $shipping->identifier);
         $uid = Auth::user()->id;
+
         if (isset($uid) && $uid != null) {
             $cust = DB::table('customers')->where('user_id', $uid)->first();
             $cust_id = $cust->id;
@@ -239,6 +220,13 @@ class PurchaseOrderCustomerController extends Controller
     {
 
         return view('PurchaseOrderCustomer.listPurchaseOrder', ['page_title' => 'Purchase Order']);
+    }
+    
+    public function searchSKU()
+    {
+       $name =  Input::get('name');
+       $data = $cust = DB::table('part_number')->get();     
+       return Response(json_encode($data));       
     }
 
 }

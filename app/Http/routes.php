@@ -55,6 +55,8 @@ Route::get('/invoice', 'InvoiceController@listInvoice');
 Route::get('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
 Route::get('/po', 'PurchaseOrderCustomerController@listPurchaseOrder');
 Route::post('/po/add/{var?}', 'PurchaseOrderCustomerController@addPurchaseOrder');
+Route::get('/po/add/searchSKU/{var?}', 'PurchaseOrderCustomerController@searchSKU');
+
 
 //when Customer Login
 Route::get('/po/add/{var?}', 'PurchaseOrderCustomerController@userDetails');

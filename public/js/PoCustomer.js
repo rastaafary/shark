@@ -1,9 +1,44 @@
 $(document).ready(function () {
 
+    var data = $("#oldIdentifire").val();
+    if (data == null)
+    {
+        $('#addNew').prop('checked', true);
+        $("#newdetails").show();
+    }
+    /*
+     $("#btnSubmit").click(function () {
+     
+     if ($('#addNew').is(':unchecked'))
+     {
+     var data = $("#oldIdentifire").val();
+     if (data == null)
+     {
+     alert("Please Enter Address Details");
+     $('#addNew').focus();
+     return false;
+     }
+     }
+     });*/
     $("#addNew").click(function () {
         if ($('#addNew').is(':checked') ? $("#newdetails").show() : $("#newdetails").hide())
             ;
     });
+
+    $('#require_date').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayBtn: true,
+        todayHighlight: true
+    });
+    $('#orderDate').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayBtn: true,
+        todayHighlight: true
+    });
+
+
     jQuery.validator.addMethod("onlyname", function (value, element) {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
@@ -23,7 +58,105 @@ $(document).ready(function () {
             });
         }
     });
-    
+
+    // $('#searchSKU').select2();
+    $("#searchSKU").keyup(function () {
+
+        name = $("#searchSKU").val();
+        // alert(data);
+        $.ajax({
+            type: 'GET',
+            url: '/po/add/searchSKU',
+            data: 'name=' + name,
+            async: false,
+            success: function (responce)
+            {
+
+                var availableTags = [];
+                var jason = $.parseJSON(responce);
+                $.each(jason, function (k, data) {
+                    //var availableTags[k] = data.SKU;
+                    data.value = data.SKU;
+                    availableTags.push(data);
+
+                });
+                //  alert(availableTags);
+                //alert(availableTags);
+
+
+             /*   $("#searchSKU").autocomplete()
+                        .data("ui-autocomplete")._renderItem = function (ul, item) {
+                             return $("<li></li>")
+                            .data("item.autocomplete", item)
+                            //instead of <span> use <a>
+                            .append("<a class='" + item.id + "'></a><a>" + item.value + "</a>")
+                            .appendTo(ul);
+                };
+*/
+
+                   $("#searchSKU").autocomplete({
+                 
+                 source: availableTags,
+                 minLength: 0,
+                 focus: function (event, ui) {
+                 $('.post-to').val(ui.item.value);
+                 alert(ui.item.value);
+                 return true;
+                 },
+                 select: function (event, ui) {
+                 alert(ui.item.value);
+                 return false;
+                 }
+                 
+                 }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                 return $("<li></li>")
+                 .data("item.autocomplete", item)
+                 .append("<a class='" + item.id + "'></a><a>" + item.value + "</a>")
+                 .appendTo(ul);
+                 };
+                 
+                /*   var availableTags = [
+                 "ActionScript",
+                 "AppleScript",
+                 "Asp",
+                 "BASIC",
+                 "C",
+                 "C++",
+                 "Clojure",
+                 "COBOL",
+                 "ColdFusion",
+                 "Erlang",
+                 "Fortran",
+                 "Groovy",
+                 "Haskell",
+                 "Java",
+                 "JavaScript",
+                 "Lisp",
+                 "Perl",
+                 "PHP",
+                 "Python",
+                 "Ruby",
+                 "Scala",
+                 "Scheme"
+                 ];
+                 
+                 $("#searchSKU").autocomplete({
+                 source: availableTags
+                 });
+                 
+                 
+                 /*
+                 $.each(jason, function (k, data) {
+                 $("#searchDescription").val(data.SKU);
+                 });
+                 // $("#searchDescription").val(responce);*/
+            }
+        });
+
+    });
+
+
+
     $('#PoCustomer').validate({
         rules: {
             'comp_name': {

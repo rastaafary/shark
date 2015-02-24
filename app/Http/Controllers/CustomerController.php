@@ -142,7 +142,7 @@ class CustomerController extends Controller
             $time = strtotime($my_date);
             $date = date('Y/m/d', $time);
 
-            if (isset($post['password'])) {
+            if (!isset($post['password'])) {
                 $myquery = DB::table('user')->select('password')->where('id', $post['id'])->first();
                 $post['password'] = $myquery->password;
             } else {
