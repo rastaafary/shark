@@ -237,7 +237,16 @@ class PurchaseOrderCustomerController extends Controller
     public function getDescription()
     {
         $sku = Input::get('description');
-        $data = DB::table('part_number')->select('description','cost')->where('SKU', $sku)->get();
+        $data = DB::table('part_number')->select('SKU','description','cost')->where('SKU', $sku)
+                ->orWhere('description', $sku)
+                ->get();
+        return Response(json_encode($data));
+    }
+    
+     public function searchDiscription()
+    {
+        $sku = Request::segment(4);
+        $data = DB::table('part_number')->select('description')->where('description', 'like', '%' . $sku . '%')->get();
         return Response(json_encode($data));
     }
     

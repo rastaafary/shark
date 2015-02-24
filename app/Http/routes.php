@@ -57,6 +57,7 @@ Route::get('/po', 'PurchaseOrderCustomerController@listPurchaseOrder');
 Route::post('/po/add/{var?}', 'PurchaseOrderCustomerController@addPurchaseOrder');
 Route::get('/po/add/searchSKU/{var?}', 'PurchaseOrderCustomerController@searchSKU');
 Route::get('/po/getDescription', 'PurchaseOrderCustomerController@getDescription');
+Route::get('/po/add/searchDiscription/{var?}', 'PurchaseOrderCustomerController@searchDiscription');
 Route::post('/po/add/order', 'PurchaseOrderCustomerController@addOrder');
 //when Customer Login
 Route::get('/po/add/{var?}', 'PurchaseOrderCustomerController@userDetails');

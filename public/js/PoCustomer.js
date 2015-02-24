@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     var data = $("#oldIdentifire").val();
     if (data == null)
@@ -16,47 +16,61 @@ $(document).ready(function() {
 
     bestPictures.initialize();
 
-    $('.typeahead').typeahead(null, {
+    $('#searchSKU.typeahead').typeahead(null, {
         name: 'best-pictures',
         displayKey: 'SKU',
         source: bestPictures.ttAdapter()
     });
 
+    var bestPics = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('description'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: '/po/add/searchDiscription',
+        remote: '/po/add/searchDiscription/%QUERY'
+    });
 
-    /*
-     $("#btnSubmit").click(function () {
-     
-     if ($('#addNew').is(':unchecked'))
-     {
-     var data = $("#oldIdentifire").val();
-     if (data == null)
-     {
-     alert("Please Enter Address Details");
-     $('#addNew').focus();
-     return false;
-     }
-     }
-     });*/
-    $("#addNew").click(function() {
+    bestPics.initialize();
+
+    $('#searchDescription.typeahead').typeahead(null, {
+        name: 'best-pictures',
+        displayKey: 'description',
+        source: bestPics.ttAdapter()
+    });
+
+    $("#addNew").click(function () {
         if ($('#addNew').is(':checked') ? $("#newdetails").show() : $("#newdetails").hide())
             ;
     });
+    $('#searchDescription').focus(function(){
+        $('#searchSKU').val('');
+    });
+    
 
-    $(".tt-dropdown-menu").click(function() {
-        description = $('#searchSKU').val();
+    $(".tt-dropdown-menu").click(function () {
+        skuData = $('#searchSKU').val();
+        disData = $('#searchDescription').val();
+        if (skuData != '') {
+            description = skuData;
+            $('#searchDescription').val('');
+        } else if (disData != '') {
+            description = disData;
+            $('#searchSKU').val('');
+        }
         // var token = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
             type: 'GET',
             url: '/po/getDescription',
             data: 'description=' + description,
             async: false,
-            success: function(responce)
+            success: function (responce)
             {
                 var jason = $.parseJSON(responce);
-                $.each(jason, function(idx, data) {
+                $.each(jason, function (idx, data) {
+                     $('#searchSKU').val(data.SKU);
                     $('#searchDescription').val(data.description);
                     $('#unitprice').val(data.cost);
                 });
+                $("#searchQty").prop("disabled", false);
             }
         });
 
@@ -76,7 +90,7 @@ $(document).ready(function() {
     });
 
 
-    jQuery.validator.addMethod("onlyname", function(value, element) {
+    jQuery.validator.addMethod("onlyname", function (value, element) {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
 
@@ -85,7 +99,7 @@ $(document).ready(function() {
         "bServerSide": false,
         // "sAjaxSource": "",
         "aaSorting": [[7, "desc"]],
-        "fnServerData": function(sSource, aoData, fnCallback) {
+        "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
                 "type": "GET",
@@ -95,124 +109,25 @@ $(document).ready(function() {
             });
         }
     });
-    
-    $("#searchQty").blur(function() {
+
+    $("#searchQty").blur(function () {
         qty = $('#searchQty').val();
         amount = $("#unitprice").val();
-        total = qty*amount;
+        total = qty * amount;
         $("#amount").val(total);
     });
-    $("#addOrder").click(function() {
+    $("#addOrder").click(function () {
         $.ajax({
             type: 'post',
             url: '/po/add/order',
             data: 'name=' + "ABC",
             async: false,
-            success: function(responce)
+            success: function (responce)
             {
                 alert("Hi");
             }
         });
     });
-
-
-    // $('#searchSKU').select2();
-    /*  $("#searchSKU").keyup(function () {
-     name = $("#searchSKU").val();
-     // alert(data);
-     $.ajax({
-     type: 'GET',
-     url: '/po/add/searchSKU',
-     data: 'name=' + name,
-     async: false,
-     success: function (responce)
-     {
-     
-     var availableTags = [];
-     var jason = $.parseJSON(responce);
-     $.each(jason, function (k, data) {
-     //var availableTags[k] = data.SKU;
-     data.value = data.SKU;
-     availableTags.push(data);
-     
-     });
-     //  alert(availableTags);
-     //alert(availableTags);
-     
-     
-     /*   $("#searchSKU").autocomplete()
-     .data("ui-autocomplete")._renderItem = function (ul, item) {
-     return $("<li></li>")
-     .data("item.autocomplete", item)
-     //instead of <span> use <a>
-     .append("<a class='" + item.id + "'></a><a>" + item.value + "</a>")
-     .appendTo(ul);
-     };
-     */
-
-    /*         $("#searchSKU").autocomplete({
-     
-     source: availableTags,
-     minLength: 0,
-     focus: function (event, ui) {
-     $('.post-to').val(ui.item.value);
-     alert(ui.item.value);
-     return true;
-     },
-     select: function (event, ui) {
-     alert(ui.item.value);
-     return false;
-     }
-     
-     }).data("ui-autocomplete")._renderItem = function (ul, item) {
-     return $("<li></li>")
-     .data("item.autocomplete", item)
-     .append("<a class='" + item.id + "'></a><a>" + item.value + "</a>")
-     .appendTo(ul);
-     };
-     
-     /*   var availableTags = [
-     "ActionScript",
-     "AppleScript",
-     "Asp",
-     "BASIC",
-     "C",
-     "C++",
-     "Clojure",
-     "COBOL",
-     "ColdFusion",
-     "Erlang",
-     "Fortran",
-     "Groovy",
-     "Haskell",
-     "Java",
-     "JavaScript",
-     "Lisp",
-     "Perl",
-     "PHP",
-     "Python",
-     "Ruby",
-     "Scala",
-     "Scheme"
-     ];
-     
-     $("#searchSKU").autocomplete({
-     source: availableTags
-     });
-     
-     
-     /*
-     $.each(jason, function (k, data) {
-     $("#searchDescription").val(data.SKU);
-     });
-     // $("#searchDescription").val(responce);*/
-    /*     }
-     });
-     
-     });*/
-
-
-
     $('#PoCustomer').validate({
         rules: {
             'comp_name': {
@@ -306,15 +221,15 @@ $(document).ready(function() {
                 required: 'Please upload ai.'
             }
         },
-        highlight: function(element) {
+        highlight: function (element) {
             $(element).removeClass("textinput");
             $(element).addClass("errorHighlight");
         },
-        unhighlight: function(element) {
+        unhighlight: function (element) {
             $(element).removeClass("errorHighlight");
             $(element).addClass("textinput");
         },
-        errorPlacement: function(error, element) {
+        errorPlacement: function (error, element) {
             error.insertAfter(element);
         }
     });

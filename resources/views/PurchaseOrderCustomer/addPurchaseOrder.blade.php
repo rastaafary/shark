@@ -257,22 +257,13 @@
                                                     <tr class="gradeX">
                                                         <td></td>
                                                         <td><input type="text" class="form-control typeahead" id="searchSKU" placeholder="SKU"></td>
-                                                        <td><input type="text" class="form-control" id="searchDescription"></td>
-                                                        <td><input type="text" class="form-control" id="searchQty" size="3"></td>
+                                                        <td><input type="text" class="form-control typeahead" id="searchDescription"></td>
+                                                        <td><input type="text" class="form-control" id="searchQty" size="3" disabled></td>
                                                         <td><input type="text" class="form-control" id="unitprice" size="3" disabled></td>
                                                         <td><input type="text" class="form-control" id="amount" size="3" disabled></td>
                                                         <td><a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>
                                                     </tr>
-                                                    <tr class="gradeX">
-                                                        <td>1</td>
-                                                        <td>BF0013</td>
-                                                        <td>Barcelona FC sport Jersey</td>
-                                                        <td>50</td>
-                                                        <td>13</td>
-                                                        <td>$5000</td>
-                                                        <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editProductModal"><span class="fa fa-pencil"></span></a></td>
-                                                    </tr>                                                 
+                                                                                                  
                                                     <tr class="gradeX">
                                                         <td></td>
                                                         <td></td>
