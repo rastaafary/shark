@@ -96,6 +96,12 @@ $(document).ready(function() {
         }
     });
     
+    $("#searchQty").blur(function() {
+        qty = $('#searchQty').val();
+        amount = $("#unitprice").val();
+        total = qty*amount;
+        $("#amount").val(total);
+    });
     $("#addOrder").click(function() {
         $.ajax({
             type: 'post',

@@ -260,7 +260,7 @@
                                                         <td><input type="text" class="form-control" id="searchDescription"></td>
                                                         <td><input type="text" class="form-control" id="searchQty" size="3"></td>
                                                         <td><input type="text" class="form-control" id="unitprice" size="3" disabled></td>
-                                                        <td></td>
+                                                        <td><input type="text" class="form-control" id="amount" size="3" disabled></td>
                                                         <td><a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>
                                                     </tr>
                                                     <tr class="gradeX">
