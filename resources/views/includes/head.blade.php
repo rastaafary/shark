@@ -43,12 +43,19 @@
 {!! HTML::style('css/style.css') !!}
 {!! HTML::style('css/style-responsive.css') !!}
 
+{!! HTML::style('js/jquery-ui-1.11.3.custom/jquery-ui.css') !!}
+{!! HTML::script('js/jquery-ui-1.11.3.custom/jquery-ui.js') !!}
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
+
+{!! HTML::script('js/typeahead.bundle.js') !!}
+
 {!! HTML::script('js/part.js') !!}
 {!! HTML::script('js/manageUser.js') !!}
 {!! HTML::script('js/forgotpassword.js') !!}
 {!! HTML::script('js/customer.js') !!}
 {!! HTML::script('js/invoice.js') !!}
 {!! HTML::script('js/PoCustomer.js') !!}
+{!! HTML::script('js/payment.js') !!}
 
 
 

@@ -15,7 +15,6 @@ use Request;
 //use Illuminate\Http\Request;
 use App\Http\Controllers\Image;
 use Illuminate\Database\Query\Builder;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class InvoiceController extends Controller
 {

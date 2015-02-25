@@ -73,6 +73,8 @@ Route::get('/blogArt', 'BlogartController@viewBlog');
 Route::get('/payment', 'PaymentController@listPayment');
 Route::get('/payment/add', 'PaymentController@addPayment');
 Route::get('/payment/view', 'PaymentController@viewPayment');
+Route::get('/payment/searchCustomer/{var?}', 'PaymentController@searchCustomer');
+Route::get('/payment/getCustInvoice', 'PaymentController@getCustInvoice');
 // Manage User
 Route::get('/userList', 'ManageUserController@userList');
 Route::get('/userList/add', 'ManageUserController@addUser');

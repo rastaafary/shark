@@ -26,16 +26,18 @@
                                                 <div class="form-inline">
                                                     <div class="form-group col-sm-3 col-md-3">
                                                         <label for="paymentDate">Date : </label>
-                                                        <input id="paymentDate" type="text" value="" size="10" class="form-control default-date-picker" placeholder="20/01/2015">
+                                                        <input id="paymentDate" type="text" value="" size="10" class="form-control default-date-picker" placeholder="Date">
                                                     </div>
                                                     <div class="form-group col-sm-4 col-md-4">
-                                                        <label for="searchCustomer">Customer : </label>
-                                                        <input type="text" class="form-control" size="15" id="searchCustomer" placeholder="Customer ID, Name,">
+                                                        <label for="searchCustomer" >Customer : </label>
+                                                        <input type="text" class="form-control typeahead" size="15" id="searchCustomer" placeholder="Customer ID, Name,">
                                                     </div>                                                    
                                                     <div class="form-group col-sm-4 col-md-4">
                                                         <label for="invoiceSelect">Invoice# : </label>
-                                                        <select class="form-control" id="invoiceSelect">
-                                                            <option>ID, Amount</option>
+                                                        <select class="form-control" id="invoiceSelect" name='invoiceSelect'>
+                                                            @foreach($invoice as $value)
+                                                            <option value="{{$value->invoice_no}}">{{$value->invoice_no}}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>                                                  
                                                 </div>
@@ -44,7 +46,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-inline">
                                                             <div class="form-group col-sm-3 col-md-3">
-                                                                <label for="txtAmount">Amount : </label>
+                                                                <label for="txtAmount" class="control-label">Amount : </label>
                                                                 <input id="txtAmount" type="text" value="" size="10" class="form-control" placeholder="$$$$">
                                                             </div>
                                                             <div class="form-group col-sm-9 col-md-9">

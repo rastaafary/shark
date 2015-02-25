@@ -1,11 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-{!! HTML::style('js/jquery-ui-1.11.3.custom/jquery-ui.css') !!}
-{!! HTML::script('js/jquery-ui-1.11.3.custom/jquery-ui.js') !!}
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
 
-{!! HTML::script('js/typeahead.bundle.js') !!}
 <div class="wrapper">
     <div class="row">
         <div class="col-md-12">
