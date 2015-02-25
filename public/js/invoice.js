@@ -65,7 +65,7 @@ $(document).ready(function () {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
 
-    /*   $('#Invoice').validate({
+       $('#Invoice').validate({
      rules: {
      'comp_name': {
      required: true,
@@ -186,7 +186,7 @@ $(document).ready(function () {
      errorPlacement: function (error, element) {
      error.insertAfter(element);
      }
-     });*/
+     });
     /*
      var bestPictures = new Bloodhound({
      datumTokenizer: Bloodhound.tokenizers.obj.whitespace('SKU'),

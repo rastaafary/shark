@@ -128,7 +128,7 @@ $(document).ready(function () {
             }
         });
     });
-    $('#PoCustomer').validate({
+  /*  $('#PoCustomer').validate({
         rules: {
             'comp_name': {
                 required: true,
@@ -232,5 +232,5 @@ $(document).ready(function () {
         errorPlacement: function (error, element) {
             error.insertAfter(element);
         }
-    });
+    });*/
 });
