@@ -1,7 +1,5 @@
 <?php
 
-//namespace App\Http\Controllers\Customer;
-
 namespace App\Http\Controllers;
 
 use File;

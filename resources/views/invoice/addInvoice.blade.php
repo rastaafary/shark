@@ -15,7 +15,7 @@
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="Add">
                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/invoice/add','name'=>'Invoice','id'=>'Invoice','files' => true)) !!}
-                            {!! Form::hidden('id',Input::old('id',isset(Auth::user()->id) ? Auth::user()->id : '')) !!}                         
+                            {!! Form::hidden('user_id',Input::old('user_id',isset(Auth::user()->id) ? Auth::user()->id : '')) !!}
                                 <div class="media usr-info">
                                     <div class="pull-left">                                        
                                         @if(Auth::user()->image)
@@ -47,11 +47,11 @@
                                                     </div>
                                                     <div class="form-group col-sm-4 col-md-4">
                                                         <label class="control-label" for="invoiceDateTime">Date/Time : </label>
-                                                        <label class="control-label" id="invoiceDateTime"><?php echo date('d/m/Y h:i:s A'); ?></label>
+                                                        <label class="control-label" id="invoiceDateTime" name="invoiceDateTime"><?php echo date('d/m/Y h:i:s A'); ?></label>
                                                     </div>  
                                                     <div class="form-group col-sm-4  col-md-4"> 
                                                         <label class="control-label" for="selectPO">Select PO : </label>
-                                                        <select class="form-control" id="selectPO">
+                                                        <select class="form-control" id="selectPO" name='selectPO'>
                                                             <option value="">Select PO</option>
                                                             @foreach($po as $value)
                                                             <option value="{{$value->id}}">{{$value->id}}</option>
@@ -137,8 +137,8 @@
                                                 <div class="form-group">  
                                                     <label for="oldShippingInfo" class="col-sm-4 control-label">Select Shipping Details :</label>
                                                     <div class="col-sm-6">
-                                                        <select class="form-control col-sm-6" id="oldShippingInfo">                                                            
-                                                        </select>
+                                                        <select class="form-control col-sm-6" id="oldShippingInfo" name='oldShippingInfo'>                                                            
+                                                        </select>                                                       
                                                     </div>
                                                 </div>
                                                 <div class="form-group"> 
@@ -201,7 +201,14 @@
                                                     <div class="col-sm-8">
                                                         {!! Form::text('shpphone_no',Input::old('shpphone_no',isset($cust->phone_no) ? $cust->phone_no : '') ,array('class'=>'form-control', 'placeholder' => 'Phone Number')) !!}
                                                     </div>
-                                                </div>                                                                                                                                                                                   
+                                                </div> 
+                                                    <div class="form-group">
+                                                    <label for="identifier" class="col-sm-4 control-label">Identifier :</label>
+                                                    <div class="col-sm-8">
+                                                        <!--<input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number">-->
+                                                        {!! Form::text('shpidentifer','' ,array('class'=>'form-control', 'placeholder' => 'Identifier')) !!}
+                                                    </div>
+                                                </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -231,7 +238,7 @@
                                                         <tbody>
                                                             <tr class="gradeX">
                                                                 <td></td>
-                                                                <td><input type="text" class="form-control" id="searchSKU" placeholder="SKU" size="4"></td>
+                                                                <td><select class="form-control" id="selectSKU" name='selectSKU'></select></td>
                                                                 <td><input type="text" class="form-control" id="searchDescription"></td>
                                                                 <td><input type="text" class="form-control" id="searchQty" size="3"></td>
                                                                 <td><input type="text" class="form-control" id="searchUnitPrice" size="3"></td>
@@ -268,8 +275,9 @@
                                                 <div class="form-group col-sm-12">
                                                     <label for="shippingMethod" class="control-label col-sm-2" >Shipping Method:</label>
                                                     <div class="col-sm-3">
-                                                        <select class="form-control" id="shippingMethod">
-                                                            <option>Air, Express</option>
+                                                        <select class="form-control" id="shippingMethod" name="shippingMethod">
+                                                            <option>Air</option>
+                                                            <option>Express</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-7">

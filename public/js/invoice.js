@@ -28,15 +28,19 @@ $(document).ready(function () {
                 $("#searchQty").prop("disabled", false);
             }
         });
+
         $.ajax({
             type: 'GET',
-            url: '/invoice/paymentTerm',
+            url: '/invoice/listSKU',
             data: 'id=' + id,
             async: false,
             success: function (responce)
             {
-                var jason = $.parseJSON(responce);
-                $('#paymentTerm').html(jason.payment_terms);              
+               $('.skuData').remove();
+                var jason = responce;
+                $.each(jason, function (idx, data) {
+                    $("#selectSKU").append("<option val='" + data + "' class='skuData'>" + data + "</option>");
+                });
             }
         });
     });
@@ -61,128 +65,128 @@ $(document).ready(function () {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
 
-    $('#Invoice').validate({
-        rules: {
-            'comp_name': {
-                required: true,
-                onlyname: true
-            },
-            'zipcode': {
-                required: true
-            },
-            'building_no': {
-                required: true
-            },
-            'street_addrs': {
-                required: true
-            },
-            'phone_no': {
-                required: true,
-                mobileNo: true
-            },
-            'interior_no': {
-                required: true
-            },
-            'city': {
-                required: true
-            },
-            'state': {
-                required: true
-            },
-            'shpcomp_name': {
-                required: true,
-                onlyname: true
-            },
-            'shpzipcode': {
-                required: true
-            },
-            'shpbuilding_no': {
-                required: true
-            },
-            'shpstreet_addrs': {
-                required: true
-            },
-            'shpphone_no': {
-                required: true,
-                mobileNo: true
-            },
-            'shpinterior_no': {
-                required: true
-            },
-            'shpcity': {
-                required: true
-            },
-            'shpstate': {
-                required: true
-            }
-
-        },
-        messages: {
-            'comp_name': {
-                required: 'Please enter company name.',
-                onlyname: 'Please enter valid company name.'
-            },
-            'building_no': {
-                required: 'Please enter building no.'
-            },
-            'street_addrs': {
-                required: 'Please enter street address.'
-            },
-            'phone_no': {
-                required: 'Please enter phone no.',
-                mobileNo: 'Please enter valid phone no.'
-            },
-            'interior_no': {
-                required: 'Please enter interior no.'
-            },
-            'city': {
-                required: 'Please enter city.'
-            },
-            'state': {
-                required: 'Please enter state.'
-            },
-            'zipcode': {
-                required: 'Please enter zipcode.'
-            },
-            'shpcomp_name': {
-                required: 'Please enter company name.',
-                onlyname: 'Please enter valid company name.'
-            },
-            'shpbuilding_no': {
-                required: 'Please enter building no.'
-            },
-            'shpstreet_addrs': {
-                required: 'Please enter street address.'
-            },
-            'shpphone_no': {
-                required: 'Please enter phone no.',
-                mobileNo: 'Please enter valid phone no.'
-            },
-            'shpinterior_no': {
-                required: 'Please enter interior no.'
-            },
-            'shpcity': {
-                required: 'Please enter city.'
-            },
-            'shpstate': {
-                required: 'Please enter state.'
-            },
-            'shpzipcode': {
-                required: 'Please enter zipcode.'
-            },
-        },
-        highlight: function (element) {
-            $(element).removeClass("textinput");
-            $(element).addClass("errorHighlight");
-        },
-        unhighlight: function (element) {
-            $(element).removeClass("errorHighlight");
-            $(element).addClass("textinput");
-        },
-        errorPlacement: function (error, element) {
-            error.insertAfter(element);
-        }
-    });
+    /*   $('#Invoice').validate({
+     rules: {
+     'comp_name': {
+     required: true,
+     onlyname: true
+     },
+     'zipcode': {
+     required: true
+     },
+     'building_no': {
+     required: true
+     },
+     'street_addrs': {
+     required: true
+     },
+     'phone_no': {
+     required: true,
+     mobileNo: true
+     },
+     'interior_no': {
+     required: true
+     },
+     'city': {
+     required: true
+     },
+     'state': {
+     required: true
+     },
+     'shpcomp_name': {
+     required: true,
+     onlyname: true
+     },
+     'shpzipcode': {
+     required: true
+     },
+     'shpbuilding_no': {
+     required: true
+     },
+     'shpstreet_addrs': {
+     required: true
+     },
+     'shpphone_no': {
+     required: true,
+     mobileNo: true
+     },
+     'shpinterior_no': {
+     required: true
+     },
+     'shpcity': {
+     required: true
+     },
+     'shpstate': {
+     required: true
+     }
+     
+     },
+     messages: {
+     'comp_name': {
+     required: 'Please enter company name.',
+     onlyname: 'Please enter valid company name.'
+     },
+     'building_no': {
+     required: 'Please enter building no.'
+     },
+     'street_addrs': {
+     required: 'Please enter street address.'
+     },
+     'phone_no': {
+     required: 'Please enter phone no.',
+     mobileNo: 'Please enter valid phone no.'
+     },
+     'interior_no': {
+     required: 'Please enter interior no.'
+     },
+     'city': {
+     required: 'Please enter city.'
+     },
+     'state': {
+     required: 'Please enter state.'
+     },
+     'zipcode': {
+     required: 'Please enter zipcode.'
+     },
+     'shpcomp_name': {
+     required: 'Please enter company name.',
+     onlyname: 'Please enter valid company name.'
+     },
+     'shpbuilding_no': {
+     required: 'Please enter building no.'
+     },
+     'shpstreet_addrs': {
+     required: 'Please enter street address.'
+     },
+     'shpphone_no': {
+     required: 'Please enter phone no.',
+     mobileNo: 'Please enter valid phone no.'
+     },
+     'shpinterior_no': {
+     required: 'Please enter interior no.'
+     },
+     'shpcity': {
+     required: 'Please enter city.'
+     },
+     'shpstate': {
+     required: 'Please enter state.'
+     },
+     'shpzipcode': {
+     required: 'Please enter zipcode.'
+     },
+     },
+     highlight: function (element) {
+     $(element).removeClass("textinput");
+     $(element).addClass("errorHighlight");
+     },
+     unhighlight: function (element) {
+     $(element).removeClass("errorHighlight");
+     $(element).addClass("textinput");
+     },
+     errorPlacement: function (error, element) {
+     error.insertAfter(element);
+     }
+     });*/
     /*
      var bestPictures = new Bloodhound({
      datumTokenizer: Bloodhound.tokenizers.obj.whitespace('SKU'),
