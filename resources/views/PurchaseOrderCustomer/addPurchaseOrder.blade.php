@@ -1,7 +1,6 @@
 @extends('layouts.main')
 
 @section('content')
-
 <div class="wrapper">
     <div class="row">
         <div class="col-md-12">
@@ -93,12 +92,12 @@
                                                         {!! Form::text('comp_name',Input::old('comp_name',isset($cust->comp_name) ? $cust->comp_name : '') ,array('class'=>'form-control', 'placeholder' => 'Company Name')) !!}
                                                     </div>
                                                 </div>
-<!--                                                <div class="form-group">
-                                                    <label for="companyName" class="col-sm-4 control-label">ame:</label>
-                                                    <div id="the-basics" class="col-sm-8">
-                                                        <input class="typeahead" type="text" placeholder="States of USA">
-                                                    </div> 
-                                                </div>-->
+                                                <!--                                                <div class="form-group">
+                                                                                                    <label for="companyName" class="col-sm-4 control-label">ame:</label>
+                                                                                                    <div id="the-basics" class="col-sm-8">
+                                                                                                        <input class="typeahead" type="text" placeholder="States of USA">
+                                                                                                    </div> 
+                                                                                                </div>-->
                                                 <div class="form-group">
                                                     <label for="buildingNumber" class="col-sm-4 control-label">Building Number:</label>
                                                     <div class="col-sm-8">
@@ -238,8 +237,8 @@
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <table  class="display table table-bordered table-striped">
-                                                    <thead>
+<!--                                                <table  class="display table table-bordered table-striped">-->
+                                                   <!-- <thead>
                                                         <tr>
                                                             <th>#</th>
                                                             <th>SKU</th>
@@ -249,30 +248,52 @@
                                                             <th>Amount</th>
                                                             <th>Action</th>
                                                         </tr> 
-                                                    </thead>                                                    
-                                                    <tr class="gradeX">
-                                                        <td></td>
-                                                        <td><input type="text" class="form-control typeahead" id="searchSKU" placeholder="SKU"></td>
-                                                        <td><input type="text" class="form-control typeahead" id="searchDescription"></td>
-                                                        <td><input type="text" class="form-control" id="searchQty" size="3" disabled></td>
-                                                        <td><input type="text" class="form-control" id="unitprice" size="3" disabled></td>
-                                                        <td><input type="text" class="form-control" id="amount" size="3" disabled></td>
-                                                        <td><a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>
-                                                    </tr>
-                                                                                                  
-                                                    <tr class="gradeX">
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td align="right"><label class="control-label">Total Qty :</label></td>                                                               
-                                                        <td><input type="text" class="form-control" id="totalQty" placeholder="50" size="3"></td>
-                                                        <td></td>
-                                                        <td align="right"><label class="control-label">Total Amount:</label></td> 
-                                                        <td><input type="text" class="form-control" id="totalAmount" placeholder="$5000" size="5"></td>
-                                                        <td></td>
-                                                    </tr> 
-                                                    </tbody>
-                                                </table>
-                                            </div>                                       
+                                                    </thead>  -->                                            
+
+                                                    <div class="controls" id="profs"> 
+                                                        <script type="text/template" id="element-template">
+                                                            <div class="addpo">        
+                                                            <select name="sku[]" id="sku" onChange="getinfo(this);" class ='sku'><?php echo $sku; ?></select>
+                                                            <input autocomplete="off" id="searchDescription" class="input" name="searchDescription[]" type="text" placeholder="searchDescription"/>
+                                                            <input autocomplete="off" id="searchQty" onkeydown="edValueKeyPress(event);"  onblur="calAmount(this);" class="input" name="searchQty[]" type="text" placeholder="qty"/>
+                                                            <input autocomplete="off" id="unitprice" class="input" name="unitprice[]" type="text" placeholder="unitprice" readonly/>
+                                                            <input autocomplete="off" id="amount" class="input" name="amount[]" type="text" placeholder="amount"/>
+                                                            <input type="button" class="remove" onclick="removediv(this)" value="remove">
+                                                            <br>
+                                                            </div>
+                                                        </script> 
+                                                         <button id="b1" class="btn btn-primary add-more" type="button">Add</button>  
+                                                        <div id="maindiv">
+
+                                                        </div>                                                        
+                                                       
+    <!--                                                        <td><a href="javascript:void(0)" id="addorder" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>-->
+                                                    </div>
+                                                    <div class="container">
+                                                        
+<!--                                                   </tr>     <tr class="gradeX">
+                                                            <td>1</td>
+                                                            <td>BF0013</td>
+                                                            <td>Barcelona FC sport Jersey</td>
+                                                            <td>50</td>
+                                                            <td>13</td>
+                                                            <td>$5000</td>
+                                                            <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
+                                                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editProductModal"><span class="fa fa-pencil"></span></a></td>
+                                                        </tr>                                                 
+                                                        <tr class="gradeX">
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td align="right"><label class="control-label">Total Qty :</label></td>                                                               
+                                                            <td><input type="text" class="form-control" id="totalQty" placeholder="50" size="3"></td>
+                                                            <td></td>
+                                                            <td align="right"><label class="control-label">Total Amount:</label></td> 
+                                                            <td><input type="text" class="form-control" id="totalAmount" placeholder="$5000" size="5"></td>
+                                                            <td></td>
+                                                        </tr> 
+                                                        </tbody>
+                                                </table>-->
+                                            </div>                                     
                                             <div class="form-group">
                                                 <label for="comment" class="col-sm-2 col-md-1 control-label">Comment:</label>
                                                 <div class="col-sm-10 col-md-11">                                                            
@@ -296,8 +317,22 @@
                         </div>                       
                     </div>
                 </div>
+                <table id="po_cust_order" class="display table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            
+                            <th>SKU</th>
+                            <th>Description</th>
+                            <th>Qty</th>
+                            <th>Unit Price</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr> 
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </section>
-
         </div>
     </div>
 </div>
@@ -306,50 +341,54 @@
 <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form class="form-horizontal">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Edit Product</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <div class="form-group">
-                            <label for="editSKU" class="col-sm-4 control-label">SKU :</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" id="editSKU" placeholder="BF0013">
-                            </div>
+            <!--            <form class="form-horizontal">-->
+            {!! Form::open(array('class'=>'form-horizontal','url'=>'/po/editorder','name'=>'editorder','id'=>'editorder','files' => true)) !!}
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit Product</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <input type="hidden" id="order_id" name="order_id" value="">
+                    <div class="form-group">
+                        <label for="editSKU" class="col-sm-4 control-label">SKU :</label>
+                        <div class="col-sm-6">
+<!--                             <select name="sku[]" id="sku" onChange="getinfo(this);"class ='sku'><?php echo $sku; ?></select>-->
+                            <input type="text" name="editSKU" class="form-control" id="editSKU" placeholder="BF0013" disabled>
                         </div>
-                        <div class="form-group">
-                            <label for="editDescription" class="col-sm-4 control-label">Description :</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" id="editDescription" placeholder="Barcelona FC sport Jersey">
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDescription" class="col-sm-4 control-label">Description :</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="editDescription" class="form-control" id="editDescription" placeholder="Barcelona FC sport Jersey" disabled>
                         </div>
-                        <div class="form-group">
-                            <label for="editQty" class="col-sm-4 control-label">Qty :</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" id="editQty" placeholder="50">
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editQty" class="col-sm-4 control-label">Qty :</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="editQty" class="form-control" id="editQty" placeholder="50">
                         </div>
-                        <div class="form-group">
-                            <label for="editUnitPrice" class="col-sm-4 control-label">Unit Price :</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" id="editUnitPrice" placeholder="13">
-                            </div>
-                        </div>                                                    
-                        <div class="form-group">
-                            <label for="editAmount" class="col-sm-4 control-label">Amount :</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" id="editAmount" placeholder="5000">
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUnitPrice" class="col-sm-4 control-label">Unit Price :</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="editUnitPrice" class="form-control" id="editUnitPrice" placeholder="13" disabled>
                         </div>
-                    </div> 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </form>
+                    </div>                                                    
+                    <div class="form-group">
+                        <label for="editAmount" class="col-sm-4 control-label">Amount :</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="editAmount" class="form-control" id="editAmount" placeholder="5000" readonly>
+                            </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-default">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            {!! Form::close() !!}
+            <!--            </form>-->
         </div>
     </div>
 </div>

@@ -59,6 +59,8 @@ Route::get('/invoice/paymentTerm', 'InvoiceController@paymentTerm');
 // Purchase Order Customer
 Route::get('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
 Route::get('/po', 'PurchaseOrderCustomerController@listPurchaseOrder');
+
+
 Route::post('/po/add/{var?}', 'PurchaseOrderCustomerController@addPurchaseOrder');
 Route::get('/po/add/searchSKU/{var?}', 'PurchaseOrderCustomerController@searchSKU');
 Route::get('/po/getDescription', 'PurchaseOrderCustomerController@getDescription');
@@ -66,7 +68,11 @@ Route::get('/po/add/searchDiscription/{var?}', 'PurchaseOrderCustomerController@
 Route::post('/po/add/order', 'PurchaseOrderCustomerController@addOrder');
 //when Customer Login
 Route::get('/po/add/{var?}', 'PurchaseOrderCustomerController@userDetails');
-
+Route::get('/po/getorderlist', 'PurchaseOrderCustomerController@getorderlist');
+Route::get('/po/geteditorderlist', 'PurchaseOrderCustomerController@geteditorderlist');
+Route::post('/po/editorder', 'PurchaseOrderCustomerController@editpoCustomer');
+Route::get('/po/deletepoCustomer/{var?}', 'PurchaseOrderCustomerController@deletepoCustomer');
+Route::get('/po/getPoCustomerlist', 'PurchaseOrderCustomerController@getPoCustomerlist');
 // Blog Art
 Route::get('/blogArt', 'BlogartController@viewBlog');
 // Payment

@@ -24,10 +24,9 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="display table table-bordered table-striped" id="POCustomer-list">
+                                                    <table class="display table table-bordered table-striped" id="POCustomer_list">
                                                         <thead>
                                                             <tr>
-                                                                <th>Sequence</th>
                                                                 <th>PO Number</th>
                                                                 <th>Part Number</th>
                                                                 <th>Required Date</th>
