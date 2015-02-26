@@ -62,6 +62,8 @@ Route::get('/po', 'PurchaseOrderCustomerController@listPurchaseOrder');
 
 
 Route::post('/po/add/{var?}', 'PurchaseOrderCustomerController@addPurchaseOrder');
+Route::get('/po/edit/{var?}', 'PurchaseOrderCustomerController@editPurchaseOrder');
+Route::post('/po/edit/{var?}', 'PurchaseOrderCustomerController@editPurchaseOrder');
 Route::get('/po/add/searchSKU/{var?}', 'PurchaseOrderCustomerController@searchSKU');
 Route::get('/po/getDescription', 'PurchaseOrderCustomerController@getDescription');
 Route::get('/po/add/searchDiscription/{var?}', 'PurchaseOrderCustomerController@searchDiscription');
@@ -74,8 +76,9 @@ Route::post('/po/editorder', 'PurchaseOrderCustomerController@editpoCustomer');
 Route::get('/po/deletepoCustomer/{var?}', 'PurchaseOrderCustomerController@deletepoCustomer');
 Route::get('/po/getPoCustomerlist', 'PurchaseOrderCustomerController@getPoCustomerlist');
 // Blog Art
-Route::get('/blogArt', 'BlogartController@viewBlog');
-// Payment
+Route::get('/blogArt/{var?}', 'BlogartController@index');
+Route::post('/blogArt/{var?}', 'BlogartController@index');
+// PaymentRoute::get('/blogArt/{var?}', 'BlogartController@index');\
 Route::get('/payment', 'PaymentController@listPayment');
 Route::get('/payment/add', 'PaymentController@addPayment');
 Route::get('/payment/view', 'PaymentController@viewPayment');

@@ -180,7 +180,7 @@ class PurchaseOrderCustomerController extends Controller
 
             // Get Shipping Id
             //$shipping = DB::table('shipping_info')->where('customer_id', $id)->last();       
-          //  $shipping = DB::table('shipping_info')->orderBy('id', 'desc')->first();
+            //  $shipping = DB::table('shipping_info')->orderBy('id', 'desc')->first();
             $shipping = DB::table('shipping_info')->where('customer_id', $customer->id)->orderBy('id', 'desc')->first();
             //Add Purchase Order
             $po = DB::table('purchase_order')->insert(
@@ -207,7 +207,7 @@ class PurchaseOrderCustomerController extends Controller
             }
             $po_number = $c_ID . "-" . $inv_ID;
 
-            DB::table('purchase_order')                   
+            DB::table('purchase_order')
                     ->where('shipping_id', $shipping->id)
                     ->orderBy('id', 'desc')
                     ->update(array('po_number' => $po_number));
@@ -261,6 +261,13 @@ class PurchaseOrderCustomerController extends Controller
             return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Add Purchase Order'])
                             ->with("shipping", $shipping)->with('sku', $sku);
         }
+    }
+
+    public function editPurchaseOrder()
+    {
+        
+        return redirect('/po/add');
+      //return view('PurchaseOrderCustomer.addPurchaseOrder', ['page_title' => 'Edit Purchase Order']);  
     }
 
     public function listPurchaseOrder()
@@ -386,7 +393,7 @@ class PurchaseOrderCustomerController extends Controller
         return Datatables::of($orderlist)
                         ->editColumn("id", '<a href="#" class="btn btn-danger" id="btnDelete">'
                                 . '<span class="fa fa-trash-o"></span></a>'
-                                . '&nbsp<a href="#" class="btn btn-primary" id="btnEdit">'
+                                . '&nbsp<a href="/po/edit/{{ $po_number }}" class="btn btn-primary" id="btnEdit">'
                                 . '<span class="fa fa-pencil"></span></a>')
                         ->make();
     }

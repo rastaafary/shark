@@ -1,23 +1,6 @@
 @extends('layouts.main')
 @section('content')
-<!--
-<a href="{{ action('PartController@partList')}}">List</a> 
-<a href="{{ action('PartController@addPart')}}">Add</a> 
-<a href="{{ action('PartController@editPart')}}">Edit</a> 
-{!! Form::open(array('url'=>'/part/add/', 'id'=>'addpart')) !!}
-{!! Form::hidden('id', Input::old('value',isset($part->id) ? $part->id : '')) !!}
-{!! Form::label('SKU','SKU',array('id'=>'','class'=>'')) !!}
-{!! Form::text('SKU', Input::old('value',isset($part->SKU) ? $part->SKU : '')) !!}<br/>
-{!! Form::label('description','description',array('id'=>'','class'=>'')) !!}
-{!! Form::text('description', Input::old('value',isset($part->description) ? $part->description : '')) !!}<br/>
-{!! Form::label('cost','cost',array('id'=>'','class'=>'')) !!}
-{!! Form::text('cost', Input::old('value',isset($part->cost) ? $part->cost : '')) !!}<br/>
-{!! Form::label('currency','currency',array('id'=>'','class'=>'')) !!}
-{!! Form::select('currency', array('USD' => 'USD', 'MXN' => 'MXN')) !!}<br/>
-{!! Form::submit('save') !!}
-{!! Form::close() !!}
--->
-<!--body wrapper start-->
+
 <div class="wrapper">
     <div class="row">
         <div class="col-md-offset-1 col-md-10">
@@ -32,7 +15,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">PO#:</label>
                                     <div class="col-sm-9">
-                                        <label class="control-label">ITM0101</label>
+                                        <label class="control-label">{!! $po_id !!}</label>
                                     </div>
                                 </div>
                             </div>
@@ -85,49 +68,41 @@
                                     <img class="attach-img" src="images/photos/user3.png">
                                 </a>
                             </div>
-                        </li>
-                        <li class="in">
-                            <img src="images/photos/user1.png" alt="" class="avatar">
-                            <div class="message">
-                                <span class="arrow"></span>
-                                <a class="name" href="#">Jone Doe</a>
-                                <span class="datetime">at Apr 28, 2014 1:36</span>
-                                <span class="body">
-                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                                </span>
-                            </div>
-                        </li>
+                        </li>                       
                     </ul>
                     <div class="chat-form ">
-                        <form role="form" class="form-inline">
+<!--                        <form role="form" class="form-inline" id="frmBlogArt" method="post">-->
+                            {!! Form::open(array('class'=>'form-inline', 'name'=>'frmBlogArt','id'=>'frmBlogArt','files' => true)) !!}
+                             {!! Form::hidden('id',Input::old('id',isset($id) ? $id : '')) !!}
                             <div class="form-group">
-                                <textarea placeholder="Type a message here..." class="form-control" style="width: 100%"></textarea>
+                                <textarea placeholder="Type a message here..." class="form-control" style="width: 100%" name="txtMessage" id="txtMessage"></textarea>
 <!--                                <input type="text" style="width: 100%" placeholder="Type a message here..." class="form-control">-->
-                            </div>
-                            <!--                            <button class="btn btn-primary" type="submit">Send</button>-->
+                            </div>                            
                             <div class="attachment">
-                                <div class="form-group">
+                                <script type="text/template" id="element-template">
+                                    <div class="addpo" style="margin-top: 5px;">                               
                                     <div class="form-control">
-                                        <input type="file">
+                                    <input type="file" autocomplete="off" id="images" class="input" name="images[]">
                                     </div>
-                                    <button class="btn btn-primary"><i class="fa fa-plus"></i> </button>
-                                </div>
-                                <div class="form-group">
+                                    <a class="btn btn-danger remove" onclick="removediv(this)" value="remove"><i class="fa fa-minus"></i> </a>                                    
+                                    </div>
+                                </script>
+                                <div id="maindiv"></div>
+                                <div class="form-group" style="margin-top: 5px;">
                                     <div class="form-control">
-                                        <input type="file">
+                                        <input type="file" name="images[]" id="images">
                                     </div>
-                                    <button class="btn btn-danger"><i class="fa fa-minus"></i> </button>
+                                    <a class="btn btn-primary add-Onemore" id='addImage'><i class="fa fa-plus"></i> </a>
                                 </div>
-
                             </div>
-                            <button class="btn btn-primary" type="submit">Send</button>
-                        </form>
+                            <!--<button class="btn btn-primary" type="submit" id="submit">Send</button>-->
+                            <button class="btn btn-primary" type="submit" value="remove" id="submit">Send</button>                                    
+                     {!! Form::close() !!}
                     </div>
                 </div>
             </section>
         </div>
     </div>
-
 </div>
 
 <div id="lightbox" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

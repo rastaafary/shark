@@ -223,7 +223,7 @@
                                                     {!! Form::file('Ai',  Input::old('Ai',isset($cust->Ai) ? $cust->Ai : '')) !!}
                                                 </div>
                                             </div>                                                                                                                                
-                                            <a class="btn btn-link" href="{{ action('BlogartController@viewBlog')}}" role="button"><strong>Blog Art</strong></a>                                          
+                                            <a class="btn btn-link" href="/blogArt/29" role="button"><strong>Blog Art</strong></a>                                          
                                         </div>                                                       
                                     </div>
                                 </div>
