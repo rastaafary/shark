@@ -281,7 +281,7 @@
 <!--                                                        <td><a href="javascript:void(0)" id="addorder" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>-->
                                                 </div>
                                                 <div class="form-group mtop10">
-                                                    <table id="po_cust_order" class="display table table-bordered table-striped">
+<!--                                                    <table id="po_cust_order" class="display table table-bordered table-striped">
                                                         <thead>
                                                             <tr>
                                                                 <th>SKU</th>
@@ -294,7 +294,7 @@
                                                         </thead>
                                                         <tbody>
                                                         </tbody>
-                                                    </table>
+                                                    </table>-->
                                                 </div>                                     
                                                 <div class="form-group mtop10">
                                                     <label for="comment" class="col-sm-2 col-md-1 control-label">Comment:</label>
