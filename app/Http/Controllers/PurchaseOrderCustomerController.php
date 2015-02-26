@@ -1,7 +1,5 @@
 <?php
 
-//namespace App\Http\Controllers\Customer;
-
 namespace App\Http\Controllers;
 
 use File;
@@ -14,7 +12,6 @@ use Datatables;
 use Auth;
 use Response;
 use Request;
-//use Illuminate\Http\Request;
 use App\Http\Controllers\Image;
 use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -105,47 +102,8 @@ class PurchaseOrderCustomerController extends Controller
             $time = strtotime($my_date);
             $ordDate = date('Y/m/d', $time);
 
-            $po_number = '';
-            $inc_id = '';
-            $customer = DB::table('customers')->where('user_id', $post['id'])->first();
-            $c_ID = str_pad($customer->id, 4, '0', STR_PAD_LEFT);
-            $inc_id = DB::table('purchase_order')->orderBy('id', 'desc')->first();
-            if ($inc_id == null) {
-                $inc_id = 1;
-                $inv_ID = str_pad($inc_id, 5, '0', STR_PAD_LEFT);
-            } else {
-                $inv_ID = str_pad($inc_id->id, 5, '0', STR_PAD_LEFT);
-            }
-            $po_number = $c_ID . "-" . $inv_ID;
 
             if (isset($post['addNew'])) {
-
-                // Server side Validations
-
-                /*    $rules = array(
-                  'comp_name' => 'required',
-                  'building_no' => 'required',
-                  'street_addrs' => 'required',
-                  'interior_no' => 'required',
-                  'city' => 'required',
-                  'state' => 'required',
-                  'zipcode' => 'required',
-                  'country' => 'required',
-                  'phone_no' => 'required',
-                  'identifer' => 'required',
-                  );
-                  $validator = Validator::make(Input::all(), $rules);
-                  if ($validator->fails()) {
-                  $uid = Auth::user()->id;
-                  $cust = DB::table('customers')->where('user_id', $uid)->first();
-                  $cust_id = $cust->id;
-                  $shipping = DB::table('shipping_info')->where('customer_id', $cust_id)->get();
-
-                  return redirect('/po/add')
-                  ->withErrors($validator)
-                  ->withInput(Input::all());
-                  //->with(array("shipping" => $shipping, $validator));
-                  } */
 
                 //Get Customer ID
                 $customer = DB::table('customers')->where('user_id', $post['id'])->first();
@@ -221,13 +179,13 @@ class PurchaseOrderCustomerController extends Controller
             }
 
             // Get Shipping Id
-            //$shipping = DB::table('shipping_info')->where('customer_id', $id)->last();
-            $shipping = DB::table('shipping_info')->orderBy('id', 'desc')->first();
-
+            //$shipping = DB::table('shipping_info')->where('customer_id', $id)->last();       
+          //  $shipping = DB::table('shipping_info')->orderBy('id', 'desc')->first();
+            $shipping = DB::table('shipping_info')->where('customer_id', $customer->id)->orderBy('id', 'desc')->first();
             //Add Purchase Order
             $po = DB::table('purchase_order')->insert(
                     array('customer_id' => $customer->id,
-                        'po_number' => $po_number,
+                        'po_number' => '',
                         'shipping_id' => $shipping->id,
                         'date' => $ordDate,
                         'payment_terms' => $post['payment_terms'],
@@ -235,6 +193,27 @@ class PurchaseOrderCustomerController extends Controller
                         'comments' => $post['comments']
                     )
             );
+
+            $po_number = '';
+            $inc_id = '';
+            $customer = Auth::user()->id;
+            $c_ID = str_pad($customer, 4, '0', STR_PAD_LEFT);
+            $inc_id = DB::table('purchase_order')->orderBy('id', 'desc')->first();
+            if ($inc_id == null) {
+                $inc_id = 1;
+                $inv_ID = str_pad($inc_id, 5, '0', STR_PAD_LEFT);
+            } else {
+                $inv_ID = str_pad($inc_id->id, 5, '0', STR_PAD_LEFT);
+            }
+            $po_number = $c_ID . "-" . $inv_ID;
+
+            DB::table('purchase_order')                   
+                    ->where('shipping_id', $shipping->id)
+                    ->orderBy('id', 'desc')
+                    ->update(array('po_number' => $po_number));
+
+
+
 
             $PO_id = DB::table('purchase_order')->where('customer_id', $customer->id)->orderBy('id', 'desc')->first();
 
@@ -267,8 +246,11 @@ class PurchaseOrderCustomerController extends Controller
         if (isset($uid) && $uid != null) {
 
             $cust = DB::table('customers')->where('user_id', $uid)->first();
-            $cust_id = $cust->id;
-            $shipping = DB::table('shipping_info')->where('customer_id', $cust_id)->get();
+            $shipping = array();
+            if (isset($cust->id)) {
+                $cust_id = $cust->id;
+                $shipping = DB::table('shipping_info')->where('customer_id', $cust_id)->get();
+            }
             $data = DB::table('part_number')->select('SKU', 'id')->get(); //->where('SKU', 'like', '%' . $sku . '%')->get();
             $sku = '';
             $sku .="<option value='" . '' . "' selected='selected' > select sku</option>";
@@ -395,11 +377,11 @@ class PurchaseOrderCustomerController extends Controller
      */
     public function getPoCustomerlist()
     {
-        
+
         $orderlist = DB::table('order_list')
                 ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
-                ->leftJoin('purchase_order','purchase_order.id','=','order_list.po_id')
-                ->select(array('purchase_order.po_number','part_number.SKU','purchase_order.require_date', 'part_number.description', 'order_list.qty', 'part_number.cost', 'order_list.amount', 'order_list.id'));
+                ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
+                ->select(array('purchase_order.po_number', 'part_number.SKU', 'purchase_order.require_date', 'part_number.description', 'order_list.qty', 'part_number.cost', 'order_list.amount', 'order_list.id'));
 
         return Datatables::of($orderlist)
                         ->editColumn("id", '<a href="#" class="btn btn-danger" id="btnDelete">'
@@ -408,4 +390,5 @@ class PurchaseOrderCustomerController extends Controller
                                 . '<span class="fa fa-pencil"></span></a>')
                         ->make();
     }
+
 }
