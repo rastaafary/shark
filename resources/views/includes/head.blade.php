@@ -40,6 +40,9 @@
 {!! HTML::style('js/advanced-datatable/css/demo_table.css') !!}
 {!! HTML::style('js/data-tables/DT_bootstrap.css') !!}
 
+{!! HTML::style('js/select2/select2-bootstrap.css') !!}
+{!! HTML::style('js/select2/select2.css') !!}
+
 {!! HTML::style('css/style.css') !!}
 {!! HTML::style('css/style-responsive.css') !!}
 

@@ -27,14 +27,14 @@
                                                     <table class="display table table-bordered table-striped" id="POCustomer_list">
                                                         <thead>
                                                             <tr>
-                                                                <th>PO Number</th>
-                                                                <th>Part Number</th>
-                                                                <th>Required Date</th>
-                                                                <th>Estimated Shipping Date</th>
-                                                                <th>PO Qty</th>
-                                                                <th>Pcs Made</th>
-                                                                <th>Balance</th>
-                                                                <th>Action</th>
+                                                                <th style="width: 5%;">PO Number</th>
+                                                                <th style="width: 5%;">Part Number</th>
+                                                                <th style="width: 5%;">Required Date</th>
+                                                                <th style="width: 5%;">Estimated Shipping Date</th>
+                                                                <th style="width: 5%;">PO Qty</th>
+                                                                <th style="width: 5%;">Pcs Made</th>
+                                                                <th style="width: 5%;">Balance</th>
+                                                                <th style="width: 5%;">Action</th>
                                                             </tr>                                                                       
                                                         </thead>
                                                         <tbody>                                                       
@@ -123,5 +123,4 @@
     </div>
 </div>
 <!-- Modal End -->
-
 @endsection

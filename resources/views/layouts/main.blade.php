@@ -20,12 +20,21 @@
                 </div>
                 <!-- header section end-->
                 @if(Session::has('message'))
-                <div class="alert alert-block alert-danger" style="display: block;">
-                    <span class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</span>
-                    <button data-dismiss="alert" class="close close-sm" type="button">
-                        <i class="fa fa-times"></i>
-                    </button>                    
-                </div>
+                    @if(Session::get('status') == 'success')
+                        <div class="alert alert-block alert-success" style="display: block;">
+                            <span class="alert alert-success">{{ Session::get('message') }}</span>
+                            <button data-dismiss="alert" class="close close-sm" type="button">
+                                <i class="fa fa-times"></i>
+                            </button>                    
+                        </div>
+                    @else
+                        <div class="alert alert-block alert-danger" style="display: block;">
+                            <span class="alert alert-danger">{{ Session::get('message') }}</span>
+                            <button data-dismiss="alert" class="close close-sm" type="button">
+                                <i class="fa fa-times"></i>
+                            </button>                    
+                        </div>
+                    @endif
                 @endif
                 <!-- page heading start-->
                 <div class="page-heading">
@@ -69,7 +78,9 @@
         {!! HTML::script('js/bootstrap-daterangepicker/daterangepicker.js') !!}
         {!! HTML::script('js/bootstrap-colorpicker/js/bootstrap-colorpicker.js') !!}
         {!! HTML::script('js/bootstrap-timepicker/js/bootstrap-timepicker.js') !!}
-
+        
+        <!--select2 plugins-->
+        {!! HTML::script('js/select2/select2.js') !!}
         <!--pickers initialization-->
         {!! HTML::script('js/pickers-init.js') !!}
 

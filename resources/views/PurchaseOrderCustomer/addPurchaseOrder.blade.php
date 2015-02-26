@@ -43,7 +43,7 @@
                                             <div class="form-inline">
                                                 <div class="form-group col-sm-6 col-md-4">
                                                     <label for="orderpoId">PO # : </label>
-                                                    <label for="orderpoId" style="font-weight: bold;">{{ Auth::user()->id.'-'.'001' }}</label>
+                                                    <label for="orderpoId" style="font-weight: bold;"><?=$autoId?></label>
                                                 </div>
                                                 <div class="form-group col-sm-6 col-md-4">
                                                     <label for="orderDate">Date : </label>
@@ -52,7 +52,7 @@
                                                 </div>
                                                 <div class="form-group col-sm-6 col-md-4">
                                                     <label for="orderTime">Time : </label>
-                                                    <input type="email" class="form-control" id="orderTime" placeholder="11:14:00AM">
+                                                    <input type="text" class="form-control" id="orderTime" placeholder="11:14:00AM">
                                                 </div>
                                             </div>
                                         </div>
@@ -236,7 +236,7 @@
                                             <h3 class="panel-title"><i class="fa fa-bars"></i> Products</h3>
                                         </div>
                                         <div class="panel-body">
-                                            <div class="table-responsive">
+                                            <div class="table-responsive col-md-12">
 <!--                                                <table  class="display table table-bordered table-striped">-->
                                                    <!-- <thead>
                                                         <tr>
@@ -250,88 +250,75 @@
                                                         </tr> 
                                                     </thead>  -->                                            
 
-                                                    <div class="controls" id="profs"> 
-                                                        <script type="text/template" id="element-template">
-                                                            <div class="addpo">        
-                                                            <select name="sku[]" id="sku" onChange="getinfo(this);" class ='sku'><?php echo $sku; ?></select>
-                                                            <input autocomplete="off" id="searchDescription" class="input" name="searchDescription[]" type="text" placeholder="searchDescription"/>
-                                                            <input autocomplete="off" id="searchQty" onkeydown="edValueKeyPress(event);"  onblur="calAmount(this);" class="input" name="searchQty[]" type="text" placeholder="qty"/>
-                                                            <input autocomplete="off" id="unitprice" class="input" name="unitprice[]" type="text" placeholder="unitprice" readonly/>
-                                                            <input autocomplete="off" id="amount" class="input" name="amount[]" type="text" placeholder="amount"/>
-                                                            <input type="button" class="remove" onclick="removediv(this)" value="remove">
-                                                            <br>
+                                                <div class="controls" id="profs"> 
+                                                    <script type="text/template" id="element-template">
+                                                        <div class="addpo row mtop10">
+                                                            <div class="col-sm-2 ">
+                                                                <select name="sku[]" id="sku" onChange="getinfo(this);" class ='sku select2 form-control'><?php echo $sku; ?></select>
                                                             </div>
-                                                        </script> 
-                                                         <button id="b1" class="btn btn-primary add-more" type="button">Add</button>  
-                                                        <div id="maindiv">
+                                                            <div class="col-sm-2">
+                                                                <input autocomplete="off" id="searchDescription" class="input form-control" name="searchDescription[]" type="text" placeholder="searchDescription"/>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <input autocomplete="off" id="searchQty" onkeydown="edValueKeyPress(event);"  onblur="calAmount(this);" class="input form-control" name="searchQty[]" type="text" placeholder="qty"/>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <input autocomplete="off" id="unitprice" class="input form-control" name="unitprice[]" type="text" placeholder="unitprice" readonly/>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <input autocomplete="off" id="amount" class="input form-control" name="amount[]" type="text" placeholder="amount"/>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button type="button" class="remove btn btn-danger" onclick="removediv(this)"><i class="fa fa-trash-o"></i> Remove</button>
+                                                            </div>
+                                                        </div>
+                                                    </script> 
+                                                    <button id="b1" class="btn btn-primary add-more" type="button">Add</button>  
+                                                    <div id="maindiv">
 
-                                                        </div>                                                        
-                                                       
-    <!--                                                        <td><a href="javascript:void(0)" id="addorder" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>-->
-                                                    </div>
-                                                    <div class="container">
-                                                        
-<!--                                                   </tr>     <tr class="gradeX">
-                                                            <td>1</td>
-                                                            <td>BF0013</td>
-                                                            <td>Barcelona FC sport Jersey</td>
-                                                            <td>50</td>
-                                                            <td>13</td>
-                                                            <td>$5000</td>
-                                                            <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editProductModal"><span class="fa fa-pencil"></span></a></td>
-                                                        </tr>                                                 
-                                                        <tr class="gradeX">
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td align="right"><label class="control-label">Total Qty :</label></td>                                                               
-                                                            <td><input type="text" class="form-control" id="totalQty" placeholder="50" size="3"></td>
-                                                            <td></td>
-                                                            <td align="right"><label class="control-label">Total Amount:</label></td> 
-                                                            <td><input type="text" class="form-control" id="totalAmount" placeholder="$5000" size="5"></td>
-                                                            <td></td>
-                                                        </tr> 
+                                                    </div>                                                        
+
+<!--                                                        <td><a href="javascript:void(0)" id="addorder" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>-->
+                                                </div>
+                                                <div class="form-group mtop10">
+                                                    <table id="po_cust_order" class="display table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>SKU</th>
+                                                                <th>Description</th>
+                                                                <th>Qty</th>
+                                                                <th>Unit Price</th>
+                                                                <th>Amount</th>
+                                                                <th>Action</th>
+                                                            </tr> 
+                                                        </thead>
+                                                        <tbody>
                                                         </tbody>
-                                                </table>-->
-                                            </div>                                     
-                                            <div class="form-group">
-                                                <label for="comment" class="col-sm-2 col-md-1 control-label">Comment:</label>
-                                                <div class="col-sm-10 col-md-11">                                                            
-                                                    <!--<textarea class="form-control" rows="3" placeholder="Company Name" id="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</textarea>-->
-                                                    {!! Form::textarea('comments',Input::old('phone_no',isset($cust->phone_no) ? $cust->phone_no : ''), array('class'=>'form-control','rows'=>'3','placeholder'=>'Comments','id' => 'comments'))!!}
+                                                    </table>
+                                                </div>                                     
+                                                <div class="form-group mtop10">
+                                                    <label for="comment" class="col-sm-2 col-md-1 control-label">Comment:</label>
+                                                    <div class="col-sm-10 col-md-11">                                                            
+                                                        <!--<textarea class="form-control" rows="3" placeholder="Company Name" id="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</textarea>-->
+                                                        {!! Form::textarea('comments',Input::old('phone_no',isset($cust->phone_no) ? $cust->phone_no : ''), array('class'=>'form-control','rows'=>'3','placeholder'=>'Comments','id' => 'comments'))!!}
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group" align="center">
+                                                    <!--<input type="submit" value="Submit" id="btnSubmit" class="btn btn-primary" style="margin-top: 10px;">-->
+                                                    {!! Form::submit('Save',array('class'=>'btn btn-primary', 'id'=>'btnSubmit')) !!}
                                                 </div>
                                             </div>
 
-                                            <div class="form-group" align="center">
-                                                <!--<input type="submit" value="Submit" id="btnSubmit" class="btn btn-primary" style="margin-top: 10px;">-->
-                                                {!! Form::submit('Save',array('class'=>'btn btn-primary', 'id'=>'btnSubmit')) !!}
-                                            </div>
                                         </div>
-
                                     </div>
                                 </div>
-                            </div>
-                            <!--</form>-->
-                            {!! Form::close() !!}
+                                <!--</form>-->
+                                {!! Form::close() !!}
 
-                        </div>                       
+                            </div>                       
+                        </div>
                     </div>
-                </div>
-                <table id="po_cust_order" class="display table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            
-                            <th>SKU</th>
-                            <th>Description</th>
-                            <th>Qty</th>
-                            <th>Unit Price</th>
-                            <th>Amount</th>
-                            <th>Action</th>
-                        </tr> 
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
             </section>
         </div>
     </div>
@@ -377,9 +364,9 @@
                     </div>                                                    
                     <div class="form-group">
                         <label for="editAmount" class="col-sm-4 control-label">Amount :</label>
-                            <div class="col-sm-6">
-                                <input type="text" name="editAmount" class="form-control" id="editAmount" placeholder="5000" readonly>
-                            </div>
+                        <div class="col-sm-6">
+                            <input type="text" name="editAmount" class="form-control" id="editAmount" placeholder="5000" readonly>
+                        </div>
                     </div>
                 </div> 
             </div>

@@ -48,6 +48,9 @@ hr {
     border-color: #ddd;
 }
 
+label.error {
+    color:red;
+}
 /*-------------------------------
             LOGIN STYLES
 -------------------------------*/

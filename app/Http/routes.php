@@ -58,10 +58,12 @@ Route::get('/invoice/paymentTerm', 'InvoiceController@paymentTerm');
 
 // Purchase Order Customer
 Route::get('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
+Route::post('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
 Route::get('/po', 'PurchaseOrderCustomerController@listPurchaseOrder');
 
 
-Route::post('/po/add/{var?}', 'PurchaseOrderCustomerController@addPurchaseOrder');
+Route::post('/po/edit/{var?}', 'PurchaseOrderCustomerController@editPurchaseOrder');
+Route::get('/po/edit/{var?}', 'PurchaseOrderCustomerController@editPurchaseOrder');
 Route::get('/po/add/searchSKU/{var?}', 'PurchaseOrderCustomerController@searchSKU');
 Route::get('/po/getDescription', 'PurchaseOrderCustomerController@getDescription');
 Route::get('/po/add/searchDiscription/{var?}', 'PurchaseOrderCustomerController@searchDiscription');

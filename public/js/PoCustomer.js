@@ -1,4 +1,10 @@
 $(document).ready(function() {
+    
+    $('#orderTime').timepicker({
+        hourMin: 8,
+        hourMax: 16
+    });
+    
     $("#editQty").keydown(function (event) {
         if (!(event.keyCode == 8                                // backspace
             || event.keyCode == 9                               // tab
@@ -37,7 +43,7 @@ $(document).ready(function() {
         "bServerSide": true,
         "sAjaxSource": "/po/getPoCustomerlist",
         "aaSorting": [[7, "desc"]],
-         "order": [[ 1, 'asc' ]],
+        "order": [[ 1, 'asc' ]],
         "fnServerData": function(sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
@@ -187,6 +193,7 @@ $(document).ready(function() {
         var template = $($('#element-template').html());
         next = next + 1;
         $('#maindiv').append(template.clone().attr('id', 'addpo' + next));
+        $('#addpo'+next+' .select2').select2();
         // $("#maindiv").append($(".addpo").html());
         //  $(".addpo").html()
     });
@@ -325,7 +332,7 @@ function addOrder() {
 function getinfo(element)
 {
     sku = $(element).attr('value');
-    divid = $(element).closest('div').attr('id');
+    divid = $(element).closest('.addpo').attr('id');
 
     // sku = $('#sku').val();
     $.ajax({
@@ -350,7 +357,7 @@ function getinfo(element)
 
 function calAmount(element)
 {
-    divid = $(element).closest('div').attr('id');
+    divid = $(element).closest('.addpo').attr('id');
     sku = $('#' + divid + ' #sku').val();
     if (sku > 0) {
         qty = $(element).attr('value');
@@ -365,7 +372,7 @@ function calAmount(element)
 
 function removediv(element)
 {
-    divid = $(element).closest('div').attr('id');
+    divid = $(element).closest('.addpo').attr('id');
     $('#' + divid).remove();
 }
 

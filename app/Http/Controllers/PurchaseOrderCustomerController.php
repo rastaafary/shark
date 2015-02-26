@@ -39,41 +39,55 @@ class PurchaseOrderCustomerController extends Controller
     public function addPurchaseOrder($id = null)
     {
         $post = Input::all();
-
-        $order = array();
-        foreach ($post as $key => $value) {
-            $k = 0;
-            if ($key == 'sku') {
-                foreach ($value as $keys => $sku) {
-                    $order[$k]['part_id'] = $sku;
-                    $k++;
-                }
+        $order = array();        
+        $user = Auth::user();
+        $customer = DB::table('customers')->where('user_id',$user->id)->first();
+        
+        if ($id == null) {
+            $inc_id = DB::table('purchase_order')->orderBy('id', 'desc')->first();
+            if ($inc_id == null) {
+                $inc_id = 1;
+                $inv_ID = str_pad($inc_id, 4, '0', STR_PAD_LEFT);
+            } else {
+                $inv_ID = str_pad($inc_id->id, 4, '0', STR_PAD_LEFT);
             }
-            $k = 0;
-            if ($key == 'searchQty') {
-                foreach ($value as $keys => $searchQty) {
-                    $order[$k]['qty'] = $searchQty;
-                    $k++;
-                }
-            }
-            $k = 0;
-            if ($key == 'searchQty') {
-                foreach ($value as $keys => $searchQty) {
-                    $order[$k]['qty'] = $searchQty;
-                    $k++;
-                }
-            }
-            $k = 0;
-            if ($key == 'amount') {
-                foreach ($value as $keys => $amount) {
-                    $order[$k]['amount'] = $amount;
-                    $k++;
-                }
-            }
+            $autoId = $po_number = $customer->id . "-" . $inv_ID;
+        } else {
+            exit('122');
         }
-
-
+        
+        
         if (isset($post['_token'])) {
+            foreach ($post as $key => $value) {
+                $k = 0;
+                if ($key == 'sku') {
+                    foreach ($value as $keys => $sku) {
+                        $order[$k]['part_id'] = $sku;
+                        $k++;
+                    }
+                }
+                $k = 0;
+                if ($key == 'searchQty') {
+                    foreach ($value as $keys => $searchQty) {
+                        $order[$k]['qty'] = $searchQty;
+                        $k++;
+                    }
+                }
+                $k = 0;
+                if ($key == 'searchQty') {
+                    foreach ($value as $keys => $searchQty) {
+                        $order[$k]['qty'] = $searchQty;
+                        $k++;
+                    }
+                }
+                $k = 0;
+                if ($key == 'amount') {
+                    foreach ($value as $keys => $amount) {
+                        $order[$k]['amount'] = $amount;
+                        $k++;
+                    }
+                }
+            }
             unset($post['_token']);
 
             $rules = array(
@@ -91,17 +105,6 @@ class PurchaseOrderCustomerController extends Controller
                                 ->withInput(Input::all());
                 //->with(array("shipping" => $shipping, $validator));
             }
-
-            $dt = $post['require_date'];
-            $my_date = date('m/d/Y', strtotime($dt));
-            $time = strtotime($my_date);
-            $reqDate = date('Y/m/d', $time);
-
-            $dt = $post['orderDate'];
-            $my_date = date('m/d/Y', strtotime($dt));
-            $time = strtotime($my_date);
-            $ordDate = date('Y/m/d', $time);
-
 
             if (isset($post['addNew'])) {
 
@@ -122,39 +125,40 @@ class PurchaseOrderCustomerController extends Controller
                             'phone_no' => $post['phone_no'],
                             'identifier' => $post['identifer'],
                             'type' => $post['shippingMethod'],
-                            'date' => $ordDate,
+                            'date' => date('Y/m/d', strtotime($post['orderDate'])),
                             'invoice_id' => '',
                 ));
+                if ($shp_info == 1) {
+                    $shp_info = DB::table('shipping_info')->where('customer_id', $customer->id)->orderBy('id', 'desc')->first();
+                }
             } else {
                 //Get Customer ID
                 $customer_data = DB::table('customers')->where('user_id', $post['id'])->first();
-                $customer = DB::table('shipping_info')
+                $shp_info = DB::table('shipping_info')
                         ->where('customer_id', $customer_data->id)
                         ->where('identifier', $post['oldIdentifire'])
                         ->first();
 
                 // Add Old Shipping Information
-                $shp_info = DB::table('shipping_info')->insert(
-                        array('customer_id' => $customer->customer_id,
-                            'comp_name' => $customer->comp_name,
-                            'building_no' => $customer->building_no,
-                            'street_addrs' => $customer->street_addrs,
-                            'interior_no' => $customer->interior_no,
-                            'city' => $customer->city,
-                            'state' => $customer->state,
-                            'zipcode' => $customer->zipcode,
-                            'country' => $customer->country,
-                            'phone_no' => $customer->phone_no,
-                            'identifier' => $post['oldIdentifire'],
-                            'type' => $post['shippingMethod'],
-                            'date' => $ordDate,
-                            'invoice_id' => '',
-                ));
+//                $shp_info = DB::table('shipping_info')->insert(
+//                        array('customer_id' => $customer->customer_id,
+//                            'comp_name' => $customer->comp_name,
+//                            'building_no' => $customer->building_no,
+//                            'street_addrs' => $customer->street_addrs,
+//                            'interior_no' => $customer->interior_no,
+//                            'city' => $customer->city,
+//                            'state' => $customer->state,
+//                            'zipcode' => $customer->zipcode,
+//                            'country' => $customer->country,
+//                            'phone_no' => $customer->phone_no,
+//                            'identifier' => $post['oldIdentifire'],
+//                            'type' => $post['shippingMethod'],
+//                            'date' => date('Y/m/d', strtotime($post['orderDate'])),
+//                            'invoice_id' => '',
+//                ));
             }
             //Get the Customer Details
             // $customer = DB::table('customers')->where('user_id', $id)->first();
-            $customer = DB::table('customers')->where('user_id', $post['id'])->first();
-
             //$blogfiles = '';
             //Upload the PDF
             if (isset($post['PDF'])) {
@@ -177,41 +181,27 @@ class PurchaseOrderCustomerController extends Controller
                 $post['Ai'] = $aiFilename;
                 //$aiFile = $blogfiles . ' ' . $filename;
             }
-
+            $customer = DB::table('customers')->where('user_id',$user->id)->first();
             // Get Shipping Id
+  
             //$shipping = DB::table('shipping_info')->where('customer_id', $id)->last();       
-          //  $shipping = DB::table('shipping_info')->orderBy('id', 'desc')->first();
-            $shipping = DB::table('shipping_info')->where('customer_id', $customer->id)->orderBy('id', 'desc')->first();
+            //$shipping = DB::table('shipping_info')->orderBy('id', 'desc')->first();
             //Add Purchase Order
             $po = DB::table('purchase_order')->insert(
                     array('customer_id' => $customer->id,
                         'po_number' => '',
-                        'shipping_id' => $shipping->id,
-                        'date' => $ordDate,
+                        'shipping_id' => $shp_info->id,
+                        'date' => date('Y/m/d', strtotime($post['orderDate'])),
                         'payment_terms' => $post['payment_terms'],
-                        'require_date' => $reqDate,
+                        'require_date' => date('Y/m/d', strtotime($post['require_date'])),
                         'comments' => $post['comments']
                     )
             );
 
-            $po_number = '';
-            $inc_id = '';
-            $customer = Auth::user()->id;
-            $c_ID = str_pad($customer, 4, '0', STR_PAD_LEFT);
-            $inc_id = DB::table('purchase_order')->orderBy('id', 'desc')->first();
-            if ($inc_id == null) {
-                $inc_id = 1;
-                $inv_ID = str_pad($inc_id, 5, '0', STR_PAD_LEFT);
-            } else {
-                $inv_ID = str_pad($inc_id->id, 5, '0', STR_PAD_LEFT);
-            }
-            $po_number = $c_ID . "-" . $inv_ID;
-
             DB::table('purchase_order')                   
-                    ->where('shipping_id', $shipping->id)
+                    ->where('shipping_id', $shp_info->id)
                     ->orderBy('id', 'desc')
                     ->update(array('po_number' => $po_number));
-
 
 
 
@@ -234,9 +224,9 @@ class PurchaseOrderCustomerController extends Controller
                     $orderlist['created_by'] = Auth::user()->id;
                     $orderstatus = DB::table('order_list')->insert($orderlist);
                 }
-            }
+            } 
             Session::flash('message', "PO Customer Added Sucessfully.");
-            Session::flash('alert-class', 'alert-danger');
+            Session::flash('status', 'success');
             return View::make('PurchaseOrderCustomer.listPurchaseOrder');
             //$last_id = DB::table('user')->orderBy('id', 'desc')->first();
         }
@@ -259,13 +249,16 @@ class PurchaseOrderCustomerController extends Controller
 
 
             return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Add Purchase Order'])
-                            ->with("shipping", $shipping)->with('sku', $sku);
+                            ->with("shipping", $shipping)->with('sku', $sku)->with('autoId',$autoId);
         }
     }
-
+    
+    public function editPurchaseOrder($id = null) {
+        exit($id.' -> Coming Soon');
+    }
+    
     public function listPurchaseOrder()
     {
-
         return view('PurchaseOrderCustomer.listPurchaseOrder', ['page_title' => 'Purchase Order']);
     }
 
@@ -350,26 +343,39 @@ class PurchaseOrderCustomerController extends Controller
         }
         if ($status) {
             Session::flash('message', "PO Customer edit Sucessfully.");
-            Session::flash('alert-class', 'alert-danger');
+            Session::flash('status', 'success');
         } else {
             Session::flash('message', "PO Customer edit Unsucessfully.");
-            Session::flash('alert-class', 'alert-danger');
+            Session::flash('status', 'error');
         }
-        return redirect('/po/add');
+        if (isset($post['list'])) {
+            return redirect('/po');
+        } else {
+            return redirect('/po/add');
+        }
+        
         //  return View::make("PurchaseOrderCustomer.addPurchaseOrder");
     }
 
     public function deletepoCustomer($id = null)
     {
         $status = 0;
+           
         $status = DB::table('order_list')->where('id', $id)->delete();
         if ($status) {
-            Session::flash('message', 'PoCustomer delete Successfully!!');
-            // Session::flash('alert-success', 'success');
+            Session::flash('message', 'PO Customer delete Successfully.');
+            Session::flash('status', 'success');
         } else {
             Session::flash('message', "PO Customer delete Unsucessfully.");
+            Session::flash('status', 'error');
         }
-        return redirect('/po/add');
+        $post = Input::all();
+        if (isset($post['list'])) {
+            return redirect('/po');
+        } else {
+            return redirect('/po/add');
+        }
+        
     }
 
     /**
@@ -377,17 +383,19 @@ class PurchaseOrderCustomerController extends Controller
      */
     public function getPoCustomerlist()
     {
-
         $orderlist = DB::table('order_list')
                 ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
                 ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
-                ->select(array('purchase_order.po_number', 'part_number.SKU', 'purchase_order.require_date', 'part_number.description', 'order_list.qty', 'part_number.cost', 'order_list.amount', 'order_list.id'));
+                ->leftJoin('order_status', 'order_list.id', '=', 'order_status.po_id')
+                ->select(array('purchase_order.po_number', 'part_number.SKU', 'purchase_order.require_date', 'part_number.description', 'order_list.qty', 'order_status.pcs_made', 'order_list.amount', 'order_list.id'))
+                ->groupBy('order_list.id');
 
         return Datatables::of($orderlist)
-                        ->editColumn("id", '<a href="#" class="btn btn-danger" id="btnDelete">'
+                        ->editColumn("id", '<a href="/po/deletepoCustomer/{{ $id }}?list=true" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                 . '<span class="fa fa-trash-o"></span></a>'
-                                . '&nbsp<a href="#" class="btn btn-primary" id="btnEdit">'
+                                . '&nbsp<a href="/po/edit/{{ $id }}" class="btn btn-primary" id="btnEdit">'
                                 . '<span class="fa fa-pencil"></span></a>')
+                        ->editColumn("description", '(REMAINIG)')
                         ->make();
     }
 
