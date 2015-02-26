@@ -49,11 +49,8 @@ class BlogartController extends Controller
         $time = strtotime($my_date);
         $Date = date('Y/m/d', $time);
 
-
-
-
         if (isset($post['id']) && $post['id'] != null) {
-
+            
             $blog_art = DB::table('blog_art')->insert(
                     array('po_id' => $post['id'],
                         'customer_id' => Auth::user()->id,
@@ -66,10 +63,9 @@ class BlogartController extends Controller
                     ->where('customer_id', Auth::user()->id)
                     ->orderBy('id', 'desc')
                     ->first();
-            //  if (isset($post['images']) && $post['images'] != null) {               
+                  
             $imgs = Input::file('images'); 
-          //  var_dump($imgs);
-         //   exit("hi");
+          
             if (count($imgs[0]) > 0) {
                 $destinationPath = 'images/blogArt';
                 foreach ($imgs as $key => $value) {
@@ -80,10 +76,19 @@ class BlogartController extends Controller
                                 'blog_id' => $blog_id->id)
                     );
                 }
-            }
-            //}
+            }            
+            Session::flash('message', "Comment Added Sucessfully.");
+            Session::flash('status', 'sucess');
+            return redirect('/blogArt/'.$id);
         }
-        return view('blog_art', ['page_title' => 'Blog Art', 'po_id' => $po_data->po_number, 'id' => $id]);
+       // $data = DB::table('blog_art')->where('po_id',$id)->get();        
+        $data = DB::table('blog_art')
+                ->leftJoin('user', 'user.id', '=', 'blog_art.customer_id')
+                //->leftJoin('blog_files', 'blog_files.blog_id', '=', 'blog_art.id')
+                ->select(array('user.name', 'user.image', 'blog_art.comments'))
+                ->groupBy('blog_art.id')->get();
+        var_dump($data);
+        return view('blog_art', ['page_title' => 'Blog Art', 'po_id' => $po_data->po_number, 'id' => $id,'data' => $data]);        
     }
 
 }

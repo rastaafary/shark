@@ -23,7 +23,32 @@
                     </div>
 
                     <ul class="chats normal-chat">
+                        @foreach($data as $value)
                         <li class="in">
+                             
+                            <input type="image" height="45px" width="45px" class="avatar" src="/images/user/{{ $value->image }}"> 
+                            <div class="message ">
+                                <span class="arrow"></span>
+                                <a class="name" href="#">{{ $value->name }}</a>                               
+                                <span class="body">
+                                    {{ $value->comments }}
+                                </span>
+                            </div>
+                            <div class="attach">
+                                <span class="name" href="#">Image Preview:</span>
+                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
+                                    <img class="attach-img" src="images/photos/user1.png">
+                                </a>
+                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
+                                    <img class="attach-img" src="images/photos/user2.png">
+                                </a>
+                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
+                                    <img class="attach-img" src="images/photos/user3.png">
+                                </a>
+                            </div>
+                        </li>
+                        @endforeach
+<!--                        <li class="in">
                             <img src="images/photos/user1.png" alt="" class="avatar">
                             <div class="message ">
                                 <span class="arrow"></span>
@@ -68,36 +93,36 @@
                                     <img class="attach-img" src="images/photos/user3.png">
                                 </a>
                             </div>
-                        </li>                       
+                        </li>                       -->
                     </ul>
                     <div class="chat-form ">
-<!--                        <form role="form" class="form-inline" id="frmBlogArt" method="post">-->
-                            {!! Form::open(array('class'=>'form-inline', 'name'=>'frmBlogArt','id'=>'frmBlogArt','files' => true)) !!}
-                             {!! Form::hidden('id',Input::old('id',isset($id) ? $id : '')) !!}
-                            <div class="form-group">
-                                <textarea placeholder="Type a message here..." class="form-control" style="width: 100%" name="txtMessage" id="txtMessage"></textarea>
+                        <!--                        <form role="form" class="form-inline" id="frmBlogArt" method="post">-->
+                        {!! Form::open(array('class'=>'form-inline', 'name'=>'frmBlogArt','id'=>'frmBlogArt','files' => true)) !!}
+                        {!! Form::hidden('id',Input::old('id',isset($id) ? $id : '')) !!}
+                        <div class="form-group">
+                            <textarea placeholder="Type a message here..." class="form-control" style="width: 100%" name="txtMessage" id="txtMessage"></textarea>
 <!--                                <input type="text" style="width: 100%" placeholder="Type a message here..." class="form-control">-->
-                            </div>                            
-                            <div class="attachment">
-                                <script type="text/template" id="element-template">
-                                    <div class="addpo" style="margin-top: 5px;">                               
-                                    <div class="form-control">
-                                    <input type="file" autocomplete="off" id="images" class="input" name="images[]">
-                                    </div>
-                                    <a class="btn btn-danger remove" onclick="removediv(this)" value="remove"><i class="fa fa-minus"></i> </a>                                    
-                                    </div>
-                                </script>
-                                <div id="maindiv"></div>
-                                <div class="form-group" style="margin-top: 5px;">
-                                    <div class="form-control">
-                                        <input type="file" name="images[]" id="images">
-                                    </div>
-                                    <a class="btn btn-primary add-Onemore" id='addImage'><i class="fa fa-plus"></i> </a>
+                        </div>                            
+                        <div class="attachment">
+                            <script type="text/template" id="element-template">
+                                <div class="addpo" style="margin-top: 5px;">                               
+                                <div class="form-control">
+                                <input type="file" autocomplete="off" id="images" class="input" name="images[]">
                                 </div>
+                                <a class="btn btn-danger remove" onclick="removediv(this)" value="remove"><i class="fa fa-minus"></i> </a>                                    
+                                </div>
+                            </script>
+                            <div id="maindiv"></div>
+                            <div class="form-group" style="margin-top: 5px;">
+                                <div class="form-control">
+                                    <input type="file" name="images[]" id="images">
+                                </div>
+                                <a class="btn btn-primary add-Onemore" id='addImage'><i class="fa fa-plus"></i> </a>
                             </div>
-                            <!--<button class="btn btn-primary" type="submit" id="submit">Send</button>-->
-                            <button class="btn btn-primary" type="submit" value="remove" id="submit">Send</button>                                    
-                     {!! Form::close() !!}
+                        </div>
+                        <!--<button class="btn btn-primary" type="submit" id="submit">Send</button>-->
+                        <button class="btn btn-primary" type="submit" value="remove" id="submit">Send</button>                                    
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </section>
