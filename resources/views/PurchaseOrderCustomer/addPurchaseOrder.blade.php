@@ -15,8 +15,13 @@
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="Add">
                             <!-- <form class="form-horizontal">-->
+                            @if(!isset($id))
                             {!! Form::open(array('class'=>'form-horizontal','url'=>'/po/add','name'=>'PoCustomer','id'=>'PoCustomer','files' => true)) !!}
                             {!! Form::hidden('id',Input::old('id',isset(Auth::user()->id) ? Auth::user()->id : '')) !!}
+                            @else                             
+                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/po/edit','name'=>'PoCustomer','id'=>'PoCustomer','files' => true)) !!}
+                            {!! Form::hidden('id',Input::old('id',isset(Auth::user()->id) ? Auth::user()->id : '')) !!}
+                            @endif
                             <div class="media usr-info">
                                 <div class="pull-left">
                                     @if(Auth::user()->image)

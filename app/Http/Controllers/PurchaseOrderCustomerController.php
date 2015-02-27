@@ -193,7 +193,41 @@ class PurchaseOrderCustomerController extends Controller
     }
     
     public function editPurchaseOrder($id = null) {
-        exit($id.' -> Coming Soon');
+         if (isset($id)) {
+
+       /*     $order_data = DB::table('order_list')
+                    ->where('id', $id)
+                    ->first();
+            $po_data = DB::table('purchase_order')
+                    ->where('id', $order_data->po_id)
+                    ->first();
+            $Shipping_data = DB::table('shipping_info')
+                    ->where('id', $po_data->shipping_id)
+                    ->first();
+            $blog_data = DB::table('blog_art_file')
+                    ->where('po_id', $po_data->id)
+                    ->first();
+            var_dump($order_data);
+            var_dump($po_data);
+            var_dump($Shipping_data);
+            var_dump($blog_data);
+            exit("hk"); */
+
+            $orderlist = DB::table('order_list')
+                    ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
+                    ->leftJoin('shipping_info', 'shipping_info.id', '=', 'purchase_order.shipping_id')
+                    ->leftJoin('blog_art_file', 'blog_art_file.po_id', '=', 'purchase_order.id')
+                    ->select(array('order_list.id', 'order_list.part_id', 'order_list.qty', 'order_list.amount', 'order_list.created_at', 'order_list.created_by', 'order_list.po_id', 'purchase_order.po_number', 'purchase_order.customer_id', 'purchase_order.shipping_id', 'purchase_order.date', 'purchase_order.payment_terms', 'purchase_order.require_date', 'purchase_order.comments', 'shipping_info.comp_name', 'shipping_info.building_no', 'shipping_info.street_addrs', 'shipping_info.interior_no', 'shipping_info.city', 'shipping_info.state', 'shipping_info.zipcode', 'shipping_info.country', 'shipping_info.phone_no', 'shipping_info.identifier', 'shipping_info.type', 'shipping_info.invoice_id', 'shipping_info.created_by', 'blog_art_file.pdf', 'blog_art_file.ai'))
+                    ->where('order_list.id', $id)
+                    ->get();
+            var_dump($orderlist);
+            exit("hk");
+
+            return View::make('customer.addCustomer', ['page_title' => 'Edit Customer', 'id' => $id])->with('cust', $cust);
+        }
+        return view('customer.addCustomer', ['page_title' => 'List Customer']);
+        //exit($id.' -> Coming Soon');
+        
     }
     
     public function listPurchaseOrder()
