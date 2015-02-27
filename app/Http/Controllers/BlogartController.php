@@ -12,6 +12,7 @@ use Datatables;
 use Auth;
 use Response;
 use Request;
+use Redirect;
 use App\Http\Controllers\Image;
 use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -50,7 +51,16 @@ class BlogartController extends Controller
         $Date = date('Y/m/d', $time);
 
         if (isset($post['id']) && $post['id'] != null) {
-            
+             $rules = array(
+                'txtMessage' => 'required',                
+            );
+
+            $validator = Validator::make(Input::all(), $rules);
+            if ($validator->fails()) {
+                return Redirect::to('blogArt/'.$post['id'])
+                                ->withErrors($validator);                               
+            }
+
             $blog_art = DB::table('blog_art')->insert(
                     array('po_id' => $post['id'],
                         'customer_id' => Auth::user()->id,
@@ -63,32 +73,39 @@ class BlogartController extends Controller
                     ->where('customer_id', Auth::user()->id)
                     ->orderBy('id', 'desc')
                     ->first();
-                  
-            $imgs = Input::file('images'); 
-          
-            if (count($imgs[0]) > 0) {
+
+            $imgs = Input::file('images');
+            // var_dump(count($imgs));
+            //exit;
+            if (count($imgs) > 0) {
                 $destinationPath = 'images/blogArt';
                 foreach ($imgs as $key => $value) {
-                    $filename = $post['id'] . '_' . Auth::user()->id . '_' . time() . '_' . $value->getClientOriginalName();
-                    $one = $value->move($destinationPath, $filename);
-                    $blog_files = DB::table('blog_files')->insert(
-                            array('name' => $filename,
-                                'blog_id' => $blog_id->id)
-                    );
+                    if ($value !== null) {
+                        $filename = $post['id'] . '_' . Auth::user()->id . '_' . time() . '_' . $value->getClientOriginalName();
+                        $one = $value->move($destinationPath, $filename);
+                        $blog_files = DB::table('blog_files')->insert(
+                                array('name' => $filename,
+                                    'blog_id' => $blog_id->id)
+                        );
+                    }
                 }
-            }            
+            }
             Session::flash('message', "Comment Added Sucessfully.");
-            Session::flash('status', 'sucess');
-            return redirect('/blogArt/'.$id);
+            Session::flash('status', 'success');
+            return redirect('/blogArt/' . $id);
         }
-       // $data = DB::table('blog_art')->where('po_id',$id)->get();        
+        // $data = DB::table('blog_art')->where('po_id',$id)->get();        
         $data = DB::table('blog_art')
-                ->leftJoin('user', 'user.id', '=', 'blog_art.customer_id')
-                //->leftJoin('blog_files', 'blog_files.blog_id', '=', 'blog_art.id')
-                ->select(array('user.name', 'user.image', 'blog_art.comments'))
-                ->groupBy('blog_art.id')->get();
-        var_dump($data);
-        return view('blog_art', ['page_title' => 'Blog Art', 'po_id' => $po_data->po_number, 'id' => $id,'data' => $data]);        
+                        ->leftJoin('user', 'user.id', '=', 'blog_art.customer_id')
+                        ->select(array('user.name', 'user.image', 'blog_art.comments', 'blog_art.id', 'blog_art.customer_id'))
+                        ->groupBy('blog_art.id')->get();
+
+        $image_data = DB::table('blog_files')
+                ->leftJoin('blog_art', 'blog_art.id', '=', 'blog_files.blog_id')
+                ->select(array('blog_files.name', 'blog_art.id'))
+                ->get();
+        //  var_dump($image_data);
+        return view('blog_art', ['page_title' => 'Blog Art', 'po_id' => $po_data->po_number, 'id' => $id, 'data' => $data, 'image_data' => $image_data]);
     }
 
 }

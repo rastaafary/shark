@@ -82,9 +82,7 @@ class PartController extends Controller
                         ->where('id', $post['id'])
                         ->update($post);
                 Session::flash('message', 'Part Update Successfully!!');
-                /* Session::flash('alert-warning', 'warning');
-                 * Session::flash('alert-info', 'info'); */
-                Session::flash('alert-success', 'success');
+                Session::flash('status', 'success');               
                 return redirect('/part');
             }
         } else if (isset($id) && $id != null) {
@@ -124,7 +122,7 @@ class PartController extends Controller
                     array($post)
             );
             Session::flash('message', 'Part Added Successfully!!');
-            Session::flash('alert-success', 'success');
+            Session::flash('status', 'success');
             return redirect('/part');
         }
         return view('Part.Partadd', ['page_title' => 'Add Part Number']);

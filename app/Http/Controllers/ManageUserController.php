@@ -90,8 +90,8 @@ class ManageUserController extends Controller
             DB::table('user')->insert(
                     array($post)
             );
-            Session::flash('alert-success', 'success');
             Session::flash('message', 'User Added Successfully!!');
+            Session::flash('status', 'success');
             return redirect('/userList');
         }
         return view('manageUser.addUser', ['page_title' => 'Add User']);
@@ -163,8 +163,8 @@ class ManageUserController extends Controller
                         ->where('id', $post['id'])
                         ->update($post);
 
-                Session::flash('alert-success', 'success');
                 Session::flash('message', 'Profile Update Successfully!!');
+                Session::flash('status', 'success');
                 return redirect('/userList');
             }
         } else if (isset($id) && $id != null) {
@@ -186,7 +186,7 @@ class ManageUserController extends Controller
                 ->update(array('is_deleted' => '1'));
 
         Session::flash('message', 'User Delete Successfully!!');
-        Session::flash('alert-success', 'success');
+        Session::flash('status', 'success');
         return redirect('/userList');
     }
 

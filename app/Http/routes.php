@@ -77,7 +77,7 @@ Route::get('/po/deletepoCustomer/{var?}', 'PurchaseOrderCustomerController@delet
 Route::get('/po/getPoCustomerlist', 'PurchaseOrderCustomerController@getPoCustomerlist');
 // Blog Art
 Route::get('/blogArt/{var?}', 'BlogartController@index');
-Route::get('/blogArt/{var?}', 'BlogartController@index');
+Route::post('/blogArt/{var?}', 'BlogartController@index');
 // Payment
 Route::get('/payment', 'PaymentController@listPayment');
 Route::get('/payment/add', 'PaymentController@addPayment');
