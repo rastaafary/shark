@@ -1,5 +1,7 @@
 $(document).ready(function() {
     
+    $('.select2').select2();
+    
     $('#orderTime').timepicker({
         hourMin: 8,
         hourMax: 16
@@ -92,7 +94,6 @@ $(document).ready(function() {
 
     $(".tt-dropdown-menu").click(function() {
         description = $('#searchSKU').val();
-        // var token = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
             type: 'GET',
             url: '/po/getDescription',
@@ -107,7 +108,6 @@ $(document).ready(function() {
                 });
             }
         });
-
     });
 
     $('#require_date').datepicker({
@@ -168,9 +168,7 @@ $(document).ready(function() {
     $('#addorder').click(function() {
         cust_id = $('#id').val();
         searchSKU = $('#searchSKU').val();
-        // searchDescription = $('#searchDescription').val();
         searchQty = $('#searchQty').val();
-        //unitprice = $('#unitprice').val();
         amount = $('#amount').val();
         $.ajax({
             type: 'GET',
@@ -185,22 +183,90 @@ $(document).ready(function() {
             }
         });
     });
-    var next = 0;
-    $(".add-more").click(function(e) {
-        //  alert($(".addpo").html());
-        // $("#maindiv").html('<select name="sku" class="sku">'+$('#skudropdown').val())+'</select>');
-
-        var template = $($('#element-template').html());
-        next = next + 1;
-        $('#maindiv').append(template.clone().attr('id', 'addpo' + next));
-        $('#addpo'+next+' .select2').select2();
-        // $("#maindiv").append($(".addpo").html());
-        //  $(".addpo").html()
+    
+    var orderNo = 1;
+    $("#addMoreOrder").click(function(e) {
+        if ($('#skuOrder').val() == 0 || $('#skuOrder').val() == '') {
+            alert('Please select SKU');
+            return false;
+        }
+        if ($('#purchaseQty').val() == 0 || $('#purchaseQty').val() == '') {
+            alert('Please enter Quantity.');
+            return false;
+        }
+        if ($('#updateId').val() !== '0') {
+            template = $('#'+$('#updateId').val()).tmplItem();
+            template.data.skuId = $('#skuOrder').val();
+            template.data.skuLabel = $('#skuOrder  option:selected').text();
+            template.data.description = $('#searchDescription').val();
+            template.data.purchaseQty = $('#purchaseQty').val();
+            template.data.unitPrice = $('#unitPrice').html();
+            template.data.totalPrice = $('#totalPrice').html();
+            template.update();
+        } else {
+            var order = [
+                {
+                    orderNo: orderNo++,
+                    skuId: $('#skuOrder').val(),
+                    skuLabel:$('#skuOrder  option:selected').text(),
+                    description:$('#searchDescription').val(),
+                    purchaseQty:$('#purchaseQty').val(),
+                    unitPrice:$('#unitPrice').html(),
+                    totalPrice:$('#totalPrice').html(),
+                }
+            ];
+            // Render the Order details
+            $("#new-order-template").tmpl(order).appendTo("#purchaseOrderTbl tbody");
+        }
+        
+        //reset input order data
+        resetInputOrderData();
+        
+        //reset total Data
+        resetTotalOrderData();
+        
+    });
+    
+    $('#cancelUpdate').click(function(){
+        resetInputOrderData();
+    });
+    
+    $('#purchaseQty').keyup(function(e){
+        if ($(this).val() == '') {
+            $('#totalPrice').html('0');
+            return false;
+        }
+        if ($.isNumeric($(this).val())) {
+            $('#totalPrice').html($('#unitPrice').html() * $(this).val());
+        } else {
+            if(e.keyCode !== 8) {
+                $('#totalPrice').html('0');
+                alert('Please enter only Numeric value.');
+            }
+        }
     });
 
 
-
     $('#PoCustomer').validate({
+        submitHandler: function(form){
+            orders = [];
+            $('tr.newOrderData').each(function(){
+                orders.push({
+                    'part_id':$(this).find('.sku').attr('id'),
+                    'qty':$(this).find('.purchaseQty').html(),
+                    'amount':$(this).find('.totalPrice').html()
+                })
+            });
+            if(orders.length > 0) {
+                console.log(JSON.stringify(orders));
+                $('#allOrderData').val(JSON.stringify(orders));
+                $('#PoCustomer').submit();
+            } else {
+                $('#allOrderData').val('');
+                alert('Please select Order');
+                return false;
+            }
+        },
         rules: {
             'comp_name': {
                 required: true,
@@ -305,15 +371,36 @@ $(document).ready(function() {
             error.insertAfter(element);
         }
     });
-
-
 });
+
+function resetTotalOrderData() {
+    totalQty = 0;
+    totalAmout = 0;
+    $('tr.newOrderData').each(function(){
+        totalQty += parseInt($(this).find('.purchaseQty').html());
+        totalAmout += parseInt($(this).find('.totalPrice').html());
+    });
+
+    $('#totalQuantity').html(totalQty);
+    $('#totalAmout').html(totalAmout);
+}
+
+function resetInputOrderData() {
+    $('#updateId').val('0');
+    $('#skuOrder').select2("val", '');
+    $('#addMoreOrder').html('<i class="fa fa-plus"></i> Add');
+    $('#cancelUpdate').hide();
+    $('#searchDescription').val('');
+    $('#purchaseQty').val('0');
+    $('#unitPrice').html('');
+    $('#totalPrice').html('');
+    
+}
+
 function addOrder() {
     cust_id = $('#id').val();
     searchSKU = $('#searchSKU').val();
-    // searchDescription = $('#searchDescription').val();
     searchQty = $('#searchQty').val();
-    //unitprice = $('#unitprice').val();
     amount = $('#amount').val();
     $.ajax({
         type: 'POST',
@@ -331,49 +418,42 @@ function addOrder() {
 
 function getinfo(element)
 {
-    sku = $(element).attr('value');
-    divid = $(element).closest('.addpo').attr('id');
-
-    // sku = $('#sku').val();
     $.ajax({
         type: 'GET',
         url: '/po/getDescription',
-        data: 'description=' + sku,
+        data: 'description=' + $(element).attr('value'),
         async: false,
         success: function(responce)
         {
             var jason = $.parseJSON(responce);
             $.each(jason, function(idx, data) {
-                $('#' + divid + ' #searchDescription').val(data.description);
-                $('#' + divid + ' #unitprice').val(data.cost);
-                //$(element).closest('div')
-                //$('#unitprice').val(data.cost);
+                $('table #searchDescription').val(data.description);
+                $('table #unitPrice').html(data.cost);
             });
+            $('#purchaseQty').trigger('keyup');
         }
     });
-    // alert($(element).attr('value'));
-    //$('div').closest('.addpo').remove();
 }
 
-function calAmount(element)
+
+
+function removeNewOrder(element)
 {
-    divid = $(element).closest('.addpo').attr('id');
-    sku = $('#' + divid + ' #sku').val();
-    if (sku > 0) {
-        qty = $(element).attr('value');
-        //  divid = $(element).closest('div').attr('id');
-        amount = $('#' + divid + ' #unitprice').val();
-        total = qty * amount;
-        $('#' + divid + ' #amount').val(total);
-    } else {
-        alert('fisrt select sku');
-    }
+    $(element).closest('tr.newOrderData').remove();
+    resetTotalOrderData();
 }
 
-function removediv(element)
+function editNewOrder(element)
 {
-    divid = $(element).closest('.addpo').attr('id');
-    $('#' + divid).remove();
+    trEle = $(element).closest('tr.newOrderData');
+    $('#skuOrder').select2("val", $(trEle).find('.sku').attr('id'));
+    $('#updateId').val($(trEle).find('.sku').attr('id'));
+    $('#searchDescription').val($(trEle).find('.description').html());
+    $('#purchaseQty').val($(trEle).find('.purchaseQty').html());
+    $('#unitPrice').html($(trEle).find('.unitPrice').html());
+    $('#totalPrice').html($(trEle).find('.totalPrice').html());
+    $('#addMoreOrder').html('<i class="fa fa-edit"></i> Update');
+    $('#cancelUpdate').show();
 }
 
 function pocustEdit(id)
@@ -407,16 +487,5 @@ function confirmDelete()
         return true;
     } else {
         return false;
-    }
-}
-function edValueKeyPress(event)
-{
-      if( !(event.keyCode == 8                                // backspace
-        || event.keyCode == 46                              // delete
-        || (event.keyCode >= 35 && event.keyCode <= 40)     // arrow keys/home/end
-        || (event.keyCode >= 48 && event.keyCode <= 57)     // numbers on keyboard
-        || (event.keyCode >= 96 && event.keyCode <= 105))   // number on keypad
-        ) {
-            event.preventDefault();     // Prevent character input
     }
 }

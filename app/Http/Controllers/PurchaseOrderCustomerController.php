@@ -38,56 +38,20 @@ class PurchaseOrderCustomerController extends Controller
 
     public function addPurchaseOrder($id = null)
     {
-        $post = Input::all();
-        $order = array();        
         $user = Auth::user();
         $customer = DB::table('customers')->where('user_id',$user->id)->first();
+        $purchaseOrderData = DB::table('purchase_order')->orderBy('id', 'desc')->first();
         
-        if ($id == null) {
-            $inc_id = DB::table('purchase_order')->orderBy('id', 'desc')->first();
-            if ($inc_id == null) {
-                $inc_id = 1;
-                $inv_ID = str_pad($inc_id, 4, '0', STR_PAD_LEFT);
-            } else {
-                $inv_ID = str_pad($inc_id->id, 4, '0', STR_PAD_LEFT);
-            }
-            $autoId = $po_number = $customer->id . "-" . $inv_ID;
+        if ($purchaseOrderData == null) {
+            $autoId = str_pad(1, 4, '0', STR_PAD_LEFT);
         } else {
-            exit('122');
+            $autoId = str_pad($purchaseOrderData->id, 4, '0', STR_PAD_LEFT);
         }
+        $autoId = $po_number = $customer->id . "-" . $autoId;
         
         
+        $post = Input::all();
         if (isset($post['_token'])) {
-            foreach ($post as $key => $value) {
-                $k = 0;
-                if ($key == 'sku') {
-                    foreach ($value as $keys => $sku) {
-                        $order[$k]['part_id'] = $sku;
-                        $k++;
-                    }
-                }
-                $k = 0;
-                if ($key == 'searchQty') {
-                    foreach ($value as $keys => $searchQty) {
-                        $order[$k]['qty'] = $searchQty;
-                        $k++;
-                    }
-                }
-                $k = 0;
-                if ($key == 'searchQty') {
-                    foreach ($value as $keys => $searchQty) {
-                        $order[$k]['qty'] = $searchQty;
-                        $k++;
-                    }
-                }
-                $k = 0;
-                if ($key == 'amount') {
-                    foreach ($value as $keys => $amount) {
-                        $order[$k]['amount'] = $amount;
-                        $k++;
-                    }
-                }
-            }
             unset($post['_token']);
 
             $rules = array(
@@ -103,14 +67,11 @@ class PurchaseOrderCustomerController extends Controller
                 return redirect('/po/add')
                                 ->withErrors($validator)
                                 ->withInput(Input::all());
-                //->with(array("shipping" => $shipping, $validator));
             }
 
             if (isset($post['addNew'])) {
-
                 //Get Customer ID
-                $customer = DB::table('customers')->where('user_id', $post['id'])->first();
-
+                //$customer = DB::table('customers')->where('user_id', $post['id'])->first();
                 // Add New Shipping Information
                 $shp_info = DB::table('shipping_info')->insert(
                         array('customer_id' => $customer->id,
@@ -138,28 +99,9 @@ class PurchaseOrderCustomerController extends Controller
                         ->where('customer_id', $customer_data->id)
                         ->where('identifier', $post['oldIdentifire'])
                         ->first();
-
-                // Add Old Shipping Information
-//                $shp_info = DB::table('shipping_info')->insert(
-//                        array('customer_id' => $customer->customer_id,
-//                            'comp_name' => $customer->comp_name,
-//                            'building_no' => $customer->building_no,
-//                            'street_addrs' => $customer->street_addrs,
-//                            'interior_no' => $customer->interior_no,
-//                            'city' => $customer->city,
-//                            'state' => $customer->state,
-//                            'zipcode' => $customer->zipcode,
-//                            'country' => $customer->country,
-//                            'phone_no' => $customer->phone_no,
-//                            'identifier' => $post['oldIdentifire'],
-//                            'type' => $post['shippingMethod'],
-//                            'date' => date('Y/m/d', strtotime($post['orderDate'])),
-//                            'invoice_id' => '',
-//                ));
             }
             //Get the Customer Details
-            // $customer = DB::table('customers')->where('user_id', $id)->first();
-            //$blogfiles = '';
+            
             //Upload the PDF
             if (isset($post['PDF'])) {
                 $pdfName = $post['PDF']->getClientOriginalName();
@@ -168,7 +110,6 @@ class PurchaseOrderCustomerController extends Controller
                 $pdfFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $pdfName;
                 Input::file('PDF')->move($destinationPath, $pdfFilename);
                 $post['PDF'] = $pdfFilename;
-                //$blogfiles = $blogfiles . ' ' . $filename;
             }
 
             //Upload the Ai
@@ -181,11 +122,9 @@ class PurchaseOrderCustomerController extends Controller
                 $post['Ai'] = $aiFilename;
                 //$aiFile = $blogfiles . ' ' . $filename;
             }
-            $customer = DB::table('customers')->where('user_id',$user->id)->first();
-            // Get Shipping Id
-  
-            //$shipping = DB::table('shipping_info')->where('customer_id', $id)->last();       
-            //$shipping = DB::table('shipping_info')->orderBy('id', 'desc')->first();
+            
+            //$customer = DB::table('customers')->where('user_id',$user->id)->first();
+ 
             //Add Purchase Order
             $po = DB::table('purchase_order')->insert(
                     array('customer_id' => $customer->id,
@@ -217,7 +156,8 @@ class PurchaseOrderCustomerController extends Controller
             );
 
             //add po order
-            foreach ($order as $order => $orderlist) {
+            $orders = json_decode($post['orders'],true);
+            foreach ($orders as $orderlist) {
                 if ($orderlist['part_id'] > 0) {
                     $orderlist['customer_id'] = $customer->id;
                     $orderlist['po_id'] = $PO_id->id;
@@ -230,27 +170,26 @@ class PurchaseOrderCustomerController extends Controller
             return View::make('PurchaseOrderCustomer.listPurchaseOrder');
             //$last_id = DB::table('user')->orderBy('id', 'desc')->first();
         }
-        //return redirect('/userList/add')->with('identifier', $shipping->identifier);
-        $uid = Auth::user()->id;
-
-        if (isset($uid) && $uid != null) {
-
-            $cust = DB::table('customers')->where('user_id', $uid)->first();
-            $shipping = array();
-            if (isset($cust->id)) {
-                $cust_id = $cust->id;
-                $shipping = DB::table('shipping_info')->where('customer_id', $cust_id)->get();
-            }
-            $data = DB::table('part_number')->select('SKU', 'id')->get(); //->where('SKU', 'like', '%' . $sku . '%')->get();
-            $sku = '';
-            $sku .="<option value='" . '' . "' selected='selected' > select sku</option>";
-            foreach ($data as $key => $value)
-                $sku .="<option value='" . $value->id . "'>" . $value->SKU . "</option>";
-
-
-            return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Add Purchase Order'])
-                            ->with("shipping", $shipping)->with('sku', $sku)->with('autoId',$autoId);
+        
+        
+        $cust = DB::table('customers')->where('user_id', $user->id)->first();
+        
+        if (isset($cust->id)) {
+            $shipping = DB::table('shipping_info')->where('customer_id', $cust->id)->get();
         }
+        
+        $partsData = DB::table('part_number')->select('SKU', 'id')->get(); //->where('SKU', 'like', '%' . $sku . '%')->get();
+        $sku = '';
+        $sku .="<option value='" . '' . "' selected='selected' > select sku</option>";
+        foreach ($partsData as $key => $value) {
+            $sku .="<option value='" . $value->id . "'>" . $value->SKU . "</option>";
+        }         
+        
+        return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Add Purchase Order'])
+                        ->with("shipping", $shipping)
+                        ->with('sku', $sku)
+                        ->with('autoId',$autoId);
+        
     }
     
     public function editPurchaseOrder($id = null) {

@@ -237,75 +237,66 @@
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive col-md-12">
-<!--                                                <table  class="display table table-bordered table-striped">-->
-                                                   <!-- <thead>
+                                                <table id="purchaseOrderTbl" class="display table table-bordered table-striped">
+                                                    <thead>
                                                         <tr>
                                                             <th>#</th>
-                                                            <th>SKU</th>
-                                                            <th>Description</th>
-                                                            <th>Qty</th>
-                                                            <th>Unit Price</th>
-                                                            <th>Amount</th>
-                                                            <th>Action</th>
+                                                            <th style="width: 18%;">SKU</th>
+                                                            <th style="width: 35%;">Description</th>
+                                                            <th style="width: 10%;">Qty</th>
+                                                            <th style="width: 10%;">Unit Price</th>
+                                                            <th style="width: 10%;">Amount</th>
+                                                            <th style="width: 18%;">Action</th>
                                                         </tr> 
-                                                    </thead>  -->                                            
-
-                                                <div class="controls" id="profs"> 
-                                                    <script type="text/template" id="element-template">
-                                                        <div class="addpo row mtop10">
-                                                            <div class="col-sm-2 ">
-                                                                <select name="sku[]" id="sku" onChange="getinfo(this);" class ='sku select2 form-control'><?php echo $sku; ?></select>
-                                                            </div>
-                                                            <div class="col-sm-2">
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="hidden" id="allOrderData" name="orders" value="">
+                                                                <input type="hidden" id="updateId" value="0">
+                                                            </td>
+                                                            <td>
+                                                                <select name="sku" id="skuOrder" onChange="getinfo(this);" class ='sku select2 form-control'><?php echo $sku; ?></select>
+                                                            </td>
+                                                            <td>
                                                                 <input autocomplete="off" id="searchDescription" class="input form-control" name="searchDescription[]" type="text" placeholder="searchDescription"/>
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                <input autocomplete="off" id="searchQty" onkeydown="edValueKeyPress(event);"  onblur="calAmount(this);" class="input form-control" name="searchQty[]" type="text" placeholder="qty"/>
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                <input autocomplete="off" id="unitprice" class="input form-control" name="unitprice[]" type="text" placeholder="unitprice" readonly/>
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                <input autocomplete="off" id="amount" class="input form-control" name="amount[]" type="text" placeholder="amount"/>
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                <button type="button" class="remove btn btn-danger" onclick="removediv(this)"><i class="fa fa-trash-o"></i> Remove</button>
-                                                            </div>
-                                                        </div>
-                                                    </script> 
-                                                    <button id="b1" class="btn btn-primary add-more" type="button">Add</button>  
-                                                    <div id="maindiv">
-
-                                                    </div>                                                        
-
-<!--                                                        <td><a href="javascript:void(0)" id="addorder" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>-->
-                                                </div>
-                                                <div class="form-group mtop10">
-<!--                                                    <table id="po_cust_order" class="display table table-bordered table-striped">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>SKU</th>
-                                                                <th>Description</th>
-                                                                <th>Qty</th>
-                                                                <th>Unit Price</th>
-                                                                <th>Amount</th>
-                                                                <th>Action</th>
-                                                            </tr> 
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>-->
-                                                </div>                                     
+                                                            </td>
+                                                            <td>
+                                                                <input autocomplete="off" id="purchaseQty" class="input form-control" type="text" placeholder="qty"/>
+                                                            </td>
+                                                            <td>
+                                                                <label id="unitPrice"></label>
+                                                            </td>
+                                                            <td>
+                                                                <label id="totalPrice"></label>
+                                                            </td>
+                                                            <td>
+                                                                <button id="addMoreOrder" class="btn btn-primary" type="button"><i class="fa fa-plus"></i> Add</button>
+                                                                <button id="cancelUpdate" class="btn btn-warning" type="button" style="display: none;"><i class="fa fa-reply"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="7">
+                                                                <span style="margin-left: 45%;">
+                                                                    Total Quantity : <label id="totalQuantity">0</label>
+                                                                </span>
+                                                                <span style="margin-left: 8%;">
+                                                                    Total Amount : <label id="totalAmout">0</label>
+                                                                </span>                                                    
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
                                                 <div class="form-group mtop10">
                                                     <label for="comment" class="col-sm-2 col-md-1 control-label">Comment:</label>
                                                     <div class="col-sm-10 col-md-11">                                                            
-                                                        <!--<textarea class="form-control" rows="3" placeholder="Company Name" id="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</textarea>-->
                                                         {!! Form::textarea('comments',Input::old('phone_no',isset($cust->phone_no) ? $cust->phone_no : ''), array('class'=>'form-control','rows'=>'3','placeholder'=>'Comments','id' => 'comments'))!!}
                                                     </div>
                                                 </div>
                                                 
                                                 <div class="form-group" align="center">
-                                                    <!--<input type="submit" value="Submit" id="btnSubmit" class="btn btn-primary" style="margin-top: 10px;">-->
                                                     {!! Form::submit('Save',array('class'=>'btn btn-primary', 'id'=>'btnSubmit')) !!}
                                                 </div>
                                             </div>
@@ -323,7 +314,33 @@
         </div>
     </div>
 </div>
-
+<!-- Add more Order Template-->
+<script type="text/x-jQuery-tmpl" id="new-order-template">
+    <tr class="newOrderData" id="newOrder-${orderNo}">
+        <td>
+            ${orderNo}
+        </td>           
+        <td>
+            <label id="${skuId}" class="sku">${skuLabel}</label>
+        </td>
+        <td>
+            <label class="description">${description}</label>
+        </td>
+        <td>
+            <label class="purchaseQty">${purchaseQty}</label>
+        </td>
+        <td>
+            <label class="unitPrice">${unitPrice}</label>
+        </td>
+        <td>
+            <label class="totalPrice">${totalPrice}</label>
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger" onclick="removeNewOrder(this)"><i class="fa fa-trash-o"></i></button>
+            <button type="button" class="btn btn-primary" onclick="editNewOrder(this)"><i class="fa fa-edit"></i></button>
+        </td>
+    </tr>
+</script>
 <!-- Modal Start -->
 <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
