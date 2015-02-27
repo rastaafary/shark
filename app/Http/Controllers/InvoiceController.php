@@ -38,9 +38,7 @@ class InvoiceController extends Controller
               'city' => 'required',
               'state' => 'required',
               'zipcode' => 'required',
-              'phone_no' => 'required',
-              'shpcomp_name' => 'required',
-              'shpbuilding_no' => 'required',
+              'phone_no' => 'required'            
               );
               $validator = Validator::make(Input::all(), $rules);
               if ($validator->fails()) {
@@ -84,38 +82,39 @@ class InvoiceController extends Controller
             } else {
                 //Get Customer ID
                 $customer_data = DB::table('purchase_order')->where('id', $post['selectPO'])->first();
-                $customer = DB::table('shipping_info')
+                $shipping_data = DB::table('shipping_info')
                         ->where('customer_id', $customer_data->customer_id)
                         ->where('identifier', $post['oldShippingInfo'])
                         ->first();
 
+              
                 // Add Old Shipping Information
-                $shp_info = DB::table('shipping_info')->insert(
-                        array('customer_id' => $customer->customer_id,
-                            'comp_name' => $customer->comp_name,
-                            'building_no' => $customer->building_no,
-                            'street_addrs' => $customer->street_addrs,
-                            'interior_no' => $customer->interior_no,
-                            'city' => $customer->city,
-                            'state' => $customer->state,
-                            'zipcode' => $customer->zipcode,
-                            'country' => $customer->country,
-                            'phone_no' => $customer->phone_no,
-                            'identifier' => $customer->identifier,
-                            'type' => $post['shippingMethod'],
-                            'date' => $Date,
-                            'invoice_id' => '',
-                            'created_by' => $post['user_id']
-                ));
+//                $shp_info = DB::table('shipping_info')->insert(
+//                        array('customer_id' => $customer->customer_id,
+//                            'comp_name' => $customer->comp_name,
+//                            'building_no' => $customer->building_no,
+//                            'street_addrs' => $customer->street_addrs,
+//                            'interior_no' => $customer->interior_no,
+//                            'city' => $customer->city,
+//                            'state' => $customer->state,
+//                            'zipcode' => $customer->zipcode,
+//                            'country' => $customer->country,
+//                            'phone_no' => $customer->phone_no,
+//                            'identifier' => $customer->identifier,
+//                            'type' => $post['shippingMethod'],
+//                            'date' => $Date,
+//                            'invoice_id' => '',
+//                            'created_by' => $post['user_id']
+//                ));
             }
 
-            $customer = DB::table('purchase_order')->where('id', $post['selectPO'])->first();
-            $last_Shp_id = DB::table('shipping_info')->where('customer_id', $customer->customer_id)->orderBy('id', 'desc')->first();
+           // $customer = DB::table('purchase_order')->where('id', $post['selectPO'])->first();
+           // $last_Shp_id = DB::table('shipping_info')->where('customer_id', $customer->customer_id)->orderBy('id', 'desc')->first();
 
             $billing_info = DB::table('invoice')->insert(
                     array('invoice_no' => '',
                         'po_id' => $post['selectPO'],
-                        'shipping_id' => $last_Shp_id->id,
+                        'shipping_id' => $shipping_data->id,
                         'comp_name' => $post['shpcomp_name'],
                         'building_no' => $post['shpbuilding_no'],
                         'street_addrs' => $post['shpstreet_addrs'],
@@ -139,7 +138,7 @@ class InvoiceController extends Controller
             }
             DB::table('invoice')
                     ->where('po_id', $post['selectPO'])
-                    ->where('shipping_id', $last_Shp_id->id)
+                    ->where('shipping_id', $shipping_data->id)
                     ->update(array('invoice_no' => $invoice_no));         
         }
         $uid = Auth::user()->id;

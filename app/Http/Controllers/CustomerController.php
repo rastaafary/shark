@@ -85,9 +85,9 @@ class CustomerController extends Controller
 
             DB::table('customers')->insert(
                     array('user_id' => $last_id->id, 'customer_image' => $post['image'], 'comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date)
-            );
-            Session::flash('alert-success', 'success');
+            );        
             Session::flash('message', 'Customer Added Successfully!!');
+            Session::flash('status', 'success');
             return redirect('/customer');
         }
         return view('customer.addCustomer', ['page_title' => 'Add Customers']);
@@ -175,7 +175,7 @@ class CustomerController extends Controller
             );
 
             Session::flash('message', 'Customer Updated Successfully!!');
-            Session::flash('alert-success', 'success');
+           Session::flash('status', 'success');
             return redirect('/customer');
         } else if (isset($id)) {
             $cust = DB::table('customers')->where('user_id', $id)->first();
@@ -192,7 +192,7 @@ class CustomerController extends Controller
                 ->update(array('is_deleted' => '1'));
 
         Session::flash('message', 'Customer Deleted Successfully!!');
-        Session::flash('alert-success', 'success');
+       Session::flash('status', 'success');
         return redirect('/customer');
     }
 

@@ -21,12 +21,14 @@
                             </div>
                         </div>
                     </div>
-
                     <ul class="chats normal-chat">
-                        @foreach($data as $value)
-                        <li class="in">
-                             
-                            <input type="image" height="45px" width="45px" class="avatar" src="/images/user/{{ $value->image }}"> 
+                        @foreach($data as $value)                       
+                        @if($value->customer_id == Auth::user()->id)
+                         <li class="in">
+                        @else
+                         <li class="out">
+                        @endif
+                            <img height="45px" width="45px" class="avatar" src="/images/user/{{ $value->image }}"> 
                             <div class="message ">
                                 <span class="arrow"></span>
                                 <a class="name" href="#">{{ $value->name }}</a>                               
@@ -34,71 +36,28 @@
                                     {{ $value->comments }}
                                 </span>
                             </div>
-                            <div class="attach">
-                                <span class="name" href="#">Image Preview:</span>
+                            <div class="attach">                              
+                               <?php $flag = 0; ?>
+                                @foreach($image_data as $val)                               
+                                @if($val->id == $value->id)
+                                    @if($flag == 0)
+                                         <span class="name" href="#">Image Preview:</span>
+                                        <?php $flag = 1; ?>                                        
+                                    @endif
                                 <a href="#" data-toggle="modal" data-target="#lightbox"> 
-                                    <img class="attach-img" src="images/photos/user1.png">
-                                </a>
-                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
-                                    <img class="attach-img" src="images/photos/user2.png">
-                                </a>
-                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
-                                    <img class="attach-img" src="images/photos/user3.png">
-                                </a>
+                                    <img class="attach-img" height="30px" width="45px" src="/images/blogArt/{{ $val->name }}">
+                                </a>  
+                                @endif
+                                @endforeach
                             </div>
                         </li>
                         @endforeach
-<!--                        <li class="in">
-                            <img src="images/photos/user1.png" alt="" class="avatar">
-                            <div class="message ">
-                                <span class="arrow"></span>
-                                <a class="name" href="#">Jone Doe</a>
-                                <span class="datetime">at Apr 28, 2014 1:33</span>
-                                <span class="body">
-                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. dolore magna aliquam erat volutpat. dolore magna aliquam erat volutpat.
-                                </span>
-                            </div>
-                            <div class="attach">
-                                <span class="name" href="#">Image Preview:</span>
-                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
-                                    <img class="attach-img" src="images/photos/user1.png">
-                                </a>
-                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
-                                    <img class="attach-img" src="images/photos/user2.png">
-                                </a>
-                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
-                                    <img class="attach-img" src="images/photos/user3.png">
-                                </a>
-                            </div>
-                        </li>
-                        <li class="out">
-                            <img src="images/photos/user2.png" alt="" class="avatar">
-                            <div class="message">
-                                <span class="arrow"></span>
-                                <a class="name" href="#">Margarita Rose</a>
-                                <span class="datetime">at Apr 28, 2014 1:35</span>
-                                <span class="body">
-                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                                </span>
-                            </div>
-                            <div class="attach">
-                                <span class="name" href="#">Image Preview:</span>
-                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
-                                    <img class="attach-img" src="images/photos/user1.png">
-                                </a>
-                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
-                                    <img class="attach-img" src="images/photos/user2.png">
-                                </a>
-                                <a href="#" data-toggle="modal" data-target="#lightbox"> 
-                                    <img class="attach-img" src="images/photos/user3.png">
-                                </a>
-                            </div>
-                        </li>                       -->
                     </ul>
                     <div class="chat-form ">
-                        <!--                        <form role="form" class="form-inline" id="frmBlogArt" method="post">-->
+                        <!--<form role="form" class="form-inline" id="frmBlogArt" method="post">-->
                         {!! Form::open(array('class'=>'form-inline', 'name'=>'frmBlogArt','id'=>'frmBlogArt','files' => true)) !!}
                         {!! Form::hidden('id',Input::old('id',isset($id) ? $id : '')) !!}
+                         {!! HTML::ul($errors->all()) !!}
                         <div class="form-group">
                             <textarea placeholder="Type a message here..." class="form-control" style="width: 100%" name="txtMessage" id="txtMessage"></textarea>
 <!--                                <input type="text" style="width: 100%" placeholder="Type a message here..." class="form-control">-->
