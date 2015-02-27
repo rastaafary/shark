@@ -222,53 +222,57 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                    <table id="invoiceProductTbl" class="display table table-bordered table-striped">
                                                         <thead>
                                                             <tr>
                                                                 <th>#</th>
-                                                                <th>SKU</th>
-                                                                <th>Description</th>
-                                                                <th>Qty</th>
-                                                                <th>Unit Price</th>
-                                                                <th>DIscount %</th>
-                                                                <th>Amount</th>
-                                                                <th>Action</th>
+                                                                <th style="width:20%;">SKU</th>
+                                                                <th style="width:35%;">Description</th>
+                                                                <th style="width:8%;">Qty</th>
+                                                                <th style="width:10;">Unit Price</th>
+                                                                <th style="width:10%;">DIscount %</th>
+                                                                <th style="width:10%;">Amount</th>
+                                                                <th style="width:25%;">Action</th>
                                                             </tr> 
                                                         </thead>
                                                         <tbody>
                                                             <tr class="gradeX">
                                                                 <td></td>
-                                                                <td><select class="form-control" id="selectSKU" name='selectSKU'></select></td>
-                                                                <td><input type="text" class="form-control" id="searchDescription"></td>
-                                                                <td><input type="text" class="form-control" id="searchQty" size="3"></td>
-                                                                <td><input type="text" class="form-control" id="searchUnitPrice" size="3"></td>
-                                                                <td><input type="text" class="form-control" id="searchDiscout" size="3"></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr class="gradeX">
-                                                                <td>1</td>
-                                                                <td>BF0013</td>
-                                                                <td>Barcelona FC sport Jersey</td>
-                                                                <td>50</td>
-                                                                <td>13</td>
-                                                                <td>0%</td>
-                                                                <td>$5000</td>
-                                                                <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editProductModal"><span class="fa fa-pencil"></span></a></td>
-                                                            </tr>
-
-                                                            <tr class="gradeX">
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td align="right"><label class="control-label">Total Qty :</label></td>                                                               
-                                                                <td><input type="text" class="form-control" id="totalQty" placeholder="50" size="3"></td>
-                                                                <td></td>
-                                                                <td align="right"><label class="control-label">Total Amount:</label></td> 
-                                                                <td><input type="text" class="form-control" id="totalAmount" placeholder="$5000" size="5"></td>
+                                                                <td>
+                                                                    <select class="form-control SKUselect2" id="selectSKU" name='selectSKU'></select>
+                                                                </td>
+                                                                <td>
+                                                                    <input id="vDescription" class="input form-control" name="searchDescription" type="text" placeholder="searchDescription"/>
+                                                                </td>
+                                                                <td>
+                                                                    <input id="vPurchaseQty" class="input form-control" type="text" placeholder="qty"/>
+                                                                </td>
+                                                                <td>
+                                                                    <label id="vUnitPrice"></label>
+                                                                </td>
+                                                                <td>
+                                                                    <label id="vDiscount"></label>
+                                                                </td>
+                                                                <td>
+                                                                    <label id="vTotalPrice"></label>
+                                                                </td>
+                                                                <td>
+                                                                    <button id="vAddMoreOrder" class="btn btn-primary" type="button"><i class="fa fa-plus"></i> Add</button>
+                                                                    <button id="vCancelUpdate" class="btn btn-warning" type="button" style="display: none;"><i class="fa fa-reply"></i></button>
+                                                                </td>
                                                                 <td></td>
                                                             </tr>
                                                         </tbody>
+                                                        <tfoot>
+                                                            <td colspan="7">
+                                                                <span style="margin-left: 45%;">
+                                                                    Total Quantity : <label id="vTotalQuantity">0</label>
+                                                                </span>
+                                                                <span style="margin-left: 8%;">
+                                                                    Total Amount : <label id="vTotalAmout">0</label>
+                                                                </span>                                                    
+                                                            </td>
+                                                        </tfoot>
                                                     </table>
                                                 </div>                               
 
@@ -363,5 +367,32 @@
         </div>
     </div>
 </div>
+<!-- Add more Order Template-->
+<script type="text/x-jQuery-tmpl" id="new-invoice-template">
+    <tr class="newInvoiceData" id="newOrder-${orderNo}">
+        <td>
+            ${orderNo}
+        </td>           
+        <td>
+            <label id="${skuId}" class="sku">${skuLabel}</label>
+        </td>
+        <td>
+            <label class="description">${description}</label>
+        </td>
+        <td>
+            <label class="purchaseQty">${purchaseQty}</label>
+        </td>
+        <td>
+            <label class="unitPrice">${unitPrice}</label>
+        </td>
+        <td>
+            <label class="totalPrice">${totalPrice}</label>
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger" onclick="removeNewInvoice(this)"><i class="fa fa-trash-o"></i></button>
+            <button type="button" class="btn btn-primary" onclick="editNewInvoice(this)"><i class="fa fa-edit"></i></button>
+        </td>
+    </tr>
+</script>
 <!-- Modal End -->
 @endsection

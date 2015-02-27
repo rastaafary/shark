@@ -28,7 +28,6 @@
                                                         <thead>
                                                             <tr>
                                                                 <th style="width: 5%;">PO Number</th>
-                                                                <th style="width: 5%;">Part Number</th>
                                                                 <th style="width: 5%;">Required Date</th>
                                                                 <th style="width: 5%;">Estimated Shipping Date</th>
                                                                 <th style="width: 5%;">PO Qty</th>

@@ -166,37 +166,19 @@ class InvoiceController extends Controller
 
     public function listSKU()
     {
-        $id = Input::get('id');
-        $cust_data = DB::table('purchase_order')
-                ->select('customer_id')
-                ->where('id', $id)
-                ->first();
-        $ord_data = DB::table('order_list')
-                ->select('part_id')
-                ->where('customer_id', $cust_data->customer_id)
-                ->where('po_id', $id)
+        $skuData =  DB::table('order_list')
+                ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
+                ->select('part_number.id','part_number.SKU')
+                ->where('order_list.po_id', Input::get('id'))
                 ->get();
-
-        $sku = [];
-        foreach ($ord_data as $key => $value) {
-            $sku_data = DB::table('part_number')
-                    ->select('SKU')
-                    ->where('id', $value->part_id)
-                    ->get();
-
-            $elem = $sku_data[0]->SKU;
-            array_push($sku, $elem);
-        }
-        return $sku;
-        //  return Response(json_encode($shipping_data));
+        return Response(json_encode($skuData));
     }
 
     public function paymentTerm()
     {
-        $id = Input::get('id');
         $cust_data = DB::table('purchase_order')
                 ->select('payment_terms')
-                ->where('id', $id)
+                ->where('id', Input::get('id'))
                 ->first();
         return Response(json_encode($cust_data));
     }
@@ -205,5 +187,16 @@ class InvoiceController extends Controller
     {
         return view('invoice.listInvoice', ['page_title' => 'Invoice']);
     }
+    
+    public function dispSKUdata()
+    {
+        $part_data = DB::table('part_number')
+                ->select('description', 'cost')
+                ->where('id', Input::get('id'))
+                ->first();
+
+        return Response(json_encode($part_data));
+    }
+    
 
 }

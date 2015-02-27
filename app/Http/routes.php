@@ -55,6 +55,7 @@ Route::get('/invoice', 'InvoiceController@listInvoice');
 Route::get('/invoice/listShipingInfo', 'InvoiceController@listShipingInfo');
 Route::get('/invoice/listSKU', 'InvoiceController@listSKU');
 Route::get('/invoice/paymentTerm', 'InvoiceController@paymentTerm');
+Route::get('/invoice/dispSKUdata', 'InvoiceController@dispSKUdata');
 
 // Purchase Order Customer
 Route::get('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
@@ -105,6 +106,7 @@ Route::get('/PLReport/view', 'OrderStatusReportController@viewReport');
   'uses' => 'Customer\customerController@addCustomer'));
  * 
  */
+
 
 Route::controllers([
     'auth' => 'Auth\AuthController',

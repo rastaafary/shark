@@ -326,9 +326,10 @@ class PurchaseOrderCustomerController extends Controller
                 ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
                 ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
                 ->leftJoin('order_status', 'order_list.id', '=', 'order_status.po_id')
-                ->select(array('purchase_order.po_number', 'part_number.SKU', 'purchase_order.require_date', 'part_number.description', 'order_list.qty', 'order_status.pcs_made', 'order_list.amount', 'order_list.id'))
-                ->groupBy('order_list.id');
-
+                ->select(array('purchase_order.po_number','purchase_order.require_date', 'part_number.description', 'order_list.qty', 'order_status.pcs_made', 'order_list.amount', 'order_list.id'))
+                ->groupBy('purchase_order.id');
+                //->select('purchase_order.po_number,purchase_order.require_date,part_number.description,sum(order_list.qty) as qty,sum(order_status.pcs_made) as pcs_made,sum(order_list.amount) as amount,purchase_order.id')
+                //->groupBy('purchase_order.id');
         return Datatables::of($orderlist)
                         ->editColumn("id", '<a href="/po/deletepoCustomer/{{ $id }}?list=true" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                 . '<span class="fa fa-trash-o"></span></a>'
