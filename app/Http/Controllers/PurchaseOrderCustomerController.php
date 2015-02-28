@@ -38,20 +38,25 @@ class PurchaseOrderCustomerController extends Controller
 
     public function addPurchaseOrder($id = null)
     {
+        //Get Logged User Deatils
         $user = Auth::user();
+        //Get Custome Details
         $customer = DB::table('customers')->where('user_id',$user->id)->first();
-        $purchaseOrderData = DB::table('purchase_order')->orderBy('id', 'desc')->first();
+        //Get last purchase Id
+        $purchaseOrderData = DB::table('purchase_order')->select('id')->orderBy('id', 'desc')->first();
         
+        //Generate Po_id
         if ($purchaseOrderData == null) {
             $autoId = str_pad(1, 4, '0', STR_PAD_LEFT);
         } else {
-            $autoId = str_pad($purchaseOrderData->id, 4, '0', STR_PAD_LEFT);
+            $autoId = str_pad($purchaseOrderData->id + 1, 4, '0', STR_PAD_LEFT);
         }
-        $autoId = $po_number = $customer->id . "-" . $autoId;
-        
-        
-        $post = Input::all();
-        if (isset($post['_token'])) {
+        $autoId = $customer->id . "-" . $autoId;
+               
+        //check Is post
+        if (Request::isMethod('post')) {
+            $post = Input::all();
+            
             unset($post['_token']);
 
             $rules = array(
@@ -123,8 +128,6 @@ class PurchaseOrderCustomerController extends Controller
                 //$aiFile = $blogfiles . ' ' . $filename;
             }
             
-            //$customer = DB::table('customers')->where('user_id',$user->id)->first();
- 
             //Add Purchase Order
             $po = DB::table('purchase_order')->insert(
                     array('customer_id' => $customer->id,
@@ -195,24 +198,6 @@ class PurchaseOrderCustomerController extends Controller
     public function editPurchaseOrder($id = null) {
          if (isset($id)) {
 
-       /*     $order_data = DB::table('order_list')
-                    ->where('id', $id)
-                    ->first();
-            $po_data = DB::table('purchase_order')
-                    ->where('id', $order_data->po_id)
-                    ->first();
-            $Shipping_data = DB::table('shipping_info')
-                    ->where('id', $po_data->shipping_id)
-                    ->first();
-            $blog_data = DB::table('blog_art_file')
-                    ->where('po_id', $po_data->id)
-                    ->first();
-            var_dump($order_data);
-            var_dump($po_data);
-            var_dump($Shipping_data);
-            var_dump($blog_data);
-            exit("hk"); */
-
             $orderlist = DB::table('order_list')
                     ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
                     ->leftJoin('shipping_info', 'shipping_info.id', '=', 'purchase_order.shipping_id')
@@ -221,8 +206,6 @@ class PurchaseOrderCustomerController extends Controller
                     ->where('order_list.id', $id)
                     ->get();
             var_dump($orderlist);
-            exit("hk");
-
             return View::make('customer.addCustomer', ['page_title' => 'Edit Customer', 'id' => $id])->with('cust', $cust);
         }
         return view('customer.addCustomer', ['page_title' => 'List Customer']);
@@ -360,9 +343,9 @@ class PurchaseOrderCustomerController extends Controller
                 ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
                 ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
                 ->leftJoin('order_status', 'order_list.id', '=', 'order_status.po_id')
-                ->select(array('purchase_order.po_number','purchase_order.require_date', 'part_number.description', 'order_list.qty', 'order_status.pcs_made', 'order_list.amount', 'order_list.id'))
+                ->select(array('purchase_order.po_number','purchase_order.require_date', 'part_number.description', DB::raw('SUM(order_list.qty)'),DB::raw('SUM(order_status.pcs_made)'), DB::raw('SUM(order_list.amount)'), 'purchase_order.id'))
                 ->groupBy('purchase_order.id');
-                //->select('purchase_order.po_number,purchase_order.require_date,part_number.description,sum(order_list.qty) as qty,sum(order_status.pcs_made) as pcs_made,sum(order_list.amount) as amount,purchase_order.id')
+                //->selectRow('purchase_order.po_number,purchase_order.require_date,part_number.description,sum(order_list.qty) as qty,sum(order_status.pcs_made) as pcs_made,sum(order_list.amount) as `amount`,`purchase_order.id`')
                 //->groupBy('purchase_order.id');
         return Datatables::of($orderlist)
                         ->editColumn("id", '<a href="/po/deletepoCustomer/{{ $id }}?list=true" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
