@@ -62,7 +62,7 @@
                                                 <div class="form-group col-sm-6 col-md-4">
                                                     <label for="orderTime">Time : </label>
                                                     <!--<input type="text" class="form-control" id="orderTime" name="time" placeholder="11:14 AM">-->
-                                                    {!! Form::text('time',Input::old('time',isset($purchaseOrder->time) ? $purchaseOrder->time : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => '11:14 AM', 'id' => 'orderTime')) !!}
+                                                    {!! Form::text('time',Input::old('time',isset($purchaseOrder->time) ? "date('h:i A', strtotime($purchaseOrder->time))" : '') ,array('class'=>'form-control', 'placeholder' => '11:14 AM', 'id' => 'orderTime')) !!}
                                                 </div>
                                             </div>
                                         </div>
@@ -226,11 +226,12 @@
                                                 <label for="uploadArtPDF" class="col-sm-4 control-label">Upload Art PDF:</label>
                                                 <div class="col-md-8">
                                                     <input id="uploadArtPDF" type="file" name="PDF">
-                                                    <?php if(isset($purchaseOrder->ai)) {
+                                                    <?php if(isset($purchaseOrder->pdf)) {
+                                                        if (!empty($purchaseOrder->pdf)) {
                                                       ?>
                                                     <a href="/files/<?php echo isset($purchaseOrder->pdf)?$purchaseOrder->pdf:''?>" target="_new">Click To View</a>
                                                     <?php
-                                                    }
+                                                    }}
                                                     ?>
                                                 </div>
                                             </div>
@@ -239,10 +240,11 @@
                                                 <div class="col-md-8">
                                                     <input id="uploadArtAi" type="file" name="Ai">
                                                     <?php if(isset($purchaseOrder->ai)) {
+                                                        if (!empty($purchaseOrder->ai)) {
                                                       ?>
                                                     <a href="/files/<?php echo isset($purchaseOrder->ai)?$purchaseOrder->ai:''?>" target="_new">Click To View</a>
                                                     <?php
-                                                    }
+                                                    }}
                                                     ?>
                                                 </div>
                                             </div>

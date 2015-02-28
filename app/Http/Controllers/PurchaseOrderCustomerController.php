@@ -188,7 +188,7 @@ class PurchaseOrderCustomerController extends Controller
             
             //Get data of purchase order
             $purchaseOrder = DB::table('purchase_order')
-                    ->select(array('purchase_order.*','shipping_info.*','blog_art_file.*','blog_art_file.id as art_id'))
+                    ->select(array('shipping_info.*','purchase_order.*','blog_art_file.*','blog_art_file.id as art_id'))
                     ->leftJoin('shipping_info', 'shipping_info.id', '=', 'purchase_order.shipping_id')
                     ->leftJoin('blog_art_file', 'blog_art_file.po_id', '=', 'purchase_order.id')
                     ->where('purchase_order.id', $id)
@@ -290,8 +290,18 @@ class PurchaseOrderCustomerController extends Controller
                 }
 
                 if (!empty($post['Ai']) || !empty($post['PDF'])) {
-                    //update Blog Art Data
-                    $blogArtId = DB::table('blog_art_file')
+                    if (empty($purchaseOrder->ai) && empty($purchaseOrder->pdf)) {
+                        //Add Blog Art Data
+                        $blogArtId = DB::table('blog_art_file')->insertGetId(
+                                array('po_id' => $id,
+                                    'customer_id' => $customer->id,
+                                    'name' => '',
+                                    'pdf' => $post['PDF'],
+                                    'ai' => $post['Ai'])
+                        );
+                    } else {
+                        //update Blog Art Data
+                        $blogArtId = DB::table('blog_art_file')
                             ->where('po_id',$id)
                             ->update(
                                 array(
@@ -299,7 +309,11 @@ class PurchaseOrderCustomerController extends Controller
                                     'pdf' => $post['PDF'],
                                     'ai' => $post['Ai']
                                 )
-                            );
+                            );    
+                    }
+                    
+                    
+                    
                 }
 
                 //add po order
@@ -353,7 +367,6 @@ class PurchaseOrderCustomerController extends Controller
             
             //get parts Data
             $sku = $this->getSKUPartsData();
-            
         } else {
             return redirect('/po/add');
         }
