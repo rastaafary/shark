@@ -12,9 +12,10 @@ use Datatables;
 use Auth;
 use Response;
 use Request;
-//use Illuminate\Http\Request;
 use App\Http\Controllers\Image;
 use Illuminate\Database\Query\Builder;
+
+//use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
@@ -26,35 +27,43 @@ class InvoiceController extends Controller
 
     public function addInvoice()
     {
-        $post = Input::all();
-        if (isset($post['_token'])) {
+        // Get Last Invoice ID
+        $invoice_data = DB::table('invoice')->select('id')->orderBy('id', 'desc')->first();
+
+        //Generate Invoice_No
+        if ($invoice_data == null) {
+            $inv_ID = str_pad(1, 4, '0', STR_PAD_LEFT);
+            $auto_invoice_no = 'IN' . $inv_ID;
+        } else {
+            $inv_ID = str_pad($invoice_data->id, 4, '0', STR_PAD_LEFT);
+            $auto_invoice_no = 'IN' . $inv_ID;
+        }
+
+        //check Is post
+        if (Request::isMethod('post')) {
+
+            // Get All Post Data
+            $post = Input::all();
+
             unset($post['_token']);
 
-             $rules = array(
-              'comp_name' => 'required',
-              'building_no' => 'required',
-              'street_addrs' => 'required',
-              'interior_no' => 'required',
-              'city' => 'required',
-              'state' => 'required',
-              'zipcode' => 'required',
-              'phone_no' => 'required'            
-              );
-              $validator = Validator::make(Input::all(), $rules);
-              if ($validator->fails()) {
-              return redirect('/invoice/add')
-              ->withErrors($validator)
-              ->withInput(Input::all());
-              //->with(array("shipping" => $shipping, $validator));
-              }
-             
-
-            $dt = date('Y-m-d');
-            $my_date = date('m/d/Y', strtotime($dt));
-            $time = strtotime($my_date);
-            $Date = date('Y/m/d', $time);
-
-            // $data = concat(concat(lpad(Convert(purchase_order.customer_id,char(4)),4,'0'),'-'),lpad(Convert(purchase_order.id,char(5)),5,'0'));
+            // Server Side Validation
+            $rules = array(
+                'comp_name' => 'required',
+                'building_no' => 'required',
+                'street_addrs' => 'required',
+                'interior_no' => 'required',
+                'city' => 'required',
+                'state' => 'required',
+                'zipcode' => 'required',
+                'phone_no' => 'required'
+            );
+            $validator = Validator::make(Input::all(), $rules);
+            if ($validator->fails()) {
+                return redirect('/invoice/add')
+                                ->withErrors($validator)
+                                ->withInput(Input::all());
+            }
 
             if (isset($post['addNew'])) {
 
@@ -75,7 +84,7 @@ class InvoiceController extends Controller
                             'phone_no' => $post['shpphone_no'],
                             'identifier' => $post['shpidentifer'],
                             'type' => $post['shippingMethod'],
-                            'date' => $Date,
+                            'date' => date('Y/m/d', strtotime(date("Y/m/d"))),
                             'invoice_id' => '',
                             'created_by' => $post['user_id']
                 ));
@@ -86,33 +95,10 @@ class InvoiceController extends Controller
                         ->where('customer_id', $customer_data->customer_id)
                         ->where('identifier', $post['oldShippingInfo'])
                         ->first();
-
-              
-                // Add Old Shipping Information
-//                $shp_info = DB::table('shipping_info')->insert(
-//                        array('customer_id' => $customer->customer_id,
-//                            'comp_name' => $customer->comp_name,
-//                            'building_no' => $customer->building_no,
-//                            'street_addrs' => $customer->street_addrs,
-//                            'interior_no' => $customer->interior_no,
-//                            'city' => $customer->city,
-//                            'state' => $customer->state,
-//                            'zipcode' => $customer->zipcode,
-//                            'country' => $customer->country,
-//                            'phone_no' => $customer->phone_no,
-//                            'identifier' => $customer->identifier,
-//                            'type' => $post['shippingMethod'],
-//                            'date' => $Date,
-//                            'invoice_id' => '',
-//                            'created_by' => $post['user_id']
-//                ));
             }
 
-           // $customer = DB::table('purchase_order')->where('id', $post['selectPO'])->first();
-           // $last_Shp_id = DB::table('shipping_info')->where('customer_id', $customer->customer_id)->orderBy('id', 'desc')->first();
-
             $billing_info = DB::table('invoice')->insert(
-                    array('invoice_no' => '',
+                    array('invoice_no' => $auto_invoice_no,
                         'po_id' => $post['selectPO'],
                         'shipping_id' => $shipping_data->id,
                         'comp_name' => $post['shpcomp_name'],
@@ -123,80 +109,67 @@ class InvoiceController extends Controller
                         'state' => $post['shpstate'],
                         'zipcode' => $post['shpzipcode'],
                         'country' => $post['shpcountry'],
-                        'phone_no' => $post['shpphone_no']                       
+                        'phone_no' => $post['shpphone_no']
             ));
-            $invoice_no = '';
-            $inc_id = DB::table('invoice')->orderBy('id', 'desc')->first();
-            if ($inc_id == null) {
-                $inc_id = 1;
-                $inv_ID = str_pad($inc_id, 4, '0', STR_PAD_LEFT);
-                $invoice_no = 'IN' . $inv_ID;
-            } else {
-                $id = $inc_id->id;               
-                $inv_ID = str_pad($id, 4, '0', STR_PAD_LEFT);
-                $invoice_no = 'IN' . $inv_ID;
-            }
-            DB::table('invoice')
-                    ->where('po_id', $post['selectPO'])
-                    ->where('shipping_id', $shipping_data->id)
-                    ->update(array('invoice_no' => $invoice_no));         
+
+            /* DB::table('invoice')
+              ->where('po_id', $post['selectPO'])
+              ->where('shipping_id', $shipping_data->id)
+              ->update(array('invoice_no' => $invoice_no)); */
         }
+
         $uid = Auth::user()->id;
+
         if (isset($uid) && $uid != null) {
             $PO = DB::table('purchase_order')->get();
-            return View::make("invoice.addInvoice", ['page_title' => 'Add Invoice'])->with("po", $PO);
+            return View::make("invoice.addInvoice", ['page_title' => 'Add Invoice'])
+                            ->with("po", $PO)
+                            ->with("auto_invoice_no", $auto_invoice_no);
         }
     }
 
+    /**
+     * Get Shippinh Info, Payment Term and Require Date
+     */
     public function listShipingInfo()
     {
         $id = Input::get('id');
-        $cust_data = DB::table('purchase_order')
-                ->select('customer_id')
-                ->where('id', $id)
-                ->first();
-
-        $shipping_data = DB::table('shipping_info')
-                ->select('identifier')
-                ->where('customer_id', $cust_data->customer_id)
-                ->groupBy('identifier')
+        $shipping_info = DB::table('purchase_order')
+                ->leftJoin('shipping_info', 'shipping_info.customer_id', '=', 'purchase_order.customer_id')
+                //->leftJoin('order_list', 'order_list.po_id', '=', 'purchase_order.id')
+                //->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
+                ->select('purchase_order.payment_terms', 'purchase_order.require_date', 'shipping_info.identifier')//,'part_number.SKU')
+                ->where('purchase_order.id', $id)
+                ->distinct()
                 ->get();
-        return Response(json_encode($shipping_data));
+        return Response(json_encode($shipping_info));
     }
 
+    /**
+     * Get SKU Data by PO_Id
+     */
     public function listSKU()
     {
-        $skuData =  DB::table('order_list')
+        $skuData = DB::table('order_list')
                 ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
-                ->select('part_number.id','part_number.SKU')
+                ->select('part_number.id', 'part_number.SKU')
                 ->where('order_list.po_id', Input::get('id'))
                 ->get();
         return Response(json_encode($skuData));
     }
 
-    public function paymentTerm()
-    {
-        $cust_data = DB::table('purchase_order')
-                ->select('payment_terms')
-                ->where('id', Input::get('id'))
-                ->first();
-        return Response(json_encode($cust_data));
+    /**
+     * Get Description by SKU
+     */
+    public function dispSKUdata()
+    {      
+        $sku_data = DB::table('part_number')->select('description', 'cost')->where('id', Input::get('id'))->get();
+        return Response(json_encode($sku_data));
     }
 
     public function listInvoice()
     {
         return view('invoice.listInvoice', ['page_title' => 'Invoice']);
     }
-    
-    public function dispSKUdata()
-    {
-        $part_data = DB::table('part_number')
-                ->select('description', 'cost')
-                ->where('id', Input::get('id'))
-                ->first();
-
-        return Response(json_encode($part_data));
-    }
-    
 
 }

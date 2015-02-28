@@ -14,141 +14,142 @@
                 <div class="panel-body">
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="Add">
-                           {!! Form::open(array('class'=>'form-horizontal','url'=>'/invoice/add','name'=>'Invoice','id'=>'Invoice','files' => true)) !!}
+                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/invoice/add','name'=>'Invoice','id'=>'Invoice','files' => true)) !!}
                             {!! Form::hidden('user_id',Input::old('user_id',isset(Auth::user()->id) ? Auth::user()->id : '')) !!}
-                                <div class="media usr-info">
-                                    <div class="pull-left">                                        
-                                        @if(Auth::user()->image)
-                                        {!! HTML::image('images/user/'.Auth::user()->image, 'a picture', array('class' => 'thumb')) !!}
-                                        @else
-                                        {!! HTML::image('images/user/default.jpg', 'a picture', array('class' => 'thumb')) !!}
+                            <div class="media usr-info">
+                                <div class="pull-left">                                        
+                                    @if(Auth::user()->image)
+                                    {!! HTML::image('images/user/'.Auth::user()->image, 'a picture', array('class' => 'thumb')) !!}
+                                    @else
+                                    {!! HTML::image('images/user/default.jpg', 'a picture', array('class' => 'thumb')) !!}
+                                    @endif
+                                </div>                                    
+                                <div class="media-body">
+                                    <h3 class="media-heading">
+                                        @if( Auth::check() )
+                                        {{ Auth::user()->name }}
                                         @endif
-                                    </div>                                    
-                                    <div class="media-body">
-                                        <h3 class="media-heading">
-                                            @if( Auth::check() )
-                                            {{ Auth::user()->name }}
-                                            @endif
-                                        </h3>                                      
-                                    </div>
+                                    </h3>                                      
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title"><i class="fa fa-table"></i> Invoice Details</h3>
-                                            </div>                                            
-                                            <div class="panel-body">
-                                                <div class="form-inline">
-                                                    <div class="form-group col-sm-4 col-md-4">
-                                                        <label for="invoiceId">Invoice ID# : </label>
-                                                        <input type="text" class="form-control" id="invoiceId" placeholder="IN0025">
-                                                    </div>
-                                                    <div class="form-group col-sm-4 col-md-4">
-                                                        <label class="control-label" for="invoiceDateTime">Date/Time : </label>
-                                                        <label class="control-label" id="invoiceDateTime" name="invoiceDateTime"><?php echo date('d/m/Y h:i:s A'); ?></label>
-                                                    </div>  
-                                                    <div class="form-group col-sm-4  col-md-4"> 
-                                                        <label class="control-label" for="selectPO">Select PO : </label>
-                                                        <select class="form-control" id="selectPO" name='selectPO'>
-                                                            <option value="">Select PO</option>
-                                                            @foreach($po as $value)
-                                                            <option value="{{$value->id}}">{{$value->id}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-table"></i> Invoice Details</h3>
+                                        </div>                                            
+                                        <div class="panel-body">
+                                            <div class="form-inline">
+                                                <div class="form-group col-sm-4 col-md-4">
+                                                    <label for="invoice_no">Invoice ID# : </label> 
+                                                    <label for="invoice_no" style="font-weight: bold;">{{ $auto_invoice_no }}</label>
+                                                    <?php /*             {!! Form::label('{{ $auto_invoice_no }}','',array('class'=>'control-label','id'=>'invoice_no','style'=>'font-weight: bold;')) !!} */ ?>
+                                                </div>
+                                                <div class="form-group col-sm-4 col-md-4">
+                                                    <label class="control-label" for="invoiceDateTime">Date/Time : </label>
+                                                    <label class="control-label" id="invoiceDateTime" name="invoiceDateTime"><?php echo date('d/m/Y h:i:s A'); ?></label>
+                                                </div>  
+                                                <div class="form-group col-sm-4  col-md-4"> 
+                                                    <label class="control-label" for="po_id">Select PO : </label>
+                                                    <select class="form-control" id="po_id" name='po_id'>
+                                                        <option value="">Select PO</option>
+                                                        @foreach($po as $value)
+                                                        <option value="{{$value->id}}">{{$value->id}}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title"><i class="fa fa-home"></i> Billing Info:</h3>
-                                            </div>
-                                             {!! HTML::ul($errors->all()) !!}
-                                            <div class="panel-body">
-                                                <div class="form-group">
-                                                    <label for="companyName" class="col-sm-4 control-label">Company Name:</label>
-                                                    <div class="col-sm-8">
-                                                        {!! Form::text('comp_name',Input::old('comp_name',isset($cust->comp_name) ? $cust->comp_name : '') ,array('class'=>'form-control', 'placeholder' => 'Company Name')) !!}
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="buildingNumber" class="col-sm-4 control-label">Building Number:</label>
-                                                    <div class="col-sm-8">
-                                                        {!! Form::text('building_no',Input::old('building_no',isset($cust->building_no) ? $cust->building_no : '') ,array('class'=>'form-control', 'placeholder' => 'Building Number')) !!}
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="streetAddress" class="col-sm-4 control-label">Street Address:</label>
-                                                    <div class="col-sm-8">
-                                                        {!! Form::text('street_addrs',Input::old('street_addrs',isset($cust->street_addrs) ? $cust->street_addrs : '') ,array('class'=>'form-control', 'placeholder' => 'Street Address')) !!}
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="interiorNumber" class="col-sm-4 control-label">Interior Number:</label>
-                                                    <div class="col-sm-8">
-                                                        {!! Form::text('interior_no',Input::old('interior_no',isset($cust->interior_no) ? $cust->interior_no : '') ,array('class'=>'form-control', 'placeholder' => 'Interior Number')) !!}
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="city" class="col-sm-4 control-label">City:</label>
-                                                    <div class="col-sm-8">
-                                                        {!! Form::text('city',Input::old('city',isset($cust->city) ? $cust->city : '') ,array('class'=>'form-control', 'placeholder' => 'City')) !!}
-                                                    </div>                                                               
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="state" class="col-sm-4 control-label">State:</label>
-                                                    <div class="col-sm-8">
-                                                        {!! Form::text('state',Input::old('state',isset($cust->state) ? $cust->state : '') ,array('class'=>'form-control', 'placeholder' => 'State')) !!} 
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="zipCode" class="col-sm-4 control-label">ZipCode:</label>
-                                                    <div class="col-sm-8">
-                                                        {!! Form::text('zipcode',Input::old('zipcode',isset($cust->zipcode) ? $cust->zipcode : '') ,array('class'=>'form-control', 'placeholder' => 'ZipCode')) !!}
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="country" class="col-sm-4 control-label">Country:</label>
-                                                    <div class="col-sm-8">
-                                                        {!! Form::select('country',['USA'=>'USA','Germany'=>'Germany'],'', array('class' => 'form-control'))!!}
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="phoneNumber" class="col-sm-4 control-label">Phone Number:</label>
-                                                    <div class="col-sm-8">
-                                                        {!! Form::text('phone_no',Input::old('phone_no',isset($cust->phone_no) ? $cust->phone_no : '') ,array('class'=>'form-control', 'placeholder' => 'Phone Number')) !!}
-                                                    </div>
-                                                </div>
-                                            </div>                                                       
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-home"></i> Billing Info:</h3>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title"><i class="fa fa-truck"></i> Shipping Info:</h3>
+                                        {!! HTML::ul($errors->all()) !!}
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="companyName" class="col-sm-4 control-label">Company Name:</label>
+                                                <div class="col-sm-8">
+                                                    {!! Form::text('comp_name',Input::old('comp_name',isset($cust->comp_name) ? $cust->comp_name : '') ,array('class'=>'form-control', 'placeholder' => 'Company Name')) !!}
+                                                </div>
                                             </div>
-                                            <div class="panel-body">
-                                                <div class="form-group">  
-                                                    <label for="oldShippingInfo" class="col-sm-4 control-label">Select Shipping Details :</label>
-                                                    <div class="col-sm-6">
-                                                        <select class="form-control col-sm-6" id="oldShippingInfo" name='oldShippingInfo'>                                                            
-                                                        </select>                                                       
-                                                    </div>
+                                            <div class="form-group">
+                                                <label for="buildingNumber" class="col-sm-4 control-label">Building Number:</label>
+                                                <div class="col-sm-8">
+                                                    {!! Form::text('building_no',Input::old('building_no',isset($cust->building_no) ? $cust->building_no : '') ,array('class'=>'form-control', 'placeholder' => 'Building Number')) !!}
                                                 </div>
-                                                <div class="form-group"> 
-                                                    <div class="col-sm-10">
-                                                        <label for="shippingInfo" class="control-label">Or Add New Shipping Information :</label>
-                                                        {!! Form::checkbox('addNew','','',array('value'=>'Add New','id'=>'addNew')) !!}
-                                                    </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="streetAddress" class="col-sm-4 control-label">Street Address:</label>
+                                                <div class="col-sm-8">
+                                                    {!! Form::text('street_addrs',Input::old('street_addrs',isset($cust->street_addrs) ? $cust->street_addrs : '') ,array('class'=>'form-control', 'placeholder' => 'Street Address')) !!}
                                                 </div>
-                                                <div id='newdetails' style="display: none;">
-                                                    <div class="form-group">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="interiorNumber" class="col-sm-4 control-label">Interior Number:</label>
+                                                <div class="col-sm-8">
+                                                    {!! Form::text('interior_no',Input::old('interior_no',isset($cust->interior_no) ? $cust->interior_no : '') ,array('class'=>'form-control', 'placeholder' => 'Interior Number')) !!}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="city" class="col-sm-4 control-label">City:</label>
+                                                <div class="col-sm-8">
+                                                    {!! Form::text('city',Input::old('city',isset($cust->city) ? $cust->city : '') ,array('class'=>'form-control', 'placeholder' => 'City')) !!}
+                                                </div>                                                               
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="state" class="col-sm-4 control-label">State:</label>
+                                                <div class="col-sm-8">
+                                                    {!! Form::text('state',Input::old('state',isset($cust->state) ? $cust->state : '') ,array('class'=>'form-control', 'placeholder' => 'State')) !!} 
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="zipCode" class="col-sm-4 control-label">ZipCode:</label>
+                                                <div class="col-sm-8">
+                                                    {!! Form::text('zipcode',Input::old('zipcode',isset($cust->zipcode) ? $cust->zipcode : '') ,array('class'=>'form-control', 'placeholder' => 'ZipCode')) !!}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="country" class="col-sm-4 control-label">Country:</label>
+                                                <div class="col-sm-8">
+                                                    {!! Form::select('country',['USA'=>'USA','Germany'=>'Germany'],'', array('class' => 'form-control'))!!}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phoneNumber" class="col-sm-4 control-label">Phone Number:</label>
+                                                <div class="col-sm-8">
+                                                    {!! Form::text('phone_no',Input::old('phone_no',isset($cust->phone_no) ? $cust->phone_no : '') ,array('class'=>'form-control', 'placeholder' => 'Phone Number')) !!}
+                                                </div>
+                                            </div>
+                                        </div>                                                       
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-truck"></i> Shipping Info:</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">  
+                                                <label for="oldShippingInfo" class="col-sm-4 control-label">Select Shipping Details :</label>
+                                                <div class="col-sm-6">
+                                                    <select class="form-control col-sm-6" id="oldShippingInfo" name='oldShippingInfo'>                                                            
+                                                    </select>                                                       
+                                                </div>
+                                            </div>
+                                            <div class="form-group"> 
+                                                <div class="col-sm-10">
+                                                    <label for="shippingInfo" class="control-label">Or Add New Shipping Information :</label>
+                                                    {!! Form::checkbox('addNew','','',array('value'=>'Add New','id'=>'addNew')) !!}
+                                                </div>
+                                            </div>
+                                            <div id='newdetails' style="display: none;">
+                                                <div class="form-group">
                                                     <label for="companyName" class="col-sm-4 control-label">Company Name:</label>
                                                     <div class="col-sm-8">
                                                         {!! Form::text('shpcomp_name',Input::old('shpcomp_name',isset($cust->comp_name) ? $cust->comp_name : '') ,array('class'=>'form-control', 'placeholder' => 'Company Name')) !!}
@@ -202,104 +203,104 @@
                                                         {!! Form::text('shpphone_no',Input::old('shpphone_no',isset($cust->phone_no) ? $cust->phone_no : '') ,array('class'=>'form-control', 'placeholder' => 'Phone Number')) !!}
                                                     </div>
                                                 </div> 
-                                                    <div class="form-group">
+                                                <div class="form-group">
                                                     <label for="identifier" class="col-sm-4 control-label">Identifier :</label>
                                                     <div class="col-sm-8">
                                                         <!--<input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number">-->
                                                         {!! Form::text('shpidentifer','' ,array('class'=>'form-control', 'placeholder' => 'Identifier')) !!}
                                                     </div>
                                                 </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title"><i class="fa fa-bars"></i> Products</h3>
-                                            </div>
-                                            <div class="panel-body">
-                                                <div class="table-responsive">
-                                                    <table id="invoiceProductTbl" class="display table table-bordered table-striped">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th style="width:20%;">SKU</th>
-                                                                <th style="width:35%;">Description</th>
-                                                                <th style="width:8%;">Qty</th>
-                                                                <th style="width:10;">Unit Price</th>
-                                                                <th style="width:10%;">DIscount %</th>
-                                                                <th style="width:10%;">Amount</th>
-                                                                <th style="width:25%;">Action</th>
-                                                            </tr> 
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr class="gradeX">
-                                                                <td></td>
-                                                                <td>
-                                                                    <select class="form-control SKUselect2" id="selectSKU" name='selectSKU'></select>
-                                                                </td>
-                                                                <td>
-                                                                    <input id="vDescription" class="input form-control" name="searchDescription" type="text" placeholder="searchDescription"/>
-                                                                </td>
-                                                                <td>
-                                                                    <input id="vPurchaseQty" class="input form-control" type="text" placeholder="qty"/>
-                                                                </td>
-                                                                <td>
-                                                                    <label id="vUnitPrice"></label>
-                                                                </td>
-                                                                <td>
-                                                                    <label id="vDiscount"></label>
-                                                                </td>
-                                                                <td>
-                                                                    <label id="vTotalPrice"></label>
-                                                                </td>
-                                                                <td>
-                                                                    <button id="vAddMoreOrder" class="btn btn-primary" type="button"><i class="fa fa-plus"></i> Add</button>
-                                                                    <button id="vCancelUpdate" class="btn btn-warning" type="button" style="display: none;"><i class="fa fa-reply"></i></button>
-                                                                </td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <tfoot>
-                                                            <td colspan="7">
-                                                                <span style="margin-left: 45%;">
-                                                                    Total Quantity : <label id="vTotalQuantity">0</label>
-                                                                </span>
-                                                                <span style="margin-left: 8%;">
-                                                                    Total Amount : <label id="vTotalAmout">0</label>
-                                                                </span>                                                    
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-bars"></i> Products</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table id="invoiceProductTbl" class="display table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th style="width:20%;">SKU</th>
+                                                            <th style="width:35%;">Description</th>
+                                                            <th style="width:8%;">Qty</th>
+                                                            <th style="width:10;">Unit Price</th>
+                                                            <th style="width:12%;">DIscount %</th>
+                                                            <th style="width:10%;">Amount</th>
+                                                            <th style="width:25%;">Action</th>
+                                                        </tr> 
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="gradeX">
+                                                            <td></td>
+                                                            <td>
+                                                                <select class="form-control SKUselect2" id="selectSKU" name='selectSKU'></select>
                                                             </td>
-                                                        </tfoot>
-                                                    </table>
-                                                </div>                               
+                                                            <td>
+                                                                <input id="vDescription" class="input form-control" name="searchDescription" type="text" placeholder="searchDescription"/>
+                                                            </td>
+                                                            <td>
+                                                                <input id="vPurchaseQty" class="input form-control" type="text" placeholder="qty"/>
+                                                            </td>
+                                                            <td>
+                                                                <label id="vUnitPrice"></label>
+                                                            </td>
+                                                            <td>
+                                                                <input id="vDiscount" class="input form-control" type="text" placeholder="Discount"/>
+                                                            </td>
+                                                            <td>
+                                                                <label id="vTotalPrice"></label>
+                                                            </td>
+                                                            <td>
+                                                                <button id="vAddMoreOrder" class="btn btn-primary" type="button"><i class="fa fa-plus"></i> Add</button>
+                                                                <button id="vCancelUpdate" class="btn btn-warning" type="button" style="display: none;"><i class="fa fa-reply"></i></button>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                    <td colspan="7">
+                                                        <span style="margin-left: 50%;">
+                                                            Total Quantity : <label id="vTotalQuantity">0</label>
+                                                        </span>
+                                                        <span style="margin-left: 15%;">
+                                                            Total Amount : <label id="vTotalAmout">0</label>
+                                                        </span>                                                    
+                                                    </td>
+                                                    </tfoot>
+                                                </table>
+                                            </div>                               
 
-                                                <div class="form-group col-sm-12">
-                                                    <label for="shippingMethod" class="control-label col-sm-2" >Shipping Method:</label>
-                                                    <div class="col-sm-3">
-                                                        <select class="form-control" id="shippingMethod" name="shippingMethod">
-                                                            <option>Air</option>
-                                                            <option>Express</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-7">
-                                                        <label for="shippingMethod" class="control-label">Payment Term:</label>
-                                                        <label id="paymentTerm" for="paymentTerm" class="control-label"></label>&nbsp;&nbsp;&nbsp;
-                                                        <label for="shippingMethod" class="control-label">Due Date:</label>
-                                                        <label for="shippingMethod" class="control-label">18/01/2015 + PO date</label>
-                                                    </div>
+                                            <div class="form-group col-sm-12">
+                                                <label for="shippingMethod" class="control-label col-sm-2" >Shipping Method:</label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control" id="shippingMethod" name="shippingMethod">
+                                                        <option>Air</option>
+                                                        <option>Express</option>
+                                                    </select>
                                                 </div>
-                                                <div class="form-group">
-                                                    <div class="col-sm-12 text-center">
-                                                        <input type="submit" value="Generate / Update" id="btnSubmit" class="btn btn-primary" style="margin-top: 10px;">
-                                                    </div>
+                                                <div class="col-sm-7">
+                                                    {!! Form::label('Payment Term:','',array('class'=>'control-label','for'=>'payment_terms')) !!}
+                                                    {!! Form::label('','',array('class'=>'control-label','id'=>'payment_terms')) !!} &nbsp;&nbsp;&nbsp;
+                                                    {!! Form::label('Due Date:','',array('class'=>'control-label','for'=>'req_date')) !!}
+                                                    {!! Form::label('','',array('class'=>'control-label','id'=>'req_date')) !!}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-12 text-center">
+                                                    <input type="submit" value="Generate / Update" id="btnSubmit" class="btn btn-primary" style="margin-top: 10px;">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             </form>
                         </div>                       
                     </div>
@@ -370,28 +371,28 @@
 <!-- Add more Order Template-->
 <script type="text/x-jQuery-tmpl" id="new-invoice-template">
     <tr class="newInvoiceData" id="newOrder-${orderNo}">
-        <td>
-            ${orderNo}
-        </td>           
-        <td>
-            <label id="${skuId}" class="sku">${skuLabel}</label>
-        </td>
-        <td>
-            <label class="description">${description}</label>
-        </td>
-        <td>
-            <label class="purchaseQty">${purchaseQty}</label>
-        </td>
-        <td>
-            <label class="unitPrice">${unitPrice}</label>
-        </td>
-        <td>
-            <label class="totalPrice">${totalPrice}</label>
-        </td>
-        <td>
-            <button type="button" class="btn btn-danger" onclick="removeNewInvoice(this)"><i class="fa fa-trash-o"></i></button>
-            <button type="button" class="btn btn-primary" onclick="editNewInvoice(this)"><i class="fa fa-edit"></i></button>
-        </td>
+    <td>
+    ${orderNo}
+    </td>           
+    <td>
+    <label id="${skuId}" class="sku">${skuLabel}</label>
+    </td>
+    <td>
+    <label class="description">${description}</label>
+    </td>
+    <td>
+    <label class="purchaseQty">${purchaseQty}</label>
+    </td>
+    <td>
+    <label class="unitPrice">${unitPrice}</label>
+    </td>
+    <td>
+    <label class="totalPrice">${totalPrice}</label>
+    </td>
+    <td>
+    <button type="button" class="btn btn-danger" onclick="removeNewInvoice(this)"><i class="fa fa-trash-o"></i></button>
+    <button type="button" class="btn btn-primary" onclick="editNewInvoice(this)"><i class="fa fa-edit"></i></button>
+    </td>
     </tr>
 </script>
 <!-- Modal End -->
