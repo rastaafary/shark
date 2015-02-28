@@ -95,7 +95,7 @@ class PurchaseOrderCustomerController extends Controller
                 $customer_data = DB::table('customers')->where('user_id', $post['id'])->first();
                 $shipData = DB::table('shipping_info')
                         ->where('customer_id', $customer_data->id)
-                        ->where('identifier', $post['oldIdentifire'])
+                        ->where('id', $post['oldIdentifire'])
                         ->first();
                 $shipAddId = $shipData->id;
             }
