@@ -43,6 +43,11 @@ class PurchaseOrderCustomerController extends Controller
         //Get Custome Details
         $customer = DB::table('customers')->where('user_id',$user->id)->first();
         
+        if (count($customer) == 0 || empty($customer)) {
+            Session::flash('message', "Please first create customer.");
+            Session::flash('status', 'error');
+            return redirect('/po');
+        }
         $autoId = $this->getAutoPurchaseCustomerId($customer);
                       
         //check Is post
