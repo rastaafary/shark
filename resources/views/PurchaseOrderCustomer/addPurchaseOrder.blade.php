@@ -1,6 +1,9 @@
 @extends('layouts.main')
 
 @section('content')
+<script>
+    var oldOrderData = <?php echo (isset($orderlist))?json_encode($orderlist):'[]'; ?>;
+</script>
 <div class="wrapper">
     <div class="row">
         <div class="col-md-12">
@@ -8,7 +11,7 @@
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
                         <li><a href="/po">List</a></li>
-                        <li class="active"><a href="#Add">Add</a></li>                       
+                        <li class="active"><a href="#Add"><?php echo isset($id)?'Edit':'Add';?></a></li>                       
                     </ul>
                 </header>
                 <div class="panel-body">
@@ -19,7 +22,7 @@
                             {!! Form::open(array('class'=>'form-horizontal','url'=>'/po/add','name'=>'PoCustomer','id'=>'PoCustomer','files' => true)) !!}
                             {!! Form::hidden('id',Input::old('id',isset(Auth::user()->id) ? Auth::user()->id : '')) !!}
                             @else                             
-                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/po/edit','name'=>'PoCustomer','id'=>'PoCustomer','files' => true)) !!}
+                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/po/edit/'.$id,'name'=>'PoCustomer','id'=>'PoCustomer','files' => true)) !!}
                             {!! Form::hidden('id',Input::old('id',isset(Auth::user()->id) ? Auth::user()->id : '')) !!}
                             @endif
                             <div class="media usr-info">
@@ -38,6 +41,7 @@
                                 </div>
                             </div>
                             <br>
+                            
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
@@ -53,17 +57,19 @@
                                                 <div class="form-group col-sm-6 col-md-4">
                                                     <label for="orderDate">Date : </label>
                                                     <!-- <input id="orderDate" type="text" value="" size="16" class="form-control default-date-picker"> -->
-                                                    {!! Form::text('orderDate',Input::old('orderDate',isset($cust->orderDate) ? $cust->orderDate : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => 'Date', 'id' => 'orderDate')) !!}
+                                                    {!! Form::text('orderDate',Input::old('orderDate',isset($purchaseOrder->date) ? $purchaseOrder->date : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => 'Date', 'id' => 'orderDate')) !!}
                                                 </div>
                                                 <div class="form-group col-sm-6 col-md-4">
                                                     <label for="orderTime">Time : </label>
-                                                    <input type="text" class="form-control" id="orderTime" placeholder="11:14:00AM">
+                                                    <!--<input type="text" class="form-control" id="orderTime" name="time" placeholder="11:14 AM">-->
+                                                    {!! Form::text('time',Input::old('time',isset($purchaseOrder->time) ? $purchaseOrder->time : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => '11:14 AM', 'id' => 'orderTime')) !!}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="panel panel-default">
@@ -78,7 +84,7 @@
                                                     <!--{!! Form::select('shippingDetails', ['1'=>'1'],'', array('class' => 'form-control')) !!}-->
                                                     <select class="form-control" id='oldIdentifire' name='oldIdentifire'>
                                                         @foreach($shipping as $value)
-                                                        <option value="{{$value->identifier}}">{{$value->identifier}}</option>
+                                                        <option value="{{$value->id}}" <?php if(isset($purchaseOrder)) echo ($value->id == $purchaseOrder->shipping_id)?'selected':''; ?> >{{$value->identifier}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -86,7 +92,8 @@
                                             <div class="form-group">
                                                 <label for="newshippingDetails" class="col-sm-4 control-label">Add New Details:</label>
                                                 <div class="col-sm-8">
-                                                    {!! Form::checkbox('addNew','','',array('value'=>'Add New','id'=>'addNew')) !!}
+                                                    <input type="checkbox" name="addNew" id="addNew">
+<!--                                                    {!! Form::checkbox('addNew','','',array('value'=>'Add New','id'=>'addNew')) !!}-->
                                                 </div>
                                             </div>
                                             <div id='newdetails' style="display: none;">
@@ -94,7 +101,7 @@
                                                     <label for="companyName" class="col-sm-4 control-label">Company Name:</label>
                                                     <div class="col-sm-8">
                                                        <!-- <input type="text" class="form-control" id="companyName" placeholder="Company Name">-->
-                                                        {!! Form::text('comp_name',Input::old('comp_name',isset($cust->comp_name) ? $cust->comp_name : '') ,array('class'=>'form-control', 'placeholder' => 'Company Name')) !!}
+                                                        {!! Form::text('comp_name',Input::old('comp_name',isset($purchaseOrder->comp_name) ? $purchaseOrder->comp_name : '') ,array('class'=>'form-control', 'placeholder' => 'Company Name')) !!}
                                                     </div>
                                                 </div>
                                                 <!--                                                <div class="form-group">
@@ -107,42 +114,42 @@
                                                     <label for="buildingNumber" class="col-sm-4 control-label">Building Number:</label>
                                                     <div class="col-sm-8">
                                                        <!-- <input type="text" class="form-control" id="buildingNumber" placeholder="Building Number">-->
-                                                        {!! Form::text('building_no',Input::old('building_no',isset($cust->building_no) ? $cust->building_no : '') ,array('class'=>'form-control', 'placeholder' => 'Building Number')) !!}
+                                                        {!! Form::text('building_no',Input::old('building_no',isset($purchaseOrder->building_no) ? $purchaseOrder->building_no : '') ,array('class'=>'form-control', 'placeholder' => 'Building Number')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="streetAddress" class="col-sm-4 control-label">Street Address:</label>
                                                     <div class="col-sm-8">
                                                         <!--<input type="text" class="form-control" id="streetAddress" placeholder="Street Address">-->
-                                                        {!! Form::text('street_addrs',Input::old('street_addrs',isset($cust->street_addrs) ? $cust->street_addrs : '') ,array('class'=>'form-control', 'placeholder' => 'Street Address')) !!}
+                                                        {!! Form::text('street_addrs',Input::old('street_addrs',isset($purchaseOrder->street_addrs) ? $purchaseOrder->street_addrs : '') ,array('class'=>'form-control', 'placeholder' => 'Street Address')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="interiorNumber" class="col-sm-4 control-label">Interior Number:</label>
                                                     <div class="col-sm-8">
                                                         <!--<input type="text" class="form-control" id="interiorNumber" placeholder="Interior Number">-->
-                                                        {!! Form::text('interior_no',Input::old('interior_no',isset($cust->interior_no) ? $cust->interior_no : '') ,array('class'=>'form-control', 'placeholder' => 'Interior Number')) !!}
+                                                        {!! Form::text('interior_no',Input::old('interior_no',isset($purchaseOrder->interior_no) ? $purchaseOrder->interior_no : '') ,array('class'=>'form-control', 'placeholder' => 'Interior Number')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="city" class="col-sm-4 control-label">City:</label>
                                                     <div class="col-sm-8">
                                                         <!--<input type="text" class="form-control" id="city" placeholder="City">-->
-                                                        {!! Form::text('city',Input::old('city',isset($cust->city) ? $cust->city : '') ,array('class'=>'form-control', 'placeholder' => 'City')) !!}
+                                                        {!! Form::text('city',Input::old('city',isset($purchaseOrder->city) ? $purchaseOrder->city : '') ,array('class'=>'form-control', 'placeholder' => 'City')) !!}
                                                     </div>                                                               
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="State" class="col-sm-4 control-label">State:</label>
                                                     <div class="col-sm-8">
                                                         <!--<input type="text" class="form-control" id="State" placeholder="State">-->
-                                                        {!! Form::text('state',Input::old('state',isset($cust->state) ? $cust->state : '') ,array('class'=>'form-control', 'placeholder' => 'State')) !!} 
+                                                        {!! Form::text('state',Input::old('state',isset($purchaseOrder->state) ? $purchaseOrder->state : '') ,array('class'=>'form-control', 'placeholder' => 'State')) !!} 
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="zipCode" class="col-sm-4 control-label">ZipCode:</label>
                                                     <div class="col-sm-8">
                                                         <!--<input type="text" class="form-control" id="zipCode" placeholder="ZipCode">-->
-                                                        {!! Form::text('zipcode',Input::old('zipcode',isset($cust->zipcode) ? $cust->zipcode : '') ,array('class'=>'form-control', 'placeholder' => 'ZipCode')) !!}
+                                                        {!! Form::text('zipcode',Input::old('zipcode',isset($purchaseOrder->zipcode) ? $purchaseOrder->zipcode : '') ,array('class'=>'form-control', 'placeholder' => 'ZipCode')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -157,14 +164,14 @@
                                                     <label for="phoneNumber" class="col-sm-4 control-label">Phone Number:</label>
                                                     <div class="col-sm-8">
                                                         <!--<input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number">-->
-                                                        {!! Form::text('phone_no',Input::old('phone_no',isset($cust->phone_no) ? $cust->phone_no : '') ,array('class'=>'form-control', 'placeholder' => 'Phone Number')) !!}
+                                                        {!! Form::text('phone_no',Input::old('phone_no',isset($purchaseOrder->phone_no) ? $purchaseOrder->phone_no : '') ,array('class'=>'form-control', 'placeholder' => 'Phone Number')) !!}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="identifier" class="col-sm-4 control-label">Identifier :</label>
                                                     <div class="col-sm-8">
                                                         <!--<input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number">-->
-                                                        {!! Form::text('identifer','' ,array('class'=>'form-control', 'placeholder' => 'Identifier')) !!}
+                                                        {!! Form::text('identifer',Input::old('identifer',isset($purchaseOrder->identifier) ? $purchaseOrder->identifier : '') ,array('class'=>'form-control', 'placeholder' => 'Identifer')) !!}
                                                     </div>
                                                 </div>
                                             </div>
@@ -180,34 +187,35 @@
                                             <div class="form-group">
                                                 <label for="shippingMethod" class="col-sm-4 control-label">Shipping Method:</label>
                                                 <div class="col-sm-8">
-                                                    <!--<select class="form-control" id="shippingMethod">
-                                                        <option>Air</option>
-                                                        <option>Express</option>
-                                                    </select>-->
-                                                    {!! Form::select('shippingMethod', ['Air' => 'Air', 'Express' => 'Express'], isset($PoCust->shippingMethod) ? $PoCust->shippingMethod:'Air', array('class' => 'form-control')) !!}
+                                                    <select class="form-control" id="shippingMethod" name="shippingMethod">
+                                                        <option value="Air" <?php if(isset($purchaseOrder)) echo ($purchaseOrder->type == 'Air')?'selected':'';?>>Air</option>
+                                                        <option value="Express" <?php if(isset($purchaseOrder)) echo ($purchaseOrder->type == 'Express')?'selected':'';?>>Express</option>
+                                                    </select>
+<!--                                                    {!! Form::select('shippingMethod', ['Air' => 'Air', 'Express' => 'Express'], isset($PoCust->shippingMethod) ? $PoCust->shippingMethod:'Air', array('class' => 'form-control')) !!}-->
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="paymentTerms" class="col-sm-4 control-label">Payment Terms:</label>
                                                 <div class="col-sm-8">
-                                                   <!-- <select class="form-control" id="paymentTerms">
-                                                        <option>15Days</option>
-                                                        <option>30Days</option>
-                                                        <option>Payment Before Shipment</option>
-                                                    </select>-->
-                                                    {!! Form::select('payment_terms', ['15Days' => '15Days', '30Days' => '30Days','Payment Before Shipment'=>'Payment Before Shipment'], isset($PoCust->payment_terms) ? $PoCust->payment_terms:'15Days', array('class' => 'form-control')) !!}
+                                                    <select class="form-control" id="payment_terms" name="payment_terms">
+                                                        <option value="15Days" <?php if(isset($purchaseOrder)) echo ($purchaseOrder->payment_terms == '15Days')?'selected':'';?>>15Days</option>
+                                                        <option value="30Days" <?php if(isset($purchaseOrder)) echo ($purchaseOrder->payment_terms == '30Days')?'selected':'';?>>30Days</option>
+                                                        <option value="Payment Before Shipment" <?php if(isset($purchaseOrder)) echo ($purchaseOrder->payment_terms == 'Payment Before Shipment')?'selected':'';?>>Payment Before Shipment</option>
+                                                    </select>
+<!--                                                    {!! Form::select('payment_terms', ['15Days' => '15Days', '30Days' => '30Days','Payment Before Shipment'=>'Payment Before Shipment'], isset($PoCust->payment_terms) ? $PoCust->payment_terms:'15Days', array('class' => 'form-control')) !!}-->
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="requiredDate" class="col-sm-4 control-label">Required Date:</label>
                                                 <div class="col-sm-8">
                                                     <!--<input id="requiredDate" type="text" value="" size="16" class="form-control default-date-picker">-->
-                                                    {!! Form::text('require_date',Input::old('require_date',isset($cust->require_date) ? $cust->require_date : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => 'Require Date', 'id' => 'require_date')) !!}
+                                                    {!! Form::text('require_date',Input::old('require_date',isset($purchaseOrder->require_date) ? $purchaseOrder->require_date : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => 'Require Date', 'id' => 'require_date')) !!}
                                                 </div>
                                             </div>                                                                                                                                                                                          
                                         </div>                                                       
                                     </div>
                                 </div>
+                                
                                 <div class="col-md-6">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
@@ -217,23 +225,37 @@
                                             <div class="form-group">
                                                 <label for="uploadArtPDF" class="col-sm-4 control-label">Upload Art PDF:</label>
                                                 <div class="col-md-8">
-                                                    <!--<input id="uploadArtPDF" type="file">-->
-                                                    {!! Form::file('PDF', Input::old('PDF',isset($cust->PDF) ? $cust->PDF : '')) !!}
+                                                    <input id="uploadArtPDF" type="file" name="PDF">
+                                                    <?php if(isset($purchaseOrder->ai)) {
+                                                      ?>
+                                                    <a href="/files/<?php echo isset($purchaseOrder->pdf)?$purchaseOrder->pdf:''?>" target="_new">Click To View</a>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="uploadArtPDF" class="col-sm-4 control-label">Upload Art Ai:</label>
                                                 <div class="col-md-8">
-                                                    <!--<input id="uploadArtAi" type="file">-->
-                                                    {!! Form::file('Ai',  Input::old('Ai',isset($cust->Ai) ? $cust->Ai : '')) !!}
+                                                    <input id="uploadArtAi" type="file" name="Ai">
+                                                    <?php if(isset($purchaseOrder->ai)) {
+                                                      ?>
+                                                    <a href="/files/<?php echo isset($purchaseOrder->ai)?$purchaseOrder->ai:''?>" target="_new">Click To View</a>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </div>
-                                            </div>                                                                                                                                
-                                            <a class="btn btn-link" href="/blogArt/29" role="button"><strong>Blog Art</strong></a>                                          
+                                            </div>
+                                            <?php
+                                                if (isset($purchaseOrder->art_id)) {
+                                            ?>
+                                            <a class="btn btn-link" href="/blogArt/<?=$purchaseOrder->art_id ?>" role="button"><strong>Blog Art</strong></a>                                          
+                                                <?php } ?>
                                         </div>                                                       
                                     </div>
                                 </div>
-
                             </div>
+                            
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
@@ -257,6 +279,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <td>
+                                                                <input type="hidden" id="deleteOrder" name="deleteOrder">
                                                                 <input type="hidden" id="allOrderData" name="orders" value="">
                                                                 <input type="hidden" id="updateId" value="0">
                                                             </td>
@@ -297,7 +320,7 @@
                                                 <div class="form-group mtop10">
                                                     <label for="comment" class="col-sm-2 col-md-1 control-label">Comment:</label>
                                                     <div class="col-sm-10 col-md-11">                                                            
-                                                        {!! Form::textarea('comments',Input::old('phone_no',isset($cust->phone_no) ? $cust->phone_no : ''), array('class'=>'form-control','rows'=>'3','placeholder'=>'Comments','id' => 'comments'))!!}
+                                                        {!! Form::textarea('comments',Input::old('comments',isset($purchaseOrder->comments) ? $purchaseOrder->comments : ''), array('class'=>'form-control','rows'=>'3','placeholder'=>'Comments','id' => 'comments'))!!}
                                                     </div>
                                                 </div>
                                                 
@@ -323,6 +346,7 @@
 <script type="text/x-jQuery-tmpl" id="new-order-template">
     <tr class="newOrderData" id="newOrder-${orderNo}">
         <td>
+            <input type="hidden" class="orderId" value="${orderId}">
             ${orderNo}
         </td>           
         <td>

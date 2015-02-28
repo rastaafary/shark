@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
     
     $('.select2').select2();
@@ -57,13 +58,16 @@ $(document).ready(function() {
         },
     });
    
+    $('#addNew').prop('checked', false);
+    $("#newdetails").hide();
 
-    var data = $("#oldIdentifire").val();
-    if (data == null)
-    {
-        $('#addNew').prop('checked', true);
-        $("#newdetails").show();
-    }
+//    var data = $("#oldIdentifire").val();
+//    if (data == null)
+//    {
+//        $('#addNew').prop('checked', false);
+//        $("#newdetails").hide();
+//    }
+
     //edit pocust
     $('#editQty').blur(function() {
         qty = $('#editQty').attr('value');
@@ -88,8 +92,7 @@ $(document).ready(function() {
     });
 
     $("#addNew").click(function() {
-        if ($('#addNew').is(':checked') ? $("#newdetails").show() : $("#newdetails").hide())
-            ;
+        if ($('#addNew').is(':checked') ? $("#newdetails").show() : $("#newdetails").hide());
     });
 
     $(".tt-dropdown-menu").click(function() {
@@ -185,6 +188,28 @@ $(document).ready(function() {
     });
     
     var orderNo = 1;
+    
+    if (oldOrderData.length > 0) {
+        $(oldOrderData).each(function(key,val){
+            var order = [
+                {
+                    orderNo: orderNo++,
+                    orderId:val.order_id,
+                    skuId: val.part_id,
+                    skuLabel:val.SKU,
+                    description:val.description,
+                    purchaseQty:val.qty,
+                    unitPrice:val.cost,
+                    totalPrice:val.amount
+                }
+            ];
+            // Render the Order details
+            $("#new-order-template").tmpl(order).appendTo("#purchaseOrderTbl tbody");
+        });
+            
+    }
+    
+    
     $("#addMoreOrder").click(function(e) {
         if ($('#skuOrder').val() == 0 || $('#skuOrder').val() == '') {
             alert('Please select SKU');
@@ -196,8 +221,9 @@ $(document).ready(function() {
         }
         if ($('#updateId').val() !== '0') {
             template = $('#'+$('#updateId').val()).tmplItem();
+            console.log(template);
             template.data.skuId = $('#skuOrder').val();
-            template.data.skuLabel = $('#skuOrder  option:selected').text();
+            template.data.skuLabel = $('#skuOrder option:selected').text();
             template.data.description = $('#searchDescription').val();
             template.data.purchaseQty = $('#purchaseQty').val();
             template.data.unitPrice = $('#unitPrice').html();
@@ -207,6 +233,7 @@ $(document).ready(function() {
             var order = [
                 {
                     orderNo: orderNo++,
+                    orderId:0,
                     skuId: $('#skuOrder').val(),
                     skuLabel:$('#skuOrder  option:selected').text(),
                     description:$('#searchDescription').val(),
@@ -254,11 +281,12 @@ $(document).ready(function() {
                 orders.push({
                     'part_id':$(this).find('.sku').attr('id'),
                     'qty':$(this).find('.purchaseQty').html(),
-                    'amount':$(this).find('.totalPrice').html()
+                    'amount':$(this).find('.totalPrice').html(),
+                    'orderId':$(this).find('.orderId').val()
                 })
             });
             if(orders.length > 0) {
-                console.log(JSON.stringify(orders));
+                $('#deleteOrder').val(deleteOrder);
                 $('#allOrderData').val(JSON.stringify(orders));
                 $('#PoCustomer').submit();
             } else {
@@ -306,12 +334,12 @@ $(document).ready(function() {
             'require_date': {
                 required: true
             },
-            'PDF': {
-                required: true
-            },
-            'Ai': {
-                required: true
-            }
+//            'PDF': {
+//                required: true
+//            },
+//            'Ai': {
+//                required: true
+//            }
         },
         messages: {
             'comp_name': {
@@ -371,6 +399,8 @@ $(document).ready(function() {
             error.insertAfter(element);
         }
     });
+    
+    resetTotalOrderData();
 });
 
 function resetTotalOrderData() {
@@ -434,11 +464,10 @@ function getinfo(element)
         }
     });
 }
-
-
-
+var deleteOrder = [];
 function removeNewOrder(element)
 {
+    deleteOrder.push($(element).closest('tr.newOrderData').find('.orderId').val());
     $(element).closest('tr.newOrderData').remove();
     resetTotalOrderData();
 }
@@ -447,7 +476,7 @@ function editNewOrder(element)
 {
     trEle = $(element).closest('tr.newOrderData');
     $('#skuOrder').select2("val", $(trEle).find('.sku').attr('id'));
-    $('#updateId').val($(trEle).find('.sku').attr('id'));
+    $('#updateId').val($(trEle).attr('id'));
     $('#searchDescription').val($(trEle).find('.description').html());
     $('#purchaseQty').val($(trEle).find('.purchaseQty').html());
     $('#unitPrice').html($(trEle).find('.unitPrice').html());

@@ -42,17 +42,9 @@ class PurchaseOrderCustomerController extends Controller
         $user = Auth::user();
         //Get Custome Details
         $customer = DB::table('customers')->where('user_id',$user->id)->first();
-        //Get last purchase Id
-        $purchaseOrderData = DB::table('purchase_order')->select('id')->orderBy('id', 'desc')->first();
         
-        //Generate Po_id
-        if ($purchaseOrderData == null) {
-            $autoId = str_pad(1, 4, '0', STR_PAD_LEFT);
-        } else {
-            $autoId = str_pad($purchaseOrderData->id + 1, 4, '0', STR_PAD_LEFT);
-        }
-        $autoId = $customer->id . "-" . $autoId;
-               
+        $autoId = $this->getAutoPurchaseCustomerId($customer);
+                      
         //check Is post
         if (Request::isMethod('post')) {
             $post = Input::all();
@@ -65,7 +57,7 @@ class PurchaseOrderCustomerController extends Controller
                 'payment_terms' => 'required',
                 'require_date' => 'required',
                 'PDF' => 'mimes:pdf|max:1024',
-                'Ai' => 'mimes:pdf|max:1024'
+                'Ai' => 'mimes:ai|max:1024'
             );
             $validator = Validator::make(Input::all(), $rules);
             if ($validator->fails()) {
@@ -75,11 +67,146 @@ class PurchaseOrderCustomerController extends Controller
             }
 
             if (isset($post['addNew'])) {
-                //Get Customer ID
-                //$customer = DB::table('customers')->where('user_id', $post['id'])->first();
                 // Add New Shipping Information
-                $shp_info = DB::table('shipping_info')->insert(
-                        array('customer_id' => $customer->id,
+                $shipAddId = DB::table('shipping_info')->insertGetId(
+                    array('customer_id' => $customer->id,
+                        'comp_name' => $post['comp_name'],
+                        'building_no' => $post['building_no'],
+                        'street_addrs' => $post['street_addrs'],
+                        'interior_no' => $post['interior_no'],
+                        'city' => $post['city'],
+                        'state' => $post['state'],
+                        'zipcode' => $post['zipcode'],
+                        'country' => $post['country'],
+                        'phone_no' => $post['phone_no'],
+                        'identifier' => $post['identifer'],
+                        'type' => $post['shippingMethod'],
+                        'date' => date('Y/m/d', strtotime($post['orderDate'])),
+                        'invoice_id' => '',
+                    )
+                );
+            } else {
+                //Get Customer ID
+                $customer_data = DB::table('customers')->where('user_id', $post['id'])->first();
+                $shipData = DB::table('shipping_info')
+                        ->where('customer_id', $customer_data->id)
+                        ->where('identifier', $post['oldIdentifire'])
+                        ->first();
+                $shipAddId = $shipData->id;
+            }
+            
+            //Add Purchase Order
+            $poId = DB::table('purchase_order')->insertGetId(
+                    array('customer_id' => $customer->id,
+                        'po_number' => $autoId,
+                        'shipping_id' => $shipAddId,
+                        'date' => date('Y/m/d', strtotime($post['orderDate'])),
+                        'time' => date('H:i:s', strtotime($post['time'])),
+                        'payment_terms' => $post['payment_terms'],
+                        'require_date' => date('Y/m/d', strtotime($post['require_date'])),
+                        'comments' => $post['comments']
+                    )
+            );
+            
+            //Upload the PDF
+            if (isset($post['PDF'])) {
+                $pdfName = $post['PDF']->getClientOriginalName();
+                $file = Input::file('PDF');
+                $destinationPath = 'files';
+                $pdfFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $pdfName;
+                Input::file('PDF')->move($destinationPath, $pdfFilename);
+                $post['PDF'] = $pdfFilename;
+            }
+            
+            //Upload the Ai
+            if (isset($post['Ai'])) {
+                $aiName = $post['Ai']->getClientOriginalName();
+                $file = Input::file('Ai');
+                $destinationPath = 'files';
+                $aiFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $aiName;
+                Input::file('Ai')->move($destinationPath, $aiFilename);
+                $post['Ai'] = $aiFilename;
+            }
+            
+            if (!empty($aiFilename) || !empty($pdfFilename)) {
+                //Add Blog Art Data
+                $blogArtId = DB::table('blog_art_file')->insertGetId(
+                        array('po_id' => $poId,
+                            'customer_id' => $customer->id,
+                            'name' => '',
+                            'pdf' => $post['PDF'],
+                            'ai' => $post['Ai'])
+                );
+            }
+            
+            //add po order
+            $orders = json_decode($post['orders'],true);
+            foreach ($orders as $orderlist) {
+                if ($orderlist['part_id'] > 0) {
+                    $orderlist['customer_id'] = $customer->id;
+                    $orderlist['po_id'] = $poId;
+                    $orderlist['created_by'] = Auth::user()->id;
+                    $orderstatus = DB::table('order_list')->insert($orderlist);
+                }
+            } 
+            Session::flash('message', "PO Customer Added Sucessfully.");
+            Session::flash('status', 'success');
+            return View::make('PurchaseOrderCustomer.listPurchaseOrder');
+        }    
+        
+        //get shipping address details
+        if (isset($customer->id)) {
+            $shipping = DB::table('shipping_info')->where('customer_id', $customer->id)->get();
+        }
+        //get parts Data
+        $sku = $this->getSKUPartsData(); 
+        
+        return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Add Purchase Order'])
+                        ->with("shipping", $shipping)
+                        ->with('sku', $sku)
+                        ->with('autoId',$autoId);
+        
+    }
+    
+    public function editPurchaseOrder($id = null) {
+        //check Poid Is empty
+        if (!empty($id)) {
+            //Get Logged User Deatils
+            $user = Auth::user();
+            //Get Custome Details
+            $customer = DB::table('customers')->where('user_id',$user->id)->first();
+            
+            //Get data of purchase order
+            $purchaseOrder = DB::table('purchase_order')
+                    ->select(array('purchase_order.*','shipping_info.*','blog_art_file.*','blog_art_file.id as art_id'))
+                    ->leftJoin('shipping_info', 'shipping_info.id', '=', 'purchase_order.shipping_id')
+                    ->leftJoin('blog_art_file', 'blog_art_file.po_id', '=', 'purchase_order.id')
+                    ->where('purchase_order.id', $id)
+                    ->first();
+            
+            if (Request::isMethod('post')) {
+                $post = Input::all();
+                unset($post['_token']);
+                $rules = array(
+                    'orderDate' => 'required',
+                    'shippingMethod' => 'required',
+                    'payment_terms' => 'required',
+                    'require_date' => 'required',
+                    'PDF' => 'mimes:pdf|max:1024',
+                    'Ai' => 'mimes:ai|max:1024'
+                );
+                $validator = Validator::make(Input::all(), $rules);
+                if ($validator->fails()) {
+                    return redirect('/po/add')
+                                    ->withErrors($validator)
+                                    ->withInput(Input::all());
+                }
+
+                if (isset($post['addNew'])) {
+                    // Add New Shipping Information
+                    $shipAddId = DB::table('shipping_info')->insertGetId(
+                        array(
+                            'customer_id' => $customer->id,
                             'comp_name' => $post['comp_name'],
                             'building_no' => $post['building_no'],
                             'street_addrs' => $post['street_addrs'],
@@ -93,124 +220,136 @@ class PurchaseOrderCustomerController extends Controller
                             'type' => $post['shippingMethod'],
                             'date' => date('Y/m/d', strtotime($post['orderDate'])),
                             'invoice_id' => '',
-                ));
-                if ($shp_info == 1) {
-                    $shp_info = DB::table('shipping_info')->where('customer_id', $customer->id)->orderBy('id', 'desc')->first();
+                        )
+                    );
+                } else {
+                    $shipAddId = $purchaseOrder->shipping_id;
+                    DB::table('shipping_info')
+                        ->where('id',$shipAddId)
+                        ->update(
+                        array(
+                            'type' => $post['shippingMethod']
+                        )
+                    );
                 }
-            } else {
-                //Get Customer ID
-                $customer_data = DB::table('customers')->where('user_id', $post['id'])->first();
-                $shp_info = DB::table('shipping_info')
-                        ->where('customer_id', $customer_data->id)
-                        ->where('identifier', $post['oldIdentifire'])
-                        ->first();
-            }
-            //Get the Customer Details
-            
-            //Upload the PDF
-            if (isset($post['PDF'])) {
-                $pdfName = $post['PDF']->getClientOriginalName();
-                $file = Input::file('PDF');
-                $destinationPath = 'images/Blog_art';
-                $pdfFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $pdfName;
-                Input::file('PDF')->move($destinationPath, $pdfFilename);
-                $post['PDF'] = $pdfFilename;
-            }
 
-            //Upload the Ai
-            if (isset($post['Ai'])) {
-                $aiName = $post['Ai']->getClientOriginalName();
-                $file = Input::file('Ai');
-                $destinationPath = 'images/Blog_art';
-                $aiFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $aiName;
-                Input::file('Ai')->move($destinationPath, $aiFilename);
-                $post['Ai'] = $aiFilename;
-                //$aiFile = $blogfiles . ' ' . $filename;
-            }
-            
-            //Add Purchase Order
-            $po = DB::table('purchase_order')->insert(
-                    array('customer_id' => $customer->id,
-                        'po_number' => '',
-                        'shipping_id' => $shp_info->id,
-                        'date' => date('Y/m/d', strtotime($post['orderDate'])),
-                        'payment_terms' => $post['payment_terms'],
-                        'require_date' => date('Y/m/d', strtotime($post['require_date'])),
-                        'comments' => $post['comments']
-                    )
-            );
-
-            DB::table('purchase_order')                   
-                    ->where('shipping_id', $shp_info->id)
-                    ->orderBy('id', 'desc')
-                    ->update(array('po_number' => $po_number));
-
-
-
-            $PO_id = DB::table('purchase_order')->where('customer_id', $customer->id)->orderBy('id', 'desc')->first();
-
-            //Add Blog Art Data
-            $blog_art = DB::table('blog_art_file')->insert(
-                    array('po_id' => $PO_id->id,
-                        'customer_id' => $customer->id,
-                        'name' => '',
-                        'pdf' => $pdfFilename,
-                        'ai' => $aiFilename)
-            );
-
-            //add po order
-            $orders = json_decode($post['orders'],true);
-            foreach ($orders as $orderlist) {
-                if ($orderlist['part_id'] > 0) {
-                    $orderlist['customer_id'] = $customer->id;
-                    $orderlist['po_id'] = $PO_id->id;
-                    $orderlist['created_by'] = Auth::user()->id;
-                    $orderstatus = DB::table('order_list')->insert($orderlist);
+                //update Purchase Order
+                $poId = DB::table('purchase_order')
+                        ->where('id',$id)
+                        ->update(
+                            array(
+                                'shipping_id' => $shipAddId,
+                                'date' => date('Y/m/d', strtotime($post['orderDate'])),
+                                'time' => date('H:i:s', strtotime($post['time'])),
+                                'payment_terms' => $post['payment_terms'],
+                                'require_date' => date('Y/m/d', strtotime($post['require_date'])),
+                                'comments' => $post['comments']
+                            )
+                        );
+                
+                //Upload the PDF
+                if (isset($post['PDF'])) {
+                    if(!empty($purchaseOrder->pdf)) {
+                        @unlink('files/'.$purchaseOrder->pdf);
+                    }
+                    $pdfName = $post['PDF']->getClientOriginalName();
+                    $file = Input::file('PDF');
+                    $destinationPath = 'files';
+                    $pdfFilename = str_replace(' ', '', $customer->comp_name) . rand() . '_' . $pdfName;
+                    Input::file('PDF')->move($destinationPath, $pdfFilename);
+                    $post['PDF'] = $pdfFilename;
                 }
-            } 
-            Session::flash('message', "PO Customer Added Sucessfully.");
-            Session::flash('status', 'success');
-            return View::make('PurchaseOrderCustomer.listPurchaseOrder');
-            //$last_id = DB::table('user')->orderBy('id', 'desc')->first();
-        }
-        
-        
-        $cust = DB::table('customers')->where('user_id', $user->id)->first();
-        
-        if (isset($cust->id)) {
-            $shipping = DB::table('shipping_info')->where('customer_id', $cust->id)->get();
-        }
-        
-        $partsData = DB::table('part_number')->select('SKU', 'id')->get(); //->where('SKU', 'like', '%' . $sku . '%')->get();
-        $sku = '';
-        $sku .="<option value='" . '' . "' selected='selected' > select sku</option>";
-        foreach ($partsData as $key => $value) {
-            $sku .="<option value='" . $value->id . "'>" . $value->SKU . "</option>";
-        }         
-        
-        return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Add Purchase Order'])
-                        ->with("shipping", $shipping)
-                        ->with('sku', $sku)
-                        ->with('autoId',$autoId);
-        
-    }
-    
-    public function editPurchaseOrder($id = null) {
-         if (isset($id)) {
+                $aiFile = '';
+                //Upload the Ai
+                if (isset($post['Ai'])) {
+                    
+                    if(!empty($purchaseOrder->ai)) {
+                        @unlink('files/'.$purchaseOrder->ai);
+                    }
+                    
+                    $aiName = $post['Ai']->getClientOriginalName();
+                    $file = Input::file('Ai');
+                    $destinationPath = 'files';
+                    $aiFilename = str_replace(' ', '', $customer->comp_name) . rand() . '_' . $aiName;
+                    Input::file('Ai')->move($destinationPath, $aiFilename);
+                    $post['Ai'] = $aiFilename;
+                }
 
-            $orderlist = DB::table('order_list')
-                    ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
-                    ->leftJoin('shipping_info', 'shipping_info.id', '=', 'purchase_order.shipping_id')
-                    ->leftJoin('blog_art_file', 'blog_art_file.po_id', '=', 'purchase_order.id')
-                    ->select(array('order_list.id', 'order_list.part_id', 'order_list.qty', 'order_list.amount', 'order_list.created_at', 'order_list.created_by', 'order_list.po_id', 'purchase_order.po_number', 'purchase_order.customer_id', 'purchase_order.shipping_id', 'purchase_order.date', 'purchase_order.payment_terms', 'purchase_order.require_date', 'purchase_order.comments', 'shipping_info.comp_name', 'shipping_info.building_no', 'shipping_info.street_addrs', 'shipping_info.interior_no', 'shipping_info.city', 'shipping_info.state', 'shipping_info.zipcode', 'shipping_info.country', 'shipping_info.phone_no', 'shipping_info.identifier', 'shipping_info.type', 'shipping_info.invoice_id', 'shipping_info.created_by', 'blog_art_file.pdf', 'blog_art_file.ai'))
-                    ->where('order_list.id', $id)
+                if (!empty($aiFilename) || !empty($pdfFilename)) {
+                    //update Blog Art Data
+                    $blogArtId = DB::table('blog_art_file')
+                            ->where('po_id',$id)
+                            ->update(
+                                array(
+                                    'name' => '',
+                                    'pdf' => $post['PDF'],
+                                    'ai' => $post['Ai']
+                                )
+                            );
+                }
+
+                //add po order
+                $orders = json_decode($post['orders'],true);
+                $deleteOrderIds = explode(',', $post['deleteOrder']);
+                
+                if (count($deleteOrderIds) > 0) {
+                    foreach ($deleteOrderIds as $deleteOrder) {
+                        DB::table('order_list')->where('id',$deleteOrder)
+                                ->delete();
+                    }
+                }                
+                foreach ($orders as $orderlist) {
+                    if ($orderlist['part_id'] > 0) {
+                        $orderId = $orderlist['orderId'];
+                        unset($orderlist['orderId']);
+                        if ($orderId > 0) {
+                            //Update Order
+                            DB::table('order_list')
+                                ->where('id',$orderId)
+                                ->update($orderlist);
+                        } else {
+                            //Add new Order
+                            $orderlist['customer_id'] = $customer->id;
+                            $orderlist['po_id'] = $id;
+                            $orderlist['created_by'] = $user->id;
+                            DB::table('order_list')->insert($orderlist);
+                        }
+                        
+                        
+                    }
+                } 
+                Session::flash('message', "PO Customer Updated Sucessfully.");
+                Session::flash('status', 'success');
+                return redirect('/po');
+            }
+            
+            //Get list of Parts order
+            $orderList = DB::table('order_list')
+                    ->select(array('order_list.*','part_number.*','order_list.id as order_id'))
+                    ->leftJoin('part_number','part_number.id','=','order_list.part_id')
+                    ->where('order_list.po_id', $id)
                     ->get();
-            var_dump($orderlist);
-            return View::make('customer.addCustomer', ['page_title' => 'Edit Customer', 'id' => $id])->with('cust', $cust);
+            
+            //echo '<pre>';print_r($purchaseOrder);exit;
+            
+            //get shipping address details
+            if (isset($customer->id)) {
+                $shipping = DB::table('shipping_info')->where('customer_id', $customer->id)->get();
+            }
+            
+            //get parts Data
+            $sku = $this->getSKUPartsData();
+            
+        } else {
+            return redirect('/po/add');
         }
-        return view('customer.addCustomer', ['page_title' => 'List Customer']);
-        //exit($id.' -> Coming Soon');
-        
+        return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Edit Purchase Order'],['id' => $id])
+                ->with('cust', $customer)
+                ->with('orderlist',$orderList)
+                ->with('purchaseOrder',$purchaseOrder)
+                ->with('autoId',$purchaseOrder->po_number)
+                ->with('sku',$sku)
+                ->with('shipping',$shipping);
     }
     
     public function listPurchaseOrder()
@@ -225,9 +364,6 @@ class PurchaseOrderCustomerController extends Controller
         return Response(json_encode($data));
     }
 
-    /**
-     * get description by sku
-     */
     public function getDescription()
     {
         $sku = Input::get('description');
@@ -235,9 +371,6 @@ class PurchaseOrderCustomerController extends Controller
         return Response(json_encode($data));
     }
 
-    /**
-     * 
-     */
     public function addOrder()
     {
         $post = Input::all();
@@ -315,9 +448,7 @@ class PurchaseOrderCustomerController extends Controller
 
     public function deletepoCustomer($id = null)
     {
-        $status = 0;
-           
-        $status = DB::table('order_list')->where('id', $id)->delete();
+        $status = DB::table('purchase_order')->where('id', $id)->delete();
         if ($status) {
             Session::flash('message', 'PO Customer delete Successfully.');
             Session::flash('status', 'success');
@@ -325,13 +456,8 @@ class PurchaseOrderCustomerController extends Controller
             Session::flash('message', "PO Customer delete Unsucessfully.");
             Session::flash('status', 'error');
         }
-        $post = Input::all();
-        if (isset($post['list'])) {
-            return redirect('/po');
-        } else {
-            return redirect('/po/add');
-        }
         
+        return redirect('/po');                
     }
 
     /**
@@ -348,12 +474,47 @@ class PurchaseOrderCustomerController extends Controller
                 //->selectRow('purchase_order.po_number,purchase_order.require_date,part_number.description,sum(order_list.qty) as qty,sum(order_status.pcs_made) as pcs_made,sum(order_list.amount) as `amount`,`purchase_order.id`')
                 //->groupBy('purchase_order.id');
         return Datatables::of($orderlist)
-                        ->editColumn("id", '<a href="/po/deletepoCustomer/{{ $id }}?list=true" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
+                        ->editColumn("id", '<a href="/po/deletepoCustomer/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                 . '<span class="fa fa-trash-o"></span></a>'
                                 . '&nbsp<a href="/po/edit/{{ $id }}" class="btn btn-primary" id="btnEdit">'
                                 . '<span class="fa fa-pencil"></span></a>')
                         ->editColumn("description", '(REMAINIG)')
                         ->make();
     }
-
+    
+    /**
+     * UDF For Get Auto Purchase Customer Id
+     */
+    public function getAutoPurchaseCustomerId($customerData)
+    {
+        //Get last purchase Id
+        $purchaseOrderData = DB::table('purchase_order')->select('id')->orderBy('id', 'desc')->first();
+        
+        //Generate Po_id
+        if ($purchaseOrderData == null) {
+            $autoId = str_pad(1, 4, '0', STR_PAD_LEFT);
+        } else {
+            $autoId = str_pad($purchaseOrderData->id + 1, 4, '0', STR_PAD_LEFT);
+        }
+        return $customerData->id . "-" . $autoId;
+    }
+    
+    /**
+     * UDF For Get SKU Parts Data
+     */
+    public function getSKUPartsData()
+    {
+        $partsData = DB::table('part_number')->select('SKU', 'id')->get();
+        $sku = '';
+        $sku .="<option value='" . '' . "' selected='selected' > select sku</option>";
+        foreach ($partsData as $key => $value) {
+            $sku .="<option value='" . $value->id . "'>" . $value->SKU . "</option>";
+        }
+        return $sku;
+    }
+    
+    
+    
+    
+    
 }
