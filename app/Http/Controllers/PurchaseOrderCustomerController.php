@@ -121,6 +121,8 @@ class PurchaseOrderCustomerController extends Controller
                 $pdfFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $pdfName;
                 Input::file('PDF')->move($destinationPath, $pdfFilename);
                 $post['PDF'] = $pdfFilename;
+            } else {
+                $post['PDF'] = '';
             }
             
             //Upload the Ai
@@ -131,9 +133,11 @@ class PurchaseOrderCustomerController extends Controller
                 $aiFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $aiName;
                 Input::file('Ai')->move($destinationPath, $aiFilename);
                 $post['Ai'] = $aiFilename;
+            } else {
+                $post['Ai'] = '';
             }
             
-            if (!empty($aiFilename) || !empty($pdfFilename)) {
+            if (!empty($post['PDF']) || !empty($post['Ai'])) {
                 //Add Blog Art Data
                 $blogArtId = DB::table('blog_art_file')->insertGetId(
                         array('po_id' => $poId,
@@ -264,8 +268,10 @@ class PurchaseOrderCustomerController extends Controller
                     $pdfFilename = str_replace(' ', '', $customer->comp_name) . rand() . '_' . $pdfName;
                     Input::file('PDF')->move($destinationPath, $pdfFilename);
                     $post['PDF'] = $pdfFilename;
+                } else {
+                    $post['PDF'] = '';
                 }
-                $aiFile = '';
+                
                 //Upload the Ai
                 if (isset($post['Ai'])) {
                     
@@ -279,9 +285,11 @@ class PurchaseOrderCustomerController extends Controller
                     $aiFilename = str_replace(' ', '', $customer->comp_name) . rand() . '_' . $aiName;
                     Input::file('Ai')->move($destinationPath, $aiFilename);
                     $post['Ai'] = $aiFilename;
+                } else {
+                    $post['Ai'] = '';
                 }
 
-                if (!empty($aiFilename) || !empty($pdfFilename)) {
+                if (!empty($post['Ai']) || !empty($post['PDF'])) {
                     //update Blog Art Data
                     $blogArtId = DB::table('blog_art_file')
                             ->where('po_id',$id)
