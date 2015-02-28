@@ -147,6 +147,7 @@ class PurchaseOrderCustomerController extends Controller
             //add po order
             $orders = json_decode($post['orders'],true);
             foreach ($orders as $orderlist) {
+                unset($orderlist['orderId']);
                 if ($orderlist['part_id'] > 0) {
                     $orderlist['customer_id'] = $customer->id;
                     $orderlist['po_id'] = $poId;
