@@ -1,8 +1,8 @@
 $(document).ready(function () {
     $('.SKUselect2').select2({
-        allowClear:true,
+        allowClear: true,
     });
-    
+
     var data = $("#oldShippingInfo").val();
     if (data == null)
     {
@@ -10,11 +10,12 @@ $(document).ready(function () {
         $("#newdetails").show();
     }
     $("#addNew").click(function () {
-        if ($('#addNew').is(':checked') ? $("#newdetails").show() : $("#newdetails").hide());
+        if ($('#addNew').is(':checked') ? $("#newdetails").show() : $("#newdetails").hide())
+            ;
     });
 
-    $("#selectPO").change(function () {
-        id = $('#selectPO').val();
+    $("#po_id").change(function () {
+        id = $('#po_id').val();
         $.ajax({
             type: 'GET',
             url: '/invoice/listShipingInfo',
@@ -22,12 +23,13 @@ $(document).ready(function () {
             async: false,
             success: function (responce)
             {
-                $('.shippingData').remove();
                 var jason = $.parseJSON(responce);
+                $('.shippingData').remove();
                 $.each(jason, function (idx, data) {
+                    $('#req_date').text(data.require_date);
+                    $('#payment_terms').text(data.payment_terms);
                     $("#oldShippingInfo").append("<option val='" + data.identifier + "' class='shippingData'>" + data.identifier + "</option>");
                 });
-                $("#searchQty").prop("disabled", false);
             }
         });
 
@@ -44,24 +46,38 @@ $(document).ready(function () {
                 $("#selectSKU").append($("<option>").val('').html('Select SKU'));
                 $.each(jason, function (idx, data) {
                     $("#selectSKU").append($("<option>").val(data.id).html(data.SKU));
-                    
+
                 });
             }
         });
-        
-        $.ajax({
-            type: 'GET',
-            url: '/invoice/paymentTerm',
-            data: 'id=' + id,
-            async: false,
-            success: function (responce)
-            {
-                var jason = $.parseJSON(responce);              
-                $('#paymentTerm').text(jason.payment_terms);
-
-            }
-        });
     });
+    
+    $('#vPurchaseQty').keyup(function(e){
+        if ($(this).val() == '') {
+            $('#vTotalPrice').html('0');
+            return false;
+        }
+        if ($.isNumeric($(this).val())) {
+            $('#vTotalPrice').html($('#vUnitPrice').html() * $(this).val());
+        } else {
+            if(e.keyCode !== 8) {
+                $('#vTotalPrice').html('0');
+                alert('Please enter only Numeric value.');
+            }
+        }
+    });
+    $('#vDiscount').keyup(function(e){
+        if ($.isNumeric($(this).val())) {
+            $('#vTotalPrice').html(($('#vUnitPrice').html() * $('#vPurchaseQty').val())-((($('#vUnitPrice').html() * $('#vPurchaseQty').val())*$(this).val())/100));
+        } else {
+            if(e.keyCode !== 8) {
+                $('#vTotalPrice').html('0');
+                alert('Please enter only Numeric value.');
+            }
+        }
+    });
+    
+    
 
     $("#Invoice-list").dataTable({
         "bProcessing": true,
@@ -205,9 +221,9 @@ $(document).ready(function () {
             error.insertAfter(element);
         }
     });
-    
-     $("#selectSKU").change(function() {
-        if($(this).val() == '' || $(this).val() == '0') {
+
+    $("#selectSKU").change(function () {
+        if ($(this).val() == '' || $(this).val() == '0') {
             return false;
         }
         $.ajax({
@@ -216,16 +232,20 @@ $(document).ready(function () {
             data: {id: $(this).val()},
             success: function (responce)
             {
+                // alert(responce);
                 var jason = $.parseJSON(responce);
-                $('#description').val(jason.description);
-                $('#unitPrice').html(jason.cost);
-            }
+                $.each(jason, function (idx, data) {
+                    //  alert(jason);
+                    $('#vDescription').val(data.description);
+                    $('#vUnitPrice').html(data.cost);
+                });
+            },
         });
     });
-    
-    
+
+
     var orderNo = 1;
-    $("#vAddMoreOrder").click(function(e) {
+    $("#vAddMoreOrder").click(function (e) {
         if ($('#skuOrder').val() == 0 || $('#skuOrder').val() == '') {
             alert('Please select SKU');
             return false;
@@ -235,7 +255,7 @@ $(document).ready(function () {
             return false;
         }
         if ($('#updateId').val() !== '0') {
-            template = $('#'+$('#updateId').val()).tmplItem();
+            template = $('#' + $('#updateId').val()).tmplItem();
             template.data.skuId = $('#skuOrder').val();
             template.data.skuLabel = $('#skuOrder  option:selected').text();
             template.data.description = $('#vDescription').val();
@@ -249,33 +269,33 @@ $(document).ready(function () {
                 {
                     orderNo: orderNo++,
                     skuId: $('#skuOrder').val(),
-                    skuLabel:$('#skuOrder  option:selected').text(),
-                    description:$('#vDescription').val(),
-                    purchaseQty:$('#vPurchaseQty').val(),
-                    unitPrice:$('#vUnitPrice').html(),
-                    discount:$('#vDiscount').html(),
-                    totalPrice:$('#vTotalPrice').html(),
+                    skuLabel: $('#skuOrder  option:selected').text(),
+                    description: $('#vDescription').val(),
+                    purchaseQty: $('#vPurchaseQty').val(),
+                    unitPrice: $('#vUnitPrice').html(),
+                    discount: $('#vDiscount').html(),
+                    totalPrice: $('#vTotalPrice').html(),
                 }
             ];
             // Render the Order details
             $("#new-order-template").tmpl(order).appendTo("#purchaseOrderTbl tbody");
         }
-        
+
         //reset input order data
         resetInputInvoiceData();
-        
+
         //reset total Data
         resetTotalInvoiceData();
-        
+
     });
-    
+
 });
 
 function resetTotalInvoiceData() {
     totalQty = 0;
     totalAmout = 0;
-    
-    $('tr.newInvoiceData').each(function(){
+
+    $('tr.newInvoiceData').each(function () {
         totalQty += parseInt($(this).find('.purchaseQty').html());
         totalAmout += parseInt($(this).find('.totalPrice').html());
     });
@@ -294,7 +314,7 @@ function resetInputInvoiceData() {
     $('#vUnitPrice').html('');
     $('#vDiscount').val('');
     $('#vTotalPrice').html('');
-    
+
 }
 
 function removeNewOrder(element)
