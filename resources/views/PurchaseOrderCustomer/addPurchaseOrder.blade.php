@@ -83,9 +83,11 @@
                                                 <div class="col-sm-8">
                                                     <!--{!! Form::select('shippingDetails', ['1'=>'1'],'', array('class' => 'form-control')) !!}-->
                                                     <select class="form-control" id='oldIdentifire' name='oldIdentifire'>
+                                                        @if(count($shipping) > 0)
                                                         @foreach($shipping as $value)
                                                         <option value="{{$value->id}}" <?php if(isset($purchaseOrder)) echo ($value->id == $purchaseOrder->shipping_id)?'selected':''; ?> >{{$value->identifier}}</option>
                                                         @endforeach
+                                                        @endif
                                                     </select>
                                                 </div>
                                             </div>

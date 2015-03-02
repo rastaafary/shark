@@ -364,7 +364,7 @@ class PurchaseOrderCustomerController extends Controller
             if (isset($customer->id)) {
                 $shipping = DB::table('shipping_info')->where('customer_id', $customer->id)->get();
             } else {
-              $shipping = '';  
+              $shipping = array();  
             }
             
             
