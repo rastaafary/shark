@@ -251,7 +251,7 @@
                                             <?php
                                                 if (isset($purchaseOrder->art_id)) {
                                             ?>
-                                            <a class="btn btn-link" href="/blogArt/<?=$purchaseOrder->art_id ?>" role="button"><strong>Blog Art</strong></a>                                          
+                                            <a class="btn btn-link" href="/blogArt/<?=$purchaseOrder->po_id ?>" role="button"><strong>Blog Art</strong></a>                                          
                                                 <?php } ?>
                                         </div>                                                       
                                     </div>
