@@ -363,7 +363,10 @@ class PurchaseOrderCustomerController extends Controller
             //get shipping address details
             if (isset($customer->id)) {
                 $shipping = DB::table('shipping_info')->where('customer_id', $customer->id)->get();
+            } else {
+              $shipping = '';  
             }
+            
             
             //get parts Data
             $sku = $this->getSKUPartsData();
