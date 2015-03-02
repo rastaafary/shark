@@ -489,7 +489,8 @@ class PurchaseOrderCustomerController extends Controller
 
     public function deletepoCustomer($id = null)
     {
-        $status = DB::table('purchase_order')->where('id', $id)->delete();
+        $status = DB::table('purchase_order')->where('id', $id)->update(array('is_deleted' => '1'));       
+                
         if ($status) {
             Session::flash('message', 'PO Customer delete Successfully.');
             Session::flash('status', 'success');
@@ -511,7 +512,8 @@ class PurchaseOrderCustomerController extends Controller
                 ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
                 ->leftJoin('order_status', 'order_list.id', '=', 'order_status.po_id')
                 ->select(array('purchase_order.po_number', 'purchase_order.require_date', 'part_number.description', DB::raw('SUM(order_list.qty)'), DB::raw('SUM(order_status.pcs_made)'), DB::raw('SUM(order_list.amount)'), 'purchase_order.id'))
-                ->groupBy('purchase_order.id');
+                ->groupBy('purchase_order.id')
+                ->where('purchase_order.is_deleted', '!=', '1');
         //->selectRow('purchase_order.po_number,purchase_order.require_date,part_number.description,sum(order_list.qty) as qty,sum(order_status.pcs_made) as pcs_made,sum(order_list.amount) as `amount`,`purchase_order.id`')
         //->groupBy('purchase_order.id');
         return Datatables::of($orderlist)
