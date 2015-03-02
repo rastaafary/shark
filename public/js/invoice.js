@@ -42,10 +42,10 @@ $(document).ready(function () {
             {
                 $('.skuData').remove();
                 var jason = $.parseJSON(responce);
-                $("#selectSKU").html(null);
-                $("#selectSKU").append($("<option>").val('').html('Select SKU'));
+                $("#skuOrder").html(null);
+                $("#skuOrder").append($("<option>").val('').html('Select SKU'));
                 $.each(jason, function (idx, data) {
-                    $("#selectSKU").append($("<option>").val(data.id).html(data.SKU));
+                    $("#skuOrder").append($("<option>").val(data.id).html(data.SKU));
 
                 });
             }
@@ -222,7 +222,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#selectSKU").change(function () {
+    $("#skuOrder").change(function () {
         if ($(this).val() == '' || $(this).val() == '0') {
             return false;
         }

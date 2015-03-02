@@ -238,21 +238,25 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr class="gradeX">
-                                                            <td></td>
-                                                            <td>
-                                                                <select class="form-control SKUselect2" id="selectSKU" name='selectSKU'></select>
+                                                             <td>
+                                                                <input type="hidden" id="deleteOrder" name="deleteOrder">
+                                                                <input type="hidden" id="allOrderData" name="orders" value="">
+                                                                <input type="hidden" id="updateId" value="0">
                                                             </td>
                                                             <td>
-                                                                <input id="vDescription" class="input form-control" name="searchDescription" type="text" placeholder="searchDescription"/>
+                                                                <select class="form-control SKUselect2" id="skuOrder" name='skuOrder'></select>
                                                             </td>
                                                             <td>
-                                                                <input id="vPurchaseQty" class="input form-control" type="text" placeholder="qty"/>
+                                                                <input id="vDescription" autocomplete="off" class="input form-control" name="searchDescription" type="text" placeholder="searchDescription"/>
+                                                            </td>
+                                                            <td>
+                                                                <input id="vPurchaseQty" name="vQty" autocomplete="off" class="input form-control" type="text" placeholder="qty"/>
                                                             </td>
                                                             <td>
                                                                 <label id="vUnitPrice"></label>
                                                             </td>
                                                             <td>
-                                                                <input id="vDiscount" class="input form-control" type="text" placeholder="Discount"/>
+                                                                <input id="vDiscount" name="vDiscount" autocomplete="off" class="input form-control" type="text" placeholder="Discount"/>
                                                             </td>
                                                             <td>
                                                                 <label id="vTotalPrice"></label>
@@ -310,6 +314,33 @@
     </div>
 </div>
 
+<script type="text/x-jQuery-tmpl" id="new-order-template">
+    <tr class="newOrderData" id="newOrder-${orderNo}">
+        <td>
+            <input type="hidden" class="orderId" value="${orderId}">
+            ${orderNo}
+        </td>           
+        <td>
+            <label id="${skuId}" class="sku">${skuLabel}</label>
+        </td>
+        <td>
+            <label class="description">${description}</label>
+        </td>
+        <td>
+            <label class="purchaseQty">${purchaseQty}</label>
+        </td>
+        <td>
+            <label class="unitPrice">${unitPrice}</label>
+        </td>
+        <td>
+            <label class="totalPrice">${totalPrice}</label>
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger" onclick="removeNewOrder(this)"><i class="fa fa-trash-o"></i></button>
+            <button type="button" class="btn btn-primary" onclick="editNewOrder(this)"><i class="fa fa-edit"></i></button>
+        </td>
+    </tr>
+</script>
 
 <!-- Modal Start -->
 <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
