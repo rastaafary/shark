@@ -148,7 +148,7 @@ class PurchaseOrderCustomerController extends Controller
             }
 
             //add po order
-            $orders = json_decode($post['orders'], true);
+            $orders = json_decode($post['orders'], true);          
             foreach ($orders as $orderlist) {
                 unset($orderlist['orderId']);
                 if ($orderlist['part_id'] > 0) {
@@ -507,13 +507,17 @@ class PurchaseOrderCustomerController extends Controller
      */
     public function getPoCustomerlist()
     {
+        // Get PO List
+        $customer = DB::table('customers')->where('user_id', Auth::user()->id)->first();       
         $orderlist = DB::table('order_list')
-                ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
+                ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')                
                 ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
                 ->leftJoin('order_status', 'order_list.id', '=', 'order_status.po_id')
                 ->select(array('purchase_order.po_number', 'purchase_order.require_date', 'part_number.description', DB::raw('SUM(order_list.qty)'), DB::raw('SUM(order_status.pcs_made)'), DB::raw('SUM(order_list.amount)'), 'purchase_order.id'))
                 ->groupBy('purchase_order.id')
-                ->where('purchase_order.is_deleted', '!=', '1');
+                ->where('purchase_order.is_deleted', '=', '0')
+                ->where('order_list.customer_id', '=',$customer->id )
+                ->where('purchase_order.customer_id', '=',$customer->id );
         //->selectRow('purchase_order.po_number,purchase_order.require_date,part_number.description,sum(order_list.qty) as qty,sum(order_status.pcs_made) as pcs_made,sum(order_list.amount) as `amount`,`purchase_order.id`')
         //->groupBy('purchase_order.id');
         return Datatables::of($orderlist)
