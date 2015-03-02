@@ -42,6 +42,7 @@ class BlogartController extends Controller
 
     public function index($id = null)
     {
+       
         $po_data = DB::table('purchase_order')->where('id', $id)->first();
 
         if ($po_data != null) {

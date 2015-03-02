@@ -16,6 +16,7 @@
                                     <label class="col-sm-3 control-label">PO#:</label>
                                     <div class="col-sm-9">
                                         <label class="control-label">{!! $po_id !!}</label>
+                                        <a class="btn btn-link" href="/po/edit/<?=$id?>" role="button"><strong>Back To PO</strong></a> 
                                     </div>
                                 </div>
                             </div>

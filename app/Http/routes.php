@@ -102,6 +102,8 @@ Route::get('/userdata', 'ManageUserController@getUserData');
 Route::get('/userProfile/delete/{var?}', 'ManageUserController@deleteUser');
 //View Order Status Report
 Route::get('/PLReport/view', 'OrderStatusReportController@viewReport');
+Route::get('/PLReport/orderlist', 'OrderStatusReportController@orderList');
+
 /* Route::get('/customer/add', array('prefix' => 'customer','as' => 'customer.add',
   'uses' => 'Customer\customerController@addCustomer'));
  * 
