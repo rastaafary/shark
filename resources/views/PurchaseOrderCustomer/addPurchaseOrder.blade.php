@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('content')
 {!! HTML::script('js/PoCustomer.js') !!}
+
 <script>
     var oldOrderData = <?php echo (isset($orderlist))?json_encode($orderlist):'[]'; ?>;
 </script>
@@ -76,8 +77,11 @@
                                         <div class="panel-heading">
                                             <h3 class="panel-title"><i class="fa fa-home"></i> Address Details</h3>
                                         </div>
-                                        {!! HTML::ul($errors->all()) !!}
+                                        
                                         <div class="panel-body">
+                                            <div style="color: red">
+                                            {!! HTML::ul($errors->all()) !!}
+                                            </div>
                                             <div class="form-group">
                                                 <label for="shippingDetails" class="col-sm-4 control-label">Shipping Details:</label>
                                                 <div class="col-sm-8">
@@ -223,7 +227,8 @@
                                         <div class="panel-heading">
                                             <h3 class="panel-title"><i class="fa fa-upload"></i> Details</h3>
                                         </div>
-                                        <div class="panel-body">   
+                                        <div class="panel-body"> 
+                                            
                                             <div class="form-group">
                                                 <label for="uploadArtPDF" class="col-sm-4 control-label">Upload Art PDF:</label>
                                                 <div class="col-md-8">

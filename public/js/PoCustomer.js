@@ -273,7 +273,6 @@ $(document).ready(function() {
         }
     });
 
-
     $('#PoCustomer').validate({
         submitHandler: function(form){
             orders = [];
@@ -334,12 +333,14 @@ $(document).ready(function() {
             'require_date': {
                 required: true
             },
-//            'PDF': {
-//                required: true
-//            },
-//            'Ai': {
-//                required: true
-//            }
+            'PDF': {
+                //required: true,
+                extension: "pdf"
+            },
+            'Ai': {
+                //required: true,
+                extension: "ai"
+            }
         },
         messages: {
             'comp_name': {
@@ -381,10 +382,12 @@ $(document).ready(function() {
                 required: 'Please enter require date.'
             },
             'PDF': {
-                required: 'Please upload PFD.'
+                //required : 'Please only upload PFD file.',
+                extension: 'Please only upload PFD file.'
             },
             'Ai': {
-                required: 'Please upload ai.'
+               // required : 'Please only upload Ai file.',
+                extension: 'Please only upload ai file.'
             }
         },
         highlight: function(element) {
