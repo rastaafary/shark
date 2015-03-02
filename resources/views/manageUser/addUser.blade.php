@@ -1,6 +1,6 @@
 @extends('layouts.main')
-
 @section('content')
+{!! HTML::script('js/manageUser.js') !!}
 
 <div class="wrapper">
     <div class="row">

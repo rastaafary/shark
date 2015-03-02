@@ -53,17 +53,6 @@
 
 {!! HTML::script('js/typeahead.bundle.js') !!}
 
-{!! HTML::script('js/part.js') !!}
-{!! HTML::script('js/manageUser.js') !!}
-{!! HTML::script('js/forgotpassword.js') !!}
-{!! HTML::script('js/customer.js') !!}
-{!! HTML::script('js/invoice.js') !!}
-{!! HTML::script('js/PoCustomer.js') !!}
-{!! HTML::script('js/payment.js') !!}
-{!! HTML::script('js/blogArt.js') !!}
-
-
-
 <!--pickers css-->
 <!--<link href="public/css/style.css" rel="stylesheet">
 <link href="public/css/style-responsive.css" rel="stylesheet">

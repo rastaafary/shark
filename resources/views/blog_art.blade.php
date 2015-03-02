@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-
+{!! HTML::script('js/blogArt.js') !!}
 <div class="wrapper">
     <div class="row">
         <div class="col-md-offset-1 col-md-10">

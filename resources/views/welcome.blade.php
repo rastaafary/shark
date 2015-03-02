@@ -15,6 +15,7 @@
         {!! HTML::script('js/jquery/jquery.min.js') !!}
         {!! HTML::script('js/validation/jquery.validate.js') !!} 
         {!! HTML::script('js/login.js') !!} 
+        {!! HTML::script('js/forgotpassword.js') !!}
 
 
 

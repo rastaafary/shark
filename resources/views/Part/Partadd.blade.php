@@ -1,5 +1,7 @@
 @extends('layouts.main')
 @section('content')
+{!! HTML::script('js/part.js') !!}
+
 <!--
 <a href="{{ action('PartController@partList')}}">List</a> 
 <a href="{{ action('PartController@addPart')}}">Add</a> 
@@ -92,5 +94,6 @@
         </div>
     </div>
 </div>
+
 <!--body wrapper end-->
 @endsection

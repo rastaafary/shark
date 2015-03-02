@@ -14,7 +14,8 @@
         {!! HTML::script('js/scripts.js') !!} 
         {!! HTML::script('js/jquery/jquery.min.js') !!}
         {!! HTML::script('js/validation/jquery.validate.js') !!} 
-        {!! HTML::script('js/forgotpassword.js') !!} 
+        {!! HTML::script('js/forgotpassword.js') !!}
+        {!! HTML::script('js/forgotpassword.js') !!}
        
     </head>
     <body class="login-body">

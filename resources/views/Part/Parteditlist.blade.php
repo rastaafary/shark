@@ -1,5 +1,7 @@
 @extends('layouts.main')
 @section('content')
+{!! HTML::script('js/part.js') !!}
+
 
 <!--body wrapper start-->
 <div class="wrapper">
@@ -28,14 +30,14 @@
                                                     <table  class="display table table-bordered table-striped" id="list-parts">
                                                         <thead>
                                                             <tr>
-                                                            <th>SKU</th>
-                                                            <th>Description</th>
-                                                            <th>Cost</th>                                                            
-                                                            <th>Action</th>
-                                                        </tr> 
+                                                                <th>SKU</th>
+                                                                <th>Description</th>
+                                                                <th>Cost</th>                                                            
+                                                                <th>Action</th>
+                                                            </tr> 
                                                         </thead>
                                                         <tbody>
-                                                       
+
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -53,6 +55,7 @@
 
 </div>
 <!--body wrapper end-->
+
 @endsection
 
 <?php /*

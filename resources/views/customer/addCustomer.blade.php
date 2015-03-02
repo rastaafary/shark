@@ -1,6 +1,6 @@
 @extends('layouts.main')
-
 @section('content')
+{!! HTML::script('js/customer.js') !!}
 <!--body wrapper start-->
 <div class="wrapper">
     <div class="row">

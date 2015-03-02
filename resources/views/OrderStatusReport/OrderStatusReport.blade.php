@@ -1,6 +1,6 @@
 @extends('layouts.main')
-
 @section('content')
+{!! HTML::script('js/OrderStatus.js') !!}
 <!--body wrapper start-->
 <div class="wrapper">
     <div class="row">
@@ -74,7 +74,7 @@
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
-                                                <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                <table  class="display table table-bordered table-striped" id="order-list">
                                                     <thead>
                                                         <tr>
                                                             <th>Sequence</th>
@@ -90,7 +90,7 @@
                                                         </tr> 
                                                     </thead>
                                                     <tbody>
-                                                        <tr class="gradeX">
+<!--                                                        <tr class="gradeX">
                                                             <td>1</td>
                                                             <td>032-0024</td>
                                                             <td>BF0012</td>
@@ -127,7 +127,7 @@
                                                                     <option value="Closed">Closed</option>
                                                                 </select>
                                                             </td>
-                                                        </tr>
+                                                        </tr>-->
                                                     <tbody>
                                                 </table>
                                             </div> 

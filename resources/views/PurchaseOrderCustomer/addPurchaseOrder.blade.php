@@ -1,6 +1,6 @@
 @extends('layouts.main')
-
 @section('content')
+{!! HTML::script('js/PoCustomer.js') !!}
 <script>
     var oldOrderData = <?php echo (isset($orderlist))?json_encode($orderlist):'[]'; ?>;
 </script>
