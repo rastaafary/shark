@@ -54,6 +54,19 @@
                         </li>
                         @endforeach
                     </ul>
+                     <div class="row">
+                    	<div class="col-sm-12 text-center">
+                        	<ul class="pagination">
+                                <li><a href="#">«</a></li>
+                                <li class="active"><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li><a href="#">»</a></li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="chat-form ">
                         <!--<form role="form" class="form-inline" id="frmBlogArt" method="post">-->
                         {!! Form::open(array('class'=>'form-inline', 'name'=>'frmBlogArt','id'=>'frmBlogArt','files' => true)) !!}
@@ -84,7 +97,7 @@
                         <button class="btn btn-primary" type="submit" value="remove" id="submit">Send</button>                                    
                         {!! Form::close() !!}
                     </div>
-                </div>
+                 </div>
             </section>
         </div>
     </div>
