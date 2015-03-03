@@ -223,7 +223,7 @@ $(document).ready(function () {
     $('#Invoice').validate({
         submitHandler: function(form){
             orders = [];
-            $('tr.newOrderData').each(function(){
+            $('tr.newInvoiceData').each(function(){
                 orders.push({
                     'part_id':$(this).find('.sku').attr('id'),
                     'qty':$(this).find('.purchaseQty').html(),
@@ -237,7 +237,7 @@ $(document).ready(function () {
             if(orders.length > 0) {
                 $('#deleteOrder').val(deleteOrder);
                 $('#allOrderData').val(JSON.stringify(orders));
-                $('#PoCustomer').submit();
+                $('#Invoice').submit();
             } else {
                 $('#allOrderData').val('');
                 alert('Please select Order');
