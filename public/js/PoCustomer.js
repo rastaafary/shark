@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
 
     $('.select2').select2();
@@ -288,7 +287,7 @@ $(document).ready(function () {
             if (orders.length > 0) {
                 $('#deleteOrder').val(deleteOrder);
                 $('#allOrderData').val(JSON.stringify(orders));
-                $('#PoCustomer').submit();
+                form.submit();
             } else {
                 $('#allOrderData').val('');
                 alert('Please select Order');

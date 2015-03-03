@@ -514,7 +514,7 @@ class PurchaseOrderCustomerController extends Controller
                 ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
                 ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
                 ->leftJoin('order_status', 'order_list.id', '=', 'order_status.po_id')
-                ->select(array('purchase_order.po_number', 'purchase_order.require_date', 'part_number.description', DB::raw('SUM(order_list.qty)'), DB::raw('SUM(order_status.pcs_made)'), DB::raw('SUM(order_list.amount)'), 'purchase_order.id'))
+                ->select(array('purchase_order.po_number', 'purchase_order.require_date', 'part_number.description', DB::raw('SUM(order_list.qty)'), DB::raw('SUM(order_list.amount)'), 'purchase_order.id')) //, DB::raw('SUM(order_status.pcs_made)')
                 ->groupBy('purchase_order.id')
                 ->where('purchase_order.is_deleted', '=', '0')
                 ->where('order_list.customer_id', '=', $customer->id)
