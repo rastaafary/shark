@@ -256,6 +256,7 @@ $(document).ready(function () {
                 $('#deleteOrder').val(deleteOrder);
                 $('#allOrderData').val(JSON.stringify(orders));
                 form.submit();
+
             } else {
                 $('#allOrderData').val('');
                 alert('Please select Order.');

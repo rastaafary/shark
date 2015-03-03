@@ -32,7 +32,7 @@
                                                                 <th style="width: 5%;">Required Date</th>
                                                                 <th style="width: 5%;">Estimated Shipping Date</th>
                                                                 <th style="width: 5%;">PO Qty</th>
-                                                                <th style="width: 5%;">Pcs Made</th>
+<!--                                                                <th style="width: 5%;">Pcs Made</th>-->
                                                                 <th style="width: 5%;">Balance</th>
                                                                 <th style="width: 5%;">Action</th>
                                                             </tr>                                                                       
