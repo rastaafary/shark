@@ -1,6 +1,10 @@
 @extends('layouts.main')
 @section('content')
 {!! HTML::script('js/invoice.js') !!}
+
+<script>
+    var oldOrderData = <?php echo (isset($orderlist))?json_encode($orderlist):'[]'; ?>;
+</script>
 <div class="wrapper">
     <div class="row">
         <div class="col-md-12">
@@ -237,8 +241,8 @@
                                                         </tr> 
                                                     </thead>
                                                     <tbody>
-                                                        <tr class="gradeX">
-                                                             <td>
+                                                        <tr>
+                                                            <td>
                                                                 <input type="hidden" id="deleteOrder" name="deleteOrder">
                                                                 <input type="hidden" id="allOrderData" name="orders" value="">
                                                                 <input type="hidden" id="updateId" value="0">
@@ -256,7 +260,7 @@
                                                                 <label id="vUnitPrice"></label>
                                                             </td>
                                                             <td>
-                                                                <input id="vDiscount" name="vDiscount" autocomplete="off" class="input form-control" type="text" placeholder="Discount"/>
+                                                                <input id="vDiscount" name="Discount" autocomplete="off" class="input form-control" type="text" placeholder="Discount"/>
                                                             </td>
                                                             <td>
                                                                 <label id="vTotalPrice"></label>
@@ -264,8 +268,7 @@
                                                             <td>
                                                                 <button id="vAddMoreOrder" class="btn btn-primary" type="button"><i class="fa fa-plus"></i> Add</button>
                                                                 <button id="vCancelUpdate" class="btn btn-warning" type="button" style="display: none;"><i class="fa fa-reply"></i></button>
-                                                            </td>
-                                                            <td></td>
+                                                            </td>                                                            
                                                         </tr>
                                                     </tbody>
                                                     <tfoot>
@@ -315,7 +318,7 @@
 </div>
 
 <script type="text/x-jQuery-tmpl" id="new-order-template">
-    <tr class="newOrderData" id="newOrder-${orderNo}">
+    <tr class="newInvoiceData" id="newOrder-${orderNo}">
         <td>
             <input type="hidden" class="orderId" value="${orderId}">
             ${orderNo}
@@ -332,12 +335,15 @@
         <td>
             <label class="unitPrice">${unitPrice}</label>
         </td>
+         <td>
+            <label class="discount">${discount}</label>
+        </td>
         <td>
             <label class="totalPrice">${totalPrice}</label>
         </td>
         <td>
-            <button type="button" class="btn btn-danger" onclick="removeNewOrder(this)"><i class="fa fa-trash-o"></i></button>
-            <button type="button" class="btn btn-primary" onclick="editNewOrder(this)"><i class="fa fa-edit"></i></button>
+            <button type="button" class="btn btn-danger del" onclick="removeNewOrder(this)"><i class="fa fa-trash-o"></i></button>
+            <button type="button" class="btn btn-primary edit" onclick="editNewOrder(this)"><i class="fa fa-edit"></i></button>
         </td>
     </tr>
 </script>
