@@ -1,23 +1,23 @@
 
-$(document).ready(function() {
-    
+$(document).ready(function () {
+
     $('.select2').select2();
-    
+
     $('#orderTime').timepicker({
         hourMin: 8,
         hourMax: 16
     });
-    
-    $("#editQty").keydown(function (event) {
+
+    $("#purchaseQty").keydown(function (event) {
         if (!(event.keyCode == 8                                // backspace
-            || event.keyCode == 9                               // tab
-            || event.keyCode == 17                              // ctrl
-            || event.keyCode == 46                              // delete
-            || (event.keyCode >= 35 && event.keyCode <= 40)     // arrow keys/home/end
-            || (event.keyCode >= 48 && event.keyCode <= 57)     // numbers on keyboard
-            || (event.keyCode >= 96 && event.keyCode <= 105)    // number on keypad
-            || (event.keyCode == 65 && prevKey == 17 && prevControl == event.currentTarget.id))          // ctrl + a, on same control
-        ) {
+                || event.keyCode == 9                               // tab
+                || event.keyCode == 17                              // ctrl
+                || event.keyCode == 46                              // delete
+                || (event.keyCode >= 35 && event.keyCode <= 40)     // arrow keys/home/end
+                || (event.keyCode >= 48 && event.keyCode <= 57)     // numbers on keyboard
+                || (event.keyCode >= 96 && event.keyCode <= 105)    // number on keypad
+                || (event.keyCode == 65 && prevKey == 17 && prevControl == event.currentTarget.id))          // ctrl + a, on same control
+                ) {
             event.preventDefault();     // Prevent character input
         }
         else {
@@ -25,13 +25,13 @@ $(document).ready(function() {
             prevControl = event.currentTarget.id;
         }
     });
-    
+
     $("#po_cust_order").dataTable({
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "/po/getorderlist",
         "aaSorting": [[7, "desc"]],
-        "fnServerData": function(sSource, aoData, fnCallback) {
+        "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
                 "type": "GET",
@@ -46,8 +46,8 @@ $(document).ready(function() {
         "bServerSide": true,
         "sAjaxSource": "/po/getPoCustomerlist",
         "aaSorting": [[7, "desc"]],
-        "order": [[ 1, 'asc' ]],
-        "fnServerData": function(sSource, aoData, fnCallback) {
+        "order": [[1, 'asc']],
+        "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
                 "type": "GET",
@@ -57,7 +57,7 @@ $(document).ready(function() {
             });
         },
     });
-   
+
     $('#addNew').prop('checked', false);
     $("#newdetails").hide();
 
@@ -69,7 +69,7 @@ $(document).ready(function() {
 //    }
 
     //edit pocust
-    $('#editQty').blur(function() {
+    $('#editQty').blur(function () {
         qty = $('#editQty').attr('value');
         amount = $('#editUnitPrice').val();
         total = qty * amount;
@@ -91,21 +91,22 @@ $(document).ready(function() {
         source: bestPictures.ttAdapter()
     });
 
-    $("#addNew").click(function() {
-        if ($('#addNew').is(':checked') ? $("#newdetails").show() : $("#newdetails").hide());
+    $("#addNew").click(function () {
+        if ($('#addNew').is(':checked') ? $("#newdetails").show() : $("#newdetails").hide())
+            ;
     });
 
-    $(".tt-dropdown-menu").click(function() {
+    $(".tt-dropdown-menu").click(function () {
         description = $('#searchSKU').val();
         $.ajax({
             type: 'GET',
             url: '/po/getDescription',
             data: 'description=' + description,
             async: false,
-            success: function(responce)
+            success: function (responce)
             {
                 var jason = $.parseJSON(responce);
-                $.each(jason, function(idx, data) {
+                $.each(jason, function (idx, data) {
                     $('#searchDescription').val(data.description);
                     $('#unitprice').val(data.cost);
                 });
@@ -127,7 +128,7 @@ $(document).ready(function() {
     });
 
 
-    jQuery.validator.addMethod("onlyname", function(value, element) {
+    jQuery.validator.addMethod("onlyname", function (value, element) {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
 
@@ -136,7 +137,7 @@ $(document).ready(function() {
         "bServerSide": false,
         // "sAjaxSource": "",
         "aaSorting": [[7, "desc"]],
-        "fnServerData": function(sSource, aoData, fnCallback) {
+        "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
                 "type": "GET",
@@ -147,7 +148,7 @@ $(document).ready(function() {
         }
     });
 
-    $("#searchQty").blur(function() {
+    $("#searchQty").blur(function () {
         divid = $('#searchQty').closest('div').attr('id');
         qty = $('#searchQty').val();
         amount = $("#unitprice").val();
@@ -155,20 +156,20 @@ $(document).ready(function() {
         $("#amount").val(total);
     });
 
-    $("#addOrder").click(function() {
+    $("#addOrder").click(function () {
         $.ajax({
             type: 'post',
             url: '/po/add/order',
             data: 'name=' + "ABC",
             async: false,
-            success: function(responce)
+            success: function (responce)
             {
                 alert("Hi");
             }
         });
     });
 
-    $('#addorder').click(function() {
+    $('#addorder').click(function () {
         cust_id = $('#id').val();
         searchSKU = $('#searchSKU').val();
         searchQty = $('#searchQty').val();
@@ -181,46 +182,46 @@ $(document).ready(function() {
             headers: {
                 'X-XSRF-TOKEN': $('meta[name="_token"]').attr('content')
             },
-            success: function(responce)
+            success: function (responce)
             {
             }
         });
     });
-    
+
     var orderNo = 1;
-    
+
     if (oldOrderData.length > 0) {
-        $(oldOrderData).each(function(key,val){
+        $(oldOrderData).each(function (key, val) {
             var order = [
                 {
                     orderNo: orderNo++,
-                    orderId:val.order_id,
+                    orderId: val.order_id,
                     skuId: val.part_id,
-                    skuLabel:val.SKU,
-                    description:val.description,
-                    purchaseQty:val.qty,
-                    unitPrice:val.cost,
-                    totalPrice:val.amount
+                    skuLabel: val.SKU,
+                    description: val.description,
+                    purchaseQty: val.qty,
+                    unitPrice: val.cost,
+                    totalPrice: val.amount
                 }
             ];
             // Render the Order details
             $("#new-order-template").tmpl(order).appendTo("#purchaseOrderTbl tbody");
         });
-            
+
     }
-    
-    
-    $("#addMoreOrder").click(function(e) {
+
+
+    $("#addMoreOrder").click(function (e) {
         if ($('#skuOrder').val() == 0 || $('#skuOrder').val() == '') {
             alert('Please select SKU');
             return false;
         }
-        if ($('#purchaseQty').val() == 0 || $('#purchaseQty').val() == '') {
-            alert('Please enter Quantity.');
+        if ($('#purchaseQty').val() == 0 || $('#purchaseQty').val() == '' || parseInt($('#purchaseQty').val()) < 1) {
+            alert('Please enter valid Quantity.');
             return false;
         }
         if ($('#updateId').val() !== '0') {
-            template = $('#'+$('#updateId').val()).tmplItem();
+            template = $('#' + $('#updateId').val()).tmplItem();
             console.log(template);
             template.data.skuId = $('#skuOrder').val();
             template.data.skuLabel = $('#skuOrder option:selected').text();
@@ -233,32 +234,32 @@ $(document).ready(function() {
             var order = [
                 {
                     orderNo: orderNo++,
-                    orderId:0,
+                    orderId: 0,
                     skuId: $('#skuOrder').val(),
-                    skuLabel:$('#skuOrder  option:selected').text(),
-                    description:$('#searchDescription').val(),
-                    purchaseQty:$('#purchaseQty').val(),
-                    unitPrice:$('#unitPrice').html(),
-                    totalPrice:$('#totalPrice').html(),
+                    skuLabel: $('#skuOrder  option:selected').text(),
+                    description: $('#searchDescription').val(),
+                    purchaseQty: $('#purchaseQty').val(),
+                    unitPrice: $('#unitPrice').html(),
+                    totalPrice: $('#totalPrice').html(),
                 }
             ];
             // Render the Order details
             $("#new-order-template").tmpl(order).appendTo("#purchaseOrderTbl tbody");
         }
-        
+
         //reset input order data
         resetInputOrderData();
-        
+
         //reset total Data
         resetTotalOrderData();
-        
+
     });
-    
-    $('#cancelUpdate').click(function(){
+
+    $('#cancelUpdate').click(function () {
         resetInputOrderData();
     });
-    
-    $('#purchaseQty').keyup(function(e){
+
+    $('#purchaseQty').keyup(function (e) {
         if ($(this).val() == '') {
             $('#totalPrice').html('0');
             return false;
@@ -266,7 +267,7 @@ $(document).ready(function() {
         if ($.isNumeric($(this).val())) {
             $('#totalPrice').html($('#unitPrice').html() * $(this).val());
         } else {
-            if(e.keyCode !== 8) {
+            if (e.keyCode !== 8) {
                 $('#totalPrice').html('0');
                 alert('Please enter only Numeric value.');
             }
@@ -274,17 +275,17 @@ $(document).ready(function() {
     });
 
     $('#PoCustomer').validate({
-        submitHandler: function(form){
+        submitHandler: function (form) {
             orders = [];
-            $('tr.newOrderData').each(function(){
+            $('tr.newOrderData').each(function () {
                 orders.push({
-                    'part_id':$(this).find('.sku').attr('id'),
-                    'qty':$(this).find('.purchaseQty').html(),
-                    'amount':$(this).find('.totalPrice').html(),
-                    'orderId':$(this).find('.orderId').val()
+                    'part_id': $(this).find('.sku').attr('id'),
+                    'qty': $(this).find('.purchaseQty').html(),
+                    'amount': $(this).find('.totalPrice').html(),
+                    'orderId': $(this).find('.orderId').val()
                 })
             });
-            if(orders.length > 0) {
+            if (orders.length > 0) {
                 $('#deleteOrder').val(deleteOrder);
                 $('#allOrderData').val(JSON.stringify(orders));
                 $('#PoCustomer').submit();
@@ -334,11 +335,9 @@ $(document).ready(function() {
                 required: true
             },
             'PDF': {
-                //required: true,
                 extension: "pdf"
             },
             'Ai': {
-                //required: true,
                 extension: "ai"
             }
         },
@@ -382,40 +381,38 @@ $(document).ready(function() {
                 required: 'Please enter require date.'
             },
             'PDF': {
-                //required : 'Please only upload PFD file.',
                 extension: 'Please only upload PFD file.'
             },
             'Ai': {
-               // required : 'Please only upload Ai file.',
                 extension: 'Please only upload ai file.'
             }
         },
-        highlight: function(element) {
+        highlight: function (element) {
             $(element).removeClass("textinput");
             $(element).addClass("errorHighlight");
         },
-        unhighlight: function(element) {
+        unhighlight: function (element) {
             $(element).removeClass("errorHighlight");
             $(element).addClass("textinput");
         },
-        errorPlacement: function(error, element) {
+        errorPlacement: function (error, element) {
             error.insertAfter(element);
         }
     });
-    
+
     resetTotalOrderData();
 });
 
 function resetTotalOrderData() {
     totalQty = 0;
     totalAmout = 0;
-    $('tr.newOrderData').each(function(){
-        totalQty += parseInt($(this).find('.purchaseQty').html());
-        totalAmout += parseInt($(this).find('.totalPrice').html());
+    $('tr.newOrderData').each(function () {
+        totalQty += parseFloat($(this).find('.purchaseQty').html());
+        totalAmout += parseFloat($(this).find('.totalPrice').html());
     });
 
     $('#totalQuantity').html(totalQty);
-    $('#totalAmout').html(totalAmout);
+    $('#totalAmout').html(totalAmout.toFixed(2));
 }
 
 function resetInputOrderData() {
@@ -427,7 +424,7 @@ function resetInputOrderData() {
     $('#purchaseQty').val('0');
     $('#unitPrice').html('');
     $('#totalPrice').html('');
-    
+
 }
 
 function addOrder() {
@@ -443,7 +440,7 @@ function addOrder() {
         headers: {
             'X-XSRF-TOKEN': $('meta[name="_token"]').attr('content')
         },
-        success: function(responce)
+        success: function (responce)
         {
         }
     });
@@ -456,10 +453,10 @@ function getinfo(element)
         url: '/po/getDescription',
         data: 'description=' + $(element).attr('value'),
         async: false,
-        success: function(responce)
+        success: function (responce)
         {
             var jason = $.parseJSON(responce);
-            $.each(jason, function(idx, data) {
+            $.each(jason, function (idx, data) {
                 $('table #searchDescription').val(data.description);
                 $('table #unitPrice').html(data.cost);
             });
@@ -496,10 +493,10 @@ function pocustEdit(id)
         url: '/po/geteditorderlist',
         data: 'id=' + id,
         async: false,
-        success: function(responce)
+        success: function (responce)
         {
             var jason = $.parseJSON(responce);
-            $.each(jason, function(idx, data) {
+            $.each(jason, function (idx, data) {
                 $('#editSKU').val(data.SKU);
                 $('#editDescription').val(data.description);
                 $('#editQty').val(data.qty);
