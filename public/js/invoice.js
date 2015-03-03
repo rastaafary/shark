@@ -158,6 +158,10 @@ $(document).ready(function () {
             alert('Please enter valid Quantity.');
             return false;
         }
+         if ($('#vDiscount').val() <= 100) {
+            alert('Please enter valid Discount.');
+            return false;
+        }
         if ($('#updateId').val() !== '0') {
             tmp_qty[$('#skuOrder').val()] = tmp_qty[$('#skuOrder').val()] - parseInt(t_qty);
             tmp_qty[$('#skuOrder').val()] += parseInt($('#vPurchaseQty').val());
@@ -378,7 +382,7 @@ function resetTotalInvoiceData() {
     });
 
     $('#vTotalQuantity').html(totalQty);
-    $('#vTotalAmout').html(totalAmout);
+    $('#vTotalAmout').html(totalAmout.toFixed(2));   
 }
 
 function resetInputInvoiceData() {
