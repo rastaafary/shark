@@ -4,17 +4,37 @@ var sku_id = 0;
 var tmp_qty = [];
 var tot_qty = [];
 $(document).ready(function () {
-
+    
+    //Get Invoice List 
+    $("#invoiceList").dataTable({
+        "bProcessing": true,
+        "bServerSide": true,
+        "sAjaxSource": "/invoice/getInvoiceList",
+        "aaSorting": [[7, "desc"]],
+        "order": [[ 1, 'asc' ]],
+        "fnServerData": function(sSource, aoData, fnCallback) {
+            $.ajax({
+                "dataType": 'json',
+                "type": "GET",
+                "url": sSource,
+                "data": aoData,
+                "success": fnCallback
+            });
+        },
+    });
+    
+    
     $('.SKUselect2').select2({
         allowClear: true,
     });
 
     var data = $("#oldShippingInfo").val();
-    if (data == null)
-    {
+    
+    if (data == null) {
         $('#addNew').prop('checked', true);
         $("#newdetails").show();
     }
+    
     $("#addNew").click(function () {
         if ($('#addNew').is(':checked') ? $("#newdetails").show() : $("#newdetails").hide())
             ;
@@ -51,7 +71,7 @@ $(document).ready(function () {
                 $("#skuOrder").html(null);
                 $("#skuOrder").append($("<option>").val('').html('Select SKU'));
                 $.each(jason, function (idx, data) {
-                    $("#skuOrder").append($("<option>").val(data.id).html(data.SKU));
+                    $("#skuOrder").append($("<option>").val(data.id).attr('orderid',data.orderId).html(data.SKU));
                     if (data.id != '' || data.id != null) {
                         tmp_qty[data.id] = 0;
                         tot_qty[data.id] = data.qty;
@@ -75,6 +95,7 @@ $(document).ready(function () {
             }
         }
     });
+    
     $('#vDiscount').keyup(function (e) {
         if ($.isNumeric($(this).val())) {
             $('#vTotalPrice').html(($('#vUnitPrice').html() * $('#vPurchaseQty').val()) - ((($('#vUnitPrice').html() * $('#vPurchaseQty').val()) * $(this).val()) / 100));
@@ -85,8 +106,6 @@ $(document).ready(function () {
             }
         }
     });
-
-
 
     $("#Invoice-list").dataTable({
         "bProcessing": true,
@@ -103,8 +122,7 @@ $(document).ready(function () {
             });
         }
     });
-
-   
+    
     $("#skuOrder").change(function () {
         if ($(this).val() == '' || $(this).val() == '0') {
             return false;
@@ -124,7 +142,6 @@ $(document).ready(function () {
             },
         });
     });
-
 
     var orderNo = 1;
     
@@ -148,7 +165,6 @@ $(document).ready(function () {
             
     }
     
-    
     $("#vAddMoreOrder").click(function (e) {
         if ($('#skuOrder').val() == 0 || $('#skuOrder').val() == '') {
             alert('Please select SKU');
@@ -169,6 +185,7 @@ $(document).ready(function () {
             } else {
                 template = $('#' + $('#updateId').val()).tmplItem();
                 template.data.skuId = $('#skuOrder').val();
+                template.data.purchaseOrderId = $('#skuOrder  option:selected').attr('orderid'),
                 template.data.skuLabel = $('#skuOrder  option:selected').text();
                 template.data.description = $('#vDescription').val();
                 template.data.purchaseQty = $('#vPurchaseQty').val();
@@ -182,6 +199,7 @@ $(document).ready(function () {
                 {
                     orderNo: orderNo++,
                     skuId: $('#skuOrder').val(),
+                    purchaseOrderId:$('#skuOrder  option:selected').attr('orderid'),
                     skuLabel: $('#skuOrder  option:selected').text(),
                     description: $('#vDescription').val(),
                     purchaseQty: $('#vPurchaseQty').val(),
@@ -192,8 +210,7 @@ $(document).ready(function () {
                 //  $("#skuOrder").removeAttr()
             ];
             tmp_qty[$('#skuOrder').val()] += parseInt($('#vPurchaseQty').val());
-           
-           
+            
             if (tmp_qty[$('#skuOrder').val()] > tot_qty[$('#skuOrder').val()])
             {
                 tmp_qty[$('#skuOrder').val()] -= parseInt($('#vPurchaseQty').val());
@@ -212,37 +229,38 @@ $(document).ready(function () {
         resetTotalInvoiceData();
 
     });
+
     $('#vCancelUpdate').click(function () {
         resetInputInvoiceData();
     });
     
-     jQuery.validator.addMethod("onlyname", function (value, element) {
+    jQuery.validator.addMethod("onlyname", function (value, element) {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
 
     $('#Invoice').validate({
         submitHandler: function(form){
             orders = [];
-            $('tr.newOrderData').each(function(){
+            $('tr.newInvoiceData').each(function(){
                 orders.push({
                     'part_id':$(this).find('.sku').attr('id'),
+                    'orderId':$(this).find('.sku').attr('orderid'),
                     'qty':$(this).find('.purchaseQty').html(),
                     'amount':$(this).find('.totalPrice').html(),
                     'discount':$(this).find('.discount').html(),
-                    'orderId':$(this).find('.orderId').val()
+                    'invoiceOrderId':0
                 });
-                console.log(orders);
             });
             console.log(orders);
             if(orders.length > 0) {
                 $('#deleteOrder').val(deleteOrder);
                 $('#allOrderData').val(JSON.stringify(orders));
-                $('#PoCustomer').submit();
+                form.submit();
             } else {
                 $('#allOrderData').val('');
-                alert('Please select Order');
+                alert('Please select Order.');
                 return false;
-            }
+            }            
         },
         rules: {
             'comp_name': {
@@ -260,7 +278,8 @@ $(document).ready(function () {
             },
             'phone_no': {
                 required: true,
-                mobileNo: true
+                number:true
+                //mobileNo: true
             },
             'interior_no': {
                 required: true
@@ -273,7 +292,7 @@ $(document).ready(function () {
             },
             'shpcomp_name': {
                 required: true,
-                onlyname: true
+                //onlyname: true
             },
             'shpzipcode': {
                 required: true
@@ -286,7 +305,8 @@ $(document).ready(function () {
             },
             'shpphone_no': {
                 required: true,
-                mobileNo: true
+                number:true
+                //mobileNo: true
             },
             'shpinterior_no': {
                 required: true
@@ -312,7 +332,7 @@ $(document).ready(function () {
             },
             'phone_no': {
                 required: 'Please enter phone no.',
-                mobileNo: 'Please enter valid phone no.'
+                number: 'Please enter valid phone no.'
             },
             'interior_no': {
                 required: 'Please enter interior no.'
@@ -328,7 +348,7 @@ $(document).ready(function () {
             },
             'shpcomp_name': {
                 required: 'Please enter company name.',
-                onlyname: 'Please enter valid company name.'
+                //onlyname: 'Please enter valid company name.'
             },
             'shpbuilding_no': {
                 required: 'Please enter building no.'
@@ -338,7 +358,7 @@ $(document).ready(function () {
             },
             'shpphone_no': {
                 required: 'Please enter phone no.',
-                mobileNo: 'Please enter valid phone no.'
+                number: 'Please enter valid phone no.'
             },
             'shpinterior_no': {
                 required: 'Please enter interior no.'

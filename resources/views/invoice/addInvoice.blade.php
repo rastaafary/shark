@@ -324,7 +324,7 @@
             ${orderNo}
         </td>           
         <td>
-            <label id="${skuId}" class="sku">${skuLabel}</label>
+            <label id="${skuId}" orderId="${purchaseOrderId}" class="sku">${skuLabel}</label>
         </td>
         <td>
             <label class="description">${description}</label>

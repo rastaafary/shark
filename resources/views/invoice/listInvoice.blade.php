@@ -23,7 +23,7 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                    <table  class="display table table-bordered table-striped" id="invoiceList">
                                                         <thead>
                                                         <th>Invoice ID</th>
                                                         <th>Invoice Value</th>
