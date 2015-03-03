@@ -41,10 +41,9 @@ class InvoiceController extends Controller
 
         //check Is post
         if (Request::isMethod('post')) {
-
             // Get All Post Data
             $post = Input::all();
-
+            
             unset($post['_token']);
 
             // Server Side Validation
@@ -71,7 +70,7 @@ class InvoiceController extends Controller
                 $customer = DB::table('purchase_order')->where('id', $post['po_id'])->first();
 
                 // Add New Shipping Information
-                $shipping_data = DB::table('shipping_info')->insertGetId(
+                $shippingId = DB::table('shipping_info')->insertGetId(
                         array('customer_id' => $customer->customer_id,
                             'comp_name' => $post['shpcomp_name'],
                             'building_no' => $post['shpbuilding_no'],
@@ -95,44 +94,42 @@ class InvoiceController extends Controller
                         ->where('customer_id', $customer_data->customer_id)
                         ->where('identifier', $post['oldShippingInfo'])
                         ->first();
-                $shipping_data = $shipping_info->id;
+                $shippingId = $shipping_info->id;
             }
 
             // add invoice
-            $invoice_info = DB::table('invoice')->insertGetId(
+            $invoiceId = DB::table('invoice')->insertGetId(
                     array('invoice_no' => $auto_invoice_no,
                         'po_id' => $post['po_id'],
-                        'shipping_id' => $shipping_data,
-                        'comp_name' => $post['shpcomp_name'],
-                        'building_no' => $post['shpbuilding_no'],
-                        'street_addrs' => $post['shpstreet_addrs'],
-                        'interior_no' => $post['shpinterior_no'],
-                        'city' => $post['shpcity'],
-                        'state' => $post['shpstate'],
-                        'zipcode' => $post['shpzipcode'],
-                        'country' => $post['shpcountry'],
-                        'phone_no' => $post['shpphone_no']
+                        'shipping_id' => $shippingId,
+                        'comp_name' => $post['comp_name'],
+                        'building_no' => $post['building_no'],
+                        'street_addrs' => $post['street_addrs'],
+                        'interior_no' => $post['interior_no'],
+                        'city' => $post['city'],
+                        'state' => $post['state'],
+                        'zipcode' => $post['zipcode'],
+                        'country' => $post['country'],
+                        'phone_no' => $post['phone_no']
             ));
-            var_dump($post);
-
+            
             // add invoice_order_list
             $orders = json_decode($post['orders'], true);
-            var_dump($orders);
-            /* foreach ($orders as $orderlist) {
-              unset($orderlist['orderId']);
-              if ($orderlist['part_id'] > 0) {
-              $orderlist['customer_id'] = $customer->id;
-              $orderlist['po_id'] = $poId;
-              $orderlist['created_by'] = Auth::user()->id;
-              $orderstatus = DB::table('order_list')->insert($orderlist);
-              }
-              } */
-            exit("hk");
-
-            /* DB::table('invoice')
-              ->where('po_id', $post['selectPO'])
-              ->where('shipping_id', $shipping_data->id)
-              ->update(array('invoice_no' => $invoice_no)); */
+            
+            foreach ($orders as $orderlist) {               
+                if ($orderlist['part_id'] > 0) {
+                    $orederData['invoice_id'] = $invoiceId;
+                    $orederData['order_id'] = $orderlist['orderId'];
+                    $orederData['qty'] = $orderlist['qty'];
+                    $orederData['discount'] = $orderlist['discount'];
+                    $orederData['amount'] = $orderlist['amount'];
+                    $orderstatus = DB::table('invoice_order_list')->insertGetId($orederData);
+                }
+            } 
+            
+            Session::flash('message', "Invoice generated sucessfully.");
+            Session::flash('status', 'success');
+            return redirect('/invoice');
         }
 
         $uid = Auth::user()->id;
@@ -169,7 +166,7 @@ class InvoiceController extends Controller
     {
         $skuData = DB::table('order_list')
                 ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
-                ->select('part_number.id', 'part_number.SKU', 'order_list.qty')
+                ->select('part_number.id', 'part_number.SKU', 'order_list.qty' , 'order_list.id as orderId')
                 ->where('order_list.po_id', Input::get('id'))
                 ->get();
         return Response(json_encode($skuData));
@@ -183,10 +180,35 @@ class InvoiceController extends Controller
         $sku_data = DB::table('part_number')->select('description', 'cost')->where('id', Input::get('id'))->get();
         return Response(json_encode($sku_data));
     }
-
+    
+    /**
+     * Get Invoice Order List
+     */
     public function listInvoice()
-    {
+    {   
         return view('invoice.listInvoice', ['page_title' => 'Invoice']);
     }
-
+    
+    /**
+     * Get Invoice Order List
+     */
+    public function getInvoiceList()
+    {
+        // Get PO List
+        $customer = DB::table('customers')->where('user_id', Auth::user()->id)->first();       
+        $orderlist = DB::table('invoice')
+                ->leftJoin('invoice_order_list', 'invoice_order_list.invoice_id', '=', 'invoice.id')
+                ->leftJoin('purchase_order', 'purchase_order.id', '=', 'invoice.po_id')              
+                ->select(array('invoice.invoice_no', DB::raw('SUM(invoice_order_list.amount) as amount'), DB::raw('SUM(invoice_order_list.discount) as discount'), DB::raw('SUM(invoice_order_list.invoice_id) as temp'), 'purchase_order.payment_terms','invoice.id'))
+                //->where('purchase_order.customer_id', '=',$customer->id )
+                ->groupBy('invoice.id');
+        return Datatables::of($orderlist)
+                        ->editColumn("amount", '${{ $amount }}')
+                        ->editColumn("discount", '$0')
+                        ->editColumn("temp", '${{ $amount }}')
+                        ->editColumn("id", '<a class="btn btn-primary" href="/invoice/edit/{{ $id }}"> Details </a>')
+                        ->make();
+    }
+    
+    
 }
