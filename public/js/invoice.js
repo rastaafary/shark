@@ -8,6 +8,24 @@ $(document).ready(function () {
     $('.SKUselect2').select2({
         allowClear: true,
     });
+    
+     //Get Invoice List 
+    $("#invoiceList").dataTable({
+        "bProcessing": true,
+        "bServerSide": true,
+        "sAjaxSource": "/invoice/getInvoiceList",
+        "aaSorting": [[7, "desc"]],
+        "order": [[1, 'asc']],
+        "fnServerData": function (sSource, aoData, fnCallback) {
+            $.ajax({
+                "dataType": 'json',
+                "type": "GET",
+                "url": sSource,
+                "data": aoData,
+                "success": fnCallback
+            });
+        },
+    });
 
     var data = $("#oldShippingInfo").val();
     if (data == null)
@@ -40,23 +58,7 @@ $(document).ready(function () {
         });
 
 
-        //Get Invoice List 
-        $("#invoiceList").dataTable({
-            "bProcessing": true,
-            "bServerSide": true,
-            "sAjaxSource": "/invoice/getInvoiceList",
-            "aaSorting": [[7, "desc"]],
-            "order": [[1, 'asc']],
-            "fnServerData": function (sSource, aoData, fnCallback) {
-                $.ajax({
-                    "dataType": 'json',
-                    "type": "GET",
-                    "url": sSource,
-                    "data": aoData,
-                    "success": fnCallback
-                });
-            },
-        });
+       
 
         $.ajax({
             type: 'GET',

@@ -25,15 +25,17 @@
                                                 <div class="table-responsive">
                                                     <table  class="display table table-bordered table-striped" id="invoiceList">
                                                         <thead>
-                                                        <th>Invoice ID</th>
-                                                        <th>Invoice Value</th>
-                                                        <th>Paid</th>
-                                                        <th>Balance</th>
-                                                        <th>Aging</th>
-                                                        <th>View Details</th>
-                                                        </tr> 
+                                                            <tr>
+                                                                <th>Invoice ID</th>
+                                                                <th>Invoice Value</th>
+                                                                <th>Paid</th>
+                                                                <th>Balance</th>
+                                                                <th>Aging</th>
+                                                                <th>View Details</th>
+                                                            </tr> 
                                                         </thead>
                                                         <tbody>
+                                                            
                                                         </tbody>
                                                     </table>
                                                 </div>                                                        
