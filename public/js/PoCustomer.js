@@ -72,7 +72,7 @@ $(document).ready(function () {
         qty = $('#editQty').attr('value');
         amount = $('#editUnitPrice').val();
         total = qty * amount;
-        $('#editAmount').val(total);
+        $('#editAmount').val(total.toFixed(2));
     });
     var bestPictures = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('SKU'),
@@ -264,7 +264,8 @@ $(document).ready(function () {
             return false;
         }
         if ($.isNumeric($(this).val())) {
-            $('#totalPrice').html($('#unitPrice').html() * $(this).val());
+            tot_price = $('#unitPrice').html() * $(this).val();
+            $('#totalPrice').html(tot_price.toFixed(2));
         } else {
             if (e.keyCode !== 8) {
                 $('#totalPrice').html('0');

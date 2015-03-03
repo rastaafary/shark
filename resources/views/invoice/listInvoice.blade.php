@@ -34,22 +34,6 @@
                                                         </tr> 
                                                         </thead>
                                                         <tbody>
-                                                            <tr class="gradeX">
-                                                                <td>FA342</td>
-                                                                <td>$1216.00</td>
-                                                                <td>$250</td>
-                                                                <td>$966</td>
-                                                                <td>15 days</td> 
-                                                                <td><a href="{{action('InvoiceController@addInvoice')}}" class="btn btn-primary"> Details </a></td>
-                                                            </tr>
-                                                            <tr class="gradeX">
-                                                                <td>FA343</td>
-                                                                <td>$300.00</td>
-                                                                <td>$100</td>                                                               
-                                                                <td>$200</td>
-                                                                <td>20 days Due</td>
-                                                                <td><a href="{{action('InvoiceController@addInvoice')}}" class="btn btn-primary"> Details </a></td>                                                                         
-                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>                                                        
