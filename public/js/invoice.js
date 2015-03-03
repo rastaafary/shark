@@ -75,6 +75,7 @@ $(document).ready(function () {
             }
         }
     });
+    
     $('#vDiscount').keyup(function (e) {
         if ($.isNumeric($(this).val())) {
             $('#vTotalPrice').html(($('#vUnitPrice').html() * $('#vPurchaseQty').val()) - ((($('#vUnitPrice').html() * $('#vPurchaseQty').val()) * $(this).val()) / 100));
@@ -104,7 +105,7 @@ $(document).ready(function () {
         }
     });
 
-   
+
     $("#skuOrder").change(function () {
         if ($(this).val() == '' || $(this).val() == '0') {
             return false;
@@ -127,28 +128,28 @@ $(document).ready(function () {
 
 
     var orderNo = 1;
-    
+
     if (oldOrderData.length > 0) {
-        $(oldOrderData).each(function(key,val){
+        $(oldOrderData).each(function (key, val) {
             var order = [
                 {
                     orderNo: orderNo++,
-                    orderId:val.order_id,
+                    orderId: val.order_id,
                     skuId: val.part_id,
-                    skuLabel:val.SKU,
-                    description:val.description,
-                    purchaseQty:val.qty,
-                    unitPrice:val.cost,
-                    totalPrice:val.amount
+                    skuLabel: val.SKU,
+                    description: val.description,
+                    purchaseQty: val.qty,
+                    unitPrice: val.cost,
+                    totalPrice: val.amount
                 }
             ];
             // Render the Order details
             $("#new-order-template").tmpl(order).appendTo("#purchaseOrderTbl tbody");
         });
-            
+
     }
-    
-    
+
+
     $("#vAddMoreOrder").click(function (e) {
         if ($('#skuOrder').val() == 0 || $('#skuOrder').val() == '') {
             alert('Please select SKU');
@@ -156,6 +157,10 @@ $(document).ready(function () {
         }
         if ($('#vPurchaseQty').val() == 0 || $('#vPurchaseQty').val() == '' || $('#vPurchaseQty').val() < 1) {
             alert('Please enter valid Quantity.');
+            return false;
+        }
+        if ($('#vDiscount').val() <= 100) {
+            alert('Please enter valid Discount.');
             return false;
         }
         if ($('#updateId').val() !== '0') {
@@ -192,8 +197,8 @@ $(document).ready(function () {
                 //  $("#skuOrder").removeAttr()
             ];
             tmp_qty[$('#skuOrder').val()] += parseInt($('#vPurchaseQty').val());
-           
-           
+
+
             if (tmp_qty[$('#skuOrder').val()] > tot_qty[$('#skuOrder').val()])
             {
                 tmp_qty[$('#skuOrder').val()] -= parseInt($('#vPurchaseQty').val());
@@ -215,26 +220,25 @@ $(document).ready(function () {
     $('#vCancelUpdate').click(function () {
         resetInputInvoiceData();
     });
-    
-     jQuery.validator.addMethod("onlyname", function (value, element) {
+
+    jQuery.validator.addMethod("onlyname", function (value, element) {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
 
     $('#Invoice').validate({
-        submitHandler: function(form){
+        submitHandler: function (form) {
             orders = [];
-            $('tr.newInvoiceData').each(function(){
+            $('tr.newInvoiceData').each(function () {
                 orders.push({
-                    'part_id':$(this).find('.sku').attr('id'),
-                    'qty':$(this).find('.purchaseQty').html(),
-                    'amount':$(this).find('.totalPrice').html(),
-                    'discount':$(this).find('.discount').html(),
-                    'orderId':$(this).find('.orderId').val()
+                    'part_id': $(this).find('.sku').attr('id'),
+                    'qty': $(this).find('.purchaseQty').html(),
+                    'amount': $(this).find('.totalPrice').html(),
+                    'discount': $(this).find('.discount').html(),
+                    'orderId': $(this).find('.orderId').val()
                 });
-                console.log(orders);
             });
             console.log(orders);
-            if(orders.length > 0) {
+            if (orders.length > 0) {
                 $('#deleteOrder').val(deleteOrder);
                 $('#allOrderData').val(JSON.stringify(orders));
                 $('#Invoice').submit();
@@ -378,7 +382,7 @@ function resetTotalInvoiceData() {
     });
 
     $('#vTotalQuantity').html(totalQty);
-    $('#vTotalAmout').html(totalAmout);
+    $('#vTotalAmout').html(totalAmout.toFixed(2));
 }
 
 function resetInputInvoiceData() {
