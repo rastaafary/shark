@@ -31,7 +31,7 @@
                                                                 <th>Paid</th>
                                                                 <th>Balance</th>
                                                                 <th>Aging</th>
-                                                                <th>View Details</th>
+                                                                <th style="width: 15%;">Action</th>
                                                             </tr> 
                                                         </thead>
                                                         <tbody>

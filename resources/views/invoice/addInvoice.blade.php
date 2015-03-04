@@ -3,7 +3,8 @@
 {!! HTML::script('js/invoice.js') !!}
 
 <script>
-    var oldOrderData = <?php echo (isset($orderlist))?json_encode($orderlist):'[]'; ?>;
+    var oldOrderData = <?php echo (isset($invoiceSKUOrder))?json_encode($invoiceSKUOrder):'[]'; ?>;
+    var shippingId = <?php echo (isset($invoiceOrder->shipping_id))?($invoiceOrder->shipping_id):'0'; ?>;
 </script>
 <div class="wrapper">
     <div class="row">
@@ -12,13 +13,17 @@
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
                         <li><a href="/invoice">List</a></li>
-                        <li class="active"><a href="#Add">Add</a></li>                       
+                        <li class="active"><a href="javascript:void(0);">{!! isset($id) ? 'Edit' : 'Add' !!}</a></li>
                     </ul>
                 </header>
                 <div class="panel-body">
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="Add">
-                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/invoice/add','name'=>'Invoice','id'=>'Invoice','files' => true)) !!}
+                            @if(isset($id))
+                                {!! Form::open(array('class'=>'form-horizontal','url'=>'/invoice/edit/'.$id,'name'=>'Invoice','id'=>'Invoice','files' => true)) !!}
+                            @else's
+                                {!! Form::open(array('class'=>'form-horizontal','url'=>'/invoice/add','name'=>'Invoice','id'=>'Invoice','files' => true)) !!}
+                            @endif
                             {!! Form::hidden('user_id',Input::old('user_id',isset(Auth::user()->id) ? Auth::user()->id : '')) !!}
                             <div class="media usr-info">
                                 <div class="pull-left">                                        
@@ -48,7 +53,6 @@
                                                 <div class="form-group col-sm-4 col-md-4">
                                                     <label for="invoice_no">Invoice ID# : </label> 
                                                     <label for="invoice_no" style="font-weight: bold;">{{ $auto_invoice_no }}</label>
-                                                    <?php /*             {!! Form::label('{{ $auto_invoice_no }}','',array('class'=>'control-label','id'=>'invoice_no','style'=>'font-weight: bold;')) !!} */ ?>
                                                 </div>
                                                 <div class="form-group col-sm-4 col-md-4">
                                                     <label class="control-label" for="invoiceDateTime">Date/Time : </label>
@@ -59,7 +63,7 @@
                                                     <select class="form-control" id="po_id" name='po_id'>
                                                         <option value="">Select PO</option>
                                                         @foreach($po as $value)
-                                                        <option value="{{$value->id}}">{{$value->id}}</option>
+                                                        <option value="{{$value->id}}" {{ isset($invoiceOrder->po_id)?($value->id == $invoiceOrder->po_id) ? 'Selected' : '' : ''}} >{{$value->id}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -235,8 +239,8 @@
                                                             <th style="width:35%;">Description</th>
                                                             <th style="width:8%;">Qty</th>
                                                             <th style="width:10;">Unit Price</th>
-                                                            <th style="width:12%;">DIscount %</th>
-                                                            <th style="width:10%;">Amount</th>
+                                                            <th style="width:10%;">DIscount %</th>
+                                                            <th style="width:9%;">Amount</th>
                                                             <th style="width:25%;">Action</th>
                                                         </tr> 
                                                     </thead>
@@ -272,14 +276,14 @@
                                                         </tr>
                                                     </tbody>
                                                     <tfoot>
-                                                    <td colspan="7">
-                                                        <span style="margin-left: 50%;">
-                                                            Total Quantity : <label id="vTotalQuantity">0</label>
-                                                        </span>
-                                                        <span style="margin-left: 15%;">
-                                                            Total Amount : <label id="vTotalAmout">0</label>
-                                                        </span>                                                    
-                                                    </td>
+                                                        <td colspan="7">
+                                                            <span style="margin-left: 50%;">
+                                                                Total Quantity : <label id="vTotalQuantity">0</label>
+                                                            </span>
+                                                            <span style="margin-left: 15%;">
+                                                                Total Amount : <label id="vTotalAmout">0</label>
+                                                            </span>                                                    
+                                                        </td>
                                                     </tfoot>
                                                 </table>
                                             </div>                               
@@ -288,8 +292,8 @@
                                                 <label for="shippingMethod" class="control-label col-sm-2" >Shipping Method:</label>
                                                 <div class="col-sm-3">
                                                     <select class="form-control" id="shippingMethod" name="shippingMethod">
-                                                        <option>Air</option>
-                                                        <option>Express</option>
+                                                        <option value="Air" <?php if (isset($invoiceOrder)) echo ($invoiceOrder->type == 'Air') ? 'selected' : ''; ?>>Air</option>
+                                                        <option value="Express" <?php if (isset($invoiceOrder)) echo ($invoiceOrder->type == 'Express') ? 'selected' : ''; ?>>Express</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-7">
@@ -317,14 +321,14 @@
     </div>
 </div>
 
-<script type="text/x-jQuery-tmpl" id="new-order-template">
+<script type="text/x-jQuery-tmpl" id="InvoiceOrderTemplate">
     <tr class="newInvoiceData" id="newOrder-${orderNo}">
         <td>
             <input type="hidden" class="orderId" value="${orderId}">
             ${orderNo}
         </td>           
         <td>
-            <label id="${skuId}" orderId="${purchaseOrderId}" class="sku">${skuLabel}</label>
+            <label id="${skuId}" orderid="${purchaseOrderId}" invoiceorderid="${invoiceOrderId}" class="sku">${skuLabel}</label>
         </td>
         <td>
             <label class="description">${description}</label>

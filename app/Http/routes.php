@@ -51,6 +51,12 @@ Route::get('/customerdata', 'CustomerController@getCustData');
 // Invoice
 Route::get('/invoice/add', 'InvoiceController@addInvoice');
 Route::post('/invoice/add', 'InvoiceController@addInvoice');
+
+Route::get('/invoice/delete/{var?}', 'InvoiceController@deleteInvoice');
+
+Route::get('/invoice/edit/{var?}', 'InvoiceController@editInvoice');
+Route::post('/invoice/edit/{var?}', 'InvoiceController@editInvoice');
+
 Route::get('/invoice', 'InvoiceController@listInvoice');
 Route::get('/invoice/listShipingInfo', 'InvoiceController@listShipingInfo');
 Route::get('/invoice/listSKU', 'InvoiceController@listSKU');
