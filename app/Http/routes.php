@@ -20,32 +20,46 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/part', 'PartController@partList');
 });
 
-Route::filter('list-user', function()
-{
-    if (!Entrust::can(array('list-user','add-user','edit-user','delete-user'))) {  
-         return view('accessDenied');
-    } else if(!Entrust::can(array('list-partNumber','add-partNumber','edit-partNumber','delete-partNumber'))){
-        return view('accessDenied');
-    }else if(!Entrust::can(array('list-invoice','add-invoice','edit-invoice','delete-invoice'))){
-       return view('accessDenied');
-    }else if(!Entrust::can(array('list-payment','add-payment','edit-payment','delete-payment','view-payment'))){
-       return view('accessDenied');
-    }else if(!Entrust::can(array('list-pl','add-pl','edit-pl','delete-pl'))){
-        return view('accessDenied');
-    }else if(!Entrust::can(array('list-customer','add-customer','edit-customer','delete-customer'))){
+Route::filter('invoice', function() {
+    //var_dump(!Entrust::can('list-invoice', 'add-invoice'));
+    if (!Entrust::can(array('list-invoice', 'add-invoice', 'edit-invoice', 'delete-invoice'))) {
         return view('accessDenied');
     }
-    
+});
+Route::filter('payment', function() {
+   if (!Entrust::can(array('list-payment', 'add-payment', 'edit-payment', 'delete-payment', 'view-payment'))) {
+        return view('accessDenied');
+    } 
+});
+Route::filter('pl', function() {
+    if (!Entrust::can(array('list-pl', 'add-pl', 'edit-pl', 'delete-pl'))) {
+        return view('accessDenied');
+    }
+});
+Route::filter('user', function() {
+    if (!Entrust::can(array('list-user', 'add-user', 'edit-user', 'delete-user'))) {
+        return view('accessDenied');
+    }
+});
+Route::filter('part', function() {
+    if (!Entrust::can(array('list-partNumber', 'add-partNumber', 'edit-partNumber', 'delete-partNumber'))) {
+        return view('accessDenied');
+    }
+});
+Route::filter('customer', function() {
+   if (!Entrust::can(array('list-customer', 'add-customer', 'edit-customer', 'delete-customer'))) {
+        return view('accessDenied');
+    }
 });
 
 //Roles
 Route::get('permissionCreate', 'PermissionController@createPermission');
-Route::when('userList*','list-user');
-Route::when('part*','list-user');
-Route::when('customer*','list-user');
-Route::when('invoice*','list-user');
-Route::when('payment*','list-user');
-Route::when('PLReport*','list-user');
+Route::when('userList*', 'user');
+Route::when('part*', 'part');
+Route::when('customer*', 'customer');
+Route::when('invoice*', 'invoice');
+Route::when('payment*', 'payment');
+Route::when('PLReport*', 'pl');
 //logout
 Route::get('logout', 'LoginController@logout');
 Route::get('/forgotpassword', 'LoginController@forgotPassword');
