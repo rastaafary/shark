@@ -405,10 +405,19 @@ function removeNewOrder(element)
     resetTotalInvoiceData();
 }
 
-//delete pocustomer
+//delete Invoice
 function confirmDelete()
 {
     if (confirm("Are You Sure You Want To Delete This Record ?")) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+//Edit Invoice
+function confirmEdit(id) {
+    if (confirm("Are You Sure You Want To Edit This Record ?")) {
         return true;
     } else {
         return false;

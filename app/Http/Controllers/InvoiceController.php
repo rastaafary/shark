@@ -356,7 +356,7 @@ class InvoiceController extends Controller
                         ->editColumn("amount", '${{ $amount }}')
                         ->editColumn("discount", '$0')
                         ->editColumn("temp", '${{ $amount }}')
-                        ->editColumn("id", '<a href="/invoice/edit/{{ $id }}" class="btn btn-primary" id="btnEdit">'
+                        ->editColumn("id", '<a href="/invoice/edit/{{ $id }}" class="btn btn-primary" id="btnEdit" onClick = "return confirmEdit({{ $id }})">'
                                 . '<span class="fa fa-pencil"></span></a>&nbsp&nbsp'
                                 . '<a href="/invoice/delete/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                 . '<span class="fa fa-trash-o"></span></a>')

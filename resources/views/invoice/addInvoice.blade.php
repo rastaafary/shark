@@ -135,7 +135,7 @@
                                             <div class="form-group">
                                                 <label for="phoneNumber" class="col-sm-4 control-label">Phone Number:</label>
                                                 <div class="col-sm-8">
-                                                    {!! Form::text('phone_no',Input::old('phone_no',isset($cust->phone_no) ? $cust->phone_no : '') ,array('class'=>'form-control', 'placeholder' => 'Phone Number')) !!}
+                                                    {!! Form::text('phone_no',Input::old('phone_no',isset($invoiceOrder->phone_no) ? $invoiceOrder->phone_no : '') ,array('class'=>'form-control', 'placeholder' => 'Phone Number')) !!}
                                                 </div>
                                             </div>
                                         </div>                                                       
@@ -243,7 +243,7 @@
                                                             <th style="width:35%;">Description</th>
                                                             <th style="width:8%;">Qty</th>
                                                             <th style="width:10;">Unit Price</th>
-                                                            <th style="width:10%;">DIscount %</th>
+                                                            <th style="width:11%;">DIscount %</th>
                                                             <th style="width:9%;">Amount</th>
                                                             <th style="width:25%;">Action</th>
                                                         </tr> 
