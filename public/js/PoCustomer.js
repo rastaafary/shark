@@ -467,9 +467,13 @@ function getinfo(element)
 var deleteOrder = [];
 function removeNewOrder(element)
 {
-    deleteOrder.push($(element).closest('tr.newOrderData').find('.orderId').val());
-    $(element).closest('tr.newOrderData').remove();
-    resetTotalOrderData();
+    if (confirm("Are You Sure You Want To Delete This Record ?")) {
+        deleteOrder.push($(element).closest('tr.newOrderData').find('.orderId').val());
+        $(element).closest('tr.newOrderData').remove();
+        resetTotalOrderData();
+    } else {
+        return false;
+    }
 }
 
 function editNewOrder(element)

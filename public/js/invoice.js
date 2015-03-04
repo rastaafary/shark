@@ -4,15 +4,15 @@ var sku_id = 0;
 var tmp_qty = [];
 var tot_qty = [];
 $(document).ready(function () {
-    
+
     //Get Invoice List 
     $("#invoiceList").dataTable({
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "/invoice/getInvoiceList",
         "aaSorting": [[7, "desc"]],
-        "order": [[ 1, 'asc' ]],
-        "fnServerData": function(sSource, aoData, fnCallback) {
+        "order": [[1, 'asc']],
+        "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
                 "type": "GET",
@@ -22,26 +22,27 @@ $(document).ready(function () {
             });
         },
     });
-    
+
     $('.SKUselect2').select2({
         allowClear: true,
     });
 
     var data = $("#oldShippingInfo").val();
-    
+
     if (data == null) {
         $('#addNew').prop('checked', true);
         $("#newdetails").show();
     }
-    
+
     $("#addNew").click(function () {
-        if ($('#addNew').is(':checked') ? $("#newdetails").show() : $("#newdetails").hide());
+        if ($('#addNew').is(':checked') ? $("#newdetails").show() : $("#newdetails").hide())
+            ;
     });
-    
+
     if (shippingId > 0) {
         getPocustomerData();
     }
-    
+
     $("#po_id").change(function () {
         getPocustomerData();
     });
@@ -61,7 +62,7 @@ $(document).ready(function () {
             }
         }
     });
-    
+
     $('#vDiscount').keyup(function (e) {
         if ($.isNumeric($(this).val())) {
             tot_price = ($('#vUnitPrice').html() * $('#vPurchaseQty').val()) - ((($('#vUnitPrice').html() * $('#vPurchaseQty').val()) * $(this).val()) / 100);
@@ -89,7 +90,7 @@ $(document).ready(function () {
             });
         }
     });
-    
+
     $("#skuOrder").change(function () {
         if ($(this).val() == '' || $(this).val() == '0') {
             resetInputInvoiceData();
@@ -112,16 +113,16 @@ $(document).ready(function () {
     });
 
     var orderNo = 1;
-    
+
     if (oldOrderData.length > 0) {
         console.log(oldOrderData);
-        $(oldOrderData).each(function(key,val){
+        $(oldOrderData).each(function (key, val) {
             var order = [
                 {
                     orderNo: orderNo++,
-                    invoiceOrderId:val.invoiceOrderId,
+                    invoiceOrderId: val.invoiceOrderId,
                     skuId: val.id,
-                    purchaseOrderId:val.order_id,
+                    purchaseOrderId: val.order_id,
                     skuLabel: val.SKU,
                     description: val.description,
                     purchaseQty: val.qty,
@@ -132,30 +133,30 @@ $(document).ready(function () {
             ];
             // Render the Order details
             $("#InvoiceOrderTemplate").tmpl(order).appendTo("#invoiceProductTbl tbody");
-        }); 
+        });
         resetTotalInvoiceData();
     }
-    
+
     $("#vAddMoreOrder").click(function (e) {
         if ($('#skuOrder').val() == 0 || $('#skuOrder').val() == '') {
             alert('Please select SKU');
             return false;
         }
-        
+
         if ($('#vPurchaseQty').val() == 0 || $('#vPurchaseQty').val() == '' || $('#vPurchaseQty').val() < 1) {
             alert('Please enter valid Quantity.');
             return false;
         }
-        
+
         if ($('#vDiscount').val() > 100) {
             alert('Please enter valid Discount.');
             return false;
         }
-        
+
         if ($('#updateId').val() !== '0') {
             tmp_qty[$('#skuOrder').val()] = tmp_qty[$('#skuOrder').val()] - parseInt(t_qty);
             tmp_qty[$('#skuOrder').val()] += parseInt($('#vPurchaseQty').val());
-            
+
             if (tmp_qty[$('#skuOrder').val()] > tot_qty[$('#skuOrder').val()]) {
                 tmp_qty[$('#skuOrder').val()] -= parseInt($('#vPurchaseQty').val());
                 alert("Qty should not be more than total Qty");
@@ -164,7 +165,7 @@ $(document).ready(function () {
                 template = $('#' + $('#updateId').val()).tmplItem();
                 template.data.skuId = $('#skuOrder').val();
                 template.data.purchaseOrderId = $('#skuOrder  option:selected').attr('orderid'),
-                template.data.skuLabel = $('#skuOrder  option:selected').text();
+                        template.data.skuLabel = $('#skuOrder  option:selected').text();
                 template.data.description = $('#vDescription').val();
                 template.data.purchaseQty = $('#vPurchaseQty').val();
                 template.data.unitPrice = $('#vUnitPrice').html();
@@ -174,7 +175,7 @@ $(document).ready(function () {
             }
         } else {
             tmp_qty[$('#skuOrder').val()] += parseInt($('#vPurchaseQty').val());
-            
+
             if (tmp_qty[$('#skuOrder').val()] > tot_qty[$('#skuOrder').val()])
             {
                 tmp_qty[$('#skuOrder').val()] -= parseInt($('#vPurchaseQty').val());
@@ -185,8 +186,8 @@ $(document).ready(function () {
                     {
                         orderNo: orderNo++,
                         skuId: $('#skuOrder').val(),
-                        invoiceOrderId:0,
-                        purchaseOrderId:$('#skuOrder  option:selected').attr('orderid'),
+                        invoiceOrderId: 0,
+                        purchaseOrderId: $('#skuOrder  option:selected').attr('orderid'),
                         skuLabel: $('#skuOrder  option:selected').text(),
                         description: $('#vDescription').val(),
                         purchaseQty: $('#vPurchaseQty').val(),
@@ -212,26 +213,26 @@ $(document).ready(function () {
     $('#vCancelUpdate').click(function () {
         resetInputInvoiceData();
     });
-    
+
     jQuery.validator.addMethod("onlyname", function (value, element) {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
 
     $('#Invoice').validate({
-        submitHandler: function(form){
+        submitHandler: function (form) {
             orders = [];
-            $('tr.newInvoiceData').each(function(){
+            $('tr.newInvoiceData').each(function () {
                 orders.push({
-                    'part_id':$(this).find('.sku').attr('id'),
-                    'orderId':$(this).find('.sku').attr('orderid'),
-                    'invoiceOrderId':$(this).find('.sku').attr('invoiceOrderId'),
-                    'qty':$(this).find('.purchaseQty').html(),
-                    'amount':$(this).find('.totalPrice').html(),
-                    'discount':$(this).find('.discount').html()
+                    'part_id': $(this).find('.sku').attr('id'),
+                    'orderId': $(this).find('.sku').attr('orderid'),
+                    'invoiceOrderId': $(this).find('.sku').attr('invoiceOrderId'),
+                    'qty': $(this).find('.purchaseQty').html(),
+                    'amount': $(this).find('.totalPrice').html(),
+                    'discount': $(this).find('.discount').html()
                 });
             });
-            
-            if(orders.length > 0) {
+
+            if (orders.length > 0) {
                 $('#deleteOrder').val(deleteOrder);
                 $('#allOrderData').val(JSON.stringify(orders));
                 form.submit();
@@ -240,7 +241,7 @@ $(document).ready(function () {
                 $('#allOrderData').val('');
                 alert('Please select Order.');
                 return false;
-            }            
+            }
         },
         rules: {
             'comp_name': {
@@ -258,8 +259,8 @@ $(document).ready(function () {
             },
             'phone_no': {
                 required: true,
-                number:true
-                //mobileNo: true
+                number: true
+                        //mobileNo: true
             },
             'interior_no': {
                 required: true
@@ -285,8 +286,8 @@ $(document).ready(function () {
             },
             'shpphone_no': {
                 required: true,
-                number:true
-                //mobileNo: true
+                number: true
+                        //mobileNo: true
             },
             'shpinterior_no': {
                 required: true
@@ -376,7 +377,7 @@ function resetTotalInvoiceData() {
         totalQty += parseInt($(this).find('.purchaseQty').html());
         totalAmout += parseInt($(this).find('.totalPrice').html());
     });
-    
+
     $('#vTotalAmout').html(totalAmout.toFixed(2));
     $('#vTotalQuantity').html(totalQty);
 }
@@ -396,13 +397,18 @@ function resetInputInvoiceData() {
 var deleteOrder = [];
 function removeNewOrder(element)
 {
-    trEle = $(element).closest('tr.newInvoiceData');
-    sku_id = trEle.find('.sku').attr('id');
-    tm_qty = trEle.find('.purchaseQty').html();
-    tmp_qty[sku_id] -= parseInt(tm_qty);
-    deleteOrder.push(trEle.find('.sku').attr('invoiceorderid'));
-    trEle.remove();
-    resetTotalInvoiceData();
+    if (confirm("Are You Sure You Want To Delete This Record ?")) {
+
+        trEle = $(element).closest('tr.newInvoiceData');
+        sku_id = trEle.find('.sku').attr('id');
+        tm_qty = trEle.find('.purchaseQty').html();
+        tmp_qty[sku_id] -= parseInt(tm_qty);
+        deleteOrder.push(trEle.find('.sku').attr('invoiceorderid'));
+        trEle.remove();
+        resetTotalInvoiceData();
+    } else {
+        return false;
+    }
 }
 
 //delete Invoice
@@ -426,48 +432,48 @@ function confirmEdit(id) {
 
 function getPocustomerData() {
     id = $('#po_id').val();
-        $.ajax({
-            type: 'GET',
-            url: '/invoice/listShipingInfo',
-            data: 'id=' + id,
-            async: false,
-            success: function (responce)
-            {
-                var jason = $.parseJSON(responce);
-                $('.shippingData').remove();
-                $.each(jason, function (idx, data) {
-                    $('#req_date').text(data.require_date);
-                    $('#payment_terms').text(data.payment_terms);
-                    $("#oldShippingInfo").append("<option value='" + data.id + "' class='shippingData'>" + data.identifier + "</option>");
-                });
-                if (shippingId > 0) {
-                    $('#addNew').prop('checked',false);
-                    $('#newdetails').hide();
-                    $("#oldShippingInfo").val(shippingId);
-                }
+    $.ajax({
+        type: 'GET',
+        url: '/invoice/listShipingInfo',
+        data: 'id=' + id,
+        async: false,
+        success: function (responce)
+        {
+            var jason = $.parseJSON(responce);
+            $('.shippingData').remove();
+            $.each(jason, function (idx, data) {
+                $('#req_date').text(data.require_date);
+                $('#payment_terms').text(data.payment_terms);
+                $("#oldShippingInfo").append("<option value='" + data.id + "' class='shippingData'>" + data.identifier + "</option>");
+            });
+            if (shippingId > 0) {
+                $('#addNew').prop('checked', false);
+                $('#newdetails').hide();
+                $("#oldShippingInfo").val(shippingId);
             }
-        });
+        }
+    });
 
-        $.ajax({
-            type: 'GET',
-            url: '/invoice/listSKU',
-            data: 'id=' + id,
-            async: false,
-            success: function (responce)
-            {
-                $('.skuData').remove();
-                var jason = $.parseJSON(responce);
-                $("#skuOrder").html(null);
-                $("#skuOrder").append($("<option>").val('').html('Select SKU'));
-                $.each(jason, function (idx, data) {
-                    $("#skuOrder").append($("<option>").val(data.id).attr('orderid',data.orderId).html(data.SKU));
-                    if (data.id != '' || data.id != null) {
-                        tmp_qty[data.id] = 0;
-                        tot_qty[data.id] = data.qty;
-                    }
-                });
-            }
-        });
+    $.ajax({
+        type: 'GET',
+        url: '/invoice/listSKU',
+        data: 'id=' + id,
+        async: false,
+        success: function (responce)
+        {
+            $('.skuData').remove();
+            var jason = $.parseJSON(responce);
+            $("#skuOrder").html(null);
+            $("#skuOrder").append($("<option>").val('').html('Select SKU'));
+            $.each(jason, function (idx, data) {
+                $("#skuOrder").append($("<option>").val(data.id).attr('orderid', data.orderId).html(data.SKU));
+                if (data.id != '' || data.id != null) {
+                    tmp_qty[data.id] = 0;
+                    tot_qty[data.id] = data.qty;
+                }
+            });
+        }
+    });
 }
 
 function editNewOrder(element)

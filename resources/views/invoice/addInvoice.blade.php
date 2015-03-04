@@ -350,7 +350,7 @@
             <label class="totalPrice">${totalPrice}</label>
         </td>
         <td>
-            <button type="button" class="btn btn-danger del" onclick="removeNewOrder(this)"><i class="fa fa-trash-o"></i></button>
+            <button type="button" class="btn btn-danger del" onclick="return removeNewOrder(this)"><i class="fa fa-trash-o"></i></button>
             <button type="button" class="btn btn-primary edit" onclick="editNewOrder(this)"><i class="fa fa-edit"></i></button>
         </td>
     </tr>
