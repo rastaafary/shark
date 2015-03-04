@@ -51,17 +51,24 @@
         <ul class="nav nav-pills nav-stacked custom-nav">
             <li class="menu-list <?php if($path == 'userList'||$path == 'userList/add'||$path == 'userProfile/edit/'.Auth::user()->id){ echo 'active'; } ?>"><a href=""><i class="fa fa-home"></i> <span>Manage User</span></a>
                 <ul class="sub-menu-list" style="display: none;">
+                    @if(Auth::user()->hasRole('admin'))
                     <li class="<?php if($path == 'userList'||$path == 'userList/add'){ echo 'active'; } ?>"><a href="{{action('ManageUserController@userList')}}"> User List</a></li>
+                    @endif
                     <li class="<?php if($path == 'userProfile/edit/'.Auth::user()->id){ echo 'active'; } ?>"><a href="/userProfile/edit/{{Auth::user()->id}}"> Profile</a></li>
                 </ul>
             </li>
-         
+            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))
             <li class="<?php if($path == 'part'||$path == 'part/add'){ echo 'active'; } ?>"><a href="{{action('PartController@partList')}}" ><i class="fa fa-user"></i> <span>Part Number</span></a></li>
             <li class="<?php if($path == 'invoice'||$path == 'invoice/add'){ echo 'active'; } ?>"><a href="{{action('InvoiceController@listInvoice')}}"><i class="fa fa-bars"></i> <span>Invoice</span></a></li>
             <li class="<?php if($path == 'payment'||$path == 'payment/add'||$path == 'payment/view'){ echo 'active'; }?>"><a href="{{action('PaymentController@listPayment')}}"><i class="fa fa-money"></i> <span>Payments</span></a></li>
             <li class="<?php if($path == 'PLReport/view'){ echo 'active'; } ?>"><a href="{{action('OrderStatusReportController@viewReport')}}"><i class="fa fa-bar-chart-o"></i> <span>PL's </span></a></li>
+            @endif
+            
             <li class="<?php if($path == 'po'||$path == 'po/add' ||$path == 'po/add/'.Auth::user()->id|| $path == 'blogArt'){ echo 'active'; } ?>"><a href="{{action('PurchaseOrderCustomerController@listPurchaseOrder')}}"><i class="fa fa-user"></i> <span>PO Customers</span></a></li>
+            
+            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))
             <li class="<?php if($path == 'customer'||$path == 'customer/add'){ echo 'active'; }else{ echo ''; } ?>"><a href="{{action('CustomerController@listCust')}}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
+            @endif
             <li><a href="{{action('LoginController@logout')}}"><i class="fa fa-key"></i> <span>Log Out</span></a></li>
         </ul>
         <!--sidebar nav end-->

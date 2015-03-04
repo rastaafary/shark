@@ -13,6 +13,8 @@ use Redirect;
 use View;
 use Mail;
 use DateTime;
+use App\model\Role;
+use App\User;
 //use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -51,8 +53,32 @@ class LoginController extends Controller
         $password = $credentials['password'];
         if (Auth::validate(array('email' => $email, 'password' => $password)) && Auth::attempt(array('email' => $email, 'password' => $password), false)) {
             Session::flash('message', 'Login Successfully!!!');
-         
-            return Redirect::intended('/part');
+            Session::flash('status', 'success');
+
+            $check_user_has_role = DB::table('role_user')->where('user_id', '=', Auth::User()->id)->first();
+
+            if ($check_user_has_role == null) {
+                $role = Role::all();
+
+                if (Auth::User()->role == 1) {
+                    $user = User::where('id', '=', Auth::User()->id)->first();
+                    $user->attachRole($role[0]);
+                    // return Redirect('permissionCreate');
+                } else if (Auth::User()->role == 2) {
+                    $user = User::where('id', '=', Auth::User()->id)->first();
+                    $user->attachRole($role[1]);
+                    // return Redirect('permissionCreate');
+                } else if (Auth::User()->role == 3) {
+                    $user = User::where('id', '=', Auth::User()->id)->first();
+                    $user->attachRole($role[2]);
+                    //  return Redirect('permissionCreate');
+                }
+            }
+            if (Auth::user()->hasRole('customer')) {
+                return Redirect::intended('/po');
+            } else {
+                return Redirect::intended('/part');
+            }
         } else {
             $error = 'wrong email or password..';
             Session::flash('messagelogin', $error);
@@ -106,14 +132,14 @@ class LoginController extends Controller
                                     <h2>Forgot Password</h2>
 
                                     <div>
-                                        Dear '.$user->name.', <a href='.$link.'>Click Here</a> to reset your password. 
+                                        Dear ' . $user->name . ', <a href=' . $link . '>Click Here</a> to reset your password. 
                                     </div>
                                 </body>
                             </html>';
                     $headers = 'MIME-Version: 1.0' . "\r\n";
                     $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
-                    $mail_status = mail($to, $subject, $message,$headers);
+                    $mail_status = mail($to, $subject, $message, $headers);
                     /*   $mail_status = Mail::send('mailTemplet', $data, function($m) {
                       $m->to('wamasoftware5@gmail.com', 'Hiiii.....');
                       $m->subject('Forgot Password');

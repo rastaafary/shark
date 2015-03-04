@@ -986,54 +986,6 @@
         ]
     },
     {
-        "name": "nesbot/carbon",
-        "version": "1.14.0",
-        "version_normalized": "1.14.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/briannesbitt/Carbon.git",
-            "reference": "bb87460c995d97fe55b39e65f6ffb7f64b0a941e"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/bb87460c995d97fe55b39e65f6ffb7f64b0a941e",
-            "reference": "bb87460c995d97fe55b39e65f6ffb7f64b0a941e",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "~4.0"
-        },
-        "time": "2015-02-06 05:07:29",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Carbon": "src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Brian Nesbitt",
-                "email": "brian@nesbot.com",
-                "homepage": "http://nesbot.com"
-            }
-        ],
-        "description": "A simple API extension for DateTime.",
-        "homepage": "https://github.com/briannesbitt/Carbon",
-        "keywords": [
-            "date",
-            "datetime",
-            "time"
-        ]
-    },
-    {
         "name": "mtdowling/cron-expression",
         "version": "v1.0.4",
         "version_normalized": "1.0.4.0",
@@ -2730,18 +2682,121 @@
         ]
     },
     {
-        "name": "psy/psysh",
-        "version": "v0.3.4",
-        "version_normalized": "0.3.4.0",
+        "name": "yajra/laravel-datatables-oracle",
+        "version": "v4.0.2",
+        "version_normalized": "4.0.2.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/bobthecow/psysh.git",
-            "reference": "218ea9e49c9fe21e28fce6cf77f22615af92daef"
+            "url": "https://github.com/yajra/laravel-datatables-oracle.git",
+            "reference": "fd9f06d16b64b1ff63d9541083f8ca82264f1b23"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/bobthecow/psysh/zipball/218ea9e49c9fe21e28fce6cf77f22615af92daef",
-            "reference": "218ea9e49c9fe21e28fce6cf77f22615af92daef",
+            "url": "https://api.github.com/repos/yajra/laravel-datatables-oracle/zipball/fd9f06d16b64b1ff63d9541083f8ca82264f1b23",
+            "reference": "fd9f06d16b64b1ff63d9541083f8ca82264f1b23",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/database": "~5.0",
+            "illuminate/filesystem": "~5.0",
+            "illuminate/http": "~5.0",
+            "illuminate/support": "~5.0",
+            "illuminate/view": "~5.0",
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "mockery/mockery": "~0.9",
+            "phpunit/phpunit": "~4.0"
+        },
+        "time": "2015-02-12 02:15:09",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "yajra\\Datatables": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Arjay Angeles",
+                "email": "aqangeles@gmail.com"
+            }
+        ],
+        "description": "Server-side handler of DataTables jQuery Plugin for Laravel 4|5",
+        "keywords": [
+            "datatable",
+            "datatables",
+            "datatables jquery plugin",
+            "laravel",
+            "laravel4",
+            "laravel5"
+        ]
+    },
+    {
+        "name": "nesbot/carbon",
+        "version": "1.15.0",
+        "version_normalized": "1.15.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/briannesbitt/Carbon.git",
+            "reference": "48cb9ae6d9436e156316a59d198cb1ca797f8cd8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/48cb9ae6d9436e156316a59d198cb1ca797f8cd8",
+            "reference": "48cb9ae6d9436e156316a59d198cb1ca797f8cd8",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0"
+        },
+        "time": "2015-03-03 03:24:43",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Carbon": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Brian Nesbitt",
+                "email": "brian@nesbot.com",
+                "homepage": "http://nesbot.com"
+            }
+        ],
+        "description": "A simple API extension for DateTime.",
+        "homepage": "http://carbon.nesbot.com",
+        "keywords": [
+            "date",
+            "datetime",
+            "time"
+        ]
+    },
+    {
+        "name": "psy/psysh",
+        "version": "v0.4.1",
+        "version_normalized": "0.4.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/bobthecow/psysh.git",
+            "reference": "3787f3436f4fd898e0ac1eb6f5abd2ab6b24085b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/bobthecow/psysh/zipball/3787f3436f4fd898e0ac1eb6f5abd2ab6b24085b",
+            "reference": "3787f3436f4fd898e0ac1eb6f5abd2ab6b24085b",
             "shasum": ""
         },
         "require": {
@@ -2759,10 +2814,11 @@
         },
         "suggest": {
             "ext-pcntl": "Enabling the PCNTL extension makes PsySH a lot happier :)",
+            "ext-pdo-sqlite": "The doc command requires SQLite to work.",
             "ext-posix": "If you have PCNTL, you'll want the POSIX extension as well.",
             "ext-readline": "Enables support for arrow-key history navigation, and showing and manipulating command history."
         },
-        "time": "2015-02-12 05:21:32",
+        "time": "2015-02-25 20:35:54",
         "bin": [
             "bin/psysh"
         ],
@@ -2793,7 +2849,7 @@
             }
         ],
         "description": "An interactive shell for modern PHP.",
-        "homepage": "https://github.com/bobthecow/psysh",
+        "homepage": "http://psysh.org",
         "keywords": [
             "REPL",
             "console",
@@ -2803,17 +2859,17 @@
     },
     {
         "name": "laravel/framework",
-        "version": "v5.0.4",
-        "version_normalized": "5.0.4.0",
+        "version": "v5.0.13",
+        "version_normalized": "5.0.13.0",
         "source": {
             "type": "git",
             "url": "https://github.com/laravel/framework.git",
-            "reference": "b5eafda7dba3d1367a63095b83a068a73d32d97f"
+            "reference": "c263240daa383e6b9bd979600dc61dcb2c436d53"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/laravel/framework/zipball/b5eafda7dba3d1367a63095b83a068a73d32d97f",
-            "reference": "b5eafda7dba3d1367a63095b83a068a73d32d97f",
+            "url": "https://api.github.com/repos/laravel/framework/zipball/c263240daa383e6b9bd979600dc61dcb2c436d53",
+            "reference": "c263240daa383e6b9bd979600dc61dcb2c436d53",
             "shasum": ""
         },
         "require": {
@@ -2830,7 +2886,7 @@
             "mtdowling/cron-expression": "~1.0",
             "nesbot/carbon": "~1.0",
             "php": ">=5.4.0",
-            "psy/psysh": "0.3.*",
+            "psy/psysh": "0.4.*",
             "swiftmailer/swiftmailer": "~5.1",
             "symfony/console": "2.6.*",
             "symfony/debug": "2.6.*",
@@ -2892,7 +2948,7 @@
             "pda/pheanstalk": "Required to use the beanstalk queue driver (~3.0).",
             "predis/predis": "Required to use the redis cache and queue drivers (~1.0)."
         },
-        "time": "2015-02-11 20:37:48",
+        "time": "2015-02-27 00:32:38",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2929,38 +2985,40 @@
         ]
     },
     {
-        "name": "yajra/laravel-datatables-oracle",
-        "version": "v4.0.2",
-        "version_normalized": "4.0.2.0",
+        "name": "zizaco/entrust",
+        "version": "dev-laravel-5",
+        "version_normalized": "dev-laravel-5",
         "source": {
             "type": "git",
-            "url": "https://github.com/yajra/laravel-datatables-oracle.git",
-            "reference": "fd9f06d16b64b1ff63d9541083f8ca82264f1b23"
+            "url": "https://github.com/Zizaco/entrust.git",
+            "reference": "2996663200c126ec7b6e80e6192a388571c63438"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/yajra/laravel-datatables-oracle/zipball/fd9f06d16b64b1ff63d9541083f8ca82264f1b23",
-            "reference": "fd9f06d16b64b1ff63d9541083f8ca82264f1b23",
+            "url": "https://api.github.com/repos/Zizaco/entrust/zipball/2996663200c126ec7b6e80e6192a388571c63438",
+            "reference": "2996663200c126ec7b6e80e6192a388571c63438",
             "shasum": ""
         },
         "require": {
-            "illuminate/database": "~5.0",
-            "illuminate/filesystem": "~5.0",
-            "illuminate/http": "~5.0",
+            "illuminate/console": "~5.0",
             "illuminate/support": "~5.0",
-            "illuminate/view": "~5.0",
             "php": ">=5.4.0"
         },
         "require-dev": {
-            "mockery/mockery": "~0.9",
-            "phpunit/phpunit": "~4.0"
+            "illuminate/database": "~5.0",
+            "mockery/mockery": "dev-master",
+            "phpunit/phpunit": "~4.1",
+            "sami/sami": "dev-master"
         },
-        "time": "2015-02-12 02:15:09",
+        "time": "2015-02-11 15:40:04",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
-            "psr-0": {
-                "yajra\\Datatables": "src/"
+            "classmap": [
+                "src/commands"
+            ],
+            "psr-4": {
+                "Zizaco\\Entrust\\": "src/Entrust/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -2969,18 +3027,30 @@
         ],
         "authors": [
             {
-                "name": "Arjay Angeles",
-                "email": "aqangeles@gmail.com"
+                "name": "Andrew Elkins",
+                "homepage": "http://andrewelkins.com"
+            },
+            {
+                "name": "Zizaco Zizuini",
+                "email": "zizaco@gmail.com"
+            },
+            {
+                "name": "Ben Batschelet",
+                "homepage": "http://github.com/bbatsche"
+            },
+            {
+                "name": "Michele Angioni",
+                "email": "michele.angioni@gmail.com"
             }
         ],
-        "description": "Server-side handler of DataTables jQuery Plugin for Laravel 4|5",
+        "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
         "keywords": [
-            "datatable",
-            "datatables",
-            "datatables jquery plugin",
+            "acl",
+            "auth",
+            "illuminate",
             "laravel",
-            "laravel4",
-            "laravel5"
+            "permission",
+            "roles"
         ]
     }
 ]

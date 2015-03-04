@@ -481,41 +481,37 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 	 * Create a new model instance that is existing.
 	 *
 	 * @param  array  $attributes
+	 * @param  string|null  $connection
 	 * @return static
 	 */
-	public function newFromBuilder($attributes = array())
+	public function newFromBuilder($attributes = array(), $connection = null)
 	{
-		$instance = $this->newInstance(array(), true);
+		$model = $this->newInstance(array(), true);
 
-		$instance->setRawAttributes((array) $attributes, true);
+		$model->setRawAttributes((array) $attributes, true);
 
-		return $instance;
+		$model->setConnection($connection ?: $this->connection);
+
+		return $model;
 	}
 
 	/**
 	 * Create a collection of models from plain arrays.
 	 *
 	 * @param  array  $items
-	 * @param  string  $connection
+	 * @param  string|null  $connection
 	 * @return \Illuminate\Database\Eloquent\Collection
 	 */
 	public static function hydrate(array $items, $connection = null)
 	{
-		$collection = with($instance = new static)->newCollection();
+		$instance = (new static)->setConnection($connection);
 
-		foreach ($items as $item)
+		$collection = $instance->newCollection($items);
+
+		return $collection->map(function ($item) use ($instance)
 		{
-			$model = $instance->newFromBuilder($item);
-
-			if ( ! is_null($connection))
-			{
-				$model->setConnection($connection);
-			}
-
-			$collection->push($model);
-		}
-
-		return $collection;
+			return $instance->newFromBuilder($item);
+		});
 	}
 
 	/**
@@ -523,17 +519,12 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 	 *
 	 * @param  string  $query
 	 * @param  array  $bindings
-	 * @param  string  $connection
+	 * @param  string|null  $connection
 	 * @return \Illuminate\Database\Eloquent\Collection
 	 */
 	public static function hydrateRaw($query, $bindings = array(), $connection = null)
 	{
-		$instance = new static;
-
-		if ( ! is_null($connection))
-		{
-			$instance->setConnection($connection);
-		}
+		$instance = (new static)->setConnection($connection);
 
 		$items = $instance->getConnection()->select($query, $bindings);
 
@@ -644,7 +635,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 	/**
 	 * Begin querying the model on a given connection.
 	 *
-	 * @param  string  $connection
+	 * @param  string|null  $connection
 	 * @return \Illuminate\Database\Eloquent\Builder
 	 */
 	public static function on($connection = null)
@@ -1069,7 +1060,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 		{
 			$caller = $trace['function'];
 
-			return ( ! in_array($caller, Model::$manyMethods) && $caller != $self);
+			return ! in_array($caller, Model::$manyMethods) && $caller != $self;
 		});
 
 		return ! is_null($caller) ? $caller['function'] : null;
@@ -2014,7 +2005,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 	 */
 	public function getRouteKey()
 	{
-	    return $this->getAttribute($this->getRouteKeyName());
+		return $this->getAttribute($this->getRouteKeyName());
 	}
 
 	/**
@@ -2024,7 +2015,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 	 */
 	public function getRouteKeyName()
 	{
-	    return $this->getKeyName();
+		return $this->getKeyName();
 	}
 
 	/**
@@ -2604,7 +2595,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 		// date fields without having to create a mutator for each property.
 		elseif (in_array($key, $this->getDates()))
 		{
-			if ($value) return $this->asDateTime($value);
+			if ( ! is_null($value)) return $this->asDateTime($value);
 		}
 
 		return $value;
@@ -2731,6 +2722,8 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 	 */
 	protected function castAttribute($key, $value)
 	{
+		if (is_null($value)) return $value;
+
 		switch ($this->getCastType($key))
 		{
 			case 'int':
@@ -3296,8 +3289,8 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 	 */
 	public function __isset($key)
 	{
-		return ((isset($this->attributes[$key]) || isset($this->relations[$key])) ||
-				($this->hasGetMutator($key) && ! is_null($this->getAttributeValue($key))));
+		return (isset($this->attributes[$key]) || isset($this->relations[$key])) ||
+				($this->hasGetMutator($key) && ! is_null($this->getAttributeValue($key)));
 	}
 
 	/**

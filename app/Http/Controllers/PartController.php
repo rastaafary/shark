@@ -43,6 +43,12 @@ class PartController extends Controller
     {
         //$path = base_path();
         //echo $path;exit;
+//        if(Auth::User()->hasRole('customer'))
+//        {
+//            exit('call');
+//        }else if(Auth::User()->hasRole('admin')){
+//            exit('admin');
+//        }
         return view('Part.Parteditlist', ['page_title' => 'Part Number']);
     }
 
