@@ -114,7 +114,7 @@ class InvoiceController extends Controller
                         'zipcode' => $post['zipcode'],
                         'country' => $post['country'],
                         'phone_no' => $post['phone_no'],
-                        'is_delete' => 0
+                        'is_deleted' => 0
             ));
             
             // add invoice_order_list
