@@ -524,7 +524,7 @@ class PurchaseOrderCustomerController extends Controller
         return Datatables::of($orderlist)
                         ->editColumn("id", '<a href="/po/deletepoCustomer/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                 . '<span class="fa fa-trash-o"></span></a>'
-                                . '&nbsp<a href="/po/edit/{{ $id }}" class="btn btn-primary" id="btnEdit">'
+                                . '&nbsp<a href="/po/edit/{{ $id }}" class="btn btn-primary" id="btnEdit" onClick = "return confirmEdit({{ $id }})">'
                                 . '<span class="fa fa-pencil"></span></a>')
                         ->editColumn("description", '')
                         ->make();
