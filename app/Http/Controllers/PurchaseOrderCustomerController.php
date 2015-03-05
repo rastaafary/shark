@@ -15,6 +15,7 @@ use Request;
 use App\Http\Controllers\Image;
 use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\User;
 
 class PurchaseOrderCustomerController extends Controller
 {
@@ -40,6 +41,7 @@ class PurchaseOrderCustomerController extends Controller
     {
         //Get Logged User Deatils
         $user = Auth::user();
+
         //Get Custome Details
         $customer = DB::table('customers')->where('user_id', $user->id)->first();
 
@@ -53,6 +55,11 @@ class PurchaseOrderCustomerController extends Controller
         //check Is post
         if (Request::isMethod('post')) {
             $post = Input::all();
+
+            /*      // if admin or manager  log in
+              if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
+              $customer = DB::table('customers')->where('id', $post['selsctPOCustomer'])->first();
+              } */
 
             unset($post['_token']);
 
@@ -172,6 +179,14 @@ class PurchaseOrderCustomerController extends Controller
         //get parts Data
         $sku = $this->getSKUPartsData();
 
+        /*     if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
+          $cData = $this->getCustomerData();
+          return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Add Purchase Order'])
+          ->with("shipping", $shipping)
+          ->with('sku', $sku)
+          ->with('custData', $cData);
+          // ->with('autoId', $autoId);
+          } */
         return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Add Purchase Order'])
                         ->with("shipping", $shipping)
                         ->with('sku', $sku)
@@ -386,6 +401,19 @@ class PurchaseOrderCustomerController extends Controller
         } else {
             return redirect('/po/add');
         }
+
+        /*  if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
+          $cData = $this->getCustomerData();
+          return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Add Purchase Order'])
+          ->with("shipping", $shipping)
+          ->with('sku', $sku)
+          ->with('custData', $cData)
+          ->with('autoId', $purchaseOrder->po_number)
+          ->with('orderlist', $orderList)
+          ->with('purchaseOrder', $purchaseOrder);
+          // ->with('autoId', $autoId);
+          } */
+
         return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Edit Purchase Order'], ['id' => $id])
                         ->with('cust', $customer)
                         ->with('orderlist', $orderList)
@@ -509,26 +537,44 @@ class PurchaseOrderCustomerController extends Controller
      */
     public function getPoCustomerlist()
     {
-        // Get PO List
-        $customer = DB::table('customers')->where('user_id', Auth::user()->id)->first();
-        $orderlist = DB::table('order_list')
-                ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
-                ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
-                ->leftJoin('order_status', 'order_list.id', '=', 'order_status.po_id')
-                ->select(array('purchase_order.po_number', 'purchase_order.require_date', 'part_number.description', DB::raw('SUM(order_list.qty)'), DB::raw('SUM(order_list.amount)'), 'purchase_order.id')) //, DB::raw('SUM(order_status.pcs_made)')
-                ->groupBy('purchase_order.id')
-                ->where('purchase_order.is_deleted', '=', '0')
-                ->where('order_list.customer_id', '=', $customer->id)
-                ->where('purchase_order.customer_id', '=', $customer->id);
-        //->selectRow('purchase_order.po_number,purchase_order.require_date,part_number.description,sum(order_list.qty) as qty,sum(order_status.pcs_made) as pcs_made,sum(order_list.amount) as `amount`,`purchase_order.id`')
-        //->groupBy('purchase_order.id');
-        return Datatables::of($orderlist)
-                        ->editColumn("id", '<a href="/po/deletepoCustomer/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
-                                . '<span class="fa fa-trash-o"></span></a>'
-                                . '&nbsp<a href="/po/edit/{{ $id }}" class="btn btn-primary" id="btnEdit" onClick = "return confirmEdit({{ $id }})">'
-                                . '<span class="fa fa-pencil"></span></a>')
-                        ->editColumn("description", '')
-                        ->make();
+        if (Auth::user()->hasRole('customer')) {
+            // Get PO List
+            $customer = DB::table('customers')->where('user_id', Auth::user()->id)->first();
+            $orderlist = DB::table('order_list')
+                    ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
+                    ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
+                    ->leftJoin('order_status', 'order_list.id', '=', 'order_status.po_id')
+                    ->select(array('purchase_order.po_number', 'purchase_order.require_date', 'part_number.description', DB::raw('SUM(order_list.qty)'), DB::raw('SUM(order_list.amount)'), 'purchase_order.id')) //, DB::raw('SUM(order_status.pcs_made)')
+                    ->groupBy('purchase_order.id')
+                    ->where('purchase_order.is_deleted', '=', '0')
+                    ->where('order_list.customer_id', '=', $customer->id)
+                    ->where('purchase_order.customer_id', '=', $customer->id);
+
+            //->selectRow('purchase_order.po_number,purchase_order.require_date,part_number.description,sum(order_list.qty) as qty,sum(order_status.pcs_made) as pcs_made,sum(order_list.amount) as `amount`,`purchase_order.id`')
+            return Datatables::of($orderlist)
+                            ->editColumn("id", '<a href="/po/deletepoCustomer/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
+                                    . '<span class="fa fa-trash-o"></span></a>'
+                                    . '&nbsp<a href="/po/edit/{{ $id }}" class="btn btn-primary" id="btnEdit" onClick = "return confirmEdit({{ $id }})">'
+                                    . '<span class="fa fa-pencil"></span></a>')
+                            ->editColumn("description", '')
+                            ->make();
+        } else {
+            $orderlist = DB::table('order_list')
+                    ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
+                    ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
+                    ->leftJoin('order_status', 'order_list.id', '=', 'order_status.po_id')
+                    ->select(array('purchase_order.po_number', 'purchase_order.require_date', 'part_number.description', DB::raw('SUM(order_list.qty)'), DB::raw('SUM(order_list.amount)'), 'purchase_order.id')) //, DB::raw('SUM(order_status.pcs_made)')
+                    ->groupBy('purchase_order.id')
+                    ->where('purchase_order.is_deleted', '=', '0');
+
+            return Datatables::of($orderlist)
+                            ->editColumn("id", '<a href="/po/deletepoCustomer/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
+                                    . '<span class="fa fa-trash-o"></span></a>'
+                                    . '&nbsp<a href="/po/edit/{{ $id }}" class="btn btn-primary" id="btnEdit" onClick = "return confirmEdit({{ $id }})">'
+                                    . '<span class="fa fa-pencil"></span></a>')
+                            ->editColumn("description", '')
+                            ->make();
+        }
     }
 
     /**
@@ -562,4 +608,17 @@ class PurchaseOrderCustomerController extends Controller
         return $sku;
     }
 
+    /**
+     * UDF For Get PO Customer Data
+     */
+    /*  public function getCustomerData()
+      {
+      $custData = DB::table('customers')->select('contact_name', 'id', 'phone_no')->get();
+      $cData = '';
+      $cData .="<option value='" . '' . "' selected='selected' > Select Customer</option>";
+      foreach ($custData as $key => $value) {
+      $cData .="<option value='" . $value->id . "'>" . $value->contact_name . " " . $value->phone_no . "</option>";
+      }
+      return $cData;
+      } */
 }

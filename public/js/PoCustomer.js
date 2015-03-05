@@ -1,6 +1,7 @@
 $(document).ready(function () {
 
     $('.select2').select2();
+    $('.POselect2').select2();
 
     $('#orderTime').timepicker({
         hourMin: 8,

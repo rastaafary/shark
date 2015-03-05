@@ -21,7 +21,7 @@
                         <div class="tab-pane active" id="Add">
                             @if(isset($id))
                                 {!! Form::open(array('class'=>'form-horizontal','url'=>'/invoice/edit/'.$id,'name'=>'Invoice','id'=>'Invoice','files' => true)) !!}
-                            @else's
+                            @else
                                 {!! Form::open(array('class'=>'form-horizontal','url'=>'/invoice/add','name'=>'Invoice','id'=>'Invoice','files' => true)) !!}
                             @endif
                             {!! Form::hidden('user_id',Input::old('user_id',isset(Auth::user()->id) ? Auth::user()->id : '')) !!}

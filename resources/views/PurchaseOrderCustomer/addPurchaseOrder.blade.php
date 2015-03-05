@@ -33,13 +33,20 @@
                                     @else
                                     {!! HTML::image('images/user/default.jpg', 'a picture', array('class' => 'thumb')) !!}
                                     @endif
-                                </div>                                    
+                                </div>   
+                                
                                 <div class="media-body">
                                     <h3 class="media-heading">@if( Auth::check() )
                                         {{ Auth::user()->name }}
                                         @endif
                                     </h3>                                       
                                 </div>
+<!--                                @if(Auth::user()->hasRole('admin'))
+                                <div class="form-group col-sm-4 col-md-3">
+                                    <label for="orderpoId">Select Customer : </label>
+                                    <select name="selsctPOCustomer" id="selsctPOCustomer" class ='POselect2 form-control'><?php echo $custData; ?></select>  onChange="getinfo(this);" 
+                                </div>
+                                @endif-->
                             </div>
                             <br>
 
@@ -52,9 +59,10 @@
                                         <div class="panel-body">
                                             <div class="form-inline">
                                                 <div class="form-group col-sm-6 col-md-4">
-                                                    <label for="orderpoId">PO # : </label>
-                                                    <label for="orderpoId" style="font-weight: bold;"><?= $autoId ?></label>
+                                                    <label for="orderpoId">PO # : </label>                                                  
+                                                    <label for="orderpoId" style="font-weight: bold;"><?= $autoId ?></label>                                                   
                                                 </div>
+
                                                 <div class="form-group col-sm-6 col-md-4">
                                                     <div style="color: red">
                                                         <?php echo $errors->first('orderDate'); ?> 
@@ -309,7 +317,7 @@
                                                             </td>
                                                             <td>
 <!--                                                                <input autocomplete="off" id="searchDescription" class="input form-control" name="searchDescription[]" type="text" placeholder="searchDescription"/>-->
-                                                                 <label id="searchDescription" name="searchDescription[]" class="control-label"></label>
+                                                                <label id="searchDescription" name="searchDescription[]" class="control-label"></label>
                                                             </td>
                                                             <td>
                                                                 <input autocomplete="off" id="purchaseQty" class="input form-control" type="text" placeholder="qty"/>
