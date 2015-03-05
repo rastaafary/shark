@@ -224,7 +224,7 @@ $(document).ready(function () {
             console.log(template);
             template.data.skuId = $('#skuOrder').val();
             template.data.skuLabel = $('#skuOrder option:selected').text();
-            template.data.description = $('#searchDescription').val();
+            template.data.description = $('#searchDescription').html();
             template.data.purchaseQty = $('#purchaseQty').val();
             template.data.unitPrice = $('#unitPrice').html();
             template.data.totalPrice = $('#totalPrice').html();
@@ -236,7 +236,7 @@ $(document).ready(function () {
                     orderId: 0,
                     skuId: $('#skuOrder').val(),
                     skuLabel: $('#skuOrder  option:selected').text(),
-                    description: $('#searchDescription').val(),
+                    description: $('#searchDescription').html(),
                     purchaseQty: $('#purchaseQty').val(),
                     unitPrice: $('#unitPrice').html(),
                     totalPrice: $('#totalPrice').html(),
@@ -420,7 +420,7 @@ function resetInputOrderData() {
     $('#skuOrder').select2("val", '');
     $('#addMoreOrder').html('<i class="fa fa-plus"></i> Add');
     $('#cancelUpdate').hide();
-    $('#searchDescription').val('');
+    $('#searchDescription').html('');
     $('#purchaseQty').val('0');
     $('#unitPrice').html('');
     $('#totalPrice').html('');
@@ -457,7 +457,7 @@ function getinfo(element)
         {
             var jason = $.parseJSON(responce);
             $.each(jason, function (idx, data) {
-                $('table #searchDescription').val(data.description);
+                $('table #searchDescription').html(data.description);
                 $('table #unitPrice').html(data.cost);
             });
             $('#purchaseQty').trigger('keyup');
@@ -481,7 +481,7 @@ function editNewOrder(element)
     trEle = $(element).closest('tr.newOrderData');
     $('#skuOrder').select2("val", $(trEle).find('.sku').attr('id'));
     $('#updateId').val($(trEle).attr('id'));
-    $('#searchDescription').val($(trEle).find('.description').html());
+    $('#searchDescription').html($(trEle).find('.description').html());
     $('#purchaseQty').val($(trEle).find('.purchaseQty').html());
     $('#unitPrice').html($(trEle).find('.unitPrice').html());
     $('#totalPrice').html($(trEle).find('.totalPrice').html());

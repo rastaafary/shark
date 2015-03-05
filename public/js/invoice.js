@@ -105,7 +105,7 @@ $(document).ready(function () {
             {
                 var jason = $.parseJSON(responce);
                 $.each(jason, function (idx, data) {
-                    $('#vDescription').val(data.description);
+                    $('#vDescription').html(data.description);
                     $('#vUnitPrice').html(data.cost);
                 });
             },
@@ -166,7 +166,7 @@ $(document).ready(function () {
                 template.data.skuId = $('#skuOrder').val();
                 template.data.purchaseOrderId = $('#skuOrder  option:selected').attr('orderid'),
                         template.data.skuLabel = $('#skuOrder  option:selected').text();
-                template.data.description = $('#vDescription').val();
+                template.data.description = $('#vDescription').html();
                 template.data.purchaseQty = $('#vPurchaseQty').val();
                 template.data.unitPrice = $('#vUnitPrice').html();
                 template.data.discount = $('#vDiscount').val();
@@ -189,7 +189,7 @@ $(document).ready(function () {
                         invoiceOrderId: 0,
                         purchaseOrderId: $('#skuOrder  option:selected').attr('orderid'),
                         skuLabel: $('#skuOrder  option:selected').text(),
-                        description: $('#vDescription').val(),
+                        description: $('#vDescription').html(),
                         purchaseQty: $('#vPurchaseQty').val(),
                         unitPrice: $('#vUnitPrice').html(),
                         discount: $('#vDiscount').val(),
@@ -387,7 +387,7 @@ function resetInputInvoiceData() {
     $('#skuOrder').select2("val", '');
     $('#vAddMoreOrder').html('<i class="fa fa-plus"></i> Add');
     $('#vCancelUpdate').hide();
-    $('#vDescription').val('');
+    $('#vDescription').html('');
     $('#vPurchaseQty').val('0');
     $('#vUnitPrice').html('0');
     $('#vDiscount').val('0');
@@ -481,7 +481,7 @@ function editNewOrder(element)
     trEle = $(element).closest('tr.newInvoiceData');
     $('#skuOrder').select2("val", $(trEle).find('.sku').attr('id'));
     $('#updateId').val($(trEle).attr('id'));
-    $('#vDescription').val($(trEle).find('.description').html());
+    $('#vDescription').html($(trEle).find('.description').html());
     $('#vPurchaseQty').val($(trEle).find('.purchaseQty').html());
     $('#vUnitPrice').html($(trEle).find('.unitPrice').html());
     $('#vDiscount').val($(trEle).find('.discount').html());

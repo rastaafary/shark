@@ -308,16 +308,17 @@
                                                                 <select name="sku" id="skuOrder" onChange="getinfo(this);" class ='sku select2 form-control'><?php echo $sku; ?></select>
                                                             </td>
                                                             <td>
-                                                                <input autocomplete="off" id="searchDescription" class="input form-control" name="searchDescription[]" type="text" placeholder="searchDescription"/>
+<!--                                                                <input autocomplete="off" id="searchDescription" class="input form-control" name="searchDescription[]" type="text" placeholder="searchDescription"/>-->
+                                                                 <label id="searchDescription" name="searchDescription[]" class="control-label"></label>
                                                             </td>
                                                             <td>
                                                                 <input autocomplete="off" id="purchaseQty" class="input form-control" type="text" placeholder="qty"/>
                                                             </td>
                                                             <td>
-                                                                <label id="unitPrice"></label>
+                                                                <label id="unitPrice" class="control-label"></label>
                                                             </td>
                                                             <td>
-                                                                <label id="totalPrice"></label>
+                                                                <label id="totalPrice" class="control-label"></label>
                                                             </td>
                                                             <td>
                                                                 <button id="addMoreOrder" class="btn btn-primary" type="button"><i class="fa fa-plus"></i> Add</button>

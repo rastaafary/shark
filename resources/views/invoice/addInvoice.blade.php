@@ -259,7 +259,8 @@
                                                                 <select class="form-control SKUselect2" id="skuOrder" name='skuOrder'></select>
                                                             </td>
                                                             <td>
-                                                                <input id="vDescription" autocomplete="off" class="input form-control" name="searchDescription" type="text" placeholder="searchDescription"/>
+<!--                                                                <input id="vDescription" autocomplete="off" class="input form-control" name="searchDescription" type="text" placeholder="searchDescription"/>-->
+                                                                <label id="vDescription" name="searchDescription"></label>
                                                             </td>
                                                             <td>
                                                                 <input id="vPurchaseQty" name="vQty" autocomplete="off" class="input form-control" type="text" placeholder="qty"/>
