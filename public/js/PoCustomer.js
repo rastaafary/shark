@@ -27,8 +27,7 @@ $(document).ready(function () {
     });
 
     $('#selectPOCustomer').change(function () {
-        id = $('#selectPOCustomer').val();
-        alert(id);
+        id = $('#selectPOCustomer').val();      
         $.ajax({
             type: 'GET',
             url: '/po/getIdentifireList',

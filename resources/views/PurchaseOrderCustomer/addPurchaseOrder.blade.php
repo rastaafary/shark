@@ -45,7 +45,7 @@
                                  @if(!isset($id))                               
                                 <div class="form-group col-sm-4 col-md-3">
                                     <label for="orderpoId">Select Customer : </label>
-                                    <select name="selectPOCustomer" id="selectPOCustomer" class ='POselect2 form-control'><?php // echo $custData; ?></select>
+                                    <select name="selectPOCustomer" id="selectPOCustomer" class ='POselect2 form-control'><?php echo $custData; ?></select>
                                 </div>
                                  @endif
                                 @endif

@@ -324,45 +324,55 @@ class PurchaseOrderCustomerController extends Controller
                     $post['Ai'] = '';
                 }
 
+                
+                                
                 if (!empty($post['Ai']) || !empty($post['PDF'])) {
-                    if (empty($purchaseOrder->pdf)) {
-                        //Add Blog Art Data
-                        $blogArtId = DB::table('blog_art_file')->insertGetId(
-                                array('po_id' => $id,
-                                    'customer_id' => $customer->id,
-                                    'name' => '',
-                                    'pdf' => $post['PDF'])
-                        );
-                    } else {
-                        //update Blog Art Data
-                        $blogArtId = DB::table('blog_art_file')
-                                ->where('po_id', $id)
-                                ->update(
-                                array(
-                                    'name' => '',
-                                    'pdf' => $post['PDF']
-                                )
-                        );
+                    if (!empty($post['PDF'])) {
+                        $blogArtData = DB::table('blog_art_file')->where('po_id', '=', $id)->first();
+                        if (empty($blogArtData)) {
+
+                            //Add Blog Art Data
+                            $blogArtId = DB::table('blog_art_file')->insertGetId(
+                                    array('po_id' => $id,
+                                        'customer_id' => $customer->id,
+                                        'name' => '',
+                                        'pdf' => $post['PDF'])
+                            );
+                        } else {
+                            //update Blog Art Data
+                            $blogArtId = DB::table('blog_art_file')
+                                    ->where('id', $blogArtData->id)
+                                    ->update(
+                                    array(
+                                        'name' => '',
+                                        'pdf' => $post['PDF']
+                                    )
+                            );
+                        }
+                    }                    
+                    if (!empty($post['Ai'])) {
+                        $blogArtData = DB::table('blog_art_file')->where('po_id', '=', $id)->first();
+                        if (empty($blogArtData)) {
+                            //Add Blog Art Data
+                            $blogArtId = DB::table('blog_art_file')->insertGetId(
+                                    array('po_id' => $id,
+                                        'customer_id' => $customer->id,
+                                        'name' => '',
+                                        'ai' => $post['Ai'])
+                            );
+                        } else {
+                            //update Blog Art Data
+                            $blogArtId = DB::table('blog_art_file')
+                                    ->where('id', $blogArtData->id)
+                                    ->update(
+                                    array(
+                                        'name' => '',
+                                        'ai' => $post['Ai']
+                                    )
+                            );
+                        }
                     }
-                    if (empty($purchaseOrder->ai)) {
-                        //Add Blog Art Data
-                        $blogArtId = DB::table('blog_art_file')->insertGetId(
-                                array('po_id' => $id,
-                                    'customer_id' => $customer->id,
-                                    'name' => '',
-                                    'ai' => $post['Ai'])
-                        );
-                    } else {
-                        //update Blog Art Data
-                        $blogArtId = DB::table('blog_art_file')
-                                ->where('po_id', $id)
-                                ->update(
-                                array(
-                                    'name' => '',
-                                    'ai' => $post['Ai']
-                                )
-                        );
-                    }
+                    
                 }
 
                 //add po order
