@@ -38,9 +38,6 @@
                                                         <label for="invoiceSelect">Invoice# : </label>
                                                         <select class="form-control" id="invoiceSelect" name="invoiceSelect">
                                                             <option value="0" selected disabled>Select Invoice</option>
-                                                            <!--    @foreach($invoice as $value)
-                                                            <option value="{{$value->invoice_no}}">{{$value->invoice_no}}</option>
-                                                            @endforeach  -->
                                                         </select>
                                                     </div>                                                  
                                                 </div>
@@ -60,7 +57,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group" align="center">                                                   
-                                                    <button class="btn btn-primary" id="btnApply" style="margin-top: 10px;"><i class="fa fa-thumbs-o-up"></i>Apply</button>
+                                                    <button class="btn btn-primary" id="btnApply" style="margin-top: 10px;"><i class="fa fa-thumbs-o-up"></i> Apply</button>
                                                 </div>                                                     
                                             </div>
                                         </div>                                   
