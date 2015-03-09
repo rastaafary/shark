@@ -1,5 +1,4 @@
-$(document).ready(function () {
-
+$(document).ready(function() {
     var bestPictures = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('contact_name'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -13,42 +12,76 @@ $(document).ready(function () {
         name: 'best-pictures',
         displayKey: 'contact_name',
         source: bestPictures.ttAdapter()
+    }).on('typeahead:selected', function($e, datum) {
+        $('input[name="selectedCust"]').val(datum["id"]);
     });
 
 
-    $(".tt-dropdown-menu").click(function () {
-        custData = $('#searchCustomer').val();
-
-        // var token = $('meta[name="csrf-token"]').attr('content');
+    // Get invoice list from customer
+    $(".tt-dropdown-menu").click(function() {
+        custId = $('input[name="selectedCust"]').val();
         $.ajax({
             type: 'GET',
             url: '/payment/getCustInvoice',
-            data: 'custData=' + custData,
+            data: 'custId=' + custId,
             async: false,
-            success: function (responce)
-            {/*
+            success: function(responce) {
                 var jason = $.parseJSON(responce);
-                $.each(jason, function (idx, data) {
-                    $('#searchSKU').val(data.SKU);
-                    $('#searchDescription').val(data.description);
-                    $('#unitprice').val(data.cost);
+                var str = '<option value="0" selected disabled>Select Invoice</option>';
+                $.each(jason, function(idx, data) {
+                    str += "<option value=" + data.id + ">" + data.invoice_no + "</option>";
                 });
-                $("#searchQty").prop("disabled", false);*/
+                $("#invoiceSelect").html(str);
+            }
+        });
+    });
+
+    // Get invoice history on Invoice change
+    $("#invoiceSelect").change(function() {
+        $('#invoiceListBlock,#invoiceDetailBlock').hide();
+        $.ajax({
+            type: 'GET',
+            url: '/payment/getInvoicePaymentDetails',
+            data: 'invoiceId=' + $(this).val(),
+            async: false,
+            success: function(responce) {
+                $('#invoiceListBlock,#invoiceDetailBlock').show();
+                var jason = $.parseJSON(responce);
+
+                // For invoice list
+                var invoiceStr = '';
+                var paid = 0;
+                $.each(jason.invoice, function(idx, data) {
+                    invoiceStr += "<tr><td>" + data.invoice_id + "</td><td>" + data.total + "</td><td>" + paid + "</td><td>" + (data.total - paid) + "</td></tr>";
+                });
+                if (invoiceStr == '') {
+                    invoiceStr = '<span>Invoice not available.</span>';
+                }
+                $('#invoiceListDT').html(invoiceStr);
+
+                // For invoice details
+                var invoiceDetailsStr = '';
+                $.each(jason.invoiceDetails, function(idx, data) {
+                    invoiceDetailsStr += "<tr><td></td></tr>";
+                });
+                if (invoiceDetailsStr == '') {
+                    invoiceDetailsStr = '<span>Payment details not available.</span>';
+                }
+                $('#invoiceDetailDT').html(invoiceDetailsStr);
             }
         });
     });
 
 
 
-    $('#require_date').datepicker({
+    $('#require_date,#paymentDate').datepicker({
         format: 'yyyy-mm-dd',
         autoclose: true,
         todayBtn: true,
         todayHighlight: true
     });
 
-
-    jQuery.validator.addMethod("onlyname", function (value, element) {
+    jQuery.validator.addMethod("onlyname", function(value, element) {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
 
@@ -57,7 +90,7 @@ $(document).ready(function () {
         "bServerSide": false,
         // "sAjaxSource": "",
         "aaSorting": [[7, "desc"]],
-        "fnServerData": function (sSource, aoData, fnCallback) {
+        "fnServerData": function(sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
                 "type": "GET",
