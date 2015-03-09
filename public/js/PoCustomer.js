@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     $('.select2').select2();
-    $('.POselect2').select2();
+    $(' .POselect2').select2();
 
     $('#orderTime').timepicker({
         hourMin: 8,
@@ -24,6 +24,26 @@ $(document).ready(function () {
             prevKey = event.keyCode;
             prevControl = event.currentTarget.id;
         }
+    });
+
+    $('#selectPOCustomer').change(function () {
+        id = $('#selectPOCustomer').val();
+        alert(id);
+        $.ajax({
+            type: 'GET',
+            url: '/po/getIdentifireList',
+            data: 'custId=' + id,
+            async: false,
+            success: function (responce)
+            {
+                var jason = $.parseJSON(responce);
+                $("#oldIdentifire").html('');
+                $.each(jason, function (idx, data) {
+                       $("#oldIdentifire").append("<option value='" + data.id + "' class='shippingData'>" + data.identifier + "</option>");
+
+                });
+            }
+        });
     });
 
     $("#po_cust_order").dataTable({
@@ -274,6 +294,10 @@ $(document).ready(function () {
             }
         }
     });
+    
+    jQuery.validator.addMethod("mobileNo", function (value, element) {
+        return this.optional(element) || /^[0-9 \-\(\)\+]+$/.test(value);
+    }, "Please enter valid mobile no.");
 
     $('#PoCustomer').validate({
         submitHandler: function (form) {

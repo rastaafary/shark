@@ -45,21 +45,27 @@ class PurchaseOrderCustomerController extends Controller
         //Get Custome Details
         $customer = DB::table('customers')->where('user_id', $user->id)->first();
 
-        if (count($customer) == 0 || empty($customer)) {
-            Session::flash('message', "Please first create customer.");
-            Session::flash('status', 'error');
-            return redirect('/po');
+        /*  if (count($customer) == 0 || empty($customer)) {
+          Session::flash('message', "Please first create customer.");
+          Session::flash('status', 'error');
+          return redirect('/po');
+          }
+         */
+
+        //  if customer then generate auto ID
+        if (Auth::user()->hasRole('customer')) {
+            $autoId = $this->getAutoPurchaseCustomerId($customer);
         }
-        $autoId = $this->getAutoPurchaseCustomerId($customer);
 
         //check Is post
         if (Request::isMethod('post')) {
             $post = Input::all();
 
-            /*      // if admin or manager  log in
-              if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
-              $customer = DB::table('customers')->where('id', $post['selsctPOCustomer'])->first();
-              } */
+            // if admin or manager  log in
+            if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
+                $customer = DB::table('customers')->where('id', $post['selectPOCustomer'])->first();
+            }
+            $autoId = $this->getAutoPurchaseCustomerId($customer);
 
             unset($post['_token']);
 
@@ -99,7 +105,11 @@ class PurchaseOrderCustomerController extends Controller
                 );
             } else {
                 //Get Customer ID
-                $customer_data = DB::table('customers')->where('user_id', $post['id'])->first();
+                if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
+                    $customer_data = DB::table('customers')->where('id', $post['selectPOCustomer'])->first();
+                } else {
+                    $customer_data = DB::table('customers')->where('user_id', $post['id'])->first();
+                }
                 $shipData = DB::table('shipping_info')
                         ->where('customer_id', $customer_data->id)
                         ->where('id', $post['oldIdentifire'])
@@ -157,6 +167,7 @@ class PurchaseOrderCustomerController extends Controller
 
             //add po order
             $orders = json_decode($post['orders'], true);
+
             foreach ($orders as $orderlist) {
                 unset($orderlist['orderId']);
                 if ($orderlist['part_id'] > 0) {
@@ -179,14 +190,15 @@ class PurchaseOrderCustomerController extends Controller
         //get parts Data
         $sku = $this->getSKUPartsData();
 
-        /*     if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
-          $cData = $this->getCustomerData();
-          return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Add Purchase Order'])
-          ->with("shipping", $shipping)
-          ->with('sku', $sku)
-          ->with('custData', $cData);
-          // ->with('autoId', $autoId);
-          } */
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
+            $cData = $this->getCustomerData();
+            $autoId = '00-0000';
+            return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Add Purchase Order'])
+                            // ->with("shipping", $shipping)
+                            ->with('sku', $sku)
+                            ->with('custData', $cData)
+                            ->with('autoId', $autoId);
+        }
         return View::make("PurchaseOrderCustomer.addPurchaseOrder", ['page_title' => 'Add Purchase Order'])
                         ->with("shipping", $shipping)
                         ->with('sku', $sku)
@@ -200,8 +212,13 @@ class PurchaseOrderCustomerController extends Controller
             //Get Logged User Deatils
             $user = Auth::user();
             //Get Custome Details
-            $customer = DB::table('customers')->where('user_id', $user->id)->first();
 
+            if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
+                $po_data = DB::table('purchase_order')->where('id', $id)->first();
+                $customer = DB::table('customers')->where('id', $po_data->customer_id)->first();
+            } else {
+                $customer = DB::table('customers')->where('user_id', $user->id)->first();
+            }
             //Get data of purchase order
             $purchaseOrder = DB::table('purchase_order')
                     ->select(array('shipping_info.*', 'purchase_order.*', 'blog_art_file.*', 'blog_art_file.id as art_id'))
@@ -209,7 +226,7 @@ class PurchaseOrderCustomerController extends Controller
                     ->leftJoin('blog_art_file', 'blog_art_file.po_id', '=', 'purchase_order.id')
                     ->where('purchase_order.id', $id)
                     ->first();
-
+           
             if (Request::isMethod('post')) {
 
                 $post = Input::all();
@@ -258,6 +275,7 @@ class PurchaseOrderCustomerController extends Controller
                                         'type' => $post['shippingMethod']
                                     )
                     );
+                   
                 }
 
                 //update Purchase Order
@@ -265,7 +283,7 @@ class PurchaseOrderCustomerController extends Controller
                         ->where('id', $id)
                         ->update(
                         array(
-                            'shipping_id' => $shipAddId,
+                            'shipping_id' => $post['oldIdentifire'],
                             'date' => date('Y/m/d', strtotime($post['orderDate'])),
                             'time' => date('H:i:s', strtotime($post['time'])),
                             'payment_terms' => $post['payment_terms'],
@@ -421,6 +439,7 @@ class PurchaseOrderCustomerController extends Controller
                         ->with('autoId', $purchaseOrder->po_number)
                         ->with('sku', $sku)
                         ->with('shipping', $shipping);
+                       // ->with('identifireList', $identifireData);
     }
 
     public function listPurchaseOrder()
@@ -611,14 +630,22 @@ class PurchaseOrderCustomerController extends Controller
     /**
      * UDF For Get PO Customer Data
      */
-    /*  public function getCustomerData()
-      {
-      $custData = DB::table('customers')->select('contact_name', 'id', 'phone_no')->get();
-      $cData = '';
-      $cData .="<option value='" . '' . "' selected='selected' > Select Customer</option>";
-      foreach ($custData as $key => $value) {
-      $cData .="<option value='" . $value->id . "'>" . $value->contact_name . " " . $value->phone_no . "</option>";
-      }
-      return $cData;
-      } */
+    public function getCustomerData()
+    {
+        $custData = DB::table('customers')->select('contact_name', 'id', 'phone_no')->get();
+        $cData = '';
+        $cData .="<option value='" . '' . "' selected='selected' > Select Customer</option>";
+        foreach ($custData as $key => $value) {
+            $cData .="<option value='" . $value->id . "'>" . $value->contact_name . " " . $value->phone_no . "</option>";
+        }
+        return $cData;
+    }
+
+    public function getIdentifireList($id = null)
+    {
+        $id = Input::get('custId');
+        $custData = DB::table('shipping_info')->select('id', 'identifier')->where('customer_id', '=', $id)->get();
+        return Response(json_encode($custData));
+    }
+
 }

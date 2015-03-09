@@ -124,6 +124,7 @@ Route::get('/po/geteditorderlist', 'PurchaseOrderCustomerController@geteditorder
 Route::post('/po/editorder', 'PurchaseOrderCustomerController@editpoCustomer');
 Route::get('/po/deletepoCustomer/{var?}', 'PurchaseOrderCustomerController@deletepoCustomer');
 Route::get('/po/getPoCustomerlist', 'PurchaseOrderCustomerController@getPoCustomerlist');
+Route::get('/po/getIdentifireList', 'PurchaseOrderCustomerController@getIdentifireList');
 // Blog Art
 Route::get('/blogArt/{var?}', 'BlogartController@index');
 Route::post('/blogArt/{var?}', 'BlogartController@index');

@@ -34,19 +34,21 @@
                                     {!! HTML::image('images/user/default.jpg', 'a picture', array('class' => 'thumb')) !!}
                                     @endif
                                 </div>   
-                                
+
                                 <div class="media-body">
                                     <h3 class="media-heading">@if( Auth::check() )
                                         {{ Auth::user()->name }}
                                         @endif
                                     </h3>                                       
                                 </div>
-<!--                                @if(Auth::user()->hasRole('admin'))
+                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))
+                                 @if(!isset($id))                               
                                 <div class="form-group col-sm-4 col-md-3">
                                     <label for="orderpoId">Select Customer : </label>
-                                    <select name="selsctPOCustomer" id="selsctPOCustomer" class ='POselect2 form-control'><?php echo $custData; ?></select>  onChange="getinfo(this);" 
+                                    <select name="selectPOCustomer" id="selectPOCustomer" class ='POselect2 form-control'><?php // echo $custData; ?></select>
                                 </div>
-                                @endif-->
+                                 @endif
+                                @endif
                             </div>
                             <br>
 
@@ -95,10 +97,22 @@
                                                 <div class="col-sm-8">
                                                     <!--{!! Form::select('shippingDetails', ['1'=>'1'],'', array('class' => 'form-control')) !!}-->
                                                     <select class="form-control" id='oldIdentifire' name='oldIdentifire'>
+                                                        @if(Auth::user()->hasRole('customer'))
                                                         @if(count($shipping) > 0)
                                                         @foreach($shipping as $value)
                                                         <option value="{{$value->id}}" <?php if (isset($purchaseOrder)) echo ($value->id == $purchaseOrder->shipping_id) ? 'selected' : ''; ?> >{{$value->identifier}}</option>
                                                         @endforeach
+                                                        @endif
+                                                        @endif
+                                                        
+                                                        @if(isset($id))
+                                                        @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('admin'))
+                                                        @if(count($shipping) > 0)
+                                                        @foreach($shipping as $value)
+                                                        <option value="{{$value->id}}" <?php if (isset($purchaseOrder)) echo ($value->id == $purchaseOrder->shipping_id) ? 'selected' : ''; ?> >{{$value->identifier}}</option>
+                                                        @endforeach
+                                                        @endif
+                                                        @endif                                                        
                                                         @endif
                                                     </select>
                                                 </div>
