@@ -104,7 +104,7 @@ class BlogartController extends Controller
                     ->select(array('user.name', 'user.image', 'blog_art.comments', 'blog_art.id', 'blog_art.customer_id'))
                     ->where('blog_art.po_id', '=', $id)
                     ->orderBy('id', 'DESC')
-                    ->paginate(5);
+                    ->paginate(10);
             // ->orderBy('id', 'DESC')
             // ->groupBy('blog_art.id')
             //->get();
