@@ -22,12 +22,14 @@
                                                 <table class="table">
                                                     <tr>
                                                         <th>PO</th>
+                                                        <th>Date</th>
                                                         <th>SKU</th>
                                                         <th>Pcs Made</th>
                                                         <th>Balance</th>
                                                     </tr>                                                                
                                                     <tr>
                                                         <td>032-0024</td>
+                                                        <td>15/05/2015</td>
                                                         <td>BF0012</td>
                                                         <td>0</td>
                                                         <td>50</td>
@@ -90,12 +92,13 @@
                                                         </tr> 
                                                     </thead>
                                                     <tbody>
-<!--                                                        <tr class="gradeX">
+                                                       <tr class="gradeX">
                                                             <td>1</td>
                                                             <td>032-0024</td>
                                                             <td>BF0012</td>
                                                             <td>15/05/2015</td>
-                                                            <td>10/05/2015</td>
+                                                            <td><input id="EstShippingDate" type="text" value="" size="16" class="form-control default-date-picker" placeholder="22/02/2015"></td>
+                                                           
                                                             <td>50</td>
                                                             <td> <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
                                                                     0
@@ -114,7 +117,7 @@
                                                             <td>030-0022</td>
                                                             <td>BF0013</td>
                                                             <td>15/05/2015</td>
-                                                            <td>10/05/2015</td>
+                                                           <td><input id="EstShippingDate" type="text" value="" size="16" class="form-control default-date-picker" placeholder="20/02/2015"></td>
                                                             <td>50</td>
                                                             <td> <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
                                                                     25
@@ -127,7 +130,7 @@
                                                                     <option value="Closed">Closed</option>
                                                                 </select>
                                                             </td>
-                                                        </tr>-->
+                                                        </tr>
                                                     <tbody>
                                                 </table>
                                             </div> 

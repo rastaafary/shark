@@ -7,7 +7,7 @@ $(document).ready(function ()
         todayHighlight: true,
     });
     
-    $("#order-list").dataTable({
+  /*  $("#order-list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "/PLReport/orderlist",
@@ -20,5 +20,5 @@ $(document).ready(function ()
                 "success": fnCallback
             });
         }
-    });
+    }); */
 });
