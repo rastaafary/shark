@@ -16,7 +16,6 @@ use Redirect;
 use App\Http\Controllers\Image;
 use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-///use App\Http\Controllers\Publication;
 
 class BlogartController extends Controller
 {
@@ -104,6 +103,7 @@ class BlogartController extends Controller
                     ->leftJoin('user', 'user.id', '=', 'blog_art.customer_id')
                     ->select(array('user.name', 'user.image', 'blog_art.comments', 'blog_art.id', 'blog_art.customer_id'))
                     ->where('blog_art.po_id', '=', $id)
+                    ->orderBy('id', 'DESC')
                     ->paginate(5);
             // ->orderBy('id', 'DESC')
             // ->groupBy('blog_art.id')
@@ -121,9 +121,7 @@ class BlogartController extends Controller
                     ->leftJoin('blog_art', 'blog_art.id', '=', 'blog_files.blog_id')
                     ->select(array('blog_files.name', 'blog_art.id'))
                     ->get();
-//              var_dump($data);
-//  /          exit;
-            return view('blog_art', ['page_title' => 'Blog Art', 'po_id' => $po_data->po_number, 'id' => $id, 'data' => $data, 'image_data' => $image_data]);
+            return view('blog_art', ['page_title' => 'Blog Art', 'po_id' => $po_data->po_number, 'id' => $id, 'bdata' => $data, 'image_data' => $image_data]);
         } else {
             Session::flash('message', "Opss..!,No Purchase Order Found...!");
             Session::flash('status', 'error');

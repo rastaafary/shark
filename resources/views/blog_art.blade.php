@@ -23,24 +23,39 @@
                         </div>
                     </div>
                     <ul class="chats normal-chat">
-                        @foreach($data as $value)                       
-                        @if($value->customer_id == Auth::user()->id)
+                        <?php
+                        $arr = array();
+                        foreach ($bdata as $value) {
+                            array_push($arr, array('id' => $value->id, 'customer_id' => $value->customer_id, 'name' => $value->name, 'comments' => $value->comments, 'image' => $value->image));
+                        }
+                        $data = $arr;
+                        $cnt = count($data);
+                     //  var_dump($data);
+                     // echo $data[1]['name'];
+                      //  for($cnt = $cnt - 1; $cnt >= 0;$cnt--){
+                           
+                       // }
+                      
+                        
+                        ?>
+                        @for($cnt = $cnt - 1; $cnt >= 0; $cnt--)
+                        @if($data[$cnt]['customer_id'] == Auth::user()->id)
                         <li class="out">
                             @else
                         <li class="in">
                             @endif
-                            <img height="45px" width="45px" class="avatar" src="/images/user/{{ $value->image }}"> 
+                            <img height="45px" width="45px" class="avatar" src="/images/user/{{ $data[$cnt]['image'] }}"> 
                             <div class="message ">
                                 <span class="arrow"></span>
-                                <a class="name" href="#">{{ $value->name }}</a>                               
+                                <a class="name" href="#">{{ $data[$cnt]['name'] }}</a>                               
                                 <span class="body">
-                                    {{ $value->comments }}
+                                    {{ $data[$cnt]['comments'] }}
                                 </span>
                             </div>
                             <div class="attach">                              
                                 <?php $flag = 0; ?>
                                 @foreach($image_data as $val)                               
-                                @if($val->id == $value->id)
+                                @if($val->id == $data[$cnt]['id'])
                                 @if($flag == 0)
                                 <span class="name" href="#">Image Preview:</span>
                                 <?php $flag = 1; ?>                                        
@@ -52,17 +67,16 @@
                                 @endforeach
                             </div>
                         </li>
-                        @endforeach
+                       @endfor
                     </ul>
                     <div class="row">
                         <div class="col-sm-12 text-center">
                             <ul class="pagination">
                                 <?php
-                             //   $lastPage = $data->lastPage();
-                              // $curr = $data->currentPage($lastPage);                           
-                                echo $data->render();
+                                //   $lastPage = $data->lastPage();
+                                // $curr = $data->currentPage($lastPage);                           
+                                echo $bdata->render();
                                 ?>
-
                             </ul>
                             <!--                            <ul class="pagination">
                                                             <li><a href="#">«</a></li>
