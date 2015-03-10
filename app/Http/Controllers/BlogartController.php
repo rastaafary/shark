@@ -16,6 +16,7 @@ use Redirect;
 use App\Http\Controllers\Image;
 use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+///use App\Http\Controllers\Publication;
 
 class BlogartController extends Controller
 {
@@ -42,7 +43,7 @@ class BlogartController extends Controller
 
     public function index($id = null)
     {
-       
+
         $po_data = DB::table('purchase_order')->where('id', $id)->first();
 
         if ($po_data != null) {
@@ -56,7 +57,7 @@ class BlogartController extends Controller
 
             if (isset($post['id']) && $post['id'] != null) {
                 $rules = array(
-                    'txtMessage' => 'required'                
+                    'txtMessage' => 'required'
                 );
 
                 $validator = Validator::make(Input::all(), $rules);
@@ -100,15 +101,28 @@ class BlogartController extends Controller
             }
             // $data = DB::table('blog_art')->where('po_id',$id)->get();        
             $data = DB::table('blog_art')
-                            ->leftJoin('user', 'user.id', '=', 'blog_art.customer_id')
-                            ->select(array('user.name', 'user.image', 'blog_art.comments', 'blog_art.id', 'blog_art.customer_id'))
-                            ->groupBy('blog_art.id')->get();
+                    ->leftJoin('user', 'user.id', '=', 'blog_art.customer_id')
+                    ->select(array('user.name', 'user.image', 'blog_art.comments', 'blog_art.id', 'blog_art.customer_id'))
+                    ->where('blog_art.po_id', '=', $id)
+                    ->paginate(5);
+            // ->orderBy('id', 'DESC')
+            // ->groupBy('blog_art.id')
+            //->get();
+            
+
+           // Paginator::setCurrentPage($lastPage);
+         //  $publication = new Publication;
+        //  $lastPage = $data->lastPage();
+         //   $publication->getConnection()->setCurrentPage($lastPage);
+
+             // DB::getPaginator()->setCurrentPage($lastPage);
 
             $image_data = DB::table('blog_files')
                     ->leftJoin('blog_art', 'blog_art.id', '=', 'blog_files.blog_id')
                     ->select(array('blog_files.name', 'blog_art.id'))
                     ->get();
-            //  var_dump($image_data);
+//              var_dump($data);
+//  /          exit;
             return view('blog_art', ['page_title' => 'Blog Art', 'po_id' => $po_data->po_number, 'id' => $id, 'data' => $data, 'image_data' => $image_data]);
         } else {
             Session::flash('message', "Opss..!,No Purchase Order Found...!");
@@ -116,5 +130,5 @@ class BlogartController extends Controller
             return redirect('/po/add');
         }
     }
+
 }
-    

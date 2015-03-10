@@ -39,6 +39,7 @@ class PurchaseOrderCustomerController extends Controller
 
     public function addPurchaseOrder($id = null)
     {
+       // echo upload_max_filesize "2M" PHP_INI_PERDIR;
         //Get Logged User Deatils
         $user = Auth::user();
 
@@ -237,7 +238,8 @@ class PurchaseOrderCustomerController extends Controller
                     'shippingMethod' => 'required',
                     'payment_terms' => 'required',
                     'require_date' => 'required',
-                    'PDF' => 'mimes:pdf|max:1024'
+                    'PDF' => 'mimes:pdf|max:10240',
+                    'PDF' => 'max:10240'
                 );
                 $validator = Validator::make(Input::all(), $rules);
                 if ($validator->fails()) {

@@ -289,11 +289,9 @@
                                                     ?>
                                                 </div>
                                             </div>
-                                            <?php
-                                            if (isset($purchaseOrder->art_id)) {
-                                                ?>
+                                            @if(isset($id))
                                                 <a class="btn btn-link" href="/blogArt/<?= $purchaseOrder->po_id ?>" role="button"><strong>Blog Art</strong></a>                                          
-                                            <?php } ?>
+                                            @endif
                                         </div>                                                       
                                     </div>
                                 </div>

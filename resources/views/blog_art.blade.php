@@ -16,7 +16,7 @@
                                     <label class="col-sm-3 control-label">PO#:</label>
                                     <div class="col-sm-9">
                                         <label class="control-label">{!! $po_id !!}</label>
-                                        <a class="btn btn-link" href="/po/edit/<?=$id?>" role="button"><strong>Back To PO</strong></a> 
+                                        <a class="btn btn-link" href="/po/edit/<?= $id ?>" role="button"><strong>Back To PO</strong></a> 
                                     </div>
                                 </div>
                             </div>
@@ -25,10 +25,10 @@
                     <ul class="chats normal-chat">
                         @foreach($data as $value)                       
                         @if($value->customer_id == Auth::user()->id)
-                         <li class="in">
-                        @else
-                         <li class="out">
-                        @endif
+                        <li class="out">
+                            @else
+                        <li class="in">
+                            @endif
                             <img height="45px" width="45px" class="avatar" src="/images/user/{{ $value->image }}"> 
                             <div class="message ">
                                 <span class="arrow"></span>
@@ -38,13 +38,13 @@
                                 </span>
                             </div>
                             <div class="attach">                              
-                               <?php $flag = 0; ?>
+                                <?php $flag = 0; ?>
                                 @foreach($image_data as $val)                               
                                 @if($val->id == $value->id)
-                                    @if($flag == 0)
-                                         <span class="name" href="#">Image Preview:</span>
-                                        <?php $flag = 1; ?>                                        
-                                    @endif
+                                @if($flag == 0)
+                                <span class="name" href="#">Image Preview:</span>
+                                <?php $flag = 1; ?>                                        
+                                @endif
                                 <a href="#" data-toggle="modal" data-target="#lightbox"> 
                                     <img class="attach-img" height="30px" width="45px" src="/images/blogArt/{{ $val->name }}">
                                 </a>  
@@ -54,24 +54,32 @@
                         </li>
                         @endforeach
                     </ul>
-                     <div class="row">
-                    	<div class="col-sm-12 text-center">
-                        	<ul class="pagination">
-                                <li><a href="#">«</a></li>
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">»</a></li>
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <ul class="pagination">
+                                <?php
+                             //   $lastPage = $data->lastPage();
+                              // $curr = $data->currentPage($lastPage);                           
+                                echo $data->render();
+                                ?>
+
                             </ul>
+                            <!--                            <ul class="pagination">
+                                                            <li><a href="#">«</a></li>
+                                                            <li class="active"><a href="#">1</a></li>
+                                                            <li><a href="#">2</a></li>
+                                                            <li><a href="#">3</a></li>
+                                                            <li><a href="#">4</a></li>
+                                                            <li><a href="#">5</a></li>
+                                                            <li><a href="#">»</a></li>
+                            -->
                         </div>
                     </div>
                     <div class="chat-form ">
                         <!--<form role="form" class="form-inline" id="frmBlogArt" method="post">-->
                         {!! Form::open(array('class'=>'form-inline', 'name'=>'frmBlogArt','id'=>'frmBlogArt','files' => true)) !!}
                         {!! Form::hidden('id',Input::old('id',isset($id) ? $id : '')) !!}
-                         {!! HTML::ul($errors->all()) !!}
+                        {!! HTML::ul($errors->all()) !!}
                         <div class="form-group">
                             <textarea placeholder="Type a message here..." class="form-control" style="width: 100%" name="txtMessage" id="txtMessage"></textarea>
 <!--                                <input type="text" style="width: 100%" placeholder="Type a message here..." class="form-control">-->
@@ -97,7 +105,7 @@
                         <button class="btn btn-primary" type="submit" value="remove" id="submit">Send</button>                                    
                         {!! Form::close() !!}
                     </div>
-                 </div>
+                </div>
             </section>
         </div>
     </div>
