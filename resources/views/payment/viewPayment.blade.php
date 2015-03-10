@@ -15,7 +15,7 @@
                 <div class="panel-body">
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="View">
-                            <form class="form-horizontal">                                
+                            <form class="form-horizontal" method="post" name="quickPaymentForm">                                
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel panel-default">
@@ -25,22 +25,20 @@
                                             <div class="panel-body">
                                                 <div class="table-responsive">
                                                     <table  class="display table table-bordered table-striped" id="dynamic-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Invoice ID</th>
-                                                                <th>Invoice Value</th>
-                                                                <th>Paid</th>
-                                                                <th>Balance</th>                                                                
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr class="gradeX">
-                                                                <td>FA342</td>
-                                                                <td>$1216.00</td>
-                                                                <td>$250</td>
-                                                                <td>$966</td>                                                               
-                                                            </tr> 
-                                                        </tbody>
+                                                        <tr>
+                                                            <th>Invoice ID</th>
+                                                            <th>Invoice Value</th>
+                                                            <th>Paid</th>
+                                                            <th>Balance</th>                                                                
+                                                        </tr>
+                                                        @foreach($invoiceDetails as $invoice)
+                                                        <tr>
+                                                            <td><input type="hidden" name="p_invoiceSelect" value="{{$invoice->id}}"/>{{$invoice->invoice_no}}</td>
+                                                            <td>${{$invoice->total}}</td>
+                                                            <td>${{$totalPaid}}</td>
+                                                            <td>${{$invoice->total-$totalPaid}}</td>
+                                                        </tr>
+                                                        @endforeach 
                                                     </table>
                                                 </div>      
                                             </div>
@@ -55,41 +53,40 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Date</th>
-                                                                <th>Amount</th>
-                                                                <th>Reference</th>
-                                                                <th>Comments</th>
-                                                                <th>Actions</th>
-                                                            </tr> 
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr class="gradeX">                                                           
-                                                                <td><input type="text" class="form-control default-date-picker" id="searchDate" placeholder="22/01/2015" size="5"></td>
-                                                                <td><input type="text" class="form-control" id="searchAmount" placeholder="$$$" size="3"></td>
-                                                                <td><input type="text" class="form-control" id="searchReference" placeholder="Reference" size="5"></td>
-                                                                <td><input type="text" class="form-control" id="searchComment" placeholder="Comments" size="5"></td>                                                        
-                                                                <td><a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a></td>
-                                                            </tr>
-                                                            <tr class="gradeX">
-                                                                <td>7/19/2015</td>
-                                                                <td>$100</td>
-                                                                <td>93485U</td>
-                                                                <td>PAGAME PUTO</td>
-                                                                <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editInvoiceModal"><span class="fa fa-pencil"></span></a></td>  
-                                                            </tr> 
-                                                            <tr class="gradeX">
-                                                                <td>8/8/2015</td>
-                                                                <td>$150</td>
-                                                                <td>93U39487</td>
-                                                                <td>LAKSDJF</td>
-                                                                <td><a href="#" class="btn btn-danger"><span class="fa fa-trash-o"></span> </a> 
-                                                                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editInvoiceModal"><span class="fa fa-pencil"></span></a></td>
-                                                            </tr> 
-                                                        </tbody>
+                                                    <table class="display table table-bordered table-striped">
+                                                        <tr>
+                                                            <th>Date</th>
+                                                            <th>Amount</th>
+                                                            <th>Reference</th>
+                                                            <th>Comments</th>
+                                                            <th>Actions</th>
+                                                        </tr> 
+                                                        <tr class="gradeX">                                                           
+                                                            <td><input type="text" class="form-control default-date-picker" id="p_date" name="p_date" placeholder="Date" size="5"></td>
+                                                            <td><input type="text" class="form-control" id="p_paid" name="p_paid" placeholder="$$$" size="3"></td>
+                                                            <td><input type="text" class="form-control" id="p_refno" name="p_refno" placeholder="Reference" size="5"></td>
+                                                            <td><textarea class="form-control" id="p_comment" name="p_comment"></textarea></td> 
+                                                            <td>
+                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                <input type="hidden" id="p_id" name="p_id" value="0"/>
+                                                                <input type="hidden" id="p_old_paid" name="p_old_paid" value=""/>
+                                                                <button type="submit" class="btn btn-primary" id="addMorePayment"><span class="fa fa-plus"></span> Add</button>
+                                                                <button style="display: none;" type="button" class="btn btn-warning" id="cancelUpdate"><i class="fa fa-reply"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                        @foreach($paymentDetails as $payment)
+                                                        <tr class="oldPayment">
+                                                            <td class="p_date">{{$payment->date}}</td>
+                                                            <td>$<span class="p_paid">{{$payment->paid}}</span></td>
+                                                            <td class="p_refno">{{$payment->payment_ref_no}}</td>
+                                                            <td class="p_comment">{{$payment->comments}}</td>
+                                                            <td>
+                                                                <input type="hidden" class="p_id" value="{{$payment->id}}" />
+                                                                <a href="/payment/delete/{{$payment->id}}" class="btn btn-danger deletePayment"><span class="fa fa-trash-o"></span> </a> 
+                                                                <button type="button" class="btn btn-primary" onclick="editPayment(this)"><span class="fa fa-pencil"></span></button>
+                                                            </td>  
+                                                        </tr>
+                                                        @endforeach 
                                                     </table>
                                                 </div>      
                                             </div>

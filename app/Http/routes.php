@@ -27,9 +27,9 @@ Route::filter('invoice', function() {
     }
 });
 Route::filter('payment', function() {
-   if (!Entrust::can(array('list-payment', 'add-payment', 'edit-payment', 'delete-payment', 'view-payment'))) {
+    if (!Entrust::can(array('list-payment', 'add-payment', 'edit-payment', 'delete-payment', 'view-payment'))) {
         return view('accessDenied');
-    } 
+    }
 });
 Route::filter('pl', function() {
     if (!Entrust::can(array('list-pl', 'add-pl', 'edit-pl', 'delete-pl'))) {
@@ -47,7 +47,7 @@ Route::filter('part', function() {
     }
 });
 Route::filter('customer', function() {
-   if (!Entrust::can(array('list-customer', 'add-customer', 'edit-customer', 'delete-customer'))) {
+    if (!Entrust::can(array('list-customer', 'add-customer', 'edit-customer', 'delete-customer'))) {
         return view('accessDenied');
     }
 });
@@ -132,10 +132,13 @@ Route::post('/blogArt/{var?}', 'BlogartController@index');
 Route::get('/payment', 'PaymentController@listPayment');
 Route::get('/payment/add', 'PaymentController@addPayment');
 Route::post('/payment/add', 'PaymentController@addPayment');
-Route::get('/payment/view', 'PaymentController@viewPayment');
+Route::get('/payment/view/{var?}', 'PaymentController@viewPayment');
+Route::post('/payment/view/{var?}', 'PaymentController@viewPayment');
 Route::get('/payment/searchCustomer/{var?}', 'PaymentController@searchCustomer');
 Route::get('/payment/getCustInvoice', 'PaymentController@getCustInvoice');
 Route::get('/payment/getInvoicePaymentDetails', 'PaymentController@getInvoicePaymentDetails');
+Route::get('/payment/getPaymentList', 'PaymentController@getPaymentList');
+Route::get('/payment/delete/{var?}', 'PaymentController@deletePayment');
 // Manage User
 Route::get('/userList', 'ManageUserController@userList');
 Route::get('/userList/add', 'ManageUserController@addUser');

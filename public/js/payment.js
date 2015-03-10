@@ -47,49 +47,48 @@ $(document).ready(function() {
             success: function(responce) {
                 $('#invoiceListBlock,#invoiceDetailBlock').show();
                 var jason = $.parseJSON(responce);
-
-                // For invoice list
-                var invoiceStr = '';
-                var paid = 0;
-                $.each(jason.invoice, function(idx, data) {
-                    invoiceStr += "<tr><td>" + data.invoice_id + "</td><td>" + data.total + "</td><td>" + paid + "</td><td>" + (data.total - paid) + "</td></tr>";
-                });
-                if (invoiceStr == '') {
-                    invoiceStr = '<span>Invoice not available.</span>';
-                }
-                $('#invoiceListDT').html(invoiceStr);
+                var totalPaid = 0;
 
                 // For invoice details
                 var invoiceDetailsStr = '';
                 $.each(jason.invoiceDetails, function(idx, data) {
-                    invoiceDetailsStr += "<tr><td></td></tr>";
+                    totalPaid += data.paid;
+                    invoiceDetailsStr += "<tr><td>" + data.date + "</td><td>$" + data.paid + "</td><td>" + data.payment_ref_no + "</td><td>" + data.comments + "</td></tr>";
                 });
                 if (invoiceDetailsStr == '') {
                     invoiceDetailsStr = '<span>Payment details not available.</span>';
                 }
                 $('#invoiceDetailDT').html(invoiceDetailsStr);
+
+                // For invoice list
+                var invoiceStr = '';
+                $.each(jason.invoice, function(idx, data) {
+                    invoiceStr += "<tr><td>" + data.invoice_no + "</td><td>$" + data.total + "</td><td>$" + totalPaid + "</td><td>$" + (data.total - totalPaid) + "</td></tr>";
+                });
+                if (invoiceStr == '') {
+                    invoiceStr = '<span>Invoice not available.</span>';
+                }
+                $('#invoiceListDT').html(invoiceStr);
             }
         });
     });
 
-
-
-    $('#require_date,#paymentDate').datepicker({
+    $('#require_date,#paymentDate,#p_date').datepicker({
         format: 'yyyy-mm-dd',
         autoclose: true,
         todayBtn: true,
         todayHighlight: true
     });
 
-    jQuery.validator.addMethod("onlyname", function(value, element) {
-        return this.optional(element) || /^[a-z A-Z]+$/.test(value);
-    }, "Please enter valid name.");
-
     $("#payment-list").dataTable({
-        //"bProcessing": true,
-        "bServerSide": false,
-        // "sAjaxSource": "",
-        "aaSorting": [[7, "desc"]],
+        "bProcessing": true,
+        "bServerSide": true,
+        "sAjaxSource": "/payment/getPaymentList",
+        "aaSorting": [[0, "asc"]],
+        "aoColumnDefs": [
+            {"bSearchable": false, "aTargets": [4]},
+            {"bSortable": false, "aTargets": [4]},
+        ],
         "fnServerData": function(sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
@@ -101,109 +100,163 @@ $(document).ready(function() {
         }
     });
 
-    /*  $('#PoCustomer').validate({
-     rules: {
-     'comp_name': {
-     required: true,
-     onlyname: true
-     },
-     'zipcode': {
-     required: true
-     },
-     'building_no': {
-     required: true
-     },
-     'street_addrs': {
-     required: true
-     },
-     'phone_no': {
-     required: true,
-     mobileNo: true
-     },
-     'interior_no': {
-     required: true
-     },
-     'city': {
-     required: true
-     },
-     'state': {
-     required: true
-     },
-     'identifer': {
-     required: true
-     },
-     'shippingMethod': {
-     required: true
-     },
-     'payment_terms': {
-     required: true
-     },
-     'require_date': {
-     required: true
-     },
-     'PDF': {
-     required: true
-     },
-     'Ai': {
-     required: true
-     }
-     },
-     messages: {
-     'comp_name': {
-     required: 'Please enter company name.',
-     onlyname: 'Please enter valid company name.'
-     },
-     'building_no': {
-     required: 'Please enter building no.'
-     },
-     'street_addrs': {
-     required: 'Please enter street address.'
-     },
-     'phone_no': {
-     required: 'Please enter phone no.',
-     mobileNo: 'Please enter valid phone no.'
-     },
-     'interior_no': {
-     required: 'Please enter interior no.'
-     },
-     'city': {
-     required: 'Please enter city.'
-     },
-     'state': {
-     required: 'Please enter state.'
-     },
-     'zipcode': {
-     required: 'Please enter zipcode.'
-     },
-     'identifer': {
-     required: 'Please enter identifer.'
-     },
-     'shippingMethod': {
-     required: 'Please enter shipping method.'
-     },
-     'payment_terms': {
-     required: 'Please enter payment terms.'
-     },
-     'require_date': {
-     required: 'Please enter require date.'
-     },
-     'PDF': {
-     required: 'Please upload PFD.'
-     },
-     'Ai': {
-     required: 'Please upload ai.'
-     }
-     },
-     highlight: function (element) {
-     $(element).removeClass("textinput");
-     $(element).addClass("errorHighlight");
-     },
-     unhighlight: function (element) {
-     $(element).removeClass("errorHighlight");
-     $(element).addClass("textinput");
-     },
-     errorPlacement: function (error, element) {
-     error.insertAfter(element);
-     }
-     });*/
+    // Delete payment
+    $('.deletePayment').click(function() {
+        if (!confirm('Are you sure want to delete?')) {
+            return false;
+        }
+    });
+
+    // Cancel update on edit payment
+    $('#cancelUpdate').click(function() {
+        resetPaymentData();
+    });
+
+    // Custome validation for amount
+    jQuery.validator.addMethod("amount", function(value, element) {
+        return this.optional(element) || /^[0-9]+$/.test(value);
+    }, "Please enter valid amount.");
+
+    // Payment form validate
+    $('form[name="paymentForm"]').validate({
+        submitHandler: function(form) {
+            form.submit();
+        },
+        rules: {
+            'paymentDate': {
+                required: true
+            },
+            'searchCustomer': {
+                required: true
+            },
+            'invoiceSelect': {
+                required: true
+            },
+            'txtAmount': {
+                required: true,
+                amount: true
+            },
+            'paymentRefNo': {
+                maxlength: 20
+            },
+            'comments': {
+                maxlength: 250
+            }
+        },
+        messages: {
+            'paymentDate': {
+                required: 'Please select date.'
+            },
+            'searchCustomer': {
+                required: 'Please select customer.'
+            },
+            'invoiceSelect': {
+                required: 'Please select invoice.'
+            },
+            'txtAmount': {
+                required: 'Please enter amount.'
+            },
+            'paymentRefNo': {
+                maxlength: 'Reference number must not exceed limit of 20 characters.'
+            },
+            'comments': {
+                maxlength: 'Comments must not exceed limit of 250 characters.'
+            }
+        },
+        highlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-info').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error').addClass('has-info');
+        },
+        errorElement: 'label',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            if (element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+        }
+    });
+
+    // Quick Payment form validate
+    $('form[name="quickPaymentForm"]').validate({
+        submitHandler: function(form) {
+            form.submit();
+        },
+        rules: {
+            'p_date': {
+                required: true
+            },
+            'p_paid': {
+                required: true,
+                amount: true
+            },
+            'p_refno': {
+                maxlength: 20
+            },
+            'p_comment': {
+                maxlength: 250
+            }
+        },
+        messages: {
+            'p_date': {
+                required: 'Please select date.'
+            },
+            'p_paid': {
+                required: 'Please enter amount.'
+            },
+            'p_refno': {
+                maxlength: 'Reference number must not exceed limit of 20 characters.'
+            },
+            'p_comment': {
+                maxlength: 'Comments must not exceed limit of 250 characters.'
+            }
+        },
+        highlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-info').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error').addClass('has-info');
+        },
+        errorElement: 'label',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            if (element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+        }
+    });
 });
+
+// Edit payment set value to it's fields
+function editPayment(element)
+{
+    trEle = $(element).closest('tr.oldPayment');
+
+    $('#p_id').val($(trEle).find('.p_id').val());
+    $('#p_date').val($(trEle).find('.p_date').html());
+    $('#p_paid,#p_old_paid').val($(trEle).find('.p_paid').html());
+    $('#p_refno').val($(trEle).find('.p_refno').html());
+    $('#p_comment').val($(trEle).find('.p_comment').html());
+
+    $('#addMorePayment').html('<i class="fa fa-edit"></i> Update');
+    $('#cancelUpdate').show();
+
+    return false;
+}
+
+// Reset quick payment form
+function resetPaymentData() {
+    $('#p_id').val('0');
+    $('#p_date').val('');
+    $('#p_paid,#p_old_paid').val('');
+    $('#p_refno').val('');
+    $('#p_comment').val('');
+
+    $('#addMorePayment').html('<i class="fa fa-plus"></i> Add');
+    $('#cancelUpdate').hide();
+}

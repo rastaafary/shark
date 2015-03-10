@@ -10,7 +10,7 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#List">List</a></li>
                         <li><a href="/payment/add">Add</a></li> 
-                       <li><a href="/payment/view">View</a></li> 
+                        <!--<li><a href="/payment/view">View</a></li>--> 
                     </ul>
                 </header>
                 <div class="panel-body">
@@ -25,31 +25,17 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table  class="display table table-bordered table-striped" id="dynamic-table">
+                                                    <table  class="display table table-bordered table-striped" id="payment-list">
                                                         <thead>
-                                                        <tr>
-                                                            <th>Payment ID</th>
-                                                            <th>Invoice ID</th>
-                                                            <th>Customer</th>
-                                                            <th>Amount</th>
-                                                            <th>Details</th>                                                           
-                                                        </tr> 
+                                                            <tr>
+                                                                <th>Payment ID</th>
+                                                                <th>Invoice ID</th>
+                                                                <th>Customer</th>
+                                                                <th>Amount</th>
+                                                                <th>Details</th>                                                           
+                                                            </tr> 
                                                         </thead>
                                                         <tbody>
-                                                        <tr class="gradeX">
-                                                            <td>P0015</td>
-                                                            <td>FA342</td>
-                                                            <td>Sports LLC</td>
-                                                            <td>$1256.00</td>                                                            
-                                                            <td><a href="{{action('PaymentController@viewPayment')}}" class="fa fa-bars btn btn-primary"> Details </a></td>                                                                   
-                                                        </tr>
-                                                        <tr class="gradeX">
-                                                            <td>P0015</td>
-                                                            <td>FA342</td>
-                                                            <td>Sports LLC</td>
-                                                            <td>$1256.00</td>                                                            
-                                                            <td><a href="{{action('PaymentController@viewPayment')}}" class="fa fa-bars btn btn-primary"> Details </a></td>                                                                   
-                                                        </tr> 
                                                         </tbody>                                                        
                                                     </table>
                                                 </div>                                                        

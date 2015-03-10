@@ -9,7 +9,7 @@
                     <ul class="nav nav-tabs">
                         <li><a href="/payment">List</a></li>
                         <li class="active"><a href="#Add">Add</a></li>
-                        <li><a href="/payment/view">View</a></li> 
+                        <!--<li><a href="/payment/view">View</a></li>--> 
                     </ul>
                 </header>
                 <div class="panel-body">
@@ -52,6 +52,17 @@
                                                             <div class="form-group col-sm-9 col-md-9">
                                                                 <label for="paymentRefNo">Payment Reference Number: </label>
                                                                 <input id="paymentRefNo" name="paymentRefNo" type="text" class="form-control" placeholder="Reference #">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br><br>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-inline">
+                                                            <div class="form-group col-sm-10 col-md-10">
+                                                                <label for="comments">Comments: </label>
+                                                                <textarea id="comments" name="comments"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
