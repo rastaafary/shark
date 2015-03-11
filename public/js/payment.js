@@ -52,7 +52,7 @@ $(document).ready(function() {
                 // For invoice details
                 var invoiceDetailsStr = '';
                 $.each(jason.invoiceDetails, function(idx, data) {
-                    totalPaid += data.paid;
+                    totalPaid += Number(data.paid);
                     invoiceDetailsStr += "<tr><td>" + data.date + "</td><td>$" + data.paid + "</td><td>" + data.payment_ref_no + "</td><td>" + data.comments + "</td></tr>";
                 });
                 if (invoiceDetailsStr == '') {
@@ -63,6 +63,8 @@ $(document).ready(function() {
                 // For invoice list
                 var invoiceStr = '';
                 $.each(jason.invoice, function(idx, data) {
+                    if (data.total == '' || data.total == null)
+                        data.total = 0;
                     invoiceStr += "<tr><td>" + data.invoice_no + "</td><td>$" + data.total + "</td><td>$" + totalPaid + "</td><td>$" + (data.total - totalPaid) + "</td></tr>";
                 });
                 if (invoiceStr == '') {
