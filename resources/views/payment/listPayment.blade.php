@@ -43,11 +43,11 @@
                                         </div>  
                                     </div>
                                 </div>
-                                <div class="row">
+<!--                                <div class="row">
                                     <div class="col-sm-offset-10 col-sm-2">
                                         <a href="#" class="btn btn-primary"> View PO </a>
                                     </div>
-                                </div>
+                                </div>-->
                             </form>
                         </div>                       
                     </div>
