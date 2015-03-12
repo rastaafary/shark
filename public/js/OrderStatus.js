@@ -14,10 +14,10 @@ $(document).ready(function()
         "bServerSide": true,
         "sAjaxSource": "/PLReport/orderlist",
         "aaSorting": [[0, "asc"]],
-        "aoColumnDefs": [
-            {"bSearchable": false, "aTargets": [8]},
-            {"bSortable": false, "aTargets": [8]}
-        ],
+        /*"aoColumnDefs": [
+         {"bSearchable": false, "aTargets": [0]},
+         {"bSortable": false, "aTargets": [0]}
+         ],*/
         "fnServerData": function(sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',

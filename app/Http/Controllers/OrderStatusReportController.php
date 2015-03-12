@@ -48,7 +48,7 @@ class OrderStatusReportController extends Controller
                 ->groupBy('order_list.id');
 
         // Return datatable
-        $statusStr = '<select id="plStatusChange" class="form-control" olId="{{$seqNo}}"><option value="0">Open</option><option value="1">Closed</option></select>';
+        $statusStr = '<select id="plStatusChange" class="form-control" olId="{{$seqNo}}"><option value="0" {{ $pl_status == 0 ? "selected" : "" }}>Open</option><option value="1" {{ $pl_status == 1 ? "selected" : "" }}>Closed</option></select>';
         return Datatables::of($skuData)
                         ->editColumn("seqNo", '0')
                         ->editColumn("pcsMade", '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" onclick="getpcsDetails(\'{{$seqNo}}\',\'{{$po_number}}\',\'{{$SKU}}\',\'{{$amount}}\')">{{$pcsMade}}</button>')
