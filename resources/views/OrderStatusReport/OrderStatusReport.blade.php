@@ -92,9 +92,11 @@
                                 </div> 
                             </div>         
                         </form>
-                        </section>
                     </div>
                 </div>
+            </section>
         </div>
-        <!--body wrapper end-->
-        @endsection
+    </div>
+</div>
+<!--body wrapper end-->
+@endsection
