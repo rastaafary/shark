@@ -39,7 +39,7 @@ class PurchaseOrderCustomerController extends Controller
 
     public function addPurchaseOrder($id = null)
     {
-       // echo upload_max_filesize "2M" PHP_INI_PERDIR;
+        // echo upload_max_filesize "2M" PHP_INI_PERDIR;
         //Get Logged User Deatils
         $user = Auth::user();
 
@@ -166,14 +166,22 @@ class PurchaseOrderCustomerController extends Controller
                 );
             }
 
+            $seqNo = 0;
+            $lastCustSeqId = DB::table('order_list')->select('sequence')->where('customer_id', '=', $customer->id)->orderBy('sequence', 'DESC')->first();
+            if (!$lastCustSeqId == null) {
+                $sqeNo = $lastCustSeqId->sequence;
+            }
+
             //add po order
             $orders = json_decode($post['orders'], true);
 
             foreach ($orders as $orderlist) {
                 unset($orderlist['orderId']);
                 if ($orderlist['part_id'] > 0) {
+                    $sqeNo += 1;
                     $orderlist['customer_id'] = $customer->id;
                     $orderlist['po_id'] = $poId;
+                    $orderlist['sequence'] = $sqeNo;
                     $orderlist['created_by'] = Auth::user()->id;
                     $orderstatus = DB::table('order_list')->insert($orderlist);
                 }
@@ -227,7 +235,7 @@ class PurchaseOrderCustomerController extends Controller
                     ->leftJoin('blog_art_file', 'blog_art_file.po_id', '=', 'purchase_order.id')
                     ->where('purchase_order.id', $id)
                     ->first();
-           
+
             if (Request::isMethod('post')) {
 
                 $post = Input::all();
@@ -277,7 +285,6 @@ class PurchaseOrderCustomerController extends Controller
                                         'type' => $post['shippingMethod']
                                     )
                     );
-                   
                 }
 
                 //update Purchase Order
@@ -326,8 +333,8 @@ class PurchaseOrderCustomerController extends Controller
                     $post['Ai'] = '';
                 }
 
-                
-                                
+
+
                 if (!empty($post['Ai']) || !empty($post['PDF'])) {
                     if (!empty($post['PDF'])) {
                         $blogArtData = DB::table('blog_art_file')->where('po_id', '=', $id)->first();
@@ -351,7 +358,7 @@ class PurchaseOrderCustomerController extends Controller
                                     )
                             );
                         }
-                    }                    
+                    }
                     if (!empty($post['Ai'])) {
                         $blogArtData = DB::table('blog_art_file')->where('po_id', '=', $id)->first();
                         if (empty($blogArtData)) {
@@ -374,7 +381,6 @@ class PurchaseOrderCustomerController extends Controller
                             );
                         }
                     }
-                    
                 }
 
                 //add po order
@@ -451,7 +457,7 @@ class PurchaseOrderCustomerController extends Controller
                         ->with('autoId', $purchaseOrder->po_number)
                         ->with('sku', $sku)
                         ->with('shipping', $shipping);
-                       // ->with('identifireList', $identifireData);
+        // ->with('identifireList', $identifireData);
     }
 
     public function listPurchaseOrder()
@@ -550,7 +556,29 @@ class PurchaseOrderCustomerController extends Controller
 
     public function deletepoCustomer($id = null)
     {
+        $firstDeleteSqeuence = DB::table('order_list')
+                ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
+                ->select('order_list.sequence', 'order_list.customer_id')
+                ->where('purchase_order.id', '=', $id)
+                ->orderBy('order_list.sequence', 'ASC')
+                ->first();
+        $sequence = 1;
+
         $status = DB::table('purchase_order')->where('id', $id)->update(array('is_deleted' => '1'));
+
+        $changeSequenceData = DB::table('order_list')
+                ->select('sequence', 'id')
+                ->where('customer_id', '=', $firstDeleteSqeuence->customer_id)
+                ->where('sequence', '!=', 0)
+                ->orderBy('sequence', 'ASC')
+                ->get();
+        foreach ($changeSequenceData as $newData) {
+            DB::table('order_list')
+                    ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
+                    ->where('order_list.id', '=', $newData->id)
+                    ->where('purchase_order.is_deleted', '=', '0')
+                    ->update(array('order_list.sequence' => $sequence++));
+        }
 
         if ($status) {
             Session::flash('message', 'PO Customer delete Successfully.');
