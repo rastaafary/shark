@@ -619,7 +619,7 @@ class PurchaseOrderCustomerController extends Controller
                     ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
                     ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
                     ->leftJoin('order_status', 'order_list.id', '=', 'order_status.po_id')
-                    ->select(array('purchase_order.po_number', 'purchase_order.require_date', 'part_number.description', DB::raw('SUM(order_list.qty)'), DB::raw('SUM(order_list.amount)'), 'purchase_order.id')) //, DB::raw('SUM(order_status.pcs_made)')
+                    ->select(array('purchase_order.po_number', 'purchase_order.require_date', DB::raw('MAX(order_list.ESDate)'), DB::raw('SUM(order_list.qty)'), DB::raw('SUM(order_list.amount)'), 'purchase_order.id')) //, DB::raw('SUM(order_status.pcs_made)')
                     ->groupBy('purchase_order.id')
                     ->where('purchase_order.is_deleted', '=', '0')
                     ->where('order_list.customer_id', '=', $customer->id)
@@ -631,7 +631,7 @@ class PurchaseOrderCustomerController extends Controller
                                     . '<span class="fa fa-trash-o"></span></a>'
                                     . '&nbsp<a href="/po/edit/{{ $id }}" class="btn btn-primary" id="btnEdit" onClick = "return confirmEdit({{ $id }})">'
                                     . '<span class="fa fa-pencil"></span></a>')
-                            ->editColumn("description", '')
+                            //->editColumn("description", '')
                             ->make();
         } else {
             $orderlist = DB::table('order_list')
