@@ -1,15 +1,49 @@
 $(document).ready(function()
 {
     // Set datepicker
-    $('.ESDate,#pcsMadeDate').datepicker({
+    $('.ESDate').datepicker({
         format: 'yyyy-mm-dd',
         autoclose: true,
         todayBtn: true,
         todayHighlight: true
     });
+    $('body').click(function(eve) {
+        if(eve.target.id !== 'ESDate') {
+            $('.ESDate').datepicker("hide");
+            if($('.ESDate').is(':focus')) {
+                $(document.activeElement).trigger("blur");
+            }
+        }
+        
+    });
+    
+    // data table refresh & reload function code
+    $.fn.dataTableExt.oApi.fnReloadAjax = function(oSettings, sNewSource, fnCallback)
+    {
+        if (typeof sNewSource != 'undefined') {
+            oSettings.sAjaxSource = sNewSource;
+        }
+        this.oApi._fnProcessingDisplay(oSettings, true);
+        var that = this;
+        oSettings.fnServerData(oSettings.sAjaxSource, null, function(json) {
+            /* Clear the old information from the table */
+            that.oApi._fnClearTable(oSettings);
+            /* Got the data - add it to the table */
+            for (var i = 0; i < json.aaData.length; i++) {
+                that.oApi._fnAddData(oSettings, json.aaData[i]);
+            }
 
+            oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+            that.fnDraw(that);
+            that.oApi._fnProcessingDisplay(oSettings, false);
+            /* Callback user function - for event handlers etc */
+            if (typeof fnCallback == 'function') {
+                fnCallback(oSettings);
+            }
+        });
+    }
     // Set datatable
-    $("#order-list").dataTable({
+    var oTable = $("#order-list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "/PLReport/orderlist",
@@ -34,9 +68,35 @@ $(document).ready(function()
                 todayBtn: true,
                 todayHighlight: true
             });
+        },
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $(nRow).attr('id',aData[9]);
+            return nRow;
         }
     });
-
+    
+    $('#order-list tbody').sortable({
+        stop: function() {
+            $("#order-list_processing").css("visibility","visible");
+            var orderId = [];
+            var sequence = [];
+            $('#order-list tbody tr').each(function(){
+                orderId.push($(this).attr('id'));
+                sequence.push(parseInt($(this).find('td:first').html()));
+            });
+            $.ajax({
+                type: "GET",
+                url: "/PLReport/reOrderData",
+                data: {orderId:orderId,max:Math.max.apply(Math,sequence),min:Math.min.apply(Math,sequence)},
+                success: function(data){
+                    oTable.fnReloadAjax();
+                }
+            });
+            $('.ESDate').datepicker("hide");
+            return true;
+        }
+    });
+    
     // Change status of PL's
     $('body').delegate('#order-list #plStatusChange', 'change', function() {
         changePlValues($(this).attr('olId'), 'pl_status', $(this).val());
@@ -75,15 +135,16 @@ $(document).ready(function()
 
 // Change datatable value as param fields
 function changePlValues(olId, fieldName, fieldValue) {
+    $('.ESDate').datepicker("hide");
     $.ajax({
         type: "GET",
         url: '/PLReport/changePlValues',
         data: "olId=" + olId + "&fieldName=" + fieldName + "&fieldValue=" + fieldValue,
         success: function(msg) {
-            var jason = $.parseJSON(msg);
-            if (!jason.status) {
-                alert('Somthing went to wrong. Try again!!!');
-            }
+//            var jason = $.parseJSON(msg);
+//            if (!jason.status) {
+//                alert('Somthing went to wrong. Try again!!!');
+//            }
         }
     });
 }

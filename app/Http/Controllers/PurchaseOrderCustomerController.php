@@ -166,10 +166,12 @@ class PurchaseOrderCustomerController extends Controller
                 );
             }
 
-            $seqNo = 0;
-            $lastCustSeqId = DB::table('order_list')->select('sequence')->where('customer_id', '=', $customer->id)->orderBy('sequence', 'DESC')->first();
-            if (!$lastCustSeqId == null) {
-                $sqeNo = $lastCustSeqId->sequence;
+            $localSeqNo = 1;
+            $adminSeqNo = 1;
+            $lastCustSeqId = DB::table('order_list')->select('*')->where('customer_id', '=', $customer->id)->orderBy('localSequence', 'DESC')->first();
+            if (!empty($lastCustSeqId)) {
+                $localSeqNo = $lastCustSeqId->localSequence;
+                $adminSeqNo = $lastCustSeqId->adminSequence;
             }
 
             //add po order
@@ -178,11 +180,14 @@ class PurchaseOrderCustomerController extends Controller
             foreach ($orders as $orderlist) {
                 unset($orderlist['orderId']);
                 if ($orderlist['part_id'] > 0) {
-                    $sqeNo += 1;
+                    $adminSeqNo++;
+                    $localSeqNo++;
                     $orderlist['customer_id'] = $customer->id;
                     $orderlist['po_id'] = $poId;
-                    $orderlist['sequence'] = $sqeNo;
+                    $orderlist['localSequence'] = $localSeqNo;
+                    $orderlist['adminSequence'] = $adminSeqNo;
                     $orderlist['created_by'] = Auth::user()->id;
+                    print_r($orderlist);exit;
                     $orderstatus = DB::table('order_list')->insert($orderlist);
                 }
             }
@@ -393,6 +398,13 @@ class PurchaseOrderCustomerController extends Controller
                                 ->delete();
                     }
                 }
+                $localSeqNo = 1;
+                $adminSeqNo = 1;
+                $lastCustSeqId = DB::table('order_list')->select('*')->where('customer_id', '=', $customer->id)->orderBy('localSequence', 'DESC')->first();
+                if (!empty($lastCustSeqId)) {
+                    $localSeqNo = $lastCustSeqId->localSequence;
+                    $adminSeqNo = $lastCustSeqId->adminSequence;
+                }
                 foreach ($orders as $orderlist) {
                     if ($orderlist['part_id'] > 0) {
                         $orderId = $orderlist['orderId'];
@@ -403,9 +415,12 @@ class PurchaseOrderCustomerController extends Controller
                                     ->where('id', $orderId)
                                     ->update($orderlist);
                         } else {
+                            $localSeqNo++;$adminSeqNo++;
                             //Add new Order
                             $orderlist['customer_id'] = $customer->id;
                             $orderlist['po_id'] = $id;
+                            $orderlist['adminSequence'] = $adminSeqNo;
+                            $orderlist['localSequence'] = $localSeqNo;
                             $orderlist['created_by'] = $user->id;
                             DB::table('order_list')->insert($orderlist);
                         }
@@ -556,29 +571,30 @@ class PurchaseOrderCustomerController extends Controller
 
     public function deletepoCustomer($id = null)
     {
-        $firstDeleteSqeuence = DB::table('order_list')
-                ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
-                ->select('order_list.sequence', 'order_list.customer_id')
-                ->where('purchase_order.id', '=', $id)
-                ->orderBy('order_list.sequence', 'ASC')
-                ->first();
-        $sequence = 1;
+//        $firstDeleteSqeuence = DB::table('order_list')
+//                ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
+//                ->select('order_list.sequence', 'order_list.customer_id')
+//                ->where('purchase_order.id', '=', $id)
+//                ->orderBy('order_list.sequence', 'ASC')
+//                ->first();
+//        $sequence = 1;
 
         $status = DB::table('purchase_order')->where('id', $id)->update(array('is_deleted' => '1'));
 
-        $changeSequenceData = DB::table('order_list')
-                ->select('sequence', 'id')
-                ->where('customer_id', '=', $firstDeleteSqeuence->customer_id)
-                ->where('sequence', '!=', 0)
-                ->orderBy('sequence', 'ASC')
-                ->get();
-        foreach ($changeSequenceData as $newData) {
-            DB::table('order_list')
-                    ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
-                    ->where('order_list.id', '=', $newData->id)
-                    ->where('purchase_order.is_deleted', '=', '0')
-                    ->update(array('order_list.sequence' => $sequence++));
-        }
+//        $changeSequenceData = DB::table('order_list')
+//                ->select('sequence', 'id')
+//                ->where('customer_id', '=', $firstDeleteSqeuence->customer_id)
+//                ->where('sequence', '!=', 0)
+//                ->orderBy('sequence', 'ASC')
+//                ->get();
+//        
+//        foreach ($changeSequenceData as $newData) {
+//            DB::table('order_list')
+//                    ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
+//                    ->where('order_list.id', '=', $newData->id)
+//                    ->where('purchase_order.is_deleted', '=', '0')
+//                    ->update(array('order_list.sequence' => $sequence++));
+//        }
 
         if ($status) {
             Session::flash('message', 'PO Customer delete Successfully.');

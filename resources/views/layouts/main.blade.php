@@ -67,7 +67,7 @@
         {!! HTML::script('js/validation/jquery.validate.js') !!}
         {!! HTML::script('http://jqueryvalidation.org/files/dist/additional-methods.min.js') !!}
      
-        {!! HTML::script('js/jquery-ui-1.9.2.custom.min.js') !!}
+<!--        {!! HTML::script('js/jquery-ui-1.9.2.custom.min.js') !!}-->
         {!! HTML::script('js/jquery.tmpl.js') !!}
         {!! HTML::script('js/jquery-migrate-1.2.1.min.js') !!}
         {!! HTML::script('js/bootstrap.min.js') !!}

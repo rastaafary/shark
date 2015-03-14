@@ -36,7 +36,8 @@
 <!--dynamic table-->
   
 {!! HTML::script('js/advanced-datatable/js/jquery.dataTables.js') !!}
-        {!! HTML::script('js/data-tables/DT_bootstrap.js') !!}
+{!! HTML::script('js/data-tables/DT_bootstrap.js') !!}
+{!! HTML::script('js/advanced-datatable/js/datatable-reordering.js') !!}
 {!! HTML::style('js/advanced-datatable/css/demo_page.css') !!}
 {!! HTML::style('js/advanced-datatable/css/demo_table.css') !!}
 {!! HTML::style('js/data-tables/DT_bootstrap.css') !!}
@@ -49,6 +50,8 @@
 
 {!! HTML::style('js/jquery-ui-1.11.3.custom/jquery-ui.css') !!}
 {!! HTML::script('js/jquery-ui-1.11.3.custom/jquery-ui.js') !!}
+
+
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
 
 {!! HTML::script('js/typeahead.bundle.js') !!}

@@ -161,6 +161,8 @@ Route::get('/PLReport/changePlValues', 'OrderStatusReportController@changePlValu
 Route::get('/PLReport/addPcsMade', 'OrderStatusReportController@addPcsMade');
 Route::get('/PLReport/getPcsMadeDetails', 'OrderStatusReportController@getPcsMadeDetails');
 Route::get('/PLReport/deletePcsMade', 'OrderStatusReportController@deletePcsMade');
+Route::get('/PLReport/reOrderData', 'OrderStatusReportController@reOrderData');
+
 
 /* Route::get('/customer/add', array('prefix' => 'customer','as' => 'customer.add',
   'uses' => 'Customer\customerController@addCustomer'));
