@@ -187,7 +187,6 @@ class PurchaseOrderCustomerController extends Controller
                     $orderlist['localSequence'] = $localSeqNo;
                     $orderlist['adminSequence'] = $adminSeqNo;
                     $orderlist['created_by'] = Auth::user()->id;
-                    print_r($orderlist);exit;
                     $orderstatus = DB::table('order_list')->insert($orderlist);
                 }
             }
