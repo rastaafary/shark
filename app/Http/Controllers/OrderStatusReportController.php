@@ -39,22 +39,22 @@ class OrderStatusReportController extends Controller
      */
     public function orderList()
     {
-        if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
             // Get listing for Admin or Manager
             $skuData = DB::table('order_list')
                     ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
                     ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
                     ->leftJoin('pcs_made', 'pcs_made.orderlist_id', '=', 'order_list.id')
-                    ->select('order_list.adminSequence', 'purchase_order.po_number', 'part_number.SKU', 'purchase_order.require_date', DB::raw("IF(order_list.ESDate IS NULL or order_list.ESDate = '','',order_list.ESDate) as estDate"), 'order_list.qty', DB::raw("IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)) as pcsMade"), 'order_list.amount', 'order_list.pl_status','order_list.id as orderId')
-                    ->where('purchase_order.is_deleted','!=',1)
+                    ->select('order_list.adminSequence', 'purchase_order.po_number', 'part_number.SKU', 'purchase_order.require_date', DB::raw("IF(order_list.ESDate IS NULL or order_list.ESDate = '','',order_list.ESDate) as estDate"), 'order_list.qty', DB::raw("IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)) as pcsMade"), DB::raw("(order_list.qty - (IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)))) as amount"), 'order_list.pl_status', 'order_list.id as orderId')
+                    ->where('purchase_order.is_deleted', '!=', 1)
                     ->groupBy('order_list.id')
-                    ->orderBy('order_list.adminSequence','ASC');
+                    ->orderBy('order_list.adminSequence', 'ASC');
 
             // Return datatable
             $statusStr = '<select id="plStatusChange" class="form-control" olId="{{$orderId}}"><option value="0" {{ $pl_status == 0 ? "selected" : "" }}>Open</option><option value="1" {{ $pl_status == 1 ? "selected" : "" }}>Closed</option></select>';
             return Datatables::of($skuData)
                             ->editColumn("adminSequence", '{{$adminSequence}}')
-                            ->editColumn("pcsMade", '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" onclick="getpcsDetails(\'{{$orderId}}\',\'{{$po_number}}\',\'{{$SKU}}\',\'{{$amount}}\')">{{$pcsMade}}</button>')
+                            ->editColumn("pcsMade", '<button type="button" class="btn btn-primary btn-sm btnPcsMade" data-toggle="modal" data-target="#myModal" onclick="getpcsDetails(\'{{$orderId}}\',\'{{$po_number}}\',\'{{$SKU}}\',\'{{$amount}}\')">{{$pcsMade}}</button>')
                             ->editColumn("estDate", '<input id="ESDate" type="text" olId="{{$orderId}}" value="{{$estDate}}" size="12" class="form-control default-date-picker ESDate" placeholder="YYYY-MM-DD">')
                             ->editColumn("pl_status", $statusStr)
                             ->make();
@@ -62,16 +62,16 @@ class OrderStatusReportController extends Controller
             //echo Auth::user()->id;exit;
             // Get listing for Local user
             $customer = DB::table('customers')->where('user_id', Auth::user()->id)->first();
-            
+
             $skuData = DB::table('order_list')
                     ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
                     ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
                     ->leftJoin('pcs_made', 'pcs_made.orderlist_id', '=', 'order_list.id')
-                    ->select('order_list.localSequence', 'purchase_order.po_number', 'part_number.SKU', 'purchase_order.require_date', DB::raw("IF(order_list.ESDate IS NULL or order_list.ESDate = '','',order_list.ESDate) as estDate"), 'order_list.qty', DB::raw("IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)) as pcsMade"), 'order_list.amount', 'order_list.pl_status','order_list.id as orderId')
-                    ->where('order_list.customer_id','=',$customer->id)
-                    ->where('purchase_order.is_deleted','!=',1)
+                    ->select('order_list.localSequence', 'purchase_order.po_number', 'part_number.SKU', 'purchase_order.require_date', DB::raw("IF(order_list.ESDate IS NULL or order_list.ESDate = '','',order_list.ESDate) as estDate"), 'order_list.qty', DB::raw("IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)) as pcsMade"), 'order_list.amount', 'order_list.pl_status', 'order_list.id as orderId')
+                    ->where('order_list.customer_id', '=', $customer->id)
+                    ->where('purchase_order.is_deleted', '!=', 1)
                     ->groupBy('order_list.id')
-                    ->orderBy('order_list.localSequence','ASC');
+                    ->orderBy('order_list.localSequence', 'ASC');
             // Return datatable
             $statusStr = '{{ $pl_status == 0 ? "Open" : "Close" }}';
             return Datatables::of($skuData)
@@ -81,9 +81,8 @@ class OrderStatusReportController extends Controller
                             ->editColumn("pl_status", $statusStr)
                             ->make();
         }
-        
     }
-    
+
     /**
      * List of Pl's report for datatable
      * 
@@ -91,48 +90,47 @@ class OrderStatusReportController extends Controller
      */
     public function reOrderData()
     {
-        if(count(Input::get('orderId')) > 0) {
+        if (count(Input::get('orderId')) > 0) {
             //get Min value for child
             $getSequence = DB::table('order_list')
-                        ->select('localSequence','adminSequence')
-                        ->where('id', Input::get('orderId')[0])
-                        ->first();
-            
+                    ->select('localSequence', 'adminSequence')
+                    ->where('id', Input::get('orderId')[0])
+                    ->first();
+
             $parentMin = Input::get('min');
-            
-            if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
+
+            if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
                 $parentFieldName = 'order_list.adminSequence';
-                $childFieldName = 'order_list.localSequence';                
+                $childFieldName = 'order_list.localSequence';
                 $childMin = $getSequence->localSequence;
-                
-                foreach(Input::get('orderId') as $id) {
+
+                foreach (Input::get('orderId') as $id) {
                     // update Sequence
                     DB::table('order_list')
-                        ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
-                        ->where('order_list.id','=',$id)
-                        ->where('purchase_order.is_deleted','!=',1)
-                        ->update(array($parentFieldName => $parentMin++,$childFieldName => $childMin++));
+                            ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
+                            ->where('order_list.id', '=', $id)
+                            ->where('purchase_order.is_deleted', '!=', 1)
+                            ->update(array($parentFieldName => $parentMin++, $childFieldName => $childMin++));
                 }
             } else {
                 $parentFieldName = 'order_list.localSequence';
-                $childFieldName = 'order_list.adminSequence';                
+                $childFieldName = 'order_list.adminSequence';
                 $childMin = $getSequence->adminSequence - 1;
                 $customer = DB::table('customers')->where('user_id', Auth::user()->id)->first();
-                
-                foreach(Input::get('orderId') as $id) {
+
+                foreach (Input::get('orderId') as $id) {
                     // update Sequence
                     DB::table('order_list')
-                        ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
-                        ->where('order_list.id','=',$id)
-                        ->where('purchase_order.is_deleted','!=',1)
-                        ->where('order_list.customer_id','=',$customer->id)
-                        ->update(array($parentFieldName => $parentMin++,$childFieldName => $childMin++));
+                            ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
+                            ->where('order_list.id', '=', $id)
+                            ->where('purchase_order.is_deleted', '!=', 1)
+                            ->where('order_list.customer_id', '=', $customer->id)
+                            ->update(array($parentFieldName => $parentMin++, $childFieldName => $childMin++));
                 }
             }
-            
+
             //$max = Input::get('max');
-            
-        }        
+        }
         // Return
         return Response(json_encode(array('status' => 'success')));
     }
@@ -209,11 +207,19 @@ class OrderStatusReportController extends Controller
                 }
             } else {    // For Insert
                 if ($this->IsValidQtyForPcs($pcsMadeQty, $orderlist_id)) { // If valid then conti..
-                    $status = DB::table('pcs_made')->insertGetId(
-                            array('orderlist_id' => $orderlist_id,
-                                'date' => Input::get('pcsMadeDate'),
-                                'qty' => $pcsMadeQty)
-                    );
+                    $pcsStatus = DB::table('order_list')
+                            ->select('pl_status')
+                            ->where('id', $orderlist_id)
+                            ->first();
+                    if ($pcsStatus->pl_status == 0) {
+                        $status = DB::table('pcs_made')->insertGetId(
+                                array('orderlist_id' => $orderlist_id,
+                                    'date' => Input::get('pcsMadeDate'),
+                                    'qty' => $pcsMadeQty)
+                        );
+                    } else {
+                        $msg = 'Sorry, This Order is closed.';
+                    }
 
                     if ($status) {
                         // Set Success

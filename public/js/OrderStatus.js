@@ -106,6 +106,15 @@ $(document).ready(function()
     $('body').delegate('#order-list #ESDate', 'focusout', function() {
         changePlValues($(this).attr('olId'), 'ESDate', $(this).val());
     });
+    
+    //check order status
+    $('body').delegate('.btnPcsMade','click',function(){
+        if($(this).closest('tr').find('#plStatusChange option:selected').val() == 1) {
+            $('#addMorePcsMadePopup').hide();
+        } else {
+            $('#addMorePcsMadePopup').show();
+        }
+    });
 
     // Add/Update Pcs Made
     $('#addPcsMadeBtn').click(function() {

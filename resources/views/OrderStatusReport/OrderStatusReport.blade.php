@@ -30,7 +30,7 @@
                                                 <tbody  id="pcsBody"></tbody>
                                             </table>
                                             <br>
-                                            <table class="table">
+                                            <table class="table" id="addMorePcsMadePopup">
                                                 <tr>
                                                     <th>Date</th>
                                                     <th>Quantity</th>
