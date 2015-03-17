@@ -7,6 +7,14 @@ $(document).ready(function()
         todayBtn: true,
         todayHighlight: true
     });
+   
+    $('#pcsMadeDate').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayBtn: true,
+        todayHighlight: true
+    });
+    
     $('body').click(function(eve) {
         if(eve.target.id !== 'ESDate') {
             $('.ESDate').datepicker("hide");

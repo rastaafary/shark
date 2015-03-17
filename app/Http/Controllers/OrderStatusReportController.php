@@ -214,7 +214,7 @@ class OrderStatusReportController extends Controller
                     if ($pcsStatus->pl_status == 0) {
                         $status = DB::table('pcs_made')->insertGetId(
                                 array('orderlist_id' => $orderlist_id,
-                                    'date' => Input::get('pcsMadeDate'),
+                                    'date' =>date('Y/m/d', strtotime(Input::get('pcsMadeDate'))),
                                     'qty' => $pcsMadeQty)
                         );
                     } else {
