@@ -165,7 +165,11 @@ class ManageUserController extends Controller
 
                 Session::flash('message', 'Profile Update Successfully!!');
                 Session::flash('status', 'success');
-                return redirect('/userList');
+                if (Auth::User()->role == 1) {
+                    return redirect('/userList');
+                } else {
+                    return redirect('/po');
+                }
             }
         } else if (isset($id) && $id != null) {
             $user = DB::table('user')->where('id', $id)->first();

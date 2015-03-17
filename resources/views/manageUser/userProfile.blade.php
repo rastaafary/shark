@@ -92,7 +92,11 @@
                                                     <!--<span class="fa fa-save">-->
                                                     {!! Form::submit('Save',array('class'=>'fa fa-save','class'=>'btn btn-primary')) !!}
                                                     &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    @if (Auth::User()->role == 1) 
                                                     <a href="{{ action('ManageUserController@userList') }}" class="btn btn-default"> Cancel</a>
+                                                    @else
+                                                    <a href="{{ action('PurchaseOrderCustomerController@listPurchaseOrder') }}" class="btn btn-default"><span>Cancle</span></a>
+                                                    @endif
                                                 </div>
                                                 <div class="col-sm-8">
 
