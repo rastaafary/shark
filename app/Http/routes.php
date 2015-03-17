@@ -54,12 +54,12 @@ Route::filter('customer', function() {
 
 //Roles
 Route::get('permissionCreate', 'PermissionController@createPermission');
-Route::when('userList*', 'user');
-Route::when('part*', 'part');
-Route::when('customer*', 'customer');
-Route::when('invoice*', 'invoice');
-Route::when('payment*', 'payment');
-Route::when('PLReport*', 'pl');
+Route::when('/userList*', 'user');
+Route::when('/part*', 'part');
+Route::when('/customer*', 'customer');
+Route::when('/invoice*', 'invoice');
+Route::when('/payment*', 'payment');
+Route::when('/PLReport*', 'pl');
 //logout
 Route::get('logout', 'LoginController@logout');
 Route::get('/forgotpassword', 'LoginController@forgotPassword');
