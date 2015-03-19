@@ -38,6 +38,7 @@
                                                                 <th>Country</th>
                                                                 <th>Phone Number</th>
                                                                 <th>Actions</th>
+                                                                <th>name</th>
                                                             </tr> 
                                                         </thead>
                                                         <tbody>
