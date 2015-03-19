@@ -91,7 +91,7 @@ class CustomerController extends Controller
             // Email 
             if (isset($userInsert) && isset($custInsert)) {
                 $name = $post['contact_name'];
-                $username = 'wamasoftware10@gmail.com'; //$post['contact_email'];
+                $username = $post['contact_email'];
                 $password = $post['password'];
                 $subject = 'New Registration';
 
