@@ -63,7 +63,7 @@
                                                     <select class="form-control" id="po_id" name='po_id'>
                                                         <option value="">Select PO</option>
                                                         @foreach($po as $value)
-                                                        <option value="{{$value->id}}" {{ isset($invoiceOrder->po_id)?($value->id == $invoiceOrder->po_id) ? 'Selected' : '' : ''}} >{{$value->id}}</option>
+                                                        <option value="{{$value->id}}" {{ isset($invoiceOrder->po_id)?($value->id == $invoiceOrder->po_id) ? 'Selected' : '' : ''}} >{{$value->po_number}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
