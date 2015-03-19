@@ -76,7 +76,7 @@
                                                 <div class="form-group col-sm-6 col-md-4">
                                                     <label for="orderTime">Time : </label>
                                                     <!--<input type="text" class="form-control" id="orderTime" name="time" placeholder="11:14 AM">-->
-                                                    {!! Form::text('time',Input::old('time',isset($purchaseOrder->time) ? "date('h:i A', strtotime($purchaseOrder->time))" : '') ,array('class'=>'form-control', 'placeholder' => '11:14 AM', 'id' => 'orderTime')) !!}
+                                                    {!! Form::text('time',Input::old('time',isset($purchaseOrder->time) ? "date('h:i A', strtotime($purchaseOrder->time))" : date("H:i A")) ,array('class'=>'form-control', 'placeholder' => '11:14 AM', 'id' => 'orderTime')) !!}
                                                 </div>
                                             </div>
                                         </div>
