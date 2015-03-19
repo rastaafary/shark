@@ -422,13 +422,13 @@ function confirmDelete()
 }
 
 //Edit Invoice
-function confirmEdit(id) {
+/*function confirmEdit(id) {
     if (confirm("Are You Sure You Want To Edit This Record ?")) {
         return true;
     } else {
         return false;
     }
-}
+}*/
 
 function getPocustomerData() {
     id = $('#po_id').val();

@@ -49,9 +49,9 @@ $(document).ready(function () {
                 required: true,
                 mobileNo: true
             },
-            'interior_no': {
+          /*  'interior_no': {
                 required: true
-            },           
+            },  */         
             'city': {
                 required: true
             },           
@@ -102,9 +102,9 @@ $(document).ready(function () {
                 required: 'Please enter phone no.',
                 mobileNo: 'Please enter valid phone no.'
             },
-            'interior_no': {
+           /* 'interior_no': {
                 required: 'Please enter interior no.'
-            },           
+            }, */     
             'city': {
                 required: 'Please enter city.'
             },            
@@ -168,9 +168,9 @@ $(document).ready(function () {
                 required: true,
                 mobileNo: true
             },
-            'interior_no': {
+           /* 'interior_no': {
                 required: true
-            },            
+            },    */        
             'city': {
                 required: true
             },            
@@ -212,9 +212,9 @@ $(document).ready(function () {
                 required: 'Please enter phone no.',
                 mobileNo: 'Please enter valid phone no.'
             },
-            'interior_no': {
+          /*  'interior_no': {
                 required: 'Please enter interior no.'
-            },           
+            }, */          
             'city': {
                 required: 'Please enter city.'
             },
@@ -266,11 +266,11 @@ function confirmDelete(id) {
     }
 }
 
-function confirmEdit(id) {
+/*function confirmEdit(id) {
     if (confirm("Are You Sure You Want To Edit This Record ?")) {
         return true;
     } else {
         return false;
     }
-}
+}*/
 

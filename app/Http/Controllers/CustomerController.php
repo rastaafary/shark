@@ -45,7 +45,7 @@ class CustomerController extends Controller
                 'building_no' => 'required',
                 'street_addrs' => 'required',
                 'phone_no' => 'required',
-                'interior_no' => 'required',
+               // 'interior_no' => 'required',
                 'city' => 'required',
                 'state' => 'required',
                 'contact_name' => 'required',
@@ -80,12 +80,12 @@ class CustomerController extends Controller
             }
 
             DB::table('user')->insert(
-                    array('role' => '3', 'email' => $post['contact_email'], 'password' => Hash::make($post['password']), 'name' => $post['contact_name'], 'birthdate' => $date, 'mobileno' => $post['contact_mobile'], 'image' => $post['image'])
+                    array('role' => '3', 'email' => $post['contact_email'], 'password' => Hash::make($post['password']), 'name' => $post['contact_name'], 'birthdate' => $date, 'mobileno' => $post['contact_mobile'], 'image' => isset($post['image'])?$post['image']:'')
             );
             $last_id = DB::table('user')->orderBy('id', 'desc')->first();
 
             DB::table('customers')->insert(
-                    array('user_id' => $last_id->id, 'customer_image' => $post['image'], 'comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date)
+                    array('user_id' => $last_id->id, 'customer_image' => isset($post['image'])?$post['image']:'', 'comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date)
             );
             Session::flash('message', 'Customer Added Successfully!!');
             Session::flash('status', 'success');
@@ -109,7 +109,7 @@ class CustomerController extends Controller
                 'building_no' => 'required',
                 'street_addrs' => 'required',
                 'phone_no' => 'required',
-                'interior_no' => 'required',
+                //'interior_no' => 'required',
                 'city' => 'required',
                 'state' => 'required',
                 'contact_name' => 'required',

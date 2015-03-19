@@ -208,7 +208,7 @@
                                             </div>
                                             <div class="form-group" align="center">
                                                 {!! Form::submit('Save',array('class'=>'btn btn-primary','id'=>'btnSave')) !!} 
-                                                <a href="{{ action('CustomerController@listCust') }}" class="btn btn-default"><span>Cancle</span></a>
+                                                <a href="{{ action('CustomerController@listCust') }}" class="btn btn-default"><span>Cancel</span></a>
                                             </div>
                                         </div>
                                     </div>

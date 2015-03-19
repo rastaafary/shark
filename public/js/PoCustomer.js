@@ -548,10 +548,10 @@ function confirmDelete()
 }
 
 //Edit Customer
-function confirmEdit(id) {
+/*function confirmEdit(id) {
     if (confirm("Are You Sure You Want To Edit This Record ?")) {
         return true;
     } else {
         return false;
     }
-}
+}*/
