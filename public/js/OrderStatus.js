@@ -1,4 +1,4 @@
-$(document).ready(function()
+$(document).ready(function ()
 {
     // Set datepicker
     $('.ESDate').datepicker({
@@ -7,33 +7,42 @@ $(document).ready(function()
         todayBtn: true,
         todayHighlight: true
     });
-   
-    $('#pcsMadeDate').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayBtn: true,
-        todayHighlight: true
+
+    /* $('#pcsMadeDate').datepicker({
+     format: 'yyyy-mm-dd',
+     autoclose: true,
+     todayBtn: true,
+     todayHighlight: true
+     });*/
+
+    $('#pcsMadeDate').datepicker({format: "yyyy-mm-dd", todayBtn: true, todayHighlight: true}).on('changeDate', function (ev) {
+        $(this).datepicker('hide');
+        $(document.activeElement).trigger("blur");
     });
-    
-    $('body').click(function(eve) {
-        if(eve.target.id !== 'ESDate') {
+
+    $('body').click(function (eve) {
+        if (eve.target.id !== 'ESDate') {
             $('.ESDate').datepicker("hide");
-            if($('.ESDate').is(':focus')) {
+            if ($('.ESDate').is(':focus')) {
                 $(document.activeElement).trigger("blur");
             }
+        } else {
+            $('.ESDate').datepicker({format: "yyyy-mm-dd", todayBtn: true, todayHighlight: true}).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+                $(document.activeElement).trigger("blur");
+            });
         }
-        
     });
-    
+
     // data table refresh & reload function code
-    $.fn.dataTableExt.oApi.fnReloadAjax = function(oSettings, sNewSource, fnCallback)
+    $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallback)
     {
         if (typeof sNewSource != 'undefined') {
             oSettings.sAjaxSource = sNewSource;
         }
         this.oApi._fnProcessingDisplay(oSettings, true);
         var that = this;
-        oSettings.fnServerData(oSettings.sAjaxSource, null, function(json) {
+        oSettings.fnServerData(oSettings.sAjaxSource, null, function (json) {
             /* Clear the old information from the table */
             that.oApi._fnClearTable(oSettings);
             /* Got the data - add it to the table */
@@ -60,7 +69,7 @@ $(document).ready(function()
          {"bSearchable": false, "aTargets": [0]},
          {"bSortable": false, "aTargets": [0]}
          ],*/
-        "fnServerData": function(sSource, aoData, fnCallback) {
+        "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
                 "type": "GET",
@@ -69,7 +78,7 @@ $(document).ready(function()
                 "success": fnCallback
             });
         },
-        "fnDrawCallback": function(oSettings, json) {
+        "fnDrawCallback": function (oSettings, json) {
             $('.ESDate').datepicker({
                 format: 'yyyy-mm-dd',
                 autoclose: true,
@@ -77,26 +86,26 @@ $(document).ready(function()
                 todayHighlight: true
             });
         },
-        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-            $(nRow).attr('id',aData[9]);
+        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            $(nRow).attr('id', aData[9]);
             return nRow;
         }
     });
-    
+
     $('#order-list tbody').sortable({
-        stop: function() {
-            $("#order-list_processing").css("visibility","visible");
+        stop: function () {
+            $("#order-list_processing").css("visibility", "visible");
             var orderId = [];
             var sequence = [];
-            $('#order-list tbody tr').each(function(){
+            $('#order-list tbody tr').each(function () {
                 orderId.push($(this).attr('id'));
                 sequence.push(parseInt($(this).find('td:first').html()));
             });
             $.ajax({
                 type: "GET",
                 url: "/PLReport/reOrderData",
-                data: {orderId:orderId,max:Math.max.apply(Math,sequence),min:Math.min.apply(Math,sequence)},
-                success: function(data){
+                data: {orderId: orderId, max: Math.max.apply(Math, sequence), min: Math.min.apply(Math, sequence)},
+                success: function (data) {
                     oTable.fnReloadAjax();
                 }
             });
@@ -104,20 +113,20 @@ $(document).ready(function()
             return true;
         }
     });
-    
+
     // Change status of PL's
-    $('body').delegate('#order-list #plStatusChange', 'change', function() {
+    $('body').delegate('#order-list #plStatusChange', 'change', function () {
         changePlValues($(this).attr('olId'), 'pl_status', $(this).val());
     });
 
     // On shipping date change
-    $('body').delegate('#order-list #ESDate', 'focusout', function() {
+    $('body').delegate('#order-list #ESDate', 'focusout', function () {
         changePlValues($(this).attr('olId'), 'ESDate', $(this).val());
     });
-    
+
     //check order status
-    $('body').delegate('.btnPcsMade','click',function(){
-        if($(this).closest('tr').find('#plStatusChange option:selected').val() == 1) {
+    $('body').delegate('.btnPcsMade', 'click', function () {
+        if ($(this).closest('tr').find('#plStatusChange option:selected').val() == 1) {
             $('#addMorePcsMadePopup').hide();
         } else {
             $('#addMorePcsMadePopup').show();
@@ -125,12 +134,12 @@ $(document).ready(function()
     });
 
     // Add/Update Pcs Made
-    $('#addPcsMadeBtn').click(function() {
+    $('#addPcsMadeBtn').click(function () {
         $.ajax({
             type: "GET",
             url: '/PLReport/addPcsMade',
             data: "pcsMadeId=" + $('#pcsMadeId').val() + "&pcsMadeDate=" + $('#pcsMadeDate').val() + "&pcsMadeQty=" + $('#pcsMadeQty').val() + "&orderlist_id=" + $('#orderlist_id').val() + "&pcsMadeQty_old=" + $('#pcsMadeQty_old').val(),
-            success: function(msg) {
+            success: function (msg) {
                 var jason = $.parseJSON(msg);
                 if (jason.status > 0) {
                     window.location.reload();
@@ -144,7 +153,7 @@ $(document).ready(function()
     });
 
     // Cancel update on edit Pcs Made
-    $('#cancelUpdate').click(function() {
+    $('#cancelUpdate').click(function () {
         resetPcsMadeData();
     });
 
@@ -157,7 +166,7 @@ function changePlValues(olId, fieldName, fieldValue) {
         type: "GET",
         url: '/PLReport/changePlValues',
         data: "olId=" + olId + "&fieldName=" + fieldName + "&fieldValue=" + fieldValue,
-        success: function(msg) {
+        success: function (msg) {
 //            var jason = $.parseJSON(msg);
 //            if (!jason.status) {
 //                alert('Somthing went to wrong. Try again!!!');
@@ -176,11 +185,11 @@ function getpcsDetails(orderListId, po_number, sku, amount)
         type: "GET",
         url: '/PLReport/getPcsMadeDetails',
         data: "orderListId=" + orderListId,
-        success: function(msg) {
+        success: function (msg) {
             var jason = $.parseJSON(msg);
             var pcsStr = '';
             var totalQty = 0;
-            $.each(jason, function(idx, data) {
+            $.each(jason, function (idx, data) {
                 totalQty += Number(data.qty);
                 actionStr = '<button class="btn btn-primary btn-sm" onclick="editPcs(this,' + data.id + ')" type="button"><i class="fa fa-pencil"></i></button><button class="btn btn-danger btn-sm"  onclick="deletePcs(' + data.id + ')" type="button"><i class="fa fa-trash-o"></i></button>';
                 pcsStr += "<tr class='oldPcs'><td>" + po_number + "</td>" +
@@ -234,7 +243,7 @@ function deletePcs(pcsMadeId) {
             type: "GET",
             url: '/PLReport/deletePcsMade',
             data: "pcsMadeId=" + pcsMadeId,
-            success: function(msg) {
+            success: function (msg) {
                 var jason = $.parseJSON(msg);
                 if (jason.status) {
                     window.location.reload();

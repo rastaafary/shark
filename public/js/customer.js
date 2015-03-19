@@ -13,6 +13,9 @@ $(document).ready(function () {
                 "success": fnCallback
             });
         },
+        "fnDrawCallback": function (oSettings, json) {
+            $("#customer-list th:nth-last-child(1), #customer-list td:nth-last-child(1)").hide();
+        }, 
     });
 
     $('#birthdate').datepicker({
@@ -49,12 +52,10 @@ $(document).ready(function () {
                 required: true,
                 mobileNo: true
             },
-          /*  'interior_no': {
-                required: true
-            },  */         
+            
             'city': {
                 required: true
-            },           
+            },
             'state': {
                 required: true
             },
@@ -102,12 +103,10 @@ $(document).ready(function () {
                 required: 'Please enter phone no.',
                 mobileNo: 'Please enter valid phone no.'
             },
-           /* 'interior_no': {
-                required: 'Please enter interior no.'
-            }, */     
+            
             'city': {
                 required: 'Please enter city.'
-            },            
+            },
             'state': {
                 required: 'Please enter state.'
             },
@@ -148,8 +147,8 @@ $(document).ready(function () {
             error.insertAfter(element);
         }
     });
-    
-     $('#editCustomer').validate({
+
+    $('#editCustomer').validate({
         rules: {
             'comp_name': {
                 required: true,
@@ -168,12 +167,10 @@ $(document).ready(function () {
                 required: true,
                 mobileNo: true
             },
-           /* 'interior_no': {
-                required: true
-            },    */        
+            
             'city': {
                 required: true
-            },            
+            },
             'state': {
                 required: true
             },
@@ -212,9 +209,7 @@ $(document).ready(function () {
                 required: 'Please enter phone no.',
                 mobileNo: 'Please enter valid phone no.'
             },
-          /*  'interior_no': {
-                required: 'Please enter interior no.'
-            }, */          
+           
             'city': {
                 required: 'Please enter city.'
             },
@@ -265,12 +260,4 @@ function confirmDelete(id) {
         return false;
     }
 }
-
-/*function confirmEdit(id) {
-    if (confirm("Are You Sure You Want To Edit This Record ?")) {
-        return true;
-    } else {
-        return false;
-    }
-}*/
 
