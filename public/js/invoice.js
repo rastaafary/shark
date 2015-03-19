@@ -26,6 +26,9 @@ $(document).ready(function () {
     $('.SKUselect2').select2({
         allowClear: true,
     });
+    $('#po_id').select2({
+        allowClear: true,
+    });
 
     var data = $("#oldShippingInfo").val();
 
@@ -423,12 +426,12 @@ function confirmDelete()
 
 //Edit Invoice
 /*function confirmEdit(id) {
-    if (confirm("Are You Sure You Want To Edit This Record ?")) {
-        return true;
-    } else {
-        return false;
-    }
-}*/
+ if (confirm("Are You Sure You Want To Edit This Record ?")) {
+ return true;
+ } else {
+ return false;
+ }
+ }*/
 
 function getPocustomerData() {
     id = $('#po_id').val();
@@ -445,6 +448,15 @@ function getPocustomerData() {
                 $('#req_date').text(data.require_date);
                 $('#payment_terms').text(data.payment_terms);
                 $("#oldShippingInfo").append("<option value='" + data.id + "' class='shippingData'>" + data.identifier + "</option>");
+                $("#comp_name").val(data.comp_name);
+                $("#building_no").val(data.building_no);
+                $("#street_addrs").val(data.street_addrs);
+                $("#interior_no").val(data.interior_no);
+                $("#city").val(data.city);
+                $("#state").val(data.state);
+                $("#zipcode").val(data.zipcode);
+                $("#country").val(data.country);
+                $("#phone_no").val(data.phone_no);
             });
             if (shippingId > 0) {
                 $('#addNew').prop('checked', false);

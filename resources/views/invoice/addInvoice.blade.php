@@ -50,7 +50,7 @@
                                         </div>                                            
                                         <div class="panel-body">
                                             <div class="form-inline">
-                                                <div class="form-group col-sm-4 col-md-4">
+                                                <div class="form-group col-sm-3 col-md-3">
                                                     <label for="invoice_no">Invoice ID# : </label> 
                                                     <label for="invoice_no" style="font-weight: bold;">{{ $auto_invoice_no }}</label>
                                                 </div>
@@ -58,7 +58,7 @@
                                                     <label class="control-label" for="invoiceDateTime">Date/Time : </label>
                                                     <label class="control-label" id="invoiceDateTime" name="invoiceDateTime"><?php echo date('d/m/Y h:i:s A'); ?></label>
                                                 </div>  
-                                                <div class="form-group col-sm-4  col-md-4"> 
+                                                <div class="form-group col-sm-5  col-md-5"> 
                                                     <label class="control-label" for="po_id">Select PO : </label>
                                                     <select class="form-control" id="po_id" name='po_id'>
                                                         <option value="">Select PO</option>
@@ -83,49 +83,49 @@
                                             <div class="form-group">
                                                 <label for="companyName" class="col-sm-4 control-label">Company Name:</label>
                                                 <div class="col-sm-8">
-                                                    {!! Form::text('comp_name',Input::old('comp_name',isset($invoiceOrder->comp_name) ? $invoiceOrder->comp_name : '') ,array('class'=>'form-control', 'placeholder' => 'Company Name')) !!}
+                                                    {!! Form::text('comp_name',Input::old('comp_name',isset($invoiceOrder->comp_name) ? $invoiceOrder->comp_name : '') ,array('class'=>'form-control', 'placeholder' => 'Company Name','id' => 'comp_name')) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="buildingNumber" class="col-sm-4 control-label">Building Number:</label>
                                                 <div class="col-sm-8">
-                                                    {!! Form::text('building_no',Input::old('building_no',isset($invoiceOrder->building_no) ? $invoiceOrder->building_no : '') ,array('class'=>'form-control', 'placeholder' => 'Building Number')) !!}
+                                                    {!! Form::text('building_no',Input::old('building_no',isset($invoiceOrder->building_no) ? $invoiceOrder->building_no : '') ,array('class'=>'form-control', 'placeholder' => 'Building Number','id' => 'building_no')) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="streetAddress" class="col-sm-4 control-label">Street Address:</label>
                                                 <div class="col-sm-8">
-                                                    {!! Form::text('street_addrs',Input::old('street_addrs',isset($invoiceOrder->street_addrs) ? $invoiceOrder->street_addrs : '') ,array('class'=>'form-control', 'placeholder' => 'Street Address')) !!}
+                                                    {!! Form::text('street_addrs',Input::old('street_addrs',isset($invoiceOrder->street_addrs) ? $invoiceOrder->street_addrs : '') ,array('class'=>'form-control', 'placeholder' => 'Street Address','id' => 'street_addrs')) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="interiorNumber" class="col-sm-4 control-label">Interior Number:</label>
                                                 <div class="col-sm-8">
-                                                    {!! Form::text('interior_no',Input::old('interior_no',isset($invoiceOrder->interior_no) ? $invoiceOrder->interior_no : '') ,array('class'=>'form-control', 'placeholder' => 'Interior Number')) !!}
+                                                    {!! Form::text('interior_no',Input::old('interior_no',isset($invoiceOrder->interior_no) ? $invoiceOrder->interior_no : '') ,array('class'=>'form-control', 'placeholder' => 'Interior Number','id' => 'interior_no')) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="city" class="col-sm-4 control-label">City:</label>
                                                 <div class="col-sm-8">
-                                                    {!! Form::text('city',Input::old('city',isset($invoiceOrder->city) ? $invoiceOrder->city : '') ,array('class'=>'form-control', 'placeholder' => 'City')) !!}
+                                                    {!! Form::text('city',Input::old('city',isset($invoiceOrder->city) ? $invoiceOrder->city : '') ,array('class'=>'form-control', 'placeholder' => 'City','id' => 'city')) !!}
                                                 </div>                                                               
                                             </div>
                                             <div class="form-group">
                                                 <label for="state" class="col-sm-4 control-label">State:</label>
                                                 <div class="col-sm-8">
-                                                    {!! Form::text('state',Input::old('state',isset($invoiceOrder->state) ? $invoiceOrder->state : '') ,array('class'=>'form-control', 'placeholder' => 'State')) !!} 
+                                                    {!! Form::text('state',Input::old('state',isset($invoiceOrder->state) ? $invoiceOrder->state : '') ,array('class'=>'form-control', 'placeholder' => 'State','id' => 'state')) !!} 
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="zipCode" class="col-sm-4 control-label">ZipCode:</label>
                                                 <div class="col-sm-8">
-                                                    {!! Form::text('zipcode',Input::old('zipcode',isset($invoiceOrder->zipcode) ? $invoiceOrder->zipcode : '') ,array('class'=>'form-control', 'placeholder' => 'ZipCode')) !!}
+                                                    {!! Form::text('zipcode',Input::old('zipcode',isset($invoiceOrder->zipcode) ? $invoiceOrder->zipcode : '') ,array('class'=>'form-control', 'placeholder' => 'ZipCode','id' => 'zipcode')) !!}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="country" class="col-sm-4 control-label">Country:</label>
                                                 <div class="col-sm-8">
-                                                    <select name="country" class="form-control textinput" aria-invalid="false">
+                                                    <select name="country" class="form-control textinput" aria-invalid="false" id="country">
                                                         <option value="USA" <?php if (isset($invoiceOrder)) echo ($invoiceOrder->country == 'USA') ? 'selected' : ''; ?>>USA</option>
                                                         <option value="Germany" <?php if (isset($invoiceOrder)) echo ($invoiceOrder->country == 'Germany') ? 'selected' : ''; ?>>Germany</option>
                                                     </select>
@@ -135,7 +135,7 @@
                                             <div class="form-group">
                                                 <label for="phoneNumber" class="col-sm-4 control-label">Phone Number:</label>
                                                 <div class="col-sm-8">
-                                                    {!! Form::text('phone_no',Input::old('phone_no',isset($invoiceOrder->phone_no) ? $invoiceOrder->phone_no : '') ,array('class'=>'form-control', 'placeholder' => 'Phone Number')) !!}
+                                                    {!! Form::text('phone_no',Input::old('phone_no',isset($invoiceOrder->phone_no) ? $invoiceOrder->phone_no : '') ,array('class'=>'form-control', 'placeholder' => 'Phone Number','id' => 'phone_no')) !!}
                                                 </div>
                                             </div>
                                         </div>                                                       

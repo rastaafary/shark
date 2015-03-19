@@ -300,11 +300,13 @@ class InvoiceController extends Controller
         $id = Input::get('id');
         $shipping_info = DB::table('purchase_order')
                 ->leftJoin('shipping_info', 'shipping_info.customer_id', '=', 'purchase_order.customer_id')
+                ->leftJoin('customers', 'customers.id', '=', 'purchase_order.customer_id')
                 //->leftJoin('order_list', 'order_list.po_id', '=', 'purchase_order.id')
                 //->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
-                ->select('shipping_info.id','purchase_order.payment_terms', 'purchase_order.require_date', 'shipping_info.identifier')//,'part_number.SKU')
+                ->select('shipping_info.id','purchase_order.payment_terms', 'purchase_order.require_date', 'shipping_info.identifier', 'customers.comp_name', 'customers.building_no', 'customers.street_addrs', 'customers.interior_no', 'customers.city', 'customers.state', 'customers.zipcode', 'customers.country', 'customers.phone_no')//,'part_number.SKU')
                 ->where('purchase_order.id', $id)
                 ->get();
+       // var_dump($shipping_info);
         return Response(json_encode($shipping_info));
     }
 

@@ -71,7 +71,7 @@
                                                     </div>
                                                     <label for="orderDate">Date : </label>
                                                     <!-- <input id="orderDate" type="text" value="" size="16" class="form-control default-date-picker"> -->
-                                                    {!! Form::text('orderDate',Input::old('orderDate',isset($purchaseOrder->date) ? $purchaseOrder->date : '') ,array('class'=>'form-control default-date-picker', 'placeholder' => 'Date', 'id' => 'orderDate')) !!}
+                                                    {!! Form::text('orderDate',Input::old('orderDate',isset($purchaseOrder->date) ? $purchaseOrder->date : date("Y/m/d")) ,array('class'=>'form-control default-date-picker','id' => 'orderDate')) !!}
                                                 </div>
                                                 <div class="form-group col-sm-6 col-md-4">
                                                     <label for="orderTime">Time : </label>
