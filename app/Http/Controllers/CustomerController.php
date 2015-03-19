@@ -45,7 +45,7 @@ class CustomerController extends Controller
                 'building_no' => 'required',
                 'street_addrs' => 'required',
                 'phone_no' => 'required',
-               // 'interior_no' => 'required',
+                // 'interior_no' => 'required',
                 'city' => 'required',
                 'state' => 'required',
                 'contact_name' => 'required',
@@ -80,13 +80,45 @@ class CustomerController extends Controller
             }
 
             DB::table('user')->insert(
-                    array('role' => '3', 'email' => $post['contact_email'], 'password' => Hash::make($post['password']), 'name' => $post['contact_name'], 'birthdate' => $date, 'mobileno' => $post['contact_mobile'], 'image' => isset($post['image'])?$post['image']:'')
+                    array('role' => '3', 'email' => $post['contact_email'], 'password' => Hash::make($post['password']), 'name' => $post['contact_name'], 'birthdate' => $date, 'mobileno' => $post['contact_mobile'], 'image' => isset($post['image']) ? $post['image'] : '')
             );
             $last_id = DB::table('user')->orderBy('id', 'desc')->first();
 
             DB::table('customers')->insert(
-                    array('user_id' => $last_id->id, 'customer_image' => isset($post['image'])?$post['image']:'', 'comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date)
+                    array('user_id' => $last_id->id, 'customer_image' => isset($post['image']) ? $post['image'] : '', 'comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date)
             );
+            // Email 
+            
+            $name = $post['contact_email'];
+            $username = $post['contact_email'];
+            $password = $post['password'];
+            //$to = "wamasoftware5@gmail.com";
+            $subject = 'New Registration';
+         
+//                   / $body = View::make('resetPassword', ['link' => $link, 'username' => $user->name]);
+            /*  $data = array(
+              'username' => $user->name,
+              'link' => $link,
+              );    // $bodyK = view('resetPassword', ['link' => $link, 'username' => $user->name ]); */
+
+            $message = '<html>
+                                <head>
+                                    <meta charset="utf-8">
+                                </head>
+                                <body>
+                                    <h2>Forgot Password</h2>
+
+                                    <div>
+                                        Dear ' . $name . ', Your Username and password are <br>
+                                            Username : '. $username .' <BR>
+                                            Password : '. $password.'
+                                    </div>
+                                </body>
+                            </html>';
+            $headers = 'MIME-Version: 1.0' . "\r\n";
+            $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+
+            $mail_status = mail($username, $subject, $message, $headers);
             Session::flash('message', 'Customer Added Successfully!!');
             Session::flash('status', 'success');
             return redirect('/customer');
@@ -200,13 +232,13 @@ class CustomerController extends Controller
     public function getCustData()
     {
 
-        /*$FmyFunctions1 = new \App\library\myFunctions;
-        $is_ok = ($FmyFunctions1->is_ok());
-        var_dump($is_ok);
-        exit("sdhfk"); */
+        /* $FmyFunctions1 = new \App\library\myFunctions;
+          $is_ok = ($FmyFunctions1->is_ok());
+          var_dump($is_ok);
+          exit("sdhfk"); */
 
         $custlist = DB::table('customers')
-                ->select(array('id', 'comp_name', 'building_no', 'street_addrs', 'interior_no', 'city', 'state', 'zipcode', 'country', 'phone_no','user_id','contact_name'))
+                ->select(array('id', 'comp_name', 'building_no', 'street_addrs', 'interior_no', 'city', 'state', 'zipcode', 'country', 'phone_no', 'user_id', 'contact_name'))
                 ->where('is_deleted', '!=', '1');
         return Datatables::of($custlist)
                         ->editColumn("user_id", '<a href="/customer/delete/{{ $user_id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete"><span class="fa fa-trash-o" ></span></a><a href="/customer/edit/{{ $user_id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit"><span class="fa fa-pencil"></span></a>')
