@@ -79,46 +79,41 @@ class CustomerController extends Controller
                 $post['image'] = $filename;
             }
 
-            DB::table('user')->insert(
+            $userInsert = DB::table('user')->insertGetId(
                     array('role' => '3', 'email' => $post['contact_email'], 'password' => Hash::make($post['password']), 'name' => $post['contact_name'], 'birthdate' => $date, 'mobileno' => $post['contact_mobile'], 'image' => isset($post['image']) ? $post['image'] : '')
             );
             $last_id = DB::table('user')->orderBy('id', 'desc')->first();
 
-            DB::table('customers')->insert(
+            $custInsert = DB::table('customers')->insertGetId(
                     array('user_id' => $last_id->id, 'customer_image' => isset($post['image']) ? $post['image'] : '', 'comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date)
             );
-            // Email 
-            
-            $name = $post['contact_email'];
-            $username = $post['contact_email'];
-            $password = $post['password'];
-            //$to = "wamasoftware5@gmail.com";
-            $subject = 'New Registration';
-         
-//                   / $body = View::make('resetPassword', ['link' => $link, 'username' => $user->name]);
-            /*  $data = array(
-              'username' => $user->name,
-              'link' => $link,
-              );    // $bodyK = view('resetPassword', ['link' => $link, 'username' => $user->name ]); */
 
-            $message = '<html>
+            // Email 
+            if (isset($userInsert) && isset($custInsert)) {
+                $name = $post['contact_name'];
+                $username = 'wamasoftware10@gmail.com'; //$post['contact_email'];
+                $password = $post['password'];
+                $subject = 'New Registration';
+
+                $message = '<html>
                                 <head>
                                     <meta charset="utf-8">
                                 </head>
                                 <body>
-                                    <h2>Forgot Password</h2>
+                                    <h2>New Customer Registration</h2>
 
                                     <div>
                                         Dear ' . $name . ', Your Username and password are <br>
-                                            Username : '. $username .' <BR>
-                                            Password : '. $password.'
+                                            Username : ' . $username . ' <BR>
+                                            Password : ' . $password . '
                                     </div>
                                 </body>
                             </html>';
-            $headers = 'MIME-Version: 1.0' . "\r\n";
-            $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+                $headers = 'MIME-Version: 1.0' . "\r\n";
+                $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
-            $mail_status = mail($username, $subject, $message, $headers);
+                $mail_status = mail($username, $subject, $message, $headers);
+            }
             Session::flash('message', 'Customer Added Successfully!!');
             Session::flash('status', 'success');
             return redirect('/customer');
