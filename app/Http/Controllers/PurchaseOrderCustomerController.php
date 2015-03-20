@@ -169,9 +169,10 @@ class PurchaseOrderCustomerController extends Controller
             $localSeqNo = 1;
             $adminSeqNo = 1;
             $lastCustSeqId = DB::table('order_list')->select('*')->where('customer_id', '=', $customer->id)->orderBy('localSequence', 'DESC')->first();
+            $lastAdminSeqId = DB::table('order_list')->select('*')->orderBy('adminSequence', 'DESC')->first();
             if (!empty($lastCustSeqId)) {
                 $localSeqNo = $lastCustSeqId->localSequence;
-                $adminSeqNo = $lastCustSeqId->adminSequence;
+                $adminSeqNo = $lastAdminSeqId->adminSequence;
             }
 
             //add po order
@@ -400,9 +401,10 @@ class PurchaseOrderCustomerController extends Controller
                 $localSeqNo = 1;
                 $adminSeqNo = 1;
                 $lastCustSeqId = DB::table('order_list')->select('*')->where('customer_id', '=', $customer->id)->orderBy('localSequence', 'DESC')->first();
+                $lastAdminSeqId = DB::table('order_list')->select('*')->orderBy('adminSequence', 'DESC')->first();
                 if (!empty($lastCustSeqId)) {
                     $localSeqNo = $lastCustSeqId->localSequence;
-                    $adminSeqNo = $lastCustSeqId->adminSequence;
+                    $adminSeqNo = $lastAdminSeqId->adminSequence;
                 }
                 foreach ($orders as $orderlist) {
                     if ($orderlist['part_id'] > 0) {
@@ -414,7 +416,8 @@ class PurchaseOrderCustomerController extends Controller
                                     ->where('id', $orderId)
                                     ->update($orderlist);
                         } else {
-                            $localSeqNo++;$adminSeqNo++;
+                            $localSeqNo++;
+                            $adminSeqNo++;
                             //Add new Order
                             $orderlist['customer_id'] = $customer->id;
                             $orderlist['po_id'] = $id;
