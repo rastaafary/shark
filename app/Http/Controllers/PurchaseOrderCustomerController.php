@@ -172,6 +172,8 @@ class PurchaseOrderCustomerController extends Controller
             $lastAdminSeqId = DB::table('order_list')->select('*')->orderBy('adminSequence', 'DESC')->first();
             if (!empty($lastCustSeqId)) {
                 $localSeqNo = $lastCustSeqId->localSequence;
+            }
+            if (!empty($lastAdminSeqId)) {
                 $adminSeqNo = $lastAdminSeqId->adminSequence;
             }
 
@@ -404,6 +406,8 @@ class PurchaseOrderCustomerController extends Controller
                 $lastAdminSeqId = DB::table('order_list')->select('*')->orderBy('adminSequence', 'DESC')->first();
                 if (!empty($lastCustSeqId)) {
                     $localSeqNo = $lastCustSeqId->localSequence;
+                }
+                if (!empty($lastAdminSeqId)) {
                     $adminSeqNo = $lastAdminSeqId->adminSequence;
                 }
                 foreach ($orders as $orderlist) {
