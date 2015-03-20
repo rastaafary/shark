@@ -12,6 +12,9 @@ $(document).ready(function () {
         "sAjaxSource": "/invoice/getInvoiceList",
         "aaSorting": [[7, "desc"]],
         "order": [[1, 'asc']],
+        "aoColumnDefs": [
+            {"bSearchable": false, "aTargets": [1, 2, 3, 4]}
+        ],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
@@ -21,6 +24,9 @@ $(document).ready(function () {
                 "success": fnCallback
             });
         },
+         "fnDrawCallback": function (oSettings, json) {
+            $("#invoiceList th:nth-last-child(1), #invoiceList td:nth-last-child(1)").hide();
+        }, 
     });
 
     $('.SKUselect2').select2({

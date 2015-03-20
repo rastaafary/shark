@@ -32,10 +32,11 @@
                                                                 <th>Balance</th>
                                                                 <th>Aging</th>
                                                                 <th style="width: 15%;">Action</th>
+                                                                <th>Comp Name</th>
                                                             </tr> 
                                                         </thead>
                                                         <tbody>
-                                                            
+
                                                         </tbody>
                                                     </table>
                                                 </div>                                                        
