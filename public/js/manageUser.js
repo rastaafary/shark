@@ -167,11 +167,3 @@ function confirmDelete(id) {
         return false;
     }
 }
-
-function confirmEdit(id) {
-    if (confirm("Are You Sure You Want To Edit This Record ?")) {
-        return true;
-    } else {
-        return false;
-    }
-}
