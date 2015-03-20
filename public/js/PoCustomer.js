@@ -66,6 +66,9 @@ $(document).ready(function () {
         "sAjaxSource": "/po/getPoCustomerlist",
         "aaSorting": [[7, "desc"]],
         "order": [[1, 'asc']],
+        "aoColumnDefs": [
+            {"bSearchable": false, "aTargets": [0, 1, 2, 3, 4, 5]}
+        ],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
@@ -74,6 +77,9 @@ $(document).ready(function () {
                 "data": aoData,
                 "success": fnCallback
             });
+        },
+        "fnDrawCallback": function (oSettings, json) {
+            $("#POCustomer_list th:nth-last-child(1), #POCustomer_list td:nth-last-child(1)").hide();
         },
     });
 

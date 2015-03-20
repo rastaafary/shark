@@ -13,7 +13,7 @@ $(document).ready(function () {
         "aaSorting": [[7, "desc"]],
         "order": [[1, 'asc']],
         "aoColumnDefs": [
-            {"bSearchable": false, "aTargets": [1, 2, 3, 4]}
+            {"bSearchable": false, "aTargets": [ 0, 1, 2, 3, 4, 5]}
         ],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({

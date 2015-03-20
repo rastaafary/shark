@@ -35,6 +35,7 @@
 <!--                                                                <th style="width: 5%;">Pcs Made</th>-->
                                                                 <th style="width: 5%;">Amount</th>
                                                                 <th style="width: 5%;">Action</th>
+                                                                <th style="width: 5%;"></th>
                                                             </tr>                                                                       
                                                         </thead>
                                                         <tbody>                                                       
