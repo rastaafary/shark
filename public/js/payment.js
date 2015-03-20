@@ -75,11 +75,9 @@ $(document).ready(function() {
         });
     });
 
-    $('#require_date,#paymentDate,#p_date').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayBtn: true,
-        todayHighlight: true
+    $('#require_date,#paymentDate,#p_date').datepicker({format: "yyyy-mm-dd", todayBtn: true, todayHighlight: true}).on('changeDate', function (ev) {
+        $(this).datepicker('hide');
+        $(document.activeElement).trigger("blur");
     });
 
     $("#payment-list").dataTable({

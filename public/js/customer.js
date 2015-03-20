@@ -17,12 +17,10 @@ $(document).ready(function () {
             $("#customer-list th:nth-last-child(1), #customer-list td:nth-last-child(1)").hide();
         }, 
     });
-
-    $('#birthdate').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayBtn: true,
-        todayHighlight: true,
+   
+    $('#birthdate').datepicker({format: "yyyy-mm-dd", todayBtn: true, todayHighlight: true}).on('changeDate', function (ev) {
+        $(this).datepicker('hide');
+        $(document.activeElement).trigger("blur");
     });
 
     jQuery.validator.addMethod("onlyname", function (value, element) {

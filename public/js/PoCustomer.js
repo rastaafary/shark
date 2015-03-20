@@ -133,19 +133,10 @@ $(document).ready(function () {
         });
     });
 
-    $('#require_date').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayBtn: true,
-        todayHighlight: true
+$('#orderDate,#require_date').datepicker({format: "yyyy-mm-dd", todayBtn: true, todayHighlight: true}).on('changeDate', function (ev) {
+        $(this).datepicker('hide');
+        $(document.activeElement).trigger("blur");
     });
-    $('#orderDate').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayBtn: true,
-        todayHighlight: true
-    });
-
 
     jQuery.validator.addMethod("onlyname", function (value, element) {
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);

@@ -1,20 +1,13 @@
 $(document).ready(function ()
 {
     // Set datepicker
-    $('.ESDate').datepicker({
+ /*   $('.ESDate').datepicker({
         format: 'yyyy-mm-dd',
         autoclose: true,
         todayBtn: true,
         todayHighlight: true
     });
-
-    /* $('#pcsMadeDate').datepicker({
-     format: 'yyyy-mm-dd',
-     autoclose: true,
-     todayBtn: true,
-     todayHighlight: true
-     });*/
-
+*/
     $('#pcsMadeDate').datepicker({format: "yyyy-mm-dd", todayBtn: true, todayHighlight: true}).on('changeDate', function (ev) {
         $(this).datepicker('hide');
         $(document.activeElement).trigger("blur");
