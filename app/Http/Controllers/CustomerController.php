@@ -105,7 +105,7 @@ class CustomerController extends Controller
                                     <h2>New Customer Registration</h2>
 
                                     <div>
-                                        Dear ' . $name . ', Your Username and password are <br>
+                                        Dear ' . $name . ', Your login credentials are : <br>
                                             Username : ' . $username . ' <BR>
                                             Password : ' . $password . '
                                     </div>
@@ -125,6 +125,7 @@ class CustomerController extends Controller
 
     public function editCust($id = null)
     {
+        $isSetNewPass = 0;
         $post = Input::all();
         if (isset($post['_token']))
             unset($post['_token']);
@@ -174,7 +175,9 @@ class CustomerController extends Controller
                 $myquery = DB::table('user')->select('password')->where('id', $post['id'])->first();
                 $post['password'] = $myquery->password;
             } else {
+                $newUpdatedPassword = $post['password'];
                 $post['password'] = Hash::make($post['password']);
+                $isSetNewPass = 1;
             }
 
             //Upload the image
@@ -199,6 +202,32 @@ class CustomerController extends Controller
                     ->where('user.id', $post['id'])
                     ->update(array('user.email' => $post['contact_email'], 'user.name' => $post['contact_name'], 'user.birthdate' => $date, 'user.mobileno' => $post['contact_mobile'], 'user.password' => $post['password'], 'user.image' => $post['image'], 'customers.comp_name' => $post['comp_name'], 'customers.zipcode' => $post['zipcode'], 'customers.building_no' => $post['building_no'], 'customers.country' => $post['country'], 'customers.street_addrs' => $post['street_addrs'], 'customers.phone_no' => $post['phone_no'], 'customers.interior_no' => $post['interior_no'], 'customers.fax_number' => $post['fax_number'], 'customers.city' => $post['city'], 'customers.website' => $post['website'], 'customers.state' => $post['state'], 'customers.contact_name' => $post['contact_name'], 'customers.position' => $post['position'], 'customers.contact_email' => $post['contact_email'], 'customers.contact_mobile' => $post['contact_mobile'], 'customers.contact_birthdate' => $date, 'customers.customer_image' => $post['image'], 'shipping_info.comp_name' => $post['comp_name'], 'shipping_info.zipcode' => $post['zipcode'], 'shipping_info.building_no' => $post['building_no'], 'shipping_info.country' => $post['country'], 'shipping_info.street_addrs' => $post['street_addrs'], 'shipping_info.phone_no' => $post['phone_no'], 'shipping_info.interior_no' => $post['interior_no'], 'shipping_info.city' => $post['city'], 'shipping_info.state' => $post['state']));
 
+            // Email
+            if ($isSetNewPass == 1) {
+                $name = $post['contact_name'];
+                $username = $post['contact_email'];
+                $password = $newUpdatedPassword;
+                $subject = 'Your updated login credentials';
+                $message = '<html>
+                                <head>
+                                    <meta charset="utf-8">
+                                </head>
+                                <body>
+                                    <h2>New updated login credentials</h2>
+
+                                    <div>
+                                        Dear ' . $name . ', Your new updated login credentials are : <br>
+                                            Username : ' . $username . ' <BR>
+                                            Password : ' . $password . '
+                                    </div>
+                                </body>
+                            </html>';
+
+                $headers = 'MIME-Version: 1.0' . "\r\n";
+                $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+
+                $mail_status = mail($username, $subject, $message, $headers);
+            }
             /*  DB::table('customers')
               ->where('user_id', $post['id'])
               ->update(array('comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date, 'customer_image' => $post['image'])
