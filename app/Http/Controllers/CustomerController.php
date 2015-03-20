@@ -45,7 +45,6 @@ class CustomerController extends Controller
                 'building_no' => 'required',
                 'street_addrs' => 'required',
                 'phone_no' => 'required',
-                // 'interior_no' => 'required',
                 'city' => 'required',
                 'state' => 'required',
                 'contact_name' => 'required',
@@ -82,14 +81,17 @@ class CustomerController extends Controller
             $userInsert = DB::table('user')->insertGetId(
                     array('role' => '3', 'email' => $post['contact_email'], 'password' => Hash::make($post['password']), 'name' => $post['contact_name'], 'birthdate' => $date, 'mobileno' => $post['contact_mobile'], 'image' => isset($post['image']) ? $post['image'] : '')
             );
-            $last_id = DB::table('user')->orderBy('id', 'desc')->first();
+            //$last_id = DB::table('user')->orderBy('id', 'desc')->first();
 
             $custInsert = DB::table('customers')->insertGetId(
-                    array('user_id' => $last_id->id, 'customer_image' => isset($post['image']) ? $post['image'] : '', 'comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date)
+                    array('user_id' => $userInsert, 'customer_image' => isset($post['image']) ? $post['image'] : '', 'comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date)
+            );
+            $shippingInsert = DB::table('shipping_info')->insertGetId(
+                    array('customer_id' => $custInsert, 'comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'city' => $post['city'], 'state' => $post['state'], 'identifier' => 'My Deafult Address')
             );
 
             // Email 
-            if (isset($userInsert) && isset($custInsert)) {
+            if (isset($userInsert) && isset($custInsert) && isset($shippingInsert)) {
                 $name = $post['contact_name'];
                 $username = $post['contact_email'];
                 $password = $post['password'];
@@ -136,7 +138,6 @@ class CustomerController extends Controller
                 'building_no' => 'required',
                 'street_addrs' => 'required',
                 'phone_no' => 'required',
-                //'interior_no' => 'required',
                 'city' => 'required',
                 'state' => 'required',
                 'contact_name' => 'required',
@@ -169,8 +170,7 @@ class CustomerController extends Controller
             $my_date = date('m/d/Y', strtotime($dt));
             $time = strtotime($my_date);
             $date = date('Y/m/d', $time);
-
-            if (!isset($post['password'])) {
+            if ($post['password'] == '') {
                 $myquery = DB::table('user')->select('password')->where('id', $post['id'])->first();
                 $post['password'] = $myquery->password;
             } else {
@@ -194,13 +194,22 @@ class CustomerController extends Controller
                 $post['image'] = $myimage->customer_image;
             }
             DB::table('user')
-                    ->where('id', $post['id'])
-                    ->update(array('email' => $post['contact_email'], 'name' => $post['contact_name'], 'birthdate' => $date, 'mobileno' => $post['contact_mobile'], 'password' => $post['password'], 'image' => $post['image']));
+                    ->leftJoin('customers', 'customers.user_id', '=', 'user.id')
+                    ->leftJoin('shipping_info', 'shipping_info.customer_id', '=', 'customers.id')
+                    ->where('user.id', $post['id'])
+                    ->update(array('user.email' => $post['contact_email'], 'user.name' => $post['contact_name'], 'user.birthdate' => $date, 'user.mobileno' => $post['contact_mobile'], 'user.password' => $post['password'], 'user.image' => $post['image'], 'customers.comp_name' => $post['comp_name'], 'customers.zipcode' => $post['zipcode'], 'customers.building_no' => $post['building_no'], 'customers.country' => $post['country'], 'customers.street_addrs' => $post['street_addrs'], 'customers.phone_no' => $post['phone_no'], 'customers.interior_no' => $post['interior_no'], 'customers.fax_number' => $post['fax_number'], 'customers.city' => $post['city'], 'customers.website' => $post['website'], 'customers.state' => $post['state'], 'customers.contact_name' => $post['contact_name'], 'customers.position' => $post['position'], 'customers.contact_email' => $post['contact_email'], 'customers.contact_mobile' => $post['contact_mobile'], 'customers.contact_birthdate' => $date, 'customers.customer_image' => $post['image'], 'shipping_info.comp_name' => $post['comp_name'], 'shipping_info.zipcode' => $post['zipcode'], 'shipping_info.building_no' => $post['building_no'], 'shipping_info.country' => $post['country'], 'shipping_info.street_addrs' => $post['street_addrs'], 'shipping_info.phone_no' => $post['phone_no'], 'shipping_info.interior_no' => $post['interior_no'], 'shipping_info.city' => $post['city'], 'shipping_info.state' => $post['state']));
 
-            DB::table('customers')
-                    ->where('user_id', $post['id'])
-                    ->update(array('comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date, 'customer_image' => $post['image'])
-            );
+            /*  DB::table('customers')
+              ->where('user_id', $post['id'])
+              ->update(array('comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'fax_number' => $post['fax_number'], 'city' => $post['city'], 'website' => $post['website'], 'state' => $post['state'], 'contact_name' => $post['contact_name'], 'position' => $post['position'], 'contact_email' => $post['contact_email'], 'contact_mobile' => $post['contact_mobile'], 'contact_birthdate' => $date, 'customer_image' => $post['image'])
+              );
+
+              DB::table('shipping_info')
+              ->leftJoin('shipping_info', 'shipping_info.id', '=', 'purchase_order.shipping_id')
+              ->where('customer_id', $post['id'])
+              ->where('identifire', 'My Deafult Address')
+              ->update(array('comp_name' => $post['comp_name'], 'zipcode' => $post['zipcode'], 'building_no' => $post['building_no'], 'country' => $post['country'], 'street_addrs' => $post['street_addrs'], 'phone_no' => $post['phone_no'], 'interior_no' => $post['interior_no'], 'city' => $post['city'], 'state' => $post['state'], 'identifire' => 'My Deafult Address')
+              ); */
 
             Session::flash('message', 'Customer Updated Successfully!!');
             Session::flash('status', 'success');
