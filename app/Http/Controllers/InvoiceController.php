@@ -52,7 +52,6 @@ class InvoiceController extends Controller
             // Server Side Validation
             $rules = array(
                 'comp_name' => 'required',
-                'building_no' => 'required',
                 'street_addrs' => 'required',
                 'interior_no' => 'required',
                 'city' => 'required',
@@ -174,7 +173,6 @@ class InvoiceController extends Controller
                 // Server Side Validation
                 $rules = array(
                     'comp_name' => 'required',
-                    'building_no' => 'required',
                     'street_addrs' => 'required',
                     'interior_no' => 'required',
                     'city' => 'required',

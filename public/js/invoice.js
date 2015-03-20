@@ -254,9 +254,6 @@ $(document).ready(function () {
             'zipcode': {
                 required: true
             },
-            'building_no': {
-                required: true
-            },
             'street_addrs': {
                 required: true
             },
@@ -307,9 +304,6 @@ $(document).ready(function () {
             'comp_name': {
                 required: 'Please enter company name.',
                 onlyname: 'Please enter valid company name.'
-            },
-            'building_no': {
-                required: 'Please enter building no.'
             },
             'street_addrs': {
                 required: 'Please enter street address.'
