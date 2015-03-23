@@ -696,11 +696,11 @@ class PurchaseOrderCustomerController extends Controller
      */
     public function getCustomerData()
     {
-        $custData = DB::table('customers')->select('contact_name', 'id', 'phone_no')->get();
+        $custData = DB::table('customers')->select('id', 'comp_name')->get();
         $cData = '';
         $cData .="<option value='" . '' . "' selected='selected' > Select Customer</option>";
         foreach ($custData as $key => $value) {
-            $cData .="<option value='" . $value->id . "'>" . $value->contact_name . " " . $value->phone_no . "</option>";
+            $cData .="<option value='" . $value->id . "'>" . $value->comp_name . "</option>";
         }
         return $cData;
     }
