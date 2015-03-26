@@ -37,9 +37,10 @@ class OrderStatusReportController extends Controller
      * 
      * @return type
      */
-    public function orderList()
+    public function orderList($status)
     {
         if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
+            $tempSequence = 1;
             // Get listing for Admin or Manager
             $skuData = DB::table('order_list')
                     ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
@@ -47,13 +48,14 @@ class OrderStatusReportController extends Controller
                     ->leftJoin('pcs_made', 'pcs_made.orderlist_id', '=', 'order_list.id')
                     ->select('order_list.adminSequence', 'purchase_order.po_number', 'part_number.SKU', 'purchase_order.require_date', DB::raw("IF(order_list.ESDate IS NULL or order_list.ESDate = '','',order_list.ESDate) as estDate"), 'order_list.qty', DB::raw("IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)) as pcsMade"), DB::raw("(order_list.qty - (IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)))) as amount"), 'order_list.pl_status', 'order_list.id as orderId')
                     ->where('purchase_order.is_deleted', '!=', 1)
+                    ->where('order_list.pl_status', '=',$status )
                     ->groupBy('order_list.id')
                     ->orderBy('order_list.adminSequence', 'ASC');
 
             // Return datatable
             $statusStr = '<select id="plStatusChange" class="form-control" olId="{{$orderId}}"><option value="0" {{ $pl_status == 0 ? "selected" : "" }}>Open</option><option value="1" {{ $pl_status == 1 ? "selected" : "" }}>Closed</option></select>';
             return Datatables::of($skuData)
-                            ->editColumn("adminSequence", '{{$adminSequence}}')
+                            ->editColumn("adminSequence",'@if($pl_status) 0 @else {{$adminSequence}} @endif')
                             ->editColumn("pcsMade", '<button type="button" class="btn btn-primary btn-sm btnPcsMade" data-toggle="modal" data-target="#myModal" onclick="getpcsDetails(\'{{$orderId}}\',\'{{$po_number}}\',\'{{$SKU}}\',\'{{$amount}}\')">{{$pcsMade}}</button>')
                             ->editColumn("estDate", '<input id="ESDate" type="text" olId="{{$orderId}}" value="{{$estDate}}" size="12" class="form-control default-date-picker ESDate" placeholder="YYYY-MM-DD">')
                             ->editColumn("pl_status", $statusStr)
@@ -70,12 +72,13 @@ class OrderStatusReportController extends Controller
                     ->select('order_list.localSequence', 'purchase_order.po_number', 'part_number.SKU', 'purchase_order.require_date', DB::raw("IF(order_list.ESDate IS NULL or order_list.ESDate = '','',order_list.ESDate) as estDate"), 'order_list.qty', DB::raw("IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)) as pcsMade"), 'order_list.amount', 'order_list.pl_status', 'order_list.id as orderId')
                     ->where('order_list.customer_id', '=', $customer->id)
                     ->where('purchase_order.is_deleted', '!=', 1)
+                    ->where('order_list.pl_status', '=',$status )
                     ->groupBy('order_list.id')
                     ->orderBy('order_list.localSequence', 'ASC');
             // Return datatable
             $statusStr = '{{ $pl_status == 0 ? "Open" : "Close" }}';
             return Datatables::of($skuData)
-                            ->editColumn("localSequence", '{{$localSequence}}')
+                            ->editColumn("localSequence",'@if($pl_status) 0 @else {{$localSequence}} @endif')
                             ->editColumn("pcsMade", '<button type="button" class="btn btn-primary btn-sm">{{$pcsMade}}</button>')
                             ->editColumn("estDate", '{{$estDate}}')
                             ->editColumn("pl_status", $statusStr)
@@ -151,6 +154,8 @@ class OrderStatusReportController extends Controller
         // Return
         return Response(json_encode(array('status' => $status)));
     }
+    
+    
 
     /**
      * Add/update pcs made
@@ -309,5 +314,8 @@ class OrderStatusReportController extends Controller
         // Return
         return Response(json_encode(array('status' => $status)));
     }
+    
+    
+  
 
 }

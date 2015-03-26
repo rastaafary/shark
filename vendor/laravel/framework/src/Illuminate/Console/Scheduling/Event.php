@@ -17,42 +17,42 @@ class Event {
 	 *
 	 * @var string
 	 */
-	protected $command;
+	public $command;
 
 	/**
 	 * The cron expression representing the event's frequency.
 	 *
 	 * @var string
 	 */
-	protected $expression = '* * * * * *';
+	public $expression = '* * * * * *';
 
 	/**
 	 * The timezone the date should be evaluated on.
 	 *
 	 * @var \DateTimeZone|string
 	 */
-	protected $timezone;
+	public $timezone;
 
 	/**
 	 * The user the command should run as.
 	 *
 	 * @var string
 	 */
-	protected $user;
+	public $user;
 
 	/**
 	 * The list of environments the command should run under.
 	 *
 	 * @var array
 	 */
-	protected $environments = [];
+	public $environments = [];
 
 	/**
 	 * Indicates if the command should run in maintenance mode.
 	 *
 	 * @var bool
 	 */
-	protected $evenInMaintenanceMode = false;
+	public $evenInMaintenanceMode = false;
 
 	/**
 	 * The filter callback.
@@ -73,7 +73,7 @@ class Event {
 	 *
 	 * @var string
 	 */
-	protected $output = '/dev/null';
+	public $output = '/dev/null';
 
 	/**
 	 * The array of callbacks to be run after the event is finished.
@@ -87,7 +87,7 @@ class Event {
 	 *
 	 * @var string
 	 */
-	protected $description;
+	public $description;
 
 	/**
 	 * Create a new event instance.
@@ -153,8 +153,6 @@ class Event {
 	 */
 	protected function callAfterCallbacks(Container $container)
 	{
-		if (empty($this->afterCallbacks)) return;
-
 		foreach ($this->afterCallbacks as $callback)
 		{
 			$container->call($callback);
@@ -181,7 +179,7 @@ class Event {
 	 */
 	public function isDue(Application $app)
 	{
-		if ($app->isDownForMaintenance() && ! $this->runsInMaintenanceMode())
+		if ( ! $this->runsInMaintenanceMode() && $app->isDownForMaintenance())
 		{
 			return false;
 		}
@@ -266,9 +264,7 @@ class Event {
 	 */
 	public function hourly()
 	{
-		$this->expression = '0 * * * * *';
-
-		return $this;
+		return $this->cron('0 * * * * *');
 	}
 
 	/**
@@ -278,9 +274,7 @@ class Event {
 	 */
 	public function daily()
 	{
-		$this->expression = '0 0 * * * *';
-
-		return $this;
+		return $this->cron('0 0 * * * *');
 	}
 
 	/**
@@ -315,9 +309,7 @@ class Event {
 	 */
 	public function twiceDaily()
 	{
-		$this->expression = '0 1,13 * * * *';
-
-		return $this;
+		return $this->cron('0 1,13 * * * *');
 	}
 
 	/**
@@ -407,9 +399,7 @@ class Event {
 	 */
 	public function weekly()
 	{
-		$this->expression = '0 0 * * 0 *';
-
-		return $this;
+		return $this->cron('0 0 * * 0 *');
 	}
 
 	/**
@@ -433,9 +423,7 @@ class Event {
 	 */
 	public function monthly()
 	{
-		$this->expression = '0 0 1 * * *';
-
-		return $this;
+		return $this->cron('0 0 1 * * *');
 	}
 
 	/**
@@ -445,9 +433,7 @@ class Event {
 	 */
 	public function yearly()
 	{
-		$this->expression = '0 0 1 1 * *';
-
-		return $this;
+		return $this->cron('0 0 1 1 * *');
 	}
 
 	/**
@@ -457,9 +443,7 @@ class Event {
 	 */
 	public function everyFiveMinutes()
 	{
-		$this->expression = '*/5 * * * * *';
-
-		return $this;
+		return $this->cron('*/5 * * * * *');
 	}
 
 	/**
@@ -469,9 +453,7 @@ class Event {
 	 */
 	public function everyTenMinutes()
 	{
-		$this->expression = '*/10 * * * * *';
-
-		return $this;
+		return $this->cron('*/10 * * * * *');
 	}
 
 	/**
@@ -481,9 +463,7 @@ class Event {
 	 */
 	public function everyThirtyMinutes()
 	{
-		$this->expression = '0,30 * * * * *';
-
-		return $this;
+		return $this->cron('0,30 * * * * *');
 	}
 
 	/**
@@ -494,9 +474,9 @@ class Event {
 	 */
 	public function days($days)
 	{
-		$this->spliceIntoPosition(5, implode(',', is_array($days) ? $days : func_get_args()));
+		$days = is_array($days) ? $days : func_get_args();
 
-		return $this;
+		return $this->spliceIntoPosition(5, implode(',', $days));
 	}
 
 	/**
@@ -604,9 +584,11 @@ class Event {
 			throw new LogicException("Must direct output to a file in order to e-mail results.");
 		}
 
+		$addresses = is_array($addresses) ? $addresses : func_get_args();
+
 		return $this->then(function(Mailer $mailer) use ($addresses)
 		{
-			$this->emailOutput($mailer, is_array($addresses) ? $addresses : func_get_args());
+			$this->emailOutput($mailer, $addresses);
 		});
 	}
 
@@ -695,9 +677,7 @@ class Event {
 
 		$segments[$position - 1] = $value;
 
-		$this->expression = implode(' ', $segments);
-
-		return $this;
+		return $this->cron(implode(' ', $segments));
 	}
 
 	/**

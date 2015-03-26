@@ -1,7 +1,8 @@
 @extends('layouts.main')
 @section('content')
 {!! HTML::script('js/OrderStatus.js') !!}
-<!--body wrapper start-->
+
+
 <div class="wrapper">
     <div class="row">
         <div class="col-md-12">
@@ -58,6 +59,11 @@
                                 </div>
                             </div>
                         </div>
+                   <div class="example" id="demo">
+                       <input type="checkbox" name="toggle" data-toggle="toggle" checked data-on="open" data-off="closed" id="openCloseToggle">
+                       
+				
+                    </div>
                         <!-- Modal End -->
 
                         <form class="form-horizontal" method="post">

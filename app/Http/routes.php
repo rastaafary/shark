@@ -156,8 +156,10 @@ Route::get('/userdata', 'ManageUserController@getUserData');
 Route::get('/userProfile/delete/{var?}', 'ManageUserController@deleteUser');
 //View Order Status Report
 Route::get('/PLReport/view', 'OrderStatusReportController@viewReport');
-Route::get('/PLReport/orderlist', 'OrderStatusReportController@orderList');
+Route::get('/PLReport/orderlist/{var?}', 'OrderStatusReportController@orderList');
 Route::get('/PLReport/changePlValues', 'OrderStatusReportController@changePlValues');
+//changeSequence
+Route::get('/PLReport/changeSequence', 'OrderStatusReportController@changeSequence');
 Route::get('/PLReport/addPcsMade', 'OrderStatusReportController@addPcsMade');
 Route::get('/PLReport/getPcsMadeDetails', 'OrderStatusReportController@getPcsMadeDetails');
 Route::get('/PLReport/deletePcsMade', 'OrderStatusReportController@deletePcsMade');
