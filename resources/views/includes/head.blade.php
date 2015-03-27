@@ -33,13 +33,14 @@
 {!! HTML::style('css/bootstrap-timepicker/css/timepicker.css') !!}
 {!! HTML::style('css/bootstrap-daterangepicker/daterangepicker-bs3.css') !!}
 {!! HTML::style('css/bootstrap-datetimepicker/css/datetimepicker-custom.css') !!}
-{!! HTML::style('css/bootstrap-toggle-master/css/bootstrap-toggle.css') !!}
+{!! HTML::style('css/bootstrap-toggle-master-BK/css/bootstrap-toggle.css') !!}
+
 <!--dynamic table-->
   
 {!! HTML::script('js/advanced-datatable/js/jquery.dataTables.js') !!}
 {!! HTML::script('js/data-tables/DT_bootstrap.js') !!}
 
-{!! HTML::script('js/bootstrap-toggle-master/js/bootstrap-toggle.js') !!}
+{!! HTML::script('js/bootstrap-toggle-master-BK/js/bootstrap-toggle.js') !!}
 {!! HTML::script('js/advanced-datatable/js/datatable-reordering.js') !!}
 {!! HTML::style('js/advanced-datatable/css/demo_page.css') !!}
 {!! HTML::style('js/advanced-datatable/css/demo_table.css') !!}
