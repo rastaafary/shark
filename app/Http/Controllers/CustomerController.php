@@ -120,6 +120,7 @@ class CustomerController extends Controller
             Session::flash('status', 'success');
             return redirect('/customer');
         }
+        
         return view('customer.addCustomer', ['page_title' => 'Add Customers']);
     }
 

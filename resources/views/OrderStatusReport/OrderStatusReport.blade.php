@@ -58,6 +58,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="example" id="demo">
+                       <input type="checkbox" name="toggle" data-toggle="toggle" checked data-on="open" data-off="closed" id="openCloseToggle">
+                       
+				
+                    </div>
                         <!-- Modal End -->
 
                         <form class="form-horizontal" method="post">
