@@ -84,10 +84,10 @@ $(document).ready(function ()
         "bServerSide": true,
         "sAjaxSource": "/PLReport/orderlist/0",
         "aaSorting": [[0, "asc"]],
-        /*"aoColumnDefs": [
+        "aoColumnDefs": [
          {"bSearchable": false, "aTargets": [0]},
          {"bSortable": false, "aTargets": [0]}
-         ],*/
+         ],
         "fnServerData": function (sSource, aoData, fnCallback) {            
             $.ajax({
                 "dataType": 'json',
