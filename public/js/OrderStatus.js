@@ -86,7 +86,7 @@ $(document).ready(function ()
         "aaSorting": [[0, "asc"]],
         "aoColumnDefs": [
          {"bSearchable": false, "aTargets": [0]},
-         {"bSortable": false, "aTargets": [0]}
+         {"bSortable": false, "aTargets": [0,1,2,3,4,5,6,7,8]}
          ],
         "fnServerData": function (sSource, aoData, fnCallback) {            
             $.ajax({

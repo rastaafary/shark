@@ -67,7 +67,8 @@ $(document).ready(function () {
         "aaSorting": [[7, "desc"]],
         "order": [[1, 'asc']],
         "aoColumnDefs": [
-            {"bSearchable": false, "aTargets": [0, 1, 2, 3, 4, 5]}
+            {"bSearchable": false, "aTargets": [4]},
+            {"bSortable": false, "aTargets": [2, 5, 6]}
         ],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
@@ -148,21 +149,21 @@ $('#orderDate,#require_date').datepicker({format: "yyyy-mm-dd", todayBtn: true, 
         return this.optional(element) || /^[a-z A-Z]+$/.test(value);
     }, "Please enter valid name.");
 
-    $("#POCustomer-list").dataTable({
-        //"bProcessing": true,
-        "bServerSide": false,
-        // "sAjaxSource": "",
-        "aaSorting": [[7, "desc"]],
-        "fnServerData": function (sSource, aoData, fnCallback) {
-            $.ajax({
-                "dataType": 'json',
-                "type": "GET",
-                "url": sSource,
-                "data": aoData,
-                "success": fnCallback
-            });
-        }
-    });
+//    $("#POCustomer-list").dataTable({
+//        //"bProcessing": true,
+//        "bServerSide": false,
+//        // "sAjaxSource": "",
+//        "aaSorting": [[7, "desc"]],
+//        "fnServerData": function (sSource, aoData, fnCallback) {
+//            $.ajax({
+//                "dataType": 'json',
+//                "type": "GET",
+//                "url": sSource,
+//                "data": aoData,
+//                "success": fnCallback
+//            });
+//        }
+//    });
 
     $("#searchQty").blur(function () {
         divid = $('#searchQty').closest('div').attr('id');

@@ -12,9 +12,11 @@ $(document).ready(function () {
         "sAjaxSource": "/invoice/getInvoiceList",
         "aaSorting": [[7, "desc"]],
         "order": [[1, 'asc']],
-        "aoColumnDefs": [
-            {"bSearchable": false, "aTargets": [ 0, 1, 2, 3, 4, 5]}
+          "aoColumnDefs": [
+            {"bSearchable": false, "aTargets": [1, 2, 3, 5]},
+            {"bSortable": false, "aTargets": [4, 5]}
         ],
+        
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
@@ -84,21 +86,21 @@ $(document).ready(function () {
         }
     });
 
-    $("#Invoice-list").dataTable({
-        "bProcessing": true,
-        "bServerSide": false,
-        "sAjaxSource": "",
-        "aaSorting": [[7, "desc"]],
-        "fnServerData": function (sSource, aoData, fnCallback) {
-            $.ajax({
-                "dataType": 'json',
-                "type": "GET",
-                "url": sSource,
-                "data": aoData,
-                "success": fnCallback
-            });
-        }
-    });
+//    $("#Invoice-list").dataTable({
+//        "bProcessing": true,
+//        "bServerSide": false,
+//        "sAjaxSource": "",
+//        "aaSorting": [[7, "desc"]],
+//        "fnServerData": function (sSource, aoData, fnCallback) {
+//            $.ajax({
+//                "dataType": 'json',
+//                "type": "GET",
+//                "url": sSource,
+//                "data": aoData,
+//                "success": fnCallback
+//            });
+//        }
+//    });
 
     $("#skuOrder").change(function () {
         if ($(this).val() == '' || $(this).val() == '0') {

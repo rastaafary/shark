@@ -84,10 +84,11 @@ $(document).ready(function() {
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "/payment/getPaymentList",
-        "aaSorting": [[0, "asc"]],
-        "aoColumnDefs": [
-            {"bSearchable": false, "aTargets": [4]},
-            {"bSortable": false, "aTargets": [4]},
+        "aaSorting": [[1, 'asc']],
+        //"order": [[1, 'asc']],
+       "aoColumnDefs": [
+            {"bSearchable": false, "aTargets": [3, 4]},
+            {"bSortable": false, "aTargets": [4]}
         ],
         "fnServerData": function(sSource, aoData, fnCallback) {
             $.ajax({

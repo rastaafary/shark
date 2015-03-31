@@ -4,6 +4,10 @@ $(document).ready(function () {
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "/customerdata",
+        "aoColumnDefs": [
+           // {"bSearchable": false, "aTargets": [1,2,3,4,5]},
+            {"bSortable": false, "aTargets": [9,10]}
+        ],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',

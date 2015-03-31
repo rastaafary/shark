@@ -5,6 +5,10 @@ $(document).ready(function () {
         "bServerSide": true,
         "sAjaxSource": "/partdata",
         "aaSorting": [[7, "desc"]],
+        "aoColumnDefs": [
+            {"bSearchable": false, "aTargets": [3]},
+            {"bSortable": false, "aTargets": [2,3]}
+        ],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
