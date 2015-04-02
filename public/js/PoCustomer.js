@@ -67,7 +67,7 @@ $(document).ready(function () {
         "aaSorting": [[7, "desc"]],
         "order": [[1, 'asc']],
         "aoColumnDefs": [
-            {"bSearchable": false, "aTargets": [4]},
+            {"bSearchable": false, "aTargets": [2,3,4,5,6]},
             {"bSortable": false, "aTargets": [2, 5, 6]}
         ],
         "fnServerData": function (sSource, aoData, fnCallback) {
