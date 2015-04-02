@@ -1,43 +1,24 @@
 var oTable;
 $(document).ready(function ()
 {
-    // Set datepicker
-    /*   $('.ESDate').datepicker({
-     format: 'yyyy-mm-dd',
-     autoclose: true,
-     todayBtn: true,
-     todayHighlight: true
-     });
-     //toggel button
-     
-     */
 
     $('#pcsMadeDate').datepicker({format: "yyyy-mm-dd", todayBtn: true, todayHighlight: true}).on('changeDate', function (ev) {
         $(this).datepicker('hide');
         $(document.activeElement).trigger("blur");
     });
-    // $('#toggle-two').bootstrapToggle({on: 'Enabled', off: 'Disabled'});
-    // $(function() { $('#toggle-two').bootstrapToggle({ on: 'Enabled', off: 'Disabled' }); }) 
-//    $(function () {
-//        $('#openCloseToggle').bootstrapToggle(function (){
-//           $(this).prop('checked',true);
-//        }, function(){
-//        $(this).prop('checked',false);
-//        
-//});
-//    })
 
-    $("#openCloseToggle").change(function(){
-         if($('#openCloseToggle').prop('checked') == true){
-             // 0 
-           oTable.fnReloadAjax('/PLReport/orderlist/0');
-         } else {
-           oTable.fnReloadAjax('/PLReport/orderlist/1');
-          
+
+    $("#openCloseToggle").change(function () {
+        if ($('#openCloseToggle').prop('checked') == true) {
+            // 0 
+            oTable.fnReloadAjax('/PLReport/orderlist/0');
+        } else {
+            oTable.fnReloadAjax('/PLReport/orderlist/1');
+
             //1 
-         }
+        }
     });
-        
+
     $('body').click(function (eve) {
         if (eve.target.id !== 'ESDate') {
             $('.ESDate').datepicker("hide");
@@ -79,16 +60,16 @@ $(document).ready(function ()
     }
     //var sequence = 1;
     // Set datatable
-     oTable = $("#order-list").dataTable({
+    oTable = $("#order-list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "/PLReport/orderlist/0",
         "aaSorting": [[0, "asc"]],
         "aoColumnDefs": [
-         {"bSearchable": false, "aTargets": [0]},
-         {"bSortable": false, "aTargets": [0,1,2,3,4,5,6,7,8]}
-         ],
-        "fnServerData": function (sSource, aoData, fnCallback) {            
+            {"bSearchable": false, "aTargets": [0]},
+            {"bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7, 8]}
+        ],
+        "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
                 "type": "GET",
@@ -104,6 +85,11 @@ $(document).ready(function ()
                 todayBtn: true,
                 todayHighlight: true
             });
+            if($('#order-list_filter input').val() != '') {
+                $('#order-list tbody').sortable("disable" );
+            } else {
+                $('#order-list tbody').sortable("enable" );
+            }
         },
         "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
             //$(nRow).find('td:first').html(sequence++);
@@ -111,7 +97,10 @@ $(document).ready(function ()
             return nRow;
         }
     });
-
+    
+  
+    
+    
     $('#order-list tbody').sortable({
         stop: function () {
             $("#order-list_processing").css("visibility", "visible");
@@ -172,13 +161,13 @@ $(document).ready(function ()
         return false;
     });
 
-   //Toggle change
+    //Toggle change
 //   $('#openCloseToggle')(function(){
 //       alert($("#openCloseToggle").val());
 //    });
 //    
 //    
-    
+
 
     // Cancel update on edit Pcs Made
     $('#cancelUpdate').click(function () {
