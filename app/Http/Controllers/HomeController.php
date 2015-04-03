@@ -1,6 +1,9 @@
 <?php 
 namespace App\Http\Controllers;
 use View;
+use Session;
+use Auth;
+use Redirect;
 
 class HomeController extends Controller {
 
@@ -32,9 +35,11 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-           
-            return view('home');
-           
+            if (Auth::user()->hasRole('customer')) {
+                return Redirect::intended('/po');
+            } else {
+                return Redirect::intended('/part');
+            }
 	}
         public function login()
         {
