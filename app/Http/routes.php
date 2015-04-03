@@ -13,7 +13,7 @@
 
 Route::get('/', 'WelcomeController@index');
 
-//Route::get('home', 'HomeController@index');
+Route::get('home', 'HomeController@index');
 // Login
 Route::post('/login', 'LoginController@login');
 Route::group(['middleware' => 'auth'], function() {
