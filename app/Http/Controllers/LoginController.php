@@ -152,7 +152,7 @@ class LoginController extends Controller
                     if ($mail_status && $db_status) {
                         $error = 'Reset password link is send to your Email address.';
                         Session::flash('messagelogin', $error);
-                        Session::flash('alert-class', 'alert-danger');
+                        Session::flash('status', 'success');
                         return redirect('/');
                     } else {
                         $error = 'Something went wrong.';
@@ -232,7 +232,7 @@ class LoginController extends Controller
                     if (isset($tokenUpdate)) {
                         $error = 'Password successfully reset. Login from here.';
                         Session::flash('messagelogin', $error);
-                        Session::flash('alert-class', 'alert-danger');
+                        Session::flash('status', 'success');
                         return redirect('/');
                     } else {
                         $error = 'Whoops, Something went to wrong. Try again!!.';
