@@ -42,12 +42,17 @@
                                     </h3>                                       
                                 </div>
                                 @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))
-                                 @if(!isset($id))                               
+                                @if(!isset($id))                               
                                 <div class="form-group col-sm-4 col-md-3">
                                     <label for="orderpoId">Select Customer : </label>
                                     <select name="selectPOCustomer" id="selectPOCustomer" class ='POselect2 form-control'><?php echo $custData; ?></select>
                                 </div>
-                                 @endif
+                                @else
+                                <div class="form-group col-sm-6 col-md-4">
+                                    <label >Company Name :  </label>                                                  
+                                    <label for="orderpoId" style="font-weight: bold;"><?= $cust->comp_name ?></label>                                                   
+                                </div>
+                                @endif
                                 @endif
                             </div>
                             <br>
@@ -104,7 +109,7 @@
                                                         @endforeach
                                                         @endif
                                                         @endif
-                                                        
+
                                                         @if(isset($id))
                                                         @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('admin'))
                                                         @if(count($shipping) > 0)
@@ -290,7 +295,7 @@
                                                 </div>
                                             </div>
                                             @if(isset($id))
-                                                <a class="btn btn-link" href="/blogArt/<?= $purchaseOrder->po_id ?>" role="button"><strong>Blog Art</strong></a>                                          
+                                            <a class="btn btn-link" href="/blogArt/<?= $purchaseOrder->po_id ?>" role="button"><strong>Blog Art</strong></a>                                          
                                             @endif
                                         </div>                                                       
                                     </div>
