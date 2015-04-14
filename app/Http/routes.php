@@ -89,6 +89,15 @@ Route::get('/customer/edit/{var?}', 'CustomerController@editCust');
 Route::post('/customer/edit/{var?}', 'CustomerController@editCust');
 Route::get('/customer/delete/{var?}', 'CustomerController@deleteCust');
 Route::get('/customerdata', 'CustomerController@getCustData');
+// BOM
+Route::get('/part/bom/{var?}', 'BOMController@listBOM');
+Route::get('/part/bom/add', 'BOMController@addBOM');
+Route::post('/part/bom/add', 'BOMController@addBOM');
+Route::get('/part/bom/edit/{var?}', 'BOMController@editBOM');
+Route::post('/part/bom/edit/{var?}', 'BOMController@editBOM');
+Route::get('/part/delete/bom/{var?}', 'BOMController@deleteBOM');
+Route::get('/partbomdata', 'BOMController@getBOMData');
+
 // Invoice
 Route::get('/invoice/add', 'InvoiceController@addInvoice');
 Route::post('/invoice/add', 'InvoiceController@addInvoice');
