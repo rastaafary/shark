@@ -1,7 +1,9 @@
 @extends('layouts.main')
 @section('content')
 {!! HTML::script('js/BOM.js') !!}
-
+<script>
+    var part_id = '<?php echo $part_id ?>';
+    </script>
 <div class="wrapper">
     <div class="row">
         <div class="col-md-12">
