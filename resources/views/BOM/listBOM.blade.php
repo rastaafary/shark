@@ -9,7 +9,7 @@
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#List">List</a></li>
-                        <li><a href="{{action('BOMController@addBOM')}}" >Add</a></li>
+                        <li><a href="/part/{{$part_id}}/bom/add">Add</a></li>
                     </ul>
                 </header>
                 <div class="panel-body">

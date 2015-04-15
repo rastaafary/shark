@@ -168,7 +168,7 @@ class PartController extends Controller
                 ->select(array('SKU', 'description', 'cost', 'id'))
                 ->where('is_deleted', ' !=', '1');
         return Datatables::of($partlist)
-                        ->editColumn("id", '<a href="part/bom/{{ $id }}" class="btn btn-info" id="btnBom">BOM</a>&nbsp;'
+                        ->editColumn("id", '<a href="part/{{ $id }}/bom" class="btn btn-info" id="btnBom">BOM</a>&nbsp;'
                                 . '<a href="part/delete/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                 . '<span class="fa fa-trash-o"></span></a>'
                                 . '&nbsp<a href="part/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'

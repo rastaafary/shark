@@ -8,7 +8,7 @@
             <section class="panel">
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
-                        <li><a href="/po">List</a></li>
+                        <li><a href="/part/{{$part_id}}/bom">List</a></li>
                         <li class="active"><a href="#Add">Add</a></li>                       
                     </ul>
                 </header>
@@ -16,11 +16,9 @@
                     <div class="tab-content">                        
                         <div class="tab-pane active" id="Add">
                             @if(!isset($id))
-                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/part/bom/add','name'=>'BOM','id'=>'BOM')) !!}
-                            {!! Form::hidden('id',Input::old('id',isset(Auth::user()->id) ? Auth::user()->id : '')) !!}
+                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/part/'.$part_id.'/bom/add','name'=>'BOM','id'=>'BOM')) !!}
                             @else                             
-                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/part/bom/edit/'.$id,'name'=>'BOM','id'=>'BOM')) !!}
-                            {!! Form::hidden('id',Input::old('id',isset(Auth::user()->id) ? Auth::user()->id : '')) !!}
+                            {!! Form::open(array('class'=>'form-horizontal','url'=>'/part/'.$part_id.'/bom/edit/'.$id,'name'=>'BOM','id'=>'BOM')) !!}
                             @endif
                             <div class="row">
                                 <div class="col-md-12">
@@ -33,10 +31,13 @@
                                                 <div class="form-group col-sm-6">
                                                     <label for="part_id" class="col-sm-4 control-label">SKU : </label> 
                                                     <div class="col-sm-8">
-                                                        <select id="part_id" name="part_id" class='form-control'>
-                                                            <option>ABC</option>
-                                                            <option>PQR</option>
-                                                            <option>XYZ</option>
+                                                        <select id="part_id" name="part_id" class='form-control skuDropDown'>
+                                                            @if(count($part_data) > 0)
+                                                            <option value='selected=selected'> Select SKU </option>
+                                                            @foreach($part_data as $value)
+                                                            <option value="{{$value->id}}">{{$value->SKU}}</option>
+                                                            @endforeach
+                                                            @endif
                                                         </select>
                                                     </div>
                                                 </div>
@@ -55,19 +56,21 @@
                                                     <div class="form-group">
                                                         <label for="rawMaterial" class="col-sm-4 control-label">RawMaterial: </label>
                                                         <div class="col-sm-8">
-                                                            {!! Form::text('raw_material',Input::old('raw_material',isset($BOM->raw_material) ? $BOM->raw_material : '') ,array('class'=>'form-control', 'placeholder' => 'SHK-FAB-1000', 'id' => 'raw_material')) !!}
+                                                            <input type="text" class="form-control typeahead" name="selectedRawMaterial" id='selectedRawMaterial' placeholder="SHK-FAB-1000">
+                                                            <input type="hidden" id="raw_material" name="raw_material"  value=""/>
+<!--                                                            {!! Form::text('raw_material',Input::old('raw_material',isset($BOM->raw_material) ? $BOM->raw_material : '') ,array('class'=>'form-control', 'placeholder' => 'SHK-FAB-1000', 'id' => 'raw_material')) !!}-->
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="description" class="col-sm-4 control-label">Description : </label>
                                                         <div class="col-sm-8">
-                                                            {!! Form::text('descritpion',Input::old('descritpion',isset($bom->descritpion) ? $bom->descritpion : '') ,array('class'=>'form-control', 'placeholder' => 'Rolls de tela', 'id' => 'descritpion')) !!}
+                                                            {!! Form::text('descritpion',Input::old('descritpion',isset($bom->descritpion) ? $bom->descritpion : '') ,array('class'=>'form-control', 'placeholder' => 'Rolls de tela', 'id' => 'descritpion', 'readonly')) !!}
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="bom_cost" class="col-sm-4 control-label">Bom Cost:</label>
                                                         <div class="col-sm-8">
-                                                            {!! Form::text('bom_cost',Input::old('bom_cost',isset($bom->bom_cost) ? $bom->bom_cost : '') ,array('class'=>'form-control', 'placeholder' => '14.5','id' => 'bom_cost')) !!}
+                                                            {!! Form::text('bom_cost',Input::old('bom_cost',isset($bom->bom_cost) ? $bom->bom_cost : '') ,array('class'=>'form-control', 'placeholder' => '14.5','id' => 'bom_cost', 'readonly')) !!}
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -97,11 +100,7 @@
                                                     <div class="form-group">
                                                         <label for="unit" class="col-sm-4 control-label">Unit : </label>   
                                                         <div class="col-sm-8">
-                                                            <select id="unit" name="unit" class='form-control'>
-                                                                <option>ABC</option>
-                                                                <option>PQR</option>
-                                                                <option>XYZ</option>
-                                                            </select>
+                                                            {!! Form::text('unit',Input::old('unit',isset($bom->unit) ? $bom->unit : '') ,array('class'=>'form-control', 'placeholder' => 'Unit', 'id' => 'unit', 'readonly')) !!}
                                                         </div>
                                                     </div>
                                                 </div>
