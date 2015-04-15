@@ -13,8 +13,7 @@ use Auth;
 class RawMaterialController extends Controller
 {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
     }
 
@@ -30,8 +29,7 @@ class RawMaterialController extends Controller
 //        return view('PurchaseOrderCustomer.addPurchaseOrder', ['page_title' => 'Add Purchase Order']);
 //    }
 
-    public function addRawMaterial()
-    {
+    public function addRawMaterial() {
         $post = Input::all();
         if (isset($post['_token'])) {
             unset($post['_token']);
@@ -51,7 +49,13 @@ class RawMaterialController extends Controller
                                 ->withErrors($validator)
                                 ->withInput(Input::all());
             }
-            //print_r($post);exit;
+
+            $part_no = substr($post['partnumber'], 0, 3);
+            $part_no .= substr($post['partnumber'], 4, 3);
+            $part_no .= substr($post['partnumber'], 8, 4);
+
+            $post['partnumber'] = $part_no;
+
             DB::table('rawmaterial')->insert(array($post));
             Session::flash('message', 'RawMaterial Added Successfully!!');
             Session::flash('status', 'success');
@@ -61,8 +65,7 @@ class RawMaterialController extends Controller
         return view('RawMaterial.addRawMaterial', ['page_title' => 'Add Raw Material']);
     }
 
-    public function editRawMaterial($id = null)
-    {
+    public function editRawMaterial($id = null) {
         $post = Input::all();
 
         if (isset($post['_token']))
@@ -70,7 +73,6 @@ class RawMaterialController extends Controller
 
         if (isset($post['id']) && $post['id'] != null) {
             $rules = array(
-                
                 'id' => 'required',
                 'description' => 'required',
                 'purchasingcost' => 'required',
@@ -85,11 +87,18 @@ class RawMaterialController extends Controller
                 // $messages = $validator->messages();
                 return redirect('/RawMaterial/edit/' . $post['id'])
                                 ->withErrors($validator);
-               
             } else {
+
+                $part_no = substr($post['partnumber'], 0, 3);
+                $part_no .= substr($post['partnumber'], 4, 3);
+                $part_no .= substr($post['partnumber'], 8, 4);
+
+                $post['partnumber'] = $part_no;
+
                 DB::table('rawmaterial')
                         ->where('id', $post['id'])
                         ->update($post);
+
                 Session::flash('message', 'Raw Material Update Successfully!!');
                 Session::flash('status', 'success');
                 return redirect('/RawMaterial');
@@ -104,19 +113,27 @@ class RawMaterialController extends Controller
         return view('RawMaterial.rawmaterial', ['page_title' => 'Edit Raw Material']);
     }
 
-    public function listRawMaterial()
-    {
+    public function listRawMaterial() {
 
         return view('RawMaterial.listRawMaterial', ['page_title' => 'Raw Material']);
     }
 
-    public function getRawMaterialData()
-    {
+    public function getRawMaterialData() {
         $rawMateriallist = DB::table('rawmaterial')
                 ->select(array('partnumber', 'description', 'purchasingcost', 'unit', 'equivalency', 'stockunit', 'bomcost', 'id'));
+
         return Datatables::of($rawMateriallist)
                         ->editColumn("id", '<a href="RawMaterial/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
                                 . '<span class="fa fa-pencil"></span></a>')
+                        ->editColumn("partnumber", function($row)
+                        {
+                            $part_no = substr($row->partnumber, 0, 3) . "-";
+                            $part_no .= substr($row->partnumber, 3, 3) . "-";
+                            $part_no .= substr($row->partnumber, 6, 4);
+
+                            $row->partnumber = $part_no;
+                            return $row->partnumber;
+                        })
                         ->make();
     }
 

@@ -8,7 +8,9 @@ $(document).ready(function () {
         "aoColumnDefs": [
             {"bSearchable": false, "aTargets": [3]},
             {"bSortable": false, "aTargets": [2, 3]}
+         //   {"className": "part_no", "aTargets": [1]}
         ],
+       // "aoColumns": [{className: "my_class"}, null, null, null, null, null, null, null],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
@@ -19,27 +21,24 @@ $(document).ready(function () {
             });
         },
     });
-//    
-    $('.your-field').mask('AA', {'translation': {
-                                        A: {pattern: /[A-Z]/}, 
-                                     
-                                      }
-                                });
-////
-//   jQuery(function($) {
-//     
-//      $("#product").mask("a**-999-9999",{ casing: "upper"});
-//     
-//   });
+    $("#equivalency").blur(function () {
+        $("#bomcost").val($("#purchasingcost").val() * $("#equivalency").val());
+    });
+    jQuery(function ($) {
+        $("#product").mask("aaa-aaa-9999");
+        $(".part_id").mask("aaa-aaa-9999");
+    });
+    $("#product").blur(function () {
+        $("#product").val($("#product").val().toUpperCase());
+    });
+    
     //cost validation    
     jQuery.validator.addMethod("amountValidation", function (value, element) {
         return this.optional(element) || /^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(value);
     }, "Please enter valid cost");
-
     $.validator.addMethod("alphaNum", function (value, element) {
         return this.optional(element) || /^[a-z0-9\\]+$/i.test(value)
     }, "Please enter valid SKU");
-
     //edit part validation
     $('#editpart').validate({
         rules: {

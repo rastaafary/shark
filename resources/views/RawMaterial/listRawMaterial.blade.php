@@ -2,6 +2,7 @@
 @extends('layouts.main')
 @section('content')
 {!! HTML::script('js/rawMaterial.js') !!}
+{!! HTML::script('js/jquery.maskedinput.min.js') !!}
 
 <!--<a href="{{ action('RawMaterialController@listRawMaterial')}}">List</a> 
 <a href="{{ action('RawMaterialController@addRawMaterial')}}">Add</a> 
