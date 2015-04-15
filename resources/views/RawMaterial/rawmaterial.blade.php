@@ -3,9 +3,9 @@
 @section('content')
 {!! HTML::script('js/rawMaterial.js') !!}
 
-<!--<a href="{{ action('RawMaterialController@listRawMaterial')}}">List</a> 
+<a href="{{ action('RawMaterialController@listRawMaterial')}}">List</a> 
 <a href="{{ action('RawMaterialController@addRawMaterial')}}">Add</a> 
-<a href="{{ action('PartController@editPart')}}">Edit</a> -->
+<a href="{{ action('PartController@editPart')}}">Edit</a> 
 <br/>
 
 
@@ -32,7 +32,7 @@
                                             <div class="panel-body">
 
                                                 <div class="table-responsive">
-                                                    <table  class="display table table-bordered table-striped" id="rawmaterial-list">
+                                                    <table  class="display table table-bordered table-striped" id="list-part">
                                                         <thead>
                                                             <tr>
                                                                 <th>Part No</th>
@@ -42,7 +42,7 @@
                                                                 <th>Equivalency</th>
                                                                 <th>Stock Unit</th>
                                                                 <th>bomcost</th> 
-                                                                <th>Action</th>
+                                                                                                                               <th>Action</th>
                                                             </tr> 
                                                         </thead>
                                                         <tbody>                                                       

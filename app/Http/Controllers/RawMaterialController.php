@@ -2,20 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use File;
-use Session;
-use Input;
 use DB;
+use Input;
 use View;
 use Validator;
+use Session;
 use Datatables;
 use Auth;
-use Response;
-use Request;
-use App\Http\Controllers\Image;
-use Illuminate\Database\Query\Builder;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use App\User;
 
 class RawMaterialController extends Controller
 {
@@ -68,9 +61,63 @@ class RawMaterialController extends Controller
         return view('RawMaterial.addRawMaterial', ['page_title' => 'Add Raw Material']);
     }
 
+    public function editRawMaterial($id = null)
+    {
+        $post = Input::all();
+
+        if (isset($post['_token']))
+            unset($post['_token']);
+
+        if (isset($post['id']) && $post['id'] != null) {
+            $rules = array(
+                
+                'id' => 'required',
+                'description' => 'required',
+                'purchasingcost' => 'required',
+                'unit' => 'required',
+                'equivalency' => 'required',
+                'stockunit' => 'required',
+                'bomcost' => 'required');
+
+            $validator = Validator::make(Input::all(), $rules);
+
+            if ($validator->fails()) {
+                // $messages = $validator->messages();
+                return redirect('/RawMaterial/edit/' . $post['id'])
+                                ->withErrors($validator);
+               
+            } else {
+                DB::table('rawmaterial')
+                        ->where('id', $post['id'])
+                        ->update($post);
+                Session::flash('message', 'Raw Material Update Successfully!!');
+                Session::flash('status', 'success');
+                return redirect('/RawMaterial');
+            }
+        } else if (isset($id) && $id != null) {
+            $rawmaterial = DB::table('rawmaterial')->where('id', $id)->first();
+            return View::make('RawMaterial.addRawMaterial')->with('rawmaterial', $rawmaterial);
+        } else {
+            $rawmateriallist = DB::table('rawmaterial')->get();
+            return view('RawMaterial.rawmaterial')->with('rawmateriallist', $rawmateriallist);
+        }
+        return view('RawMaterial.rawmaterial', ['page_title' => 'Edit Raw Material']);
+    }
+
     public function listRawMaterial()
     {
+
         return view('RawMaterial.listRawMaterial', ['page_title' => 'Raw Material']);
+    }
+
+    public function getRawMaterialData()
+    {
+        $rawMateriallist = DB::table('rawmaterial')
+                ->select(array('partnumber', 'description', 'purchasingcost', 'unit', 'equivalency', 'stockunit', 'bomcost', 'id'));
+        return Datatables::of($rawMateriallist)
+                        ->editColumn("id", '<a href="RawMaterial/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
+                                . '<span class="fa fa-pencil"></span></a>')
+                        ->make();
     }
 
 }
