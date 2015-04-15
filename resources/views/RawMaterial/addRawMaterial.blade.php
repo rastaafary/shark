@@ -32,8 +32,8 @@
                                    <div class="form-group">
                                         <label for="partnumber" class="col-sm-4 control-label">Raw Material No:</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control your-field" id="zipCode" placeholder="ZipCode"   data-mask="AA/AA/AAAA" data-mask-selectonfocus="true" > 
-<!--                                            {!! Form::text('partnumber','' ,array('class'=>'form-control your-field', 'placeholder' => 'Part Number', 'id'=>'product')) !!}-->
+                                            ?
+                                            {!! Form::text('partnumber','' ,array('class'=>'form-control your-field', 'placeholder' => 'Part Number', 'id'=>'product')) !!}
                                             
                                         </div>
                                     </div>

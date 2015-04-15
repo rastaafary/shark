@@ -20,11 +20,11 @@ $(document).ready(function () {
         },
     });
 //    
-//    $('.your-field').mask('AA', {'translation': {
-//                                        A: {pattern: /[A-Z]/}, 
-//                                     
-//                                      }
-//                                });
+    $('.your-field').mask('AA', {'translation': {
+                                        A: {pattern: /[A-Z]/}, 
+                                     
+                                      }
+                                });
 ////
 //   jQuery(function($) {
 //     
