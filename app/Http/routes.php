@@ -177,6 +177,18 @@ Route::get('/PLReport/getPcsMadeDetails', 'OrderStatusReportController@getPcsMad
 Route::get('/PLReport/deletePcsMade', 'OrderStatusReportController@deletePcsMade');
 Route::get('/PLReport/reOrderData', 'OrderStatusReportController@reOrderData');
 
+//raw material
+Route::get('/RawMaterial/add', 'RawMaterialController@addRawMaterial');
+Route::post('/RawMaterial/add', 'RawMaterialController@addRawMaterial');
+Route::get('/RawMaterial', 'RawMaterialController@listRawMaterial');
+
+//edit raw material
+Route::get('/RawMaterial/edit/{var?}', 'RawMaterialController@editRawMaterial');
+Route::post('/RawMaterial/edit/{var?}', 'RawMaterialController@editRawMaterial');
+
+//get part data
+Route::get('/RawMaterialdata', 'RawMaterialController@getRawMaterialData');
+
 
 /* Route::get('/customer/add', array('prefix' => 'customer','as' => 'customer.add',
   'uses' => 'Customer\customerController@addCustomer'));

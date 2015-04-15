@@ -64,6 +64,9 @@
             @endif
             
             <li class="<?php if($path == 'po'||$path == 'po/add' ||$path == 'po/add/'.Auth::user()->id|| $path == 'blogArt'){ echo 'active'; } ?>"><a href="{{action('PurchaseOrderCustomerController@listPurchaseOrder')}}"><i class="fa fa-user"></i> <span>PO Customers</span></a></li>
+            <!--Raw Material-->
+            <li class="<?php if($path == 'RawMaterial'||$path == 'RawMaterial/add'){ echo 'active'; } ?>"><a href="{{action('RawMaterialController@listRawMaterial')}}"><i class="fa fa-user"></i> <span>Raw Material</span></a></li>
+            
             <li class="<?php if($path == 'PLReport/view'){ echo 'active'; } ?>"><a href="{{action('OrderStatusReportController@viewReport')}}"><i class="fa fa-bar-chart-o"></i> <span>PL's </span></a></li>
             @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))
             <li class="<?php if($path == 'customer'||$path == 'customer/add'){ echo 'active'; }else{ echo ''; } ?>"><a href="{{action('CustomerController@listCust')}}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
