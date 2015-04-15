@@ -22,6 +22,8 @@ class BOMController extends Controller
 
     public function listBOM() {
         $part_id = Request::segment(2);
+        
+          
         return View::make("BOM.listBOM", ['page_title' => 'List BOM'])
                         ->with("part_id", $part_id);
 
@@ -91,4 +93,25 @@ class BOMController extends Controller
         return Response(json_encode($raw_material_data));
     }
 
+    public function getBomList($iidd)
+    {
+         
+         //$part_id = Request::segment(2);
+        
+         $bomlist = DB::table('bom')
+                 ->leftJoin('part_number', 'part_number.id', '=', 'bom.part_id')
+                ->leftJoin('rawmaterial', 'rawmaterial.id', '=', 'bom.raw_material')
+                ->select(array('part_number.SKU', 'rawmaterial.description','part_number.cost', 'rawmaterial.unit', 'bom.yield', 'bom.total', 'bom.id'))
+                ->where('bom.part_id', '=', $iidd)
+                 ->where('bom.is_deleted', '=', '0');
+                
+        return Datatables::of($bomlist)
+                        ->editColumn("id",'<a href="#" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
+                                . '<span class="fa fa-trash-o"></span></a>'
+                                . '&nbsp<a href="#" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
+                                . '<span class="fa fa-pencil"></span></a>')
+                        ->make();
+          return View::make("BOM.listBOM", ['page_title' => 'List BOM'])
+                        ->with("part_id", $part_id);
+    }
 }
