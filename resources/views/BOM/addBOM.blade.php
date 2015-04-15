@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('content')
 {!! HTML::script('js/BOM.js') !!}
+{!! HTML::script('js/jquery.maskedinput.min.js') !!}
 
 <div class="wrapper">
     <div class="row">

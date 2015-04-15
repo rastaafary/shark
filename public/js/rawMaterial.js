@@ -8,9 +8,9 @@ $(document).ready(function () {
         "aoColumnDefs": [
             {"bSearchable": false, "aTargets": [3]},
             {"bSortable": false, "aTargets": [2, 3]}
-         //   {"className": "part_no", "aTargets": [1]}
+            //   {"className": "part_no", "aTargets": [1]}
         ],
-       // "aoColumns": [{className: "my_class"}, null, null, null, null, null, null, null],
+        // "aoColumns": [{className: "my_class"}, null, null, null, null, null, null, null],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
@@ -31,7 +31,7 @@ $(document).ready(function () {
     $("#product").blur(function () {
         $("#product").val($("#product").val().toUpperCase());
     });
-    
+
     //cost validation    
     jQuery.validator.addMethod("amountValidation", function (value, element) {
         return this.optional(element) || /^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(value);
@@ -42,9 +42,8 @@ $(document).ready(function () {
     //edit part validation
     $('#editpart').validate({
         rules: {
-            'SKU': {
+            'partnumber': {
                 required: true,
-                alphaNum: true
             },
             'description': {
                 required: true,
@@ -52,18 +51,34 @@ $(document).ready(function () {
             'cost': {
                 required: true,
                 amountValidation: true,
-            }
+            },
+            'purchasingcost': {
+                required: true,
+                amountValidation: true,
+            },
+            'equivalency': {
+                required: true,
+                amountValidation: true,
+            },
         },
         messages: {
-            'SKU': {
-                required: 'Please enter SKU.'
-            },
             'description': {
                 required: 'Please enter description.'
             },
+            'partnumber': {
+                required: 'Please enter partnumber.'
+            },
             'cost': {
-                required: 'Please enter cost.'
-
+                required: 'Please enter cost.',
+                amountValidation: 'Please enter valid cost',
+            },
+            'purchasingcost': {
+                required: 'Please enter purchasingcost.',
+             //   amountValidation: 'Please enter valid purchasing cost',
+            },
+            'equivalency': {
+                required: 'Please enter equivalency.',
+              //  amountValidation: 'Please enter valid equivalency',
             }
         },
         highlight: function (element) {
