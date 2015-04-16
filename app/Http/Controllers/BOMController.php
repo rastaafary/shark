@@ -54,9 +54,53 @@ class BOMController extends Controller
                         ->with("part_id", $part_id);
     }
 
-    public function editBOM()
+    public function editBOM($id = null)
     {
-      exit('edit');
+        $part_id = Request::segment(2);
+        if (Request::isMethod('post')) {
+            $post = Input::all();
+            unset($post['_token']);
+            unset($post['skuDescripton']);
+            unset($post['selectedRawMaterial']);
+            unset($post['descritpion']);
+            unset($post['bom_cost']);
+            unset($post['unit']);
+
+            if (isset($post['id']) && $post['id'] != null) {
+                $rules = array(
+                    'id' => 'required',
+                    'part_id' => 'required',
+                    'raw_material' => 'required',
+                    'scrap_rate' => 'required',
+                    'yield' => 'required');
+
+                $validator = Validator::make(Input::all(), $rules);
+
+                if ($validator->fails()) {
+                    // $messages = $validator->messages();
+                    return redirect('/part/' . $part_id . '/bom/edit/' . $post['id'])
+                                    ->withErrors($validator);
+                } else {
+                    DB::table('bom')
+                            ->where('id', $post['id'])
+                            ->update($post);
+                    Session::flash('message', 'Part Update Successfully!!');
+                    Session::flash('status', 'success');
+                    return redirect('/part/' . $part_id . '/bom');
+                }
+            } else if (isset($id) && $id != null) {
+                $bom = DB::table('bom')->where('id', $id)->first();
+      
+                return View::make('BOM.addBOM')->with('bom', $bom);
+            } else {
+                $bomlist = DB::table('bom')->get();
+                return view('BOM.bom')->with('bomlist', $bomlist);
+            }
+            $part_data = DB::table('part_number')->get();
+            return view('BOM.addBOM', ['page_title' => 'Edit BOM'])
+                            ->with("part_data", $part_data)
+                            ->with("part_id", $part_id);
+        }
     }
 
     public function deleteBOM($id = null)
