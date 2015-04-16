@@ -20,7 +20,8 @@ use App\User;
 class BOMController extends Controller
 {
 
-    public function listBOM() {
+    public function listBOM()
+    {
         $part_id = Request::segment(2);
         $route_name = Request::segment(3);
         return View::make("BOM.listBOM", ['page_title' => 'List BOM'])
@@ -28,7 +29,8 @@ class BOMController extends Controller
                         ->with("route_name", $route_name);
     }
 
-    public function addBOM() {
+    public function addBOM()
+    {
         $part_id = Request::segment(2);
         $route_name = Request::segment(4);
         if (Request::isMethod('post')) {
@@ -54,10 +56,16 @@ class BOMController extends Controller
                         ->with("part_id", $part_id);
     }
 
-    public function editBOM($id = null) {
+    public function editBOM()
+    {
+
         $part_id = Request::segment(2);
+        $id = Request::segment(5);
+
+//        echo $id;exit;
+        $post = Input::all();
         if (Request::isMethod('post')) {
-            $post = Input::all();
+
             unset($post['_token']);
             unset($post['skuDescripton']);
             unset($post['selectedRawMaterial']);
@@ -77,32 +85,46 @@ class BOMController extends Controller
 
                 if ($validator->fails()) {
                     // $messages = $validator->messages();
+
                     return redirect('/part/' . $part_id . '/bom/edit/' . $post['id'])
                                     ->withErrors($validator);
                 } else {
+
                     DB::table('bom')
                             ->where('id', $post['id'])
                             ->update($post);
-                    Session::flash('message', 'Part Update Successfully!!');
+                    Session::flash('message', 'BOM Update Successfully!!');
                     Session::flash('status', 'success');
                     return redirect('/part/' . $part_id . '/bom');
                 }
             } else if (isset($id) && $id != null) {
                 $bom = DB::table('bom')->where('id', $id)->first();
-
-                return View::make('BOM.addBOM')->with('bom', $bom);
+                //if(!isset($post['id'])){
+                return redirect('/part/' . $id . '/bom/edit/' . $post['id'])->with('bom', $bom);
+                // } // return View::make('BOM.addBOM')->with('bom', $bom);
             } else {
+
                 $bomlist = DB::table('bom')->get();
                 return view('BOM.bom')->with('bomlist', $bomlist);
             }
+
             $part_data = DB::table('part_number')->get();
             return view('BOM.addBOM', ['page_title' => 'Edit BOM'])
                             ->with("part_data", $part_data)
                             ->with("part_id", $part_id);
         }
+
+        $part_data = DB::table('part_number')->get();
+        $bom = DB::table('bom')->where('id', $id)->first();
+        return view('BOM.addBOM', ['page_title' => 'Edit BOM'])
+                        ->with("id", $id)
+                        ->with("part_data", $part_data)
+                        ->with("bom", $bom)
+                        ->with("part_id", $part_id);
     }
 
-    public function deleteBOM($id = null) {
+    public function deleteBOM($id = null)
+    {
         $part_id = Request::segment(2);
         $id = Request::segment(5);
         $check_route = Request::segment(6);
@@ -124,11 +146,13 @@ class BOMController extends Controller
         }
     }
 
-    public function getBOMData() {
+    public function getBOMData()
+    {
         exit("getData");
     }
 
-    public function getSKUDescription() {
+    public function getSKUDescription()
+    {
         $id = Input::get('skuId');
         $sku_description = DB::table('part_number')
                 ->where('id', $id)
@@ -136,7 +160,8 @@ class BOMController extends Controller
         return Response(json_encode($sku_description));
     }
 
-    public function getRawMaterial() {
+    public function getRawMaterial()
+    {
         $material_name = Request::segment(4);
         $data = DB::table('rawmaterial')->select('id', 'partnumber')
                 ->where('partnumber', 'like', $material_name . '%')
@@ -146,7 +171,8 @@ class BOMController extends Controller
         return Response(json_encode($data));
     }
 
-    public function getRawMaterialDescription() {
+    public function getRawMaterialDescription()
+    {
 
         $raw_material_id = Input::get('rawMaterialId');
         $raw_material_data = DB::table('rawmaterial')
@@ -155,7 +181,8 @@ class BOMController extends Controller
         return Response(json_encode($raw_material_data));
     }
 
-    public function getBomList($iidd, $route_name) {
+    public function getBomList($iidd, $route_name)
+    {
         $bomlist = DB::table('bom')
                 ->leftJoin('part_number', 'part_number.id', '=', 'bom.part_id')
                 ->leftJoin('rawmaterial', 'rawmaterial.id', '=', 'bom.raw_material')
