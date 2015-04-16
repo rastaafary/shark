@@ -104,9 +104,11 @@ $(document).ready(function () {
             },
             'scrap_rate': {
                 required: true,
+                number:true
             },
             'yield': {
                 required: true,
+                 number:true
             },
             'total': {
                 required: true,
@@ -118,10 +120,12 @@ $(document).ready(function () {
                 required: 'Please enter Raw Material.'
             },
             'scrap_rate': {
-                required: 'Please enter Scrape rate.'
+                required: 'Please enter Scrape rate.',
+                number: 'enter valid scrape rate *(number)'
             },
             'yield': {
-                required: 'Please enter yield.'
+                required: 'Please enter yield.',
+                number: 'enter valid yield *(number)'
 
             },
             'total': {

@@ -18,8 +18,10 @@
                         <div class="tab-pane active" id="Add">
                             @if(!isset($id))
                             {!! Form::open(array('class'=>'form-horizontal','url'=>'/part/'.$part_id.'/bom/add','name'=>'BOM','id'=>'BOM')) !!}
+                            {!! Form::hidden('id', Input::old('id',isset($bom->id) ? $bom->id : '')) !!}
                             @else                             
                             {!! Form::open(array('class'=>'form-horizontal','url'=>'/part/'.$part_id.'/bom/edit/'.$id,'name'=>'BOM','id'=>'BOM')) !!}
+                            {!! Form::hidden('id', Input::old('id',isset($bom->id) ? $bom->id : '')) !!}
                             @endif
                             <div class="row">
                                 <div class="col-md-12">
