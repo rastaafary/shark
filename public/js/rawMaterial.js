@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+
+
+
+
     $("#rawmaterial-list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
@@ -22,8 +26,32 @@ $(document).ready(function () {
         },
     });
     $("#equivalency").blur(function () {
-        $("#bomcost").val($("#purchasingcost").val() * $("#equivalency").val());
+        $("#bomcost").val($(".two-digits").val() * $(".two-digits1").val());
     });
+
+
+   $('.two-digits').keyup(function(){
+        if($(this).val().indexOf('.')!=-1){         
+            if($(this).val().split(".")[1].length > 2){                
+                if( isNaN( parseFloat( this.value ) ) ) return;
+                this.value = parseFloat(this.value).toFixed(2);
+            }  
+         }            
+         return this; //for chaining
+    });
+    
+    
+   $('.two-digits1').keyup(function(){
+        if($(this).val().indexOf('.')!=-1){         
+            if($(this).val().split(".")[1].length > 2){                
+                if( isNaN( parseFloat( this.value ) ) ) return;
+                this.value = parseFloat(this.value).toFixed(2);
+            }  
+         }            
+         return this; //for chaining
+    });
+    
+    
     jQuery(function ($) {
         $("#product").mask("aaa-aaa-9999");
         $(".part_id").mask("aaa-aaa-9999");
@@ -40,7 +68,7 @@ $(document).ready(function () {
         return this.optional(element) || /^[a-z0-9\\]+$/i.test(value)
     }, "Please enter valid SKU");
     //edit part validation
-    $('#editpart').validate({
+    $('#addpart').validate({
         rules: {
             'partnumber': {
                 required: true,
@@ -62,11 +90,12 @@ $(document).ready(function () {
             },
         },
         messages: {
-            'description': {
-                required: 'Please enter description.'
-            },
             'partnumber': {
                 required: 'Please enter partnumber.'
+            },
+            'description': {
+                required: 'Please enter description.'
+
             },
             'cost': {
                 required: 'Please enter cost.',
@@ -74,11 +103,11 @@ $(document).ready(function () {
             },
             'purchasingcost': {
                 required: 'Please enter purchasingcost.',
-             //   amountValidation: 'Please enter valid purchasing cost',
+                amountValidation: 'Please enter valid purchasing cost',
             },
             'equivalency': {
                 required: 'Please enter equivalency.',
-              //  amountValidation: 'Please enter valid equivalency',
+                //  amountValidation: 'Please enter valid equivalency',
             }
         },
         highlight: function (element) {
@@ -94,7 +123,7 @@ $(document).ready(function () {
         }
     });
     //add part validation
-    $('#addpart').validate({
+    $('#addpart1').validate({
         rules: {
             'SKU': {
                 required: true,
@@ -141,4 +170,5 @@ function confirmDelete()
         return false;
     }
 }
+
 

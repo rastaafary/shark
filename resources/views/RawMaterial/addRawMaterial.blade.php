@@ -22,7 +22,7 @@
                             {!! Form::open(array('class'=>'form-horizontal','url'=>'/RawMaterial/add','name'=>'addpart','id'=>'addpart','files' => true)) !!}
                             {!! Form::hidden('id', Input::old('id',isset($rawmaterial->id) ? $rawmaterial->id : '')) !!}
                             @else
-                            {!! Form::open(array('url'=>'/RawMaterial/edit/'.$rawmaterial->id, 'id'=>'editpart')) !!}
+                            {!! Form::open(array('url'=>'/RawMaterial/edit/'.$rawmaterial->id, 'id'=>'addpart')) !!}
                             {!! Form::hidden('id', Input::old('id',isset($rawmaterial->id) ? $rawmaterial->id : '')) !!}
                             @endif
                                 
@@ -45,7 +45,7 @@
                                     <div class="form-group">
                                         <label for="purchasingcost" class="col-sm-4 control-label">Purchasing Cost:</label>
                                         <div class="col-sm-8">
-                                            {!! Form::text('purchasingcost', Input::old('purchasingcost',isset($rawmaterial->purchasingcost) ?  $rawmaterial->purchasingcost : ''),array('class'=>'form-control', 'placeholder' => 'Purchasing Cost', 'id' => 'purchasingcost')) !!}
+                                            {!! Form::text('purchasingcost', Input::old('purchasingcost',isset($rawmaterial->purchasingcost) ?  $rawmaterial->purchasingcost : ''),array('class'=>'form-control two-digits', 'placeholder' => 'Purchasing Cost', 'id' => 'purchasingcost deci')) !!}
                                         </div>
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@
                                         <label for="equivalency" class="col-sm-4 control-label">Equivalency:</label>
                                         <div class="col-sm-8">
                                            <!-- <input type="text" class="form-control" id="zipCode" placeholder="ZipCode"> -->
-                                            {!! Form::text('equivalency', Input::old('equivalency',isset($rawmaterial->equivalency) ?  $rawmaterial->equivalency : ''),array('class'=>'form-control', 'placeholder' => 'Equivalency', 'id' => 'equivalency')) !!}
+                                            {!! Form::text('equivalency', Input::old('equivalency',isset($rawmaterial->equivalency) ?  $rawmaterial->equivalency : ''),array('class'=>'form-control two-digits1', 'placeholder' => 'Equivalency', 'id' => 'equivalency')) !!}
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -75,7 +75,7 @@
                                         <label for="bomcost" class="col-sm-4 control-label">BOM Cost:</label>
                                         <div class="col-sm-8">
                                            <!-- <input type="text" class="form-control" id="zipCode" placeholder="ZipCode"> -->
-                                            {!! Form::text('bomcost', Input::old('bomcost',isset($rawmaterial->bomcost) ?  $rawmaterial->bomcost : ''),array('class'=>'form-control', 'placeholder' => 'BOM Cost', 'id' => 'bomcost', 'readonly')) !!}
+                                            {!! Form::text('bomcost', Input::old('bomcost',isset($rawmaterial->bomcost) ?  $rawmaterial->bomcost : ''),array('class'=>'form-control ', 'placeholder' => 'BOM Cost', 'id' => 'bomcost', 'readonly')) !!}
                                         </div>
                                     </div>
                                     
