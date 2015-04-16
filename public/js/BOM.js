@@ -65,7 +65,7 @@ $(document).ready(function () {
                 var jason = $.parseJSON(responce);
                 $("#descritpion").val(jason.description);
                 $("#bom_cost").val(jason.bomcost);
-                $("#unit").val(jason.stockunit);
+                $("#unit").val(jason.unit);
             }
         });
         $("#selectedRawMaterial").mask("aaa-aaa-9999");
