@@ -10,8 +10,8 @@ $(document).ready(function () {
         "sAjaxSource": "/RawMaterialdata",
         "aaSorting": [[7, "desc"]],
         "aoColumnDefs": [
-            {"bSearchable": false, "aTargets": [3]},
-            {"bSortable": false, "aTargets": [2, 3]}
+           
+          {"bSortable": false, "aTargets": [6, 7]},
             //   {"className": "part_no", "aTargets": [1]}
         ],
         // "aoColumns": [{className: "my_class"}, null, null, null, null, null, null, null],

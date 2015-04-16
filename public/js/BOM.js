@@ -7,8 +7,8 @@ $(document).ready(function () {
         "sAjaxSource": "/getBomList/" + part_id + "/" + route_name,
         "aaSorting": [[7, "desc"]],
         "aoColumnDefs": [
-            {"bSearchable": false, "aTargets": [3]},
-            {"bSortable": false, "aTargets": [2, 3]}
+            
+           {"bSortable": false, "aTargets": [6]},
 
         ],
         "fnServerData": function (sSource, aoData, fnCallback) {
