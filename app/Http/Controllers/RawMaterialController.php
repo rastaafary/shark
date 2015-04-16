@@ -13,7 +13,8 @@ use Auth;
 class RawMaterialController extends Controller
 {
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
@@ -29,7 +30,8 @@ class RawMaterialController extends Controller
 //        return view('PurchaseOrderCustomer.addPurchaseOrder', ['page_title' => 'Add Purchase Order']);
 //    }
 
-    public function addRawMaterial() {
+    public function addRawMaterial()
+    {
         $post = Input::all();
         if (isset($post['_token'])) {
             unset($post['_token']);
@@ -65,7 +67,8 @@ class RawMaterialController extends Controller
         return view('RawMaterial.addRawMaterial', ['page_title' => 'Add Raw Material']);
     }
 
-    public function editRawMaterial($id = null) {
+    public function editRawMaterial($id = null)
+    {
         $post = Input::all();
 
         if (isset($post['_token']))
@@ -113,28 +116,40 @@ class RawMaterialController extends Controller
         return view('RawMaterial.rawmaterial', ['page_title' => 'Edit Raw Material']);
     }
 
-    public function listRawMaterial() {
+    public function listRawMaterial()
+    {
 
         return view('RawMaterial.listRawMaterial', ['page_title' => 'Raw Material']);
     }
 
-    public function getRawMaterialData() {
+    public function getRawMaterialData()
+    {
         $rawMateriallist = DB::table('rawmaterial')
-                ->leftJoin('unit', 'unit.id', '=', 'rawmaterial.unit')
-                ->select(array('rawmaterial.partnumber', 'rawmaterial.description', 'rawmaterial.purchasingcost', 'unit.name as unit', 'rawmaterial.equivalency', 'unit.name as stockunit', 'rawmaterial.bomcost', 'rawmaterial.id'))
+                //->join('unit', 'unit.id', '=', 'rawmaterial.unit')
+                //->join('unit b', 'b.id', '=', 'rawmaterial.stockunit')
+                ->select(array('rawmaterial.partnumber', 'rawmaterial.description', 'rawmaterial.purchasingcost', 'rawmaterial.unit as unit', 'rawmaterial.equivalency', 'rawmaterial.stockunit as stockunit', 'rawmaterial.bomcost', 'rawmaterial.id'))
         ;
 
         return Datatables::of($rawMateriallist)
                         ->editColumn("id", '<a href="RawMaterial/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
                                 . '<span class="fa fa-pencil"></span></a>')
-                        ->editColumn("partnumber", function($row)
-                        {
+                        ->editColumn("partnumber", function($row) {
                             $part_no = substr($row->partnumber, 0, 3) . "-";
                             $part_no .= substr($row->partnumber, 3, 3) . "-";
                             $part_no .= substr($row->partnumber, 6, 4);
 
                             $row->partnumber = $part_no;
                             return $row->partnumber;
+                        })
+                        ->editColumn("unit", function($row) {
+                            $data = DB::table('unit')->select('name')->where('id', $row->unit)->first();
+                            $row->unit = $data->name;
+                            return $row->unit;
+                        })
+                         ->editColumn("stockunit", function($row) {
+                            $data = DB::table('unit')->select('name')->where('id', $row->stockunit)->first();
+                            $row->stockunit = $data->name;
+                            return $row->stockunit;
                         })
                         ->make();
     }
