@@ -18,18 +18,21 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="Add">
 
-                           @if(!isset($rawmaterial->id))                            
+                            @if(!isset($rawmaterial->id))                            
                             {!! Form::open(array('class'=>'form-horizontal','url'=>'/RawMaterial/add','name'=>'addpart','id'=>'addpart','files' => true)) !!}
                             {!! Form::hidden('id', Input::old('id',isset($rawmaterial->id) ? $rawmaterial->id : '')) !!}
                             @else
                             {!! Form::open(array('url'=>'/RawMaterial/edit/'.$rawmaterial->id, 'id'=>'addpart')) !!}
                             {!! Form::hidden('id', Input::old('id',isset($rawmaterial->id) ? $rawmaterial->id : '')) !!}
                             @endif
-                                
+
                             <div class="row">
-                                {!! HTML::ul($errors->all()) !!}
+                                <div style="color: red">
+                                    {!! HTML::ul($errors->all()) !!}
+                                </div>
+
                                 <div class="col-sm-6">
-                                   <div class="form-group">
+                                    <div class="form-group">
                                         <label for="partnumber" class="col-sm-4 control-label">Raw Material No:</label>
                                         <div class="col-sm-8">
                                             {!! Form::text('partnumber',Input::old('partnumber',isset($rawmaterial->partnumber) ?  $rawmaterial->partnumber : '') ,array('class'=>'form-control', 'placeholder' => 'Part Number', 'id'=>'product')) !!}
@@ -38,8 +41,8 @@
                                     <div class="form-group">
                                         <label for="description" class="col-sm-4 control-label">Description:</label>
                                         <div class="col-sm-8">
-                                             {!! Form::textarea('description', Input::old('description',isset($rawmaterial->description) ?  $rawmaterial->description : ''),array('class'=>'form-control','rows'=>'3','placeholder'=>'Description' ,'style'=>'width:100%;' )) !!}   
-                                             
+                                            {!! Form::textarea('description', Input::old('description',isset($rawmaterial->description) ?  $rawmaterial->description : ''),array('class'=>'form-control','rows'=>'3','placeholder'=>'Description' ,'style'=>'width:100%;' )) !!}   
+
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -50,7 +53,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                  <div class="form-group">
+                                    <div class="form-group">
                                         <label for="unit" class="col-sm-4 control-label">Unit:</label>
                                         <div class="col-sm-8">
                                             {!! Form::select('unit', ['1' => 'inches', '2' => 'squaremetters', '3' => 'metters', '4' => 'centimeters'], isset($rawmaterial->unit) ? $rawmaterial->unit:'1', array('class' => 'form-control Stock Unit')) !!}
@@ -68,28 +71,28 @@
                                         <div class="col-sm-8">
                                            <!-- <input type="text" class="form-control" id="zipCode" placeholder="ZipCode"> -->
                                             {!! Form::select('stockunit', ['1' => 'inches', '2' => 'squaremetters', '3' => 'metters', '4' => 'centimeters'], isset($rawmaterial->stockunit) ? $rawmaterial->stockunit:'1', array('class' => 'form-control Stock Unit')) !!}
-                                            
+
                                         </div>
                                     </div>
-                                     <div class="form-group">
+                                    <div class="form-group">
                                         <label for="bomcost" class="col-sm-4 control-label">BOM Cost:</label>
                                         <div class="col-sm-8">
                                            <!-- <input type="text" class="form-control" id="zipCode" placeholder="ZipCode"> -->
                                             {!! Form::text('bomcost', Input::old('bomcost',isset($rawmaterial->bomcost) ?  $rawmaterial->bomcost : ''),array('class'=>'form-control two-digits2', 'placeholder' => 'BOM Cost', 'id' => 'bomcost', 'readonly')) !!}
                                         </div>
                                     </div>
-                                    
+
                                 </div>
-                           
-                            <div class="row">
-                                <div class="col-sm-12 text-center">
-                                     {!! Form::submit('Save',array('class'=>'btn btn-lg btn-primary')) !!}
+
+                                <div class="row">
+                                    <div class="col-sm-12 text-center">
+                                        {!! Form::submit('Save',array('class'=>'btn btn-lg btn-primary')) !!}
+                                    </div>
                                 </div>
                             </div>
-                                 </div>
-                             {!! Form::close() !!}
-                            
-                    
+                            {!! Form::close() !!}
+
+
                         </div>                        
                     </div>
                 </div>

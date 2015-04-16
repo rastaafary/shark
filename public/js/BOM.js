@@ -4,7 +4,7 @@ $(document).ready(function () {
     $("#BOM_list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "/getBomList/" + part_id+"/"+route_name,
+        "sAjaxSource": "/getBomList/" + part_id + "/" + route_name,
         "aaSorting": [[7, "desc"]],
         "aoColumnDefs": [
             {"bSearchable": false, "aTargets": [3]},
@@ -63,6 +63,7 @@ $(document).ready(function () {
             success: function (responce)
             {
                 var jason = $.parseJSON(responce);
+                $("#selectedRawMaterial").val(jason.partnumber);
                 $("#descritpion").val(jason.description);
                 $("#bom_cost").val(jason.bomcost);
                 $("#unit").val(jason.unit);
@@ -75,26 +76,28 @@ $(document).ready(function () {
         mul = $(".two-digits").val() * $(".two-digits1").val();
         $("#total").val(mul.toFixed(2));
     });
-    
-    $('.two-digits').keyup(function(){
-        if($(this).val().indexOf('.')!=-1){         
-            if($(this).val().split(".")[1].length > 2){                
-                if( isNaN( parseFloat( this.value ) ) ) return;
+
+    $('.two-digits').keyup(function () {
+        if ($(this).val().indexOf('.') != -1) {
+            if ($(this).val().split(".")[1].length > 2) {
+                if (isNaN(parseFloat(this.value)))
+                    return;
                 this.value = parseFloat(this.value).toFixed(2);
-            }  
-         }            
-         return this; //for chaining
+            }
+        }
+        return this; //for chaining
     });
-    
-    
-   $('.two-digits1').keyup(function(){
-        if($(this).val().indexOf('.')!=-1){         
-            if($(this).val().split(".")[1].length > 2){                
-                if( isNaN( parseFloat( this.value ) ) ) return;
+
+
+    $('.two-digits1').keyup(function () {
+        if ($(this).val().indexOf('.') != -1) {
+            if ($(this).val().split(".")[1].length > 2) {
+                if (isNaN(parseFloat(this.value)))
+                    return;
                 this.value = parseFloat(this.value).toFixed(2);
-            }  
-         }            
-         return this; //for chaining
+            }
+        }
+        return this; //for chaining
     });
 
     $('#BOM').validate({
@@ -104,14 +107,17 @@ $(document).ready(function () {
             },
             'scrap_rate': {
                 required: true,
-                number:true
+                number: true
             },
             'yield': {
                 required: true,
-                 number:true
+                number: true
             },
             'total': {
                 required: true,
+            },
+            'skuDescripton' : {
+                required: true
             }
 
         },
@@ -130,7 +136,9 @@ $(document).ready(function () {
             },
             'total': {
                 required: 'Please enter Total.'
-
+            },
+            'skuDescripton' : {
+                required: 'Please enter SKU Description.'
             }
         },
         highlight: function (element) {
@@ -146,49 +154,6 @@ $(document).ready(function () {
         }
     });
 
-    $('#BOM').validate({
-        rules: {
-            'selectedRawMaterial': {
-                required: true,
-            },
-            'scrap_rate': {
-                required: true,
-            },
-            'yield': {
-                required: true,
-            },
-            'total': {
-                required: true,
-            }
-
-        },
-        messages: {
-            'selectedRawMaterial': {
-                required: 'Please enter Raw Material.'
-            },
-            'scrap_rate': {
-                required: 'Please enter Scrape rate.'
-            },
-            'yield': {
-                required: 'Please enter yield.'
-
-            },
-            'total': {
-                required: 'Please enter Total.'
-
-            }
-        },
-        highlight: function (element) {
-            $(element).removeClass("textinput");
-            $(element).addClass("errorHighlight");
-        },
-        unhighlight: function (element) {
-            $(element).removeClass("errorHighlight");
-            $(element).addClass("textinput");
-        },
-        errorPlacement: function (error, element) {
-            error.insertAfter(element);
-        }
-    });
+   
 
 });

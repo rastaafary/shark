@@ -93,14 +93,15 @@ Route::get('/customerdata', 'CustomerController@getCustData');
 Route::get('/part/{var?}/bom', 'BOMController@listBOM');
 Route::get('/part/{var?}/bom/add', 'BOMController@addBOM');
 Route::post('/part/{var?}/bom/add', 'BOMController@addBOM');
-Route::get('/part/{var?}/edit/{var1?}', 'BOMController@editBOM');
-Route::post('/part/{var?}/edit/{var1?}', 'BOMController@editBOM');
-Route::get('/part/{var?}/delete/{var1?}', 'BOMController@deleteBOM');
+Route::get('/part/{var?}/bom/bomData', 'PartController@listBOM');
+Route::get('/part/{var?}/bom/edit/{var1?}', 'BOMController@editBOM');
+Route::post('/part/{var?}/bom/edit/{var1?}', 'BOMController@editBOM');
+Route::get('/part/{var?}/bom/delete/{var1?}/{var2?}', 'BOMController@deleteBOM');
 Route::get('/part/getskudescription', 'BOMController@getSKUDescription');
 Route::get('/partbomdata', 'BOMController@getBOMData');
 Route::get('/part/bom/searchRawMaterial/{var?}', 'BOMController@getRawMaterial');
 Route::get('/part/bom/rawMaterialDescription', 'BOMController@getRawMaterialDescription');
-Route::get('/getBomList/{var?}', 'BOMController@getBomList');
+Route::get('/getBomList/{var?}/{var1?}', 'BOMController@getBomList');
 Route::get('/getBomAddEditList/{var?}', 'BOMController@getBomAddEditList');
 
 // Invoice
@@ -118,18 +119,7 @@ Route::get('/invoice/listSKU', 'InvoiceController@listSKU');
 Route::get('/invoice/paymentTerm', 'InvoiceController@paymentTerm');
 Route::get('/invoice/dispSKUdata', 'InvoiceController@dispSKUdata');
 Route::get('/invoice/getInvoiceList', 'InvoiceController@getInvoiceList');
-//BOM
-Route::get('/part/{var?}/bom', 'BOMController@listBOM');
-Route::get('/part/{var?}/bom/add', 'BOMController@addBOM');
-Route::post('/part/{var?}/bom/add', 'BOMController@addBOM');
-Route::get('/part/{var?}/bom/bomData', 'PartController@listBOM');
-Route::get('/part/{var?}/bom/edit/{var1?}', 'BOMController@editBOM');
-Route::post('/part/{var?}/bom/edit/{var1?}', 'BOMController@editBOM');
-Route::get('/part/{var?}/bom/delete/{var1?}/{var2?}', 'BOMController@deleteBOM');
-Route::get('/getBomList/{var?}/{var1?}', 'BOMController@getBomList');
-Route::get('/part/getskudescription', 'BOMController@getSKUDescription');
-Route::get('/part/bom/searchRawMaterial/{var?}', 'BOMController@getRawMaterial');
-Route::get('/part/bom/rawMaterialDescription', 'BOMController@getRawMaterialDescription');
+
 
 // Purchase Order Customer
 Route::get('/po/add', 'PurchaseOrderCustomerController@addPurchaseOrder');
