@@ -7,9 +7,7 @@ $(document).ready(function () {
         "sAjaxSource": "/getBomList/" + part_id + "/" + route_name,
         "aaSorting": [[7, "desc"]],
         "aoColumnDefs": [
-            
-           {"bSortable": false, "aTargets": [6]},
-
+            {"bSortable": false, "aTargets": [6]},
         ],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
@@ -113,12 +111,7 @@ $(document).ready(function () {
                 required: true,
                 number: true
             },
-            'total': {
-                required: true,
-            },
-            'skuDescripton' : {
-                required: true
-            }
+         
 
         },
         messages: {
@@ -134,12 +127,7 @@ $(document).ready(function () {
                 number: 'enter valid yield *(number)'
 
             },
-            'total': {
-                required: 'Please enter Total.'
-            },
-            'skuDescripton' : {
-                required: 'Please enter SKU Description.'
-            }
+       
         },
         highlight: function (element) {
             $(element).removeClass("textinput");
@@ -154,6 +142,6 @@ $(document).ready(function () {
         }
     });
 
-   
+
 
 });
