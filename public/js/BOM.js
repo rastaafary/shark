@@ -71,9 +71,30 @@ $(document).ready(function () {
         $("#selectedRawMaterial").mask("aaa-aaa-9999");
     });
 
-    //edit BOM validation
-        $("#yield").blur(function () {
-        $("#total").val($("#bom_cost").val() * $("#yield").val());
+    $("#yield").blur(function () {
+        mul = $(".two-digits").val() * $(".two-digits1").val();
+        $("#total").val(mul.toFixed(2));
+    });
+    
+    $('.two-digits').keyup(function(){
+        if($(this).val().indexOf('.')!=-1){         
+            if($(this).val().split(".")[1].length > 2){                
+                if( isNaN( parseFloat( this.value ) ) ) return;
+                this.value = parseFloat(this.value).toFixed(2);
+            }  
+         }            
+         return this; //for chaining
+    });
+    
+    
+   $('.two-digits1').keyup(function(){
+        if($(this).val().indexOf('.')!=-1){         
+            if($(this).val().split(".")[1].length > 2){                
+                if( isNaN( parseFloat( this.value ) ) ) return;
+                this.value = parseFloat(this.value).toFixed(2);
+            }  
+         }            
+         return this; //for chaining
     });
 
     $('#BOM').validate({

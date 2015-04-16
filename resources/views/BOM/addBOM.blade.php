@@ -71,13 +71,13 @@
                                                     <div class="form-group">
                                                         <label for="bom_cost" class="col-sm-4 control-label">Bom Cost:</label>
                                                         <div class="col-sm-8">
-                                                            {!! Form::text('bom_cost',Input::old('bom_cost',isset($bom->bom_cost) ? $bom->bom_cost : '') ,array('class'=>'form-control', 'placeholder' => '14.5','id' => 'bom_cost', 'readonly')) !!}
+                                                            {!! Form::text('bom_cost',Input::old('bom_cost',isset($bom->bom_cost) ? $bom->bom_cost : '') ,array('class'=>'form-control two-digits', 'placeholder' => '14.5','id' => 'bom_cost', 'readonly')) !!}
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="scrap_rate" class="col-sm-4 control-label">ScrapRate (%): </label>
                                                         <div class="col-sm-8">
-                                                            {!! Form::text('scrap_rate',Input::old('scrap_rate',isset($bom->scrap_rate) ? $bom->scrap_rate : '') ,array('class'=>'form-control', 'placeholder' => '5%', 'id' => 'scrap_rate')) !!}
+                                                            {!! Form::text('scrap_rate',Input::old('scrap_rate',isset($bom->scrap_rate) ? $bom->scrap_rate : '') ,array('class'=>'form-control two-digits', 'placeholder' => '5%', 'id' => 'scrap_rate')) !!}
                                                         </div>                                                               
                                                     </div>
                                                 </div>
@@ -85,7 +85,7 @@
                                                     <div class="form-group">
                                                         <label for="yield" class="col-sm-4 control-label">Yield : </label>
                                                         <div class="col-sm-8">
-                                                            {!! Form::text('yield',Input::old('yield',isset($bom->yield) ? $bom->yield : '') ,array('class'=>'form-control', 'placeholder' => '0.5', 'id' => 'yield')) !!}
+                                                            {!! Form::text('yield',Input::old('yield',isset($bom->yield) ? $bom->yield : '') ,array('class'=>'form-control two-digits1', 'placeholder' => '0.5', 'id' => 'yield')) !!}
                                                         </div>                                                               
                                                     </div> 
                                                 </div>
@@ -93,7 +93,7 @@
                                                     <div class="form-group">
                                                         <label for="total" class="col-sm-4 control-label">Total : </label>
                                                         <div class="col-sm-8">
-                                                            {!! Form::text('total',Input::old('total',isset($bom->total) ? $bom->total : '') ,array('class'=>'form-control', 'placeholder' => '7.25', 'id' => 'total')) !!}
+                                                            {!! Form::text('total',Input::old('total',isset($bom->total) ? $bom->total : '') ,array('class'=>'form-control', 'placeholder' => '7.25', 'id' => 'total', 'readonly')) !!}
                                                         </div>                                                               
                                                     </div> 
                                                 </div>

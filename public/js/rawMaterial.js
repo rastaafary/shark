@@ -25,8 +25,9 @@ $(document).ready(function () {
             });
         },
     });
-    $("#equivalency").blur(function () {
-        $("#bomcost").val($(".two-digits").val() * $(".two-digits1").val());
+   $("#equivalency").blur(function () {
+        mul = $(".two-digits").val() * $(".two-digits1").val();
+        $("#bomcost").val(mul.toFixed(2));
     });
 
 
@@ -50,6 +51,16 @@ $(document).ready(function () {
          }            
          return this; //for chaining
     });
+    $('.two-digits2').keyup(function(){
+        if($(this).val().indexOf('.')!=-1){         
+            if($(this).val().split(".")[1].length > 2){                
+                if( isNaN( parseFloat( this.value ) ) ) return;
+                this.value = parseFloat(this.value).toFixed(2);
+            }  
+         }            
+         return this; //for chaining
+    });
+    
     
     
     jQuery(function ($) {

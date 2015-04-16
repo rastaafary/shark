@@ -75,7 +75,7 @@
                                         <label for="bomcost" class="col-sm-4 control-label">BOM Cost:</label>
                                         <div class="col-sm-8">
                                            <!-- <input type="text" class="form-control" id="zipCode" placeholder="ZipCode"> -->
-                                            {!! Form::text('bomcost', Input::old('bomcost',isset($rawmaterial->bomcost) ?  $rawmaterial->bomcost : ''),array('class'=>'form-control ', 'placeholder' => 'BOM Cost', 'id' => 'bomcost', 'readonly')) !!}
+                                            {!! Form::text('bomcost', Input::old('bomcost',isset($rawmaterial->bomcost) ?  $rawmaterial->bomcost : ''),array('class'=>'form-control two-digits2', 'placeholder' => 'BOM Cost', 'id' => 'bomcost', 'readonly')) !!}
                                         </div>
                                     </div>
                                     
