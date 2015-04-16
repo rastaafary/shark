@@ -33,7 +33,7 @@ class BOMController extends Controller
         $route_name = Request::segment(4);
         if (Request::isMethod('post')) {
             $post = Input::all();
-            
+
             unset($post['_token']);
             unset($post['skuDescripton']);
             unset($post['selectedRawMaterial']);
@@ -177,7 +177,9 @@ class BOMController extends Controller
 
         $raw_material_id = Input::get('rawMaterialId');
         $raw_material_data = DB::table('rawmaterial')
-                ->where('id', $raw_material_id)
+                ->leftJoin('unit', 'unit.id', '=', 'rawmaterial.unit')
+                ->select(array('rawmaterial.id', 'rawmaterial.partnumber', 'rawmaterial.description', 'unit.name as unit', 'rawmaterial.bomcost'))
+                ->where('rawmaterial.id', $raw_material_id)
                 ->first();
         return Response(json_encode($raw_material_data));
     }
