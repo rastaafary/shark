@@ -121,7 +121,7 @@ class RawMaterialController extends Controller
     public function getRawMaterialData() {
         $rawMateriallist = DB::table('rawmaterial')
                 ->leftJoin('unit', 'unit.id', '=', 'rawmaterial.unit')
-                ->select(array('rawmaterial.partnumber', 'rawmaterial.description', 'rawmaterial.purchasingcost', 'unit.name as unit', 'rawmaterial.equivalency', 'unit.name as stokunit', 'rawmaterial.bomcost', 'rawmaterial.id'))
+                ->select(array('rawmaterial.partnumber', 'rawmaterial.description', 'rawmaterial.purchasingcost', 'unit.name as unit', 'rawmaterial.equivalency', 'unit.name as stockunit', 'rawmaterial.bomcost', 'rawmaterial.id'))
         ;
 
         return Datatables::of($rawMateriallist)
