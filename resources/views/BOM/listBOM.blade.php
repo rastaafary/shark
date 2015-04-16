@@ -3,7 +3,8 @@
 {!! HTML::script('js/BOM.js') !!}
 <script>
     var part_id = '<?php echo $part_id ?>';
-    </script>
+     var route_name = '<?php echo $route_name ?>';
+</script>
 <div class="wrapper">
     <div class="row">
         <div class="col-md-12">

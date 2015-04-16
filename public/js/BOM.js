@@ -4,7 +4,7 @@ $(document).ready(function () {
     $("#BOM_list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "/getBomList/" + part_id,
+        "sAjaxSource": "/getBomList/" + part_id+"/"+route_name,
         "aaSorting": [[7, "desc"]],
         "aoColumnDefs": [
             {"bSearchable": false, "aTargets": [3]},

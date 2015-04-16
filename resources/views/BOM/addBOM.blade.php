@@ -2,6 +2,10 @@
 @section('content')
 {!! HTML::script('js/BOM.js') !!}
 {!! HTML::script('js/jquery.maskedinput.min.js') !!}
+<script>
+    var part_id = '<?php echo $part_id ?>';
+    var route_name = '<?php echo $route_name ?>';
+</script>
 
 <div class="wrapper">
     <div class="row">
@@ -61,7 +65,7 @@
                                                         <div class="col-sm-8">
                                                             <input type="text" class="form-control typeahead" name="selectedRawMaterial" id='selectedRawMaterial' placeholder="SHK-FAB-1000">
                                                             <input type="hidden" id="raw_material" name="raw_material"  value=""/>
-<!--                                                            {!! Form::text('raw_material',Input::old('raw_material',isset($BOM->raw_material) ? $BOM->raw_material : '') ,array('class'=>'form-control', 'placeholder' => 'SHK-FAB-1000', 'id' => 'raw_material')) !!}-->
+                                                            <!--                                                            {!! Form::text('raw_material',Input::old('raw_material',isset($BOM->raw_material) ? $BOM->raw_material : '') ,array('class'=>'form-control', 'placeholder' => 'SHK-FAB-1000', 'id' => 'raw_material')) !!}-->
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -115,6 +119,35 @@
                                                     </div>
                                                 </div>
                                             </div> 
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-default">                                                            
+                                                        <div class="panel-heading">
+                                                            <h3 class="panel-title"><i class="fa fa-bars"></i> BOM List</h3>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <div class="table-responsive">
+                                                                <table class="display table table-bordered table-striped" id="BOM_list">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th style="width: 5%;">Part Number</th>
+                                                                            <th style="width: 5%;">Discription</th>
+                                                                            <th style="width: 5%;">Cost</th>
+                                                                            <th style="width: 5%;">Unit</th>
+                                                                            <th style="width: 5%;">Yield</th>
+                                                                            <th style="width: 5%;">Total</th>
+                                                                            <th style="width: 5%;">Action</th>
+                                                                        </tr>                                                                       
+                                                                    </thead>
+                                                                    <tbody>                                                       
+                                                                    </tbody>
+                                                                </table>                                                                   
+                                                            </div>                                   
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
                                         </div>
                                     </div>
                                 </div>
@@ -122,10 +155,10 @@
                         </div>
                     </div>
                 </div>
+            </section>
         </div>
-        </section>
     </div>
 </div>
-</div>
+
 
 @endsection
