@@ -99,7 +99,8 @@ $part_id = Request::segment(2);
          $bomlist = DB::table('bom')
                  ->leftJoin('part_number', 'part_number.id', '=', 'bom.part_id')
                 ->leftJoin('rawmaterial', 'rawmaterial.id', '=', 'bom.raw_material')
-                ->select(array('part_number.SKU', 'rawmaterial.description','part_number.cost', 'rawmaterial.unit', 'bom.yield', 'bom.total', 'bom.id'))
+                 ->leftJoin('unit', 'unit.id', '=', 'rawmaterial.unit')
+                ->select(array('part_number.SKU', 'rawmaterial.description','part_number.cost', 'unit.name', 'bom.yield', 'bom.total', 'bom.id'))
                 ->where('bom.part_id', '=', $iidd)
                  ->where('bom.is_deleted', '=', '0');
                 

@@ -120,7 +120,9 @@ class RawMaterialController extends Controller
 
     public function getRawMaterialData() {
         $rawMateriallist = DB::table('rawmaterial')
-                ->select(array('partnumber', 'description', 'purchasingcost', 'unit', 'equivalency', 'stockunit', 'bomcost', 'id'));
+                ->leftJoin('unit', 'unit.id', '=', 'rawmaterial.unit')
+                ->select(array('rawmaterial.partnumber', 'rawmaterial.description', 'rawmaterial.purchasingcost', 'unit.name as unit', 'rawmaterial.equivalency', 'unit.name as stokunit', 'rawmaterial.bomcost', 'rawmaterial.id'))
+        ;
 
         return Datatables::of($rawMateriallist)
                         ->editColumn("id", '<a href="RawMaterial/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
