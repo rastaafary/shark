@@ -59,30 +59,31 @@ class BOMController extends Controller
             } else {
                 if (array_key_exists('orders', $post)) {
                     $orders = json_decode($post['orders'], true);
+                    $deleteOrderIds = explode(',', $post['deleteOrder']);
+
+                    if (count($deleteOrderIds) > 0) {
+                        foreach ($deleteOrderIds as $deleteOrder) {
+                            DB::table('bom')->where('id', $deleteOrder)->update(array('is_deleted' => '1'));
+                        }
+                    }
                     foreach ($orders as $orderlist) {
+                        $orderId = $orderlist['orderId'];
                         unset($orderlist['orderId']);
                         unset($orderlist['selectedRawMaterial']);
                         unset($orderlist['descritpion']);
 
-                        $orderlist['part_id'] = $post['part_id'];
-                        $bom_Insert_id = DB::table('bom')->insertGetId($orderlist);
+                        if ($orderId == 0) {
+                            $orderlist['part_id'] = $post['part_id'];
+                            DB::table('bom')->insertGetId($orderlist);
+                        }
                     }
                 } else {
                     Session::flash('message', 'Something Went Wrong..!!');
                     Session::flash('status', 'error');
                     return redirect('/part/' . $part_id . '/bom');
                 }
-                if ($bom_Insert_id > 0) {
-                    Session::flash('message', "BOM Added Sucessfully.");
-                    Session::flash('status', 'success');
-                    return redirect('/part/' . $part_id . '/bom');
-                } else {
-                    Session::flash('message', 'Something Went Wrong..!!');
-                    Session::flash('status', 'error');
-                    return redirect('/part/' . $part_id . '/bom');
-                }
             }
-            Session::flash('message', "BOM Customer Added Sucessfully.");
+            Session::flash('message', "BOM Added Sucessfully.");
             Session::flash('status', 'success');
             return redirect('/part/' . $part_id . '/bom');
         }
@@ -134,10 +135,10 @@ class BOMController extends Controller
                     if (array_key_exists('orders', $post)) {
                         $orders = json_decode($post['orders'], true);
                         $deleteOrderIds = explode(',', $post['deleteOrder']);
-                        
+
                         if (count($deleteOrderIds) > 0) {
                             foreach ($deleteOrderIds as $deleteOrder) {
-                                  DB::table('bom')->where('id', $deleteOrder)->update(array('is_deleted' => '1'));
+                                DB::table('bom')->where('id', $deleteOrder)->update(array('is_deleted' => '1'));
                             }
                         }
                         foreach ($orders as $orderlist) {
@@ -154,7 +155,7 @@ class BOMController extends Controller
                                             ->where('id', $orderId)
                                             ->update($orderlist);
                                 } else {
-                                  
+
                                     DB::table('bom')->insert($orderlist);
                                 }
                             }
