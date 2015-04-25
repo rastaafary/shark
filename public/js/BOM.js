@@ -138,7 +138,8 @@ $(document).ready(function () {
     });
 
     $("#yield").blur(function () {
-        mul = $(".two-digits").val() * $(".two-digits1").val();
+        // (Yield + Scrap Rate) * Bom Cost = total
+        mul = ($("#scrap_rate").val() + $("#yield").val()) * $("#bom_cost").val();
         $("#total").val(mul.toFixed(2));
     });
 
