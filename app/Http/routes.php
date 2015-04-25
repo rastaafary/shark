@@ -98,9 +98,10 @@ Route::get('/part/{var?}/bom/edit/{var1?}', 'BOMController@editBOM');
 Route::post('/part/{var?}/bom/edit/{var1?}', 'BOMController@editBOM');
 Route::get('/part/{var?}/bom/delete/{var1?}/{var2?}', 'BOMController@deleteBOM');
 Route::get('/part/getskudescription', 'BOMController@getSKUDescription');
-Route::get('/partbomdata', 'BOMController@getBOMData');
 Route::get('/part/bom/searchRawMaterial/{var?}', 'BOMController@getRawMaterial');
 Route::get('/part/bom/rawMaterialDescription', 'BOMController@getRawMaterialDescription');
+Route::get('/part/bom/getBomData/{var?}', 'BOMController@getBomData');
+
 
 
 Route::get('/getBomList/{var?}/{var1?}', 'BOMController@getBomList');

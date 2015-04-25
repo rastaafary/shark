@@ -8,10 +8,14 @@
 <script>
     var part_id = '<?php echo $part_id ?>';
     var route_name = '<?php echo $route_name ?>';
+<?php if (isset($id)) { ?>
+        var bId = '<?php echo $id ?>';
+<?php } ?>
 </script>
 <script>
-    var oldOrderData = <?php echo (isset($orderlist)) ? json_encode($orderlist) : '[]'; ?>;
+    var oldBomData = <?php echo (isset($bomList)) ? json_encode($bomList) : '[]'; ?>;
 </script>
+
 <div class="wrapper">
     <div class="row">
         <div class="col-md-12">
@@ -72,7 +76,7 @@
                                                 <hr>
                                             </div>
                                         </div>
-                                 
+
                                         <div class="panel-body">
                                             <div class="table-responsive col-md-12">
                                                 <table id="purchaseOrderTbl" class="display table table-bordered table-striped">
@@ -92,20 +96,18 @@
                                                     <tbody>
                                                         <tr>
                                                             <td>
-<!--                                                                <input type="hidden" id="deleteOrder" name="deleteOrder">-->
+                                                                <input type="hidden" id="deleteOrder" name="deleteOrder">
                                                                 <input type="hidden" id="allOrderData" name="orders" value="">
                                                                 <input type="hidden" id="updateId" value="0">
                                                             </td>
 
                                                             <td>
                                                                 <input type="text" class="form-control typeahead" name="selectedRawMaterial" id='selectedRawMaterial' class="selectedRawMaterial" placeholder="SHK-FAB-1000">
-                                                                <input type="hidden" id="raw_material" name="raw_material"  value=""/>
+                                                                <input type="hidden" id="raw_material" class="raw_material" name="raw_material"  value=""/>
                                                             </td>
                                                             <td>
-
-
 <!--                                                                <input  autocomplete="off" type="text" class="form-control typeahead" name="descritpion" id='descritpion' placeholder="SHK-FAB-1000" readonly>-->
-                                                                 {!! Form::text('descritpion','' ,array('class'=>'form-control', 'placeholder' => '','id' => 'descritpion', 'readonly')) !!}
+                                                                {!! Form::text('descritpion','' ,array('class'=>'form-control', 'placeholder' => '','id' => 'descritpion', 'readonly')) !!}
                                                             </td>
                                                             <td>    
                                                                 {!! Form::text('bom_cost','' ,array('class'=>'form-control two-digits typeahead', 'placeholder' => '','id' => 'bom_cost', 'readonly')) !!}
@@ -124,8 +126,8 @@
 <!--                                                                 <input  autocomplete="off" type="text" class="form-control typeahead" name="total" id='total' readonly>-->
                                                             </td>
                                                             <td>
-<!--                                                                {!! Form::text('unit','',array('class'=>'form-control', 'placeholder' => '', 'id' => 'unit', 'readonly')) !!}-->
-                                                                 <input  autocomplete="off" type="text" class="form-control typeahead" name="unit" id='unit' readonly>
+                                                                <!--                                                                {!! Form::text('unit','',array('class'=>'form-control', 'placeholder' => '', 'id' => 'unit', 'readonly')) !!}-->
+                                                                <input  autocomplete="off" type="text" class="form-control typeahead" name="unit" id='unit' readonly>
                                                             </td>
                                                             <td>
                                                                 <button id="addMoreOrder" class="btn btn-primary" type="button"><i class="fa fa-plus"></i> Add</button>
@@ -143,15 +145,13 @@
                                             </div>
 
                                         </div>
+                                        
                                     </div>
                                 </div>
 
                                 {!! Form::close() !!}
 
                             </div> 
-
-
-
 
                         </div>
                     </div>
@@ -167,7 +167,8 @@
     ${orderNo}
     </td>           
     <td>
-    <label class="selectedRawMaterial">${selectedRawMaterial}</label>
+    <label class="selectedRawMaterial" >${selectedRawMaterial}</label>
+    <label class="raw_material" style="display:none;">${raw_material}</label>
     </td>
     <td>
     <label class="descritpion">${descritpion}</label>
