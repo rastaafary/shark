@@ -101,8 +101,15 @@ Route::get('/part/getskudescription', 'BOMController@getSKUDescription');
 Route::get('/partbomdata', 'BOMController@getBOMData');
 Route::get('/part/bom/searchRawMaterial/{var?}', 'BOMController@getRawMaterial');
 Route::get('/part/bom/rawMaterialDescription', 'BOMController@getRawMaterialDescription');
+
+
 Route::get('/getBomList/{var?}/{var1?}', 'BOMController@getBomList');
+
+
 Route::get('/getBomAddEditList/{var?}', 'BOMController@getBomAddEditList');
+
+Route::get('/getorderlist/{var?}/{var1?}', 'BOMController@getorderlist');
+Route::post('/part/{var?}/bom/add/order', 'BOMController@addOrder');
 
 // Invoice
 Route::get('/invoice/add', 'InvoiceController@addInvoice');
