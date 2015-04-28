@@ -295,4 +295,12 @@ function addOrder() {
         }
     });
 }
+function confirmDelete()
+{
+    if (confirm("Are You Sure You Want To Delete This Record ?")) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
