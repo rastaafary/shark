@@ -8,12 +8,8 @@
 <script>
     var part_id = '<?php echo $part_id ?>';
     var route_name = '<?php echo $route_name ?>';
-<?php if (isset($id)) { ?>
-        var bId = '<?php echo $id ?>';
-<?php } ?>
-</script>
-<script>
     var oldBomData = <?php echo (isset($bomList)) ? json_encode($bomList) : '[]'; ?>;
+    var bId = <?php echo (isset($id)) ? $id : 0; ?>;
 </script>
 
 <div class="wrapper">
@@ -50,6 +46,7 @@
                                             <div class="form-group col-sm-6">
                                                 <label for="part_id" class="col-sm-4 control-label">SKU : </label> 
                                                 <div class="col-sm-8">
+                                                    <label id="lbl_part_id" class="col-sm-4 control-label" style='display: none;'></label> 
                                                     <select id="part_id" name="part_id" class='form-control skuDropDown'>
                                                         @if(count($part_data) > 0)
                                                         <option value='selected=selected'> Select SKU </option>
@@ -68,7 +65,7 @@
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label for="skuDescripton">SKU Description : </label>
-                                                {!! Form::text('skuDescripton',Input::old('skuDescripton',isset($bom->skuDescripton) ? $bom->skuDescripton : '') ,array('class'=>'form-control','id'=>'skuDescripton','placeholder'=>'SKU Description')) !!}
+                                                {!! Form::text('skuDescripton',Input::old('skuDescripton',isset($bom->skuDescripton) ? $bom->skuDescripton : '') ,array('class'=>'form-control','id'=>'skuDescripton','placeholder'=>'SKU Description',  'readonly')) !!}
                                             </div>
                                         </div>
                                         <div class="row">
@@ -145,7 +142,7 @@
                                             </div>
 
                                         </div>
-                                        
+
                                     </div>
                                 </div>
 
@@ -189,8 +186,8 @@
     <label class="unit">${unit}</label>
     </td>
     <td>
-    <button type="button" class="btn btn-danger" onclick="return removeNewOrder(this)"><i class="fa fa-trash-o"></i></button>
-    <button type="button" class="btn btn-primary" onclick="return editNewOrder(this)"><i class="fa fa-edit"></i></button>
+    <button type="button" class="btn btn-danger" onclick="return removeNewOrder(this)" id="tblDelete-${orderId}"><i class="fa fa-trash-o"></i></button>
+    <button type="button" class="btn btn-primary" onclick="return editNewOrder(this)" id="tblEdit-${orderId}"><i class="fa fa-edit"></i></button>
     </td>
     </tr>
 </script>

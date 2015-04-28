@@ -139,7 +139,7 @@ $(document).ready(function () {
 
     $("#yield").blur(function () {
         // (Yield + Scrap Rate) * Bom Cost = total
-        mul = ($("#scrap_rate").val() + $("#yield").val()) * $("#bom_cost").val();
+        mul = (parseFloat($("#scrap_rate").val()) + parseFloat($("#yield").val())) * parseFloat($("#bom_cost").val());
         $("#total").val(mul.toFixed(2));
     });
 
@@ -233,21 +233,6 @@ $(document).ready(function () {
 
 
 });
-//function editNewOrder(element)
-//{
-//
-//    trEle = $(element).closest('tr.newOrderData');
-//    $('#updateId').val($(trEle).attr('id'));
-//    $('#selectedRawMaterial').html($(trEle).find('.selectedRawMaterial').html());
-//    $('#descritpion').val($(trEle).find('.descritpion').html());
-//    $('#bom_cost').html($(trEle).find('.bom_cost').html());
-//    $('#scrap_rate').html($(trEle).find('.scrap_rate').html());
-//    $('#yield').html($(trEle).find('.yield').html());
-//    $('#total').html($(trEle).find('.total').html());
-//    $('#unit').html($(trEle).find('.unit').html());
-//    $('#addMoreOrder').html('<i class="fa fa-edit"></i> Update');
-//    $('#cancelUpdate').show();
-//}
 
 function editNewOrder(element)
 {
@@ -284,8 +269,6 @@ function resetInputOrderData() {
     //$('#skuOrder').select2("val", '');
     $('#addMoreOrder').html('<i class="fa fa-plus"></i> Add');
     $('#cancelUpdate').hide();
-
-
     $('#selectedRawMaterial').val('');
     $('#descritpion').val('');
     $('#bom_cost').val('');
