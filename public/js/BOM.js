@@ -1,3 +1,4 @@
+var new_order = 0;
 $(document).ready(function () {
     $('.skuDropDown').select2();
     $("#BOM_list").dataTable({
@@ -18,7 +19,6 @@ $(document).ready(function () {
             });
         },
     });
-
     var orderNo = 1;
     $(oldBomData).each(function (key, val) {
         var order = [
@@ -39,7 +39,31 @@ $(document).ready(function () {
         $("#new-order-template").tmpl(order).appendTo("#purchaseOrderTbl tbody");
     });
 
+    $("#scrap_rate, #yield").keydown(function (event) {
+        if (!(event.keyCode == 8                                // backspace
+                || event.keyCode == 9                               // tab
+                || event.keyCode == 17                              // ctrl
+                || event.keyCode == 46                              // delete
+                || event.keyCode == 110                              // Dot
+                || (event.keyCode >= 35 && event.keyCode <= 40)     // arrow keys/home/end
+                || (event.keyCode >= 48 && event.keyCode <= 57)     // numbers on keyboard
+                || (event.keyCode >= 96 && event.keyCode <= 105)    // number on keypad
+                || (event.keyCode == 65 && prevKey == 17 && prevControl == event.currentTarget.id))          // ctrl + a, on same control
+                ) {
+            event.preventDefault();     // Prevent character input
+        }
+        else {
+            prevKey = event.keyCode;
+            prevControl = event.currentTarget.id;
+        }
+    });
+
+
     $("#addMoreOrder").click(function (e) {
+        if ($('#raw_material').val() == '') {
+            alert('Please select valid Raw Material.');
+            return false;
+        }
         if ($('#scrap_rate').val() == 0 || $('#scrap_rate').val() == '' || parseInt($('#scrap_rate').val()) < 1) {
             alert('Please enter valid Scrape Rate.');
             return false;
@@ -61,6 +85,7 @@ $(document).ready(function () {
             template.data.unit = $('#unit').val();
             template.update();
         } else {
+            new_order += 1;
             var order = [
                 {
                     orderNo: orderNo++,
@@ -180,14 +205,21 @@ $(document).ready(function () {
                     'total': $(this).find('.total').html()
                 })
             });
-            if (orders.length > 0) {
+            if (route_name == "add") {
+
+                if (new_order > 0) {
+                    $('#deleteOrder').val(deleteOrder);
+                    $('#allOrderData').val(JSON.stringify(orders));
+                    form.submit();
+                } else {
+                    $('#allOrderData').val('');
+                    alert('Please Add Raw Material');
+                    return false;
+                }
+            } else {
                 $('#deleteOrder').val(deleteOrder);
                 $('#allOrderData').val(JSON.stringify(orders));
                 form.submit();
-            } else {
-                $('#allOrderData').val('');
-                alert('Please select Order');
-                return false;
             }
         },
 //        rules: {
@@ -256,11 +288,27 @@ function editNewOrder(element)
 var deleteOrder = [];
 function removeNewOrder(element)
 {
-    if (confirm("Are You Sure You Want To Delete This Record ?")) {
-        deleteOrder.push($(element).closest('tr.newOrderData').find('.orderId').val());
-        $(element).closest('tr.newOrderData').remove();
-    } else {
-        return false;
+    if (route_name == "add") {
+        if (confirm("Are You Sure You Want To Delete This Record ?")) {
+            deleteOrder.push($(element).closest('tr.newOrderData').find('.orderId').val());
+            $(element).closest('tr.newOrderData').remove();
+            if (new_order <= 0) {
+                new_order = 0;
+            }
+            else {
+                new_order = new_order - 1;
+            }
+        } else {
+            return false;
+        }
+    }
+    else {
+        if (confirm("Are You Sure You Want To Delete This Record ?")) {
+            deleteOrder.push($(element).closest('tr.newOrderData').find('.orderId').val());
+            $(element).closest('tr.newOrderData').remove();
+        } else {
+            return false;
+        }
     }
 }
 
