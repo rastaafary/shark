@@ -11,6 +11,7 @@
     var route_name = '<?php echo $route_name ?>';
     var oldBomData = <?php echo (isset($bomList)) ? json_encode($bomList) : '[]'; ?>;
     var bId = <?php echo (isset($id)) ? $id : 0; ?>;
+
 </script>
 
 <div class="wrapper">

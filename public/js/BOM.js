@@ -127,7 +127,8 @@ $(document).ready(function () {
                 $("#skuDescripton").val(jason.description);
             }
         });
-        var a = "http://shark.localhost/part/" + id + "/bom/add";
+      //local=>  var a = "http://shark.localhost/part/" + id + "/bom/add";
+      var a = "http://shark.wamasoftware.com/part/" + id + "/bom/add";
         $(location).attr('href', a);
         //window.location(a);
     });
