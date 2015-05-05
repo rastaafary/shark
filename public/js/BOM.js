@@ -1,5 +1,7 @@
 var new_order = 0;
 $(document).ready(function () {
+   
+    $('#part_id').change();
     $('.skuDropDown').select2();
     $("#BOM_list").dataTable({
         "bProcessing": true,
@@ -125,6 +127,9 @@ $(document).ready(function () {
                 $("#skuDescripton").val(jason.description);
             }
         });
+        var a = "http://shark.localhost/part/" + id + "/bom/add";
+        $(location).attr('href', a);
+        //window.location(a);
     });
     var bestPictures = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('partnumber'),

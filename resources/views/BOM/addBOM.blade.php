@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('content')
 {!! HTML::script('js/BOM.js') !!}
+ {!! HTML::script('js/addBOM.js') !!}
 {!! HTML::script('js/jquery.maskedinput.min.js') !!}
 <?php if ($route_name == 'edit') { ?>
     {!! HTML::script('js/EditBOM.js') !!}
@@ -49,22 +50,30 @@
                                                     <label id="lbl_part_id" class="col-sm-4 control-label" style='display: none;'></label> 
                                                     <select id="part_id" name="part_id" class='form-control skuDropDown'>
                                                         @if(count($part_data) > 0)
-                                                        <option value='selected=selected'> Select SKU </option>
+                                                        <!--                                                        <option value='selected=selected'> Select SKU </option>-->
+
+
                                                         @foreach($part_data as $value)
-                                                        @if(isset($bom->part_id))
-                                                        @if($value->id == $bom->part_id)
+                                                        @if($value->id == $part_id)
                                                         <option value="{{$value->id}}" selected>{{$value->SKU}}</option>
-                                                        @endif
+
+                                                        @elseif(isset($bom->part_id) && $value->id == $bom->part_id)
+                                                      
+                                                        <option value="{{$value->id}}" selected>{{$value->SKU}}</option>
+                                                 
                                                         @else
                                                         <option value="{{$value->id}}">{{$value->SKU}}</option>
+                                                       
                                                         @endif
                                                         @endforeach
+
                                                         @endif
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
-                                                <label for="skuDescripton">SKU Description : </label>
+                                                <label for="skuDescripton" >SKU Description : </label>
+                                              
                                                 {!! Form::text('skuDescripton',Input::old('skuDescripton',isset($bom->skuDescripton) ? $bom->skuDescripton : '') ,array('class'=>'form-control','id'=>'skuDescripton','placeholder'=>'SKU Description',  'readonly')) !!}
                                             </div>
                                         </div>

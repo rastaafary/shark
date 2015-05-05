@@ -20,7 +20,8 @@ use App\User;
 class BOMController extends Controller
 {
 
-    public function listBOM() {
+    public function listBOM()
+    {
         $part_id = Request::segment(2);
         $route_name = Request::segment(3);
         return View::make("BOM.listBOM", ['page_title' => 'List BOM'])
@@ -28,7 +29,8 @@ class BOMController extends Controller
                         ->with("route_name", $route_name);
     }
 
-    public function addBOM() {
+    public function addBOM()
+    {
 
         $part_id = Request::segment(2);
         $route_name = Request::segment(4);
@@ -95,15 +97,18 @@ class BOMController extends Controller
                         ->where('bom.part_id', '=', $part_id)
                         ->where('bom.is_deleted', '=', '0')->get();
 
-        $part_data = DB::table('part_number')->get();
+        $part_data = DB::table('part_number')->where("is_deleted", 0)->get();
         return view('BOM.addBOM', ['page_title' => 'Add BOM'])
                         ->with("part_data", $part_data)
+                        ->with("SKU", $part_data)
                         ->with("bomList", $bomlist)
                         ->with("route_name", $route_name)
-                        ->with("part_id", $part_id);
+                        ->with("part_id", $part_id)
+                        ->with("SKU", $part_id);
     }
 
-    public function editBOM() {
+    public function editBOM()
+    {
         $part_id = Request::segment(2);
         $route_name = Request::segment(4);
         $id = Request::segment(5);
@@ -187,10 +192,12 @@ class BOMController extends Controller
                         ->with("bom", $bom)
                         ->with("route_name", $route_name)
                         ->with("bomList", $bomlist)
+                        ->with("part_id", $part_id)
                         ->with("part_id", $part_id);
     }
 
-    public function deleteBOM($id = null) {
+    public function deleteBOM($id = null)
+    {
         $part_id = Request::segment(2);
         $id = Request::segment(5);
         $check_route = Request::segment(6);
@@ -214,7 +221,8 @@ class BOMController extends Controller
 
     //demo of BOM page
 
-    public function addOrder() {
+    public function addOrder()
+    {
         $part_id = Request::segment(2);
         $route_name = Request::segment(4);
         $post = Input::all();
@@ -232,7 +240,8 @@ class BOMController extends Controller
         $bom = DB::table('bom')->insertGetId($post);
     }
 
-    public function getorderlist($iidd, $route_name) {
+    public function getorderlist($iidd, $route_name)
+    {
         $bomlist = DB::table('bom')
                 ->leftJoin('part_number', 'part_number.id', '=', 'bom.part_id')
                 ->leftJoin('rawmaterial', 'rawmaterial.id', '=', 'bom.raw_material')
@@ -246,8 +255,7 @@ class BOMController extends Controller
                                 . '<span class="fa fa-trash-o"></span></a>'
                                 . '&nbsp<a href="/part/' . $iidd . '/bom/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
                                 . '<span class="fa fa-pencil"></span></a>')
-                        ->editColumn("partnumber", function($row)
-                        {
+                        ->editColumn("partnumber", function($row) {
                             $part_no = substr($row->partnumber, 0, 3) . "-";
                             $part_no .= substr($row->partnumber, 3, 3) . "-";
                             $part_no .= substr($row->partnumber, 6, 4);
@@ -261,7 +269,8 @@ class BOMController extends Controller
                         ->with("part_id", $part_id);
     }
 
-    public function getSKUDescription() {
+    public function getSKUDescription()
+    {
         $id = Input::get('skuId');
         $sku_description = DB::table('part_number')
                 ->where('id', $id)
@@ -269,7 +278,8 @@ class BOMController extends Controller
         return Response(json_encode($sku_description));
     }
 
-    public function getRawMaterial() {
+    public function getRawMaterial()
+    {
         $material_name = Request::segment(4);
         $data = DB::table('rawmaterial')->select('id', 'partnumber')
                 ->where('partnumber', 'like', $material_name . '%')
@@ -279,7 +289,8 @@ class BOMController extends Controller
         return Response(json_encode($data));
     }
 
-    public function getRawMaterialDescription() {
+    public function getRawMaterialDescription()
+    {
 
         $raw_material_id = Input::get('rawMaterialId');
         $raw_material_data = DB::table('rawmaterial')
@@ -290,7 +301,8 @@ class BOMController extends Controller
         return Response(json_encode($raw_material_data));
     }
 
-    public function getBomList($iidd, $route_name) {
+    public function getBomList($iidd, $route_name)
+    {
         $bomlist = DB::table('bom')
                 ->leftJoin('part_number', 'part_number.id', '=', 'bom.part_id')
                 ->leftJoin('rawmaterial', 'rawmaterial.id', '=', 'bom.raw_material')
@@ -304,8 +316,7 @@ class BOMController extends Controller
                                 . '<span class="fa fa-trash-o"></span></a>'
                                 . '&nbsp<a href="/part/' . $iidd . '/bom/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
                                 . '<span class="fa fa-pencil"></span></a>')
-                        ->editColumn("partnumber", function($row)
-                        {
+                        ->editColumn("partnumber", function($row) {
                             $part_no = substr($row->partnumber, 0, 3) . "-";
                             $part_no .= substr($row->partnumber, 3, 3) . "-";
                             $part_no .= substr($row->partnumber, 6, 4);
@@ -319,7 +330,8 @@ class BOMController extends Controller
                         ->with("part_id", $part_id);
     }
 
-    public function getBomData() {
+    public function getBomData()
+    {
         $partId = Input::get('partId');
         $bomData = DB::table('bom')
                         ->leftJoin('rawmaterial', 'rawmaterial.id', '=', 'bom.raw_material')
