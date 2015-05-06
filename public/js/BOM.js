@@ -1,6 +1,5 @@
 var new_order = 0;
 $(document).ready(function () {
-   
     $('#part_id').change();
     $('.skuDropDown').select2();
     $("#BOM_list").dataTable({
@@ -127,8 +126,19 @@ $(document).ready(function () {
                 $("#skuDescripton").val(jason.description);
             }
         });
-      //local=>  var a = "http://shark.localhost/part/" + id + "/bom/add";
-      var a = "http://shark.wamasoftware.com/part/" + id + "/bom/add";
+        var localTest = baseUrl.search("localhost");
+        var wamasoftTest = baseUrl.search("wamasoftware.com");
+        var liveTest = baseUrl.search("shark.xalla.mx");
+        if(localTest > 0){
+            a = "http://shark.localhost/part/" + id + "/bom/add";
+        }else if(wamasoftTest > 0){
+            a = "http://shark.wamasoftware.com/part/" + id + "/bom/add";
+        }else if(liveTest > 0){
+             a = "http://shark.xalla.mx/part/" + id + "/bom/add";
+        }
+    
+      //var a = "http://shark.wamasoftware.com/part/" + id + "/bom/add";
+      //var a = "http://shark.xalla.mx/part/" + id + "/bom/add";
         $(location).attr('href', a);
         //window.location(a);
     });
