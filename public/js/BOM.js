@@ -167,7 +167,12 @@ $(document).ready(function () {
 
     $("#yield").blur(function () {
         // (Yield + Scrap Rate) * Bom Cost = total
-        mul = (parseFloat($("#scrap_rate").val()) + parseFloat($("#yield").val())) * parseFloat($("#bom_cost").val());
+//        var a = ((parseFloat($("#bom_cost").val()) * parseFloat($("#scrap_rate").val()))/100) / parseFloat($("#bom_cost").val());
+//        var b = parseFloat($("#yield").val()) * parseFloat($(a).val());
+//        var c = parseFloat($("#yield").val()) + parseFloat($(b).val());
+//        mul = parseFloat($("#bom_cost").val()) + parseFloat($(c).val());
+       mul = (((((parseFloat($("#bom_cost").val()) * parseFloat($("#scrap_rate").val()))/100)/parseFloat($("#bom_cost").val())) * parseFloat($("#yield").val())) + parseFloat($("#yield").val())) * parseFloat($("#bom_cost").val());
+          //mul = (parseFloat($("#scrap_rate").val()) + parseFloat($("#yield").val())) * parseFloat($("#bom_cost").val());
         $("#total").val(mul.toFixed(2));
     });
 
