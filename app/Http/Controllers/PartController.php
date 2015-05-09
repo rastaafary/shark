@@ -167,7 +167,7 @@ class PartController extends Controller
     {
         $partlist = DB::table('part_number')
                 ->leftJoin('bom', 'bom.part_id', '=', 'part_number.id')
-                ->select(array('part_number.SKU', 'part_number.description', 'part_number.cost', DB::raw('SUM(bom.total) as bomTotal'), 'part_number.id'))
+                ->select(array('part_number.SKU', 'part_number.description', 'part_number.cost', DB::raw('ROUND(SUM(bom.total),2) as bomTotal'), 'part_number.id'))
                 ->where('bom.is_deleted', ' !=', '1')
                 ->groupBy('part_number.id');
         return Datatables::of($partlist)
