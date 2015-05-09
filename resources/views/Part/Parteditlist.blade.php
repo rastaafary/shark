@@ -32,7 +32,8 @@
                                                             <tr>
                                                                 <th>SKU</th>
                                                                 <th>Description</th>
-                                                                <th>Cost</th>                                                            
+                                                                <th>Cost</th>
+                                                                <th>BOM Total</th>
                                                                 <th>Action</th>
                                                             </tr> 
                                                         </thead>

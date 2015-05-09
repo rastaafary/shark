@@ -106,6 +106,8 @@ $(document).ready(function () {
         }
         resetInputOrderData();
 
+        //reset total Data
+        resetTotalOrderData();
     });
 
     $('#cancelUpdate').click(function () {
@@ -126,7 +128,7 @@ $(document).ready(function () {
                 $("#skuDescripton").val(jason.description);
             }
         });
-      var a = "/part/" + id + "/bom/add";
+        var a = "/part/" + id + "/bom/add";
         $(location).attr('href', a);
     });
     var bestPictures = new Bloodhound({
@@ -171,8 +173,8 @@ $(document).ready(function () {
 //        var b = parseFloat($("#yield").val()) * parseFloat($(a).val());
 //        var c = parseFloat($("#yield").val()) + parseFloat($(b).val());
 //        mul = parseFloat($("#bom_cost").val()) + parseFloat($(c).val());
-       mul = (((((parseFloat($("#bom_cost").val()) * parseFloat($("#scrap_rate").val()))/100)/parseFloat($("#bom_cost").val())) * parseFloat($("#yield").val())) + parseFloat($("#yield").val())) * parseFloat($("#bom_cost").val());
-          //mul = (parseFloat($("#scrap_rate").val()) + parseFloat($("#yield").val())) * parseFloat($("#bom_cost").val());
+        mul = (((((parseFloat($("#bom_cost").val()) * parseFloat($("#scrap_rate").val())) / 100) / parseFloat($("#bom_cost").val())) * parseFloat($("#yield").val())) + parseFloat($("#yield").val())) * parseFloat($("#bom_cost").val());
+        //mul = (parseFloat($("#scrap_rate").val()) + parseFloat($("#yield").val())) * parseFloat($("#bom_cost").val());
         $("#total").val(mul.toFixed(2));
     });
 
@@ -271,6 +273,8 @@ $(document).ready(function () {
     });
 
 
+    //reset total Data
+    resetTotalOrderData();
 
 });
 
@@ -318,6 +322,9 @@ function removeNewOrder(element)
             return false;
         }
     }
+
+    //reset total Data
+    resetTotalOrderData();
 }
 
 function resetInputOrderData() {
@@ -360,3 +367,11 @@ function confirmDelete()
     }
 }
 
+//reset total Data
+function resetTotalOrderData() {
+    totalAmout = 0;
+    $('tr.newOrderData').each(function () {
+        totalAmout += parseFloat($(this).find('.total').html());
+    });
+    $('#totalAmout').html(totalAmout.toFixed(2));
+}

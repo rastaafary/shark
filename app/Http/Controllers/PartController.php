@@ -9,6 +9,7 @@ use Validator;
 use Session;
 use Datatables;
 use Auth;
+
 class PartController extends Controller
 {
 
@@ -88,7 +89,7 @@ class PartController extends Controller
                         ->where('id', $post['id'])
                         ->update($post);
                 Session::flash('message', 'Part Update Successfully!!');
-                Session::flash('status', 'success');               
+                Session::flash('status', 'success');
                 return redirect('/part');
             }
         } else if (isset($id) && $id != null) {
@@ -165,8 +166,10 @@ class PartController extends Controller
     public function getPartData()
     {
         $partlist = DB::table('part_number')
-                ->select(array('SKU', 'description', 'cost', 'id'))
-                ->where('is_deleted', ' !=', '1');
+                ->leftJoin('bom', 'bom.part_id', '=', 'part_number.id')
+                ->select(array('part_number.SKU', 'part_number.description', 'part_number.cost', DB::raw('SUM(bom.total) as bomTotal'), 'part_number.id'))
+                ->where('bom.is_deleted', ' !=', '1')
+                ->groupBy('part_number.id');
         return Datatables::of($partlist)
                         ->editColumn("id", '<a href="part/{{ $id }}/bom" class="btn btn-info" id="btnBom">BOM</a>&nbsp;'
                                 . '<a href="part/delete/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'

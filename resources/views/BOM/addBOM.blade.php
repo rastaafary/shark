@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('content')
 {!! HTML::script('js/BOM.js') !!}
- {!! HTML::script('js/addBOM.js') !!}
+{!! HTML::script('js/addBOM.js') !!}
 {!! HTML::script('js/jquery.maskedinput.min.js') !!}
 <?php if ($route_name == 'edit') { ?>
     {!! HTML::script('js/EditBOM.js') !!}
@@ -11,7 +11,7 @@
     var route_name = '<?php echo $route_name ?>';
     var oldBomData = <?php echo (isset($bomList)) ? json_encode($bomList) : '[]'; ?>;
     var bId = <?php echo (isset($id)) ? $id : 0; ?>;
-   
+
 </script>
 
 <div class="wrapper">
@@ -59,12 +59,12 @@
                                                         <option value="{{$value->id}}" selected>{{$value->SKU}}</option>
 
                                                         @elseif(isset($bom->part_id) && $value->id == $bom->part_id)
-                                                      
+
                                                         <option value="{{$value->id}}" selected>{{$value->SKU}}</option>
-                                                 
+
                                                         @else
                                                         <option value="{{$value->id}}">{{$value->SKU}}</option>
-                                                       
+
                                                         @endif
                                                         @endforeach
 
@@ -74,7 +74,7 @@
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label for="skuDescripton" >SKU Description : </label>
-                                              
+
                                                 {!! Form::text('skuDescripton',Input::old('skuDescripton',isset($bom->skuDescripton) ? $bom->skuDescripton : '') ,array('class'=>'form-control','id'=>'skuDescripton','placeholder'=>'SKU Description',  'readonly')) !!}
                                             </div>
                                         </div>
@@ -142,7 +142,15 @@
                                                             </td>
                                                         </tr>
                                                     </tbody>
-
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="9">
+                                                                <span style="margin-left: 53%;">
+                                                                    Total Amount : <label id="totalAmout">0</label>
+                                                                </span>                                                    
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot>
                                                 </table>
 
 

@@ -4,10 +4,10 @@ $(document).ready(function () {
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "/partdata",
-        "aaSorting": [[7, "desc"]],
+        "aaSorting": [[0, "desc"]],
         "aoColumnDefs": [
-            {"bSearchable": false, "aTargets": [3]},
-            {"bSortable": false, "aTargets": [2,3]}
+            {"bSearchable": false, "aTargets": [4]},
+            {"bSortable": false, "aTargets": [4]}
         ],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
