@@ -28,7 +28,7 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="form-group">
-                                                    <label for="skuName" class="col-sm-4 control-label" style="font-weight: bolder;">SKU : </label>
+                                                    <label for="skuName" class="col-sm-6 control-label" style="font-weight: bolder;">SKU : </label>
                                                     <div class="col-sm-0">
                                                         <label class="control-label" id="skuName" style="font-weight: bolder;"></label>
                                                     </div>
