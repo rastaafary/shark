@@ -3,7 +3,7 @@
 {!! HTML::script('js/BOM.js') !!}
 <script>
     var part_id = '<?php echo $part_id ?>';
-     var route_name = '<?php echo $route_name ?>';
+    var route_name = '<?php echo $route_name ?>';
 </script>
 <div class="wrapper">
     <div class="row">
@@ -27,6 +27,12 @@
                                                 <h3 class="panel-title"><i class="fa fa-bars"></i> BOM List</h3>
                                             </div>
                                             <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label for="skuName" class="col-sm-4 control-label" style="font-weight: bolder;">SKU : </label>
+                                                    <div class="col-sm-0">
+                                                        <label class="control-label" id="skuName" style="font-weight: bolder;"></label>
+                                                    </div>
+                                                </div>
                                                 <div class="table-responsive">
                                                     <table class="display table table-bordered table-striped" id="BOM_list">
                                                         <thead>

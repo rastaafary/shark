@@ -1,5 +1,19 @@
 var new_order = 0;
 $(document).ready(function () {
+    if (route_name == 'bom')
+    {
+        $.ajax({
+            type: 'GET',
+            url: '/part/getskudescription',
+            data: 'skuId=' + part_id,
+            async: false,
+            success: function (responce)
+            {
+                var jason = $.parseJSON(responce);
+                $("#skuName").html(jason.SKU);
+            }
+        });
+    }
     $('#part_id').change();
     $('.skuDropDown').select2();
     $("#BOM_list").dataTable({
