@@ -93,7 +93,7 @@
                                                             <th style="width: 8%;">RawMaterial</th>
                                                             <th style="width: 13%;">Description</th>
                                                             <th style="width: 3%;">BOMCost</th>
-                                                            <th style="width: 3%;">ScrapeRate</th>
+                                                            <th style="width: 3%;">ScrapeRate(%)</th>
                                                             <th style="width: 3%;">Yield</th>
                                                             <th style="width: 6%;">Total</th>
                                                             <th style="width: 12%;">Unit</th>
