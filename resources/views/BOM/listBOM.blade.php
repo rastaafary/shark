@@ -46,6 +46,13 @@
                                                                 <th style="width: 5%;">Action</th>
                                                             </tr>                                                                       
                                                         </thead>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th colspan="5" style="text-align:right">Total :</th>
+                                                                <th><b id="BOMtotals"></b></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </tfoot>
                                                         <tbody>                                                       
                                                         </tbody>
                                                     </table>                                                                   
