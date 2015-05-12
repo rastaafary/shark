@@ -33,33 +33,33 @@ $(document).ready(function () {
                 "success": fnCallback
             });
         },
-        "fnInitComplete": function(oSettings, json) {
+        "fnInitComplete": function (oSettings, json) {
             total = 0;
-            $.each(oSettings.aoData,function(key,val) {
+            $.each(oSettings.aoData, function (key, val) {
                 total = (parseFloat(total) + parseFloat(val._aData[5])).toFixed(2);
             });
             $('#BOMtotals').html(total);
         }
     });
     var orderNo = 1;
-    /* $(oldBomData).each(function (key, val) {
-     var order = [
-     {
-     orderNo: orderNo++,
-     orderId: val.id,
-     selectedRawMaterial: val.partnumber,
-     raw_material: val.rowId,
-     descritpion: val.description,
-     bom_cost: val.bomcost,
-     scrap_rate: val.scrap_rate,
-     yield: val.yield,
-     total: val.total,
-     unit: val.name,
-     }
-     ];
-     // Render the Order details
-     $("#new-order-template").tmpl(order).appendTo("#purchaseOrderTbl tbody");
-     });*/
+    $(oldBomData).each(function (key, val) {
+        var order = [
+            {
+                orderNo: orderNo++,
+                orderId: val.id,
+                selectedRawMaterial: val.partnumber,
+                raw_material: val.rowId,
+                descritpion: val.description,
+                bom_cost: val.bomcost,
+                scrap_rate: val.scrap_rate,
+                yield: val.yield,
+                total: val.total,
+                unit: val.name,
+            }
+        ];
+        // Render the Order details
+        $("#new-order-template").tmpl(order).appendTo("#purchaseOrderTbl tbody");
+    });
 
     $("#scrap_rate, #yield").keydown(function (event) {
         if (!(event.keyCode == 8                                // backspace
