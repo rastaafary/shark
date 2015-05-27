@@ -3,7 +3,7 @@ $(document).ready(function () {
     $("#list-parts").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "/partdata",
+        "sAjaxSource": baseURL + "/partdata",
         "aaSorting": [[0, "desc"]],
         "aoColumnDefs": [
             {"bSearchable": false, "aTargets": [4]},

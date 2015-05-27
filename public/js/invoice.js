@@ -9,10 +9,9 @@ $(document).ready(function () {
     $("#invoiceList").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "/invoice/getInvoiceList",
+        "sAjaxSource": baseURL + "/invoice/getInvoiceList",
         "aaSorting": [[7, "desc"]],
-        "order": [[1, 'asc']],
-          "aoColumnDefs": [
+        "aoColumnDefs": [
             {"bSearchable": false, "aTargets": [1, 2, 3, 5]},
             {"bSortable": false, "aTargets": [4, 5]}
         ],
@@ -110,7 +109,7 @@ $(document).ready(function () {
         po_id = $('#po_id').val();
         $.ajax({
             type: 'GET',
-            url: '/invoice/dispSKUdata',
+            url: baseURL + '/invoice/dispSKUdata',
             data: {id: $(this).val(), po_id: po_id},
             success: function (responce)
             {
@@ -439,7 +438,7 @@ function getPocustomerData() {
     id = $('#po_id').val();
     $.ajax({
         type: 'GET',
-        url: '/invoice/listShipingInfo',
+        url: baseURL+'/invoice/listShipingInfo',
         data: 'id=' + id,
         async: false,
         success: function (responce)
@@ -470,7 +469,7 @@ function getPocustomerData() {
 
     $.ajax({
         type: 'GET',
-        url: '/invoice/listSKU',
+        url: baseURL+'/invoice/listSKU',
         data: 'id=' + id,
         async: false,
         success: function (responce)

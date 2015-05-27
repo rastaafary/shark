@@ -275,7 +275,7 @@ class CustomerController extends Controller
                 ->select(array('id', 'comp_name', 'building_no', 'street_addrs', 'interior_no', 'city', 'state', 'zipcode', 'country', 'phone_no', 'user_id', 'contact_name'))
                 ->where('is_deleted', '!=', '1');
         return Datatables::of($custlist)
-                        ->editColumn("user_id", '<a href="/customer/delete/{{ $user_id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete"><span class="fa fa-trash-o" ></span></a><a href="/customer/edit/{{ $user_id }}" class="btn btn-primary" id="btnEdit"><span class="fa fa-pencil"></span></a>')
+                        ->editColumn("user_id", '<a href="{{url("/")}}/customer/delete/{{ $user_id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete"><span class="fa fa-trash-o" ></span></a><a href="/customer/edit/{{ $user_id }}" class="btn btn-primary" id="btnEdit"><span class="fa fa-pencil"></span></a>')
                         ->make();
     }
 

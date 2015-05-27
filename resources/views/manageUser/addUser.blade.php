@@ -8,7 +8,7 @@
             <section class="panel">
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
-                        <li><a href="/userList">List</a></li>
+                        <li><a href="{!!url('/userList')!!}">List</a></li>
                         <li class="active"><a href="#Add">Add</a></li>                      
                     </ul>
                 </header>

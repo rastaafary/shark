@@ -2,6 +2,9 @@
 <html lang="en">
     <head>
         @include('includes.head')
+        <script type="text/javascript">
+            var baseURL = "{!!url('/')!!}";            
+        </script>    
     </head>
     <body class="sticky-header">
         <section>

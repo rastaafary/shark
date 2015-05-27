@@ -110,7 +110,7 @@ class PaymentController extends Controller
         // Return data for datatable
         return Datatables::of($paymentDetails)
                         ->editColumn("paid", '${{ $paid }}')
-                        ->editColumn("invoice_id", '<a class="fa fa-bars btn btn-primary" href="/payment/view/{{ $invoice_id }}"> Details </a>')
+                        ->editColumn("invoice_id", '<a class="fa fa-bars btn btn-primary" href="{{url("/")}}/payment/view/{{ $invoice_id }}"> Details </a>')
                         ->make();
     }
 

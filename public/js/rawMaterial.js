@@ -7,7 +7,7 @@ $(document).ready(function () {
     $("#rawmaterial-list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "/RawMaterialdata",
+        "sAjaxSource": baseURL+"/RawMaterialdata",
         "aaSorting": [[7, "desc"]],
         "aoColumnDefs": [
            

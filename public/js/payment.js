@@ -2,8 +2,8 @@ $(document).ready(function() {
     var bestPictures = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('contact_name'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: '/payment/searchCustomer',
-        remote: '/payment/searchCustomer/%QUERY'
+        prefetch: baseURL+'/payment/searchCustomer',
+        remote: baseURL+'/payment/searchCustomer/%QUERY'
     });
 
     bestPictures.initialize();
@@ -22,7 +22,7 @@ $(document).ready(function() {
         custId = $('input[name="selectedCust"]').val();
         $.ajax({
             type: 'GET',
-            url: '/payment/getCustInvoice',
+            url: baseURL+'/payment/getCustInvoice',
             data: 'custId=' + custId,
             async: false,
             success: function(responce) {
@@ -41,7 +41,7 @@ $(document).ready(function() {
         $('#invoiceListBlock,#invoiceDetailBlock').hide();
         $.ajax({
             type: 'GET',
-            url: '/payment/getInvoicePaymentDetails',
+            url: baseURL+'/payment/getInvoicePaymentDetails',
             data: 'invoiceId=' + $(this).val(),
             async: false,
             success: function(responce) {
@@ -83,8 +83,8 @@ $(document).ready(function() {
     $("#payment-list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "/payment/getPaymentList",
-        "aaSorting": [[1, 'asc']],
+        "sAjaxSource": baseURL+"/payment/getPaymentList",
+        "aaSorting": [[4, 'desc']],
         //"order": [[1, 'asc']],
        "aoColumnDefs": [
             {"bSearchable": false, "aTargets": [3, 4]},

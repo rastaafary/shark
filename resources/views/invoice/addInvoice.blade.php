@@ -12,7 +12,7 @@
             <section class="panel">
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
-                        <li><a href="/invoice">List</a></li>
+                        <li><a href="{!!url('/invoice')!!}">List</a></li>
                         <li class="active"><a href="javascript:void(0);">{!! isset($id) ? 'Edit' : 'Add' !!}</a></li>
                     </ul>
                 </header>

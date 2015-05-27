@@ -20,8 +20,8 @@
 
             <header class="panel-heading custom-tab dark-tab">
                 <ul class="nav nav-tabs">
-                    <li><a href="/part/{{$part_id}}/bom">List</a></li>
-                    <li class="active"><a href="#Add"><?php echo isset($bom->id) ? 'Edit' : 'Add'; ?></a></li>                       
+                    <li><a href="{!!url('/')!!}/part/{{$part_id}}/bom">List</a></li>
+                    <li class="active"><a href="{!!url('#Add')!!}"><?php echo isset($bom->id) ? 'Edit' : 'Add'; ?></a></li>                       
                 </ul>
             </header>
             <div class="panel-body">

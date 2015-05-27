@@ -26,8 +26,8 @@
             <section class="panel">
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
-                        <li><a href="/part">List</a></li>
-                        <li class="active"><a href="#" data-toggle="tab"><?php echo isset($part->id) ? 'Edit' : 'Add'; ?></a></li>
+                        <li><a href="{!!url('/part')!!}">List</a></li>
+                        <li class="active"><a href="{!!url('#')!!}" data-toggle="tab"><?php echo isset($part->id) ? 'Edit' : 'Add'; ?></a></li>
                     </ul>
                 </header>
                 <div class="panel-body">

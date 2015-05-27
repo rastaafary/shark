@@ -11,8 +11,8 @@
             <section class="panel">
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
-                        <li><a href="/po">List</a></li>
-                        <li class="active"><a href="#Add"><?php echo isset($id) ? 'Edit' : 'Add'; ?></a></li>                       
+                        <li><a href="{!!url('/po')!!}">List</a></li>
+                        <li class="active"><a href="{!!url('#Add')!!}"><?php echo isset($id) ? 'Edit' : 'Add'; ?></a></li>                       
                     </ul>
                 </header>
                 <div class="panel-body">
@@ -295,7 +295,7 @@
                                                 </div>
                                             </div>
                                             @if(isset($id))
-                                            <a class="btn btn-link" href="/blogArt/<?= $purchaseOrder->po_id ?>" role="button"><strong>Blog Art</strong></a>                                          
+                                            <a class="btn btn-link" href="{!!url('/blogArt')!!}<?= $purchaseOrder->po_id ?>" role="button"><strong>Blog Art</strong></a>                                          
                                             @endif
                                         </div>                                                       
                                     </div>

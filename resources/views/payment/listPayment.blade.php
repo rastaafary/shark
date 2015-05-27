@@ -8,8 +8,8 @@
             <section class="panel">
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#List">List</a></li>
-                        <li><a href="/payment/add">Add</a></li> 
+                        <li class="active"><a href="{!!url('#List')!!}">List</a></li>
+                        <li><a href="{!!url('/payment/add')!!}">Add</a></li> 
                         <!--<li><a href="/payment/view">View</a></li>--> 
                     </ul>
                 </header>

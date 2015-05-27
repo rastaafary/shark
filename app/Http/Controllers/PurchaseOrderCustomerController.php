@@ -529,9 +529,9 @@ class PurchaseOrderCustomerController extends Controller
                 ->select(array('part_number.SKU', 'part_number.description', 'order_list.qty', 'part_number.cost', 'order_list.amount', 'order_list.id'));
 
         return Datatables::of($orderlist)
-                        ->editColumn("id", '<a href="/po/deletepoCustomer/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
+                        ->editColumn("id", '<a href="{{url("/")}}/po/deletepoCustomer/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                 . '<span class="fa fa-trash-o"></span></a>'
-                                . '&nbsp<a href="#" class="btn btn-primary" onClick = "return pocustEdit({{ $id }})" id="btnEdit">'
+                                . '&nbsp<a href="{{url("#")}}" class="btn btn-primary" onClick = "return pocustEdit({{ $id }})" id="btnEdit">'
                                 . '<span class="fa fa-pencil"></span></a>')
                         ->make();
     }
@@ -634,9 +634,9 @@ class PurchaseOrderCustomerController extends Controller
 
             //->selectRow('purchase_order.po_number,purchase_order.require_date,part_number.description,sum(order_list.qty) as qty,sum(order_status.pcs_made) as pcs_made,sum(order_list.amount) as `amount`,`purchase_order.id`')
             return Datatables::of($orderlist)
-                            ->editColumn("id", '<a href="/po/deletepoCustomer/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
+                            ->editColumn("id", '<a href="{{url("/")}}/po/deletepoCustomer/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                     . '<span class="fa fa-trash-o"></span></a>'
-                                    . '&nbsp<a href="/po/edit/{{ $id }}" class="btn btn-primary" id="btnEdit" onClick = "return confirmEdit({{ $id }})">'
+                                    . '&nbsp<a href="{{url("/")}}/po/edit/{{ $id }}" class="btn btn-primary" id="btnEdit" onClick = "return confirmEdit({{ $id }})">'
                                     . '<span class="fa fa-pencil"></span></a>')
                             //->editColumn("description", '')
                             ->make();
@@ -651,9 +651,9 @@ class PurchaseOrderCustomerController extends Controller
                     ->where('purchase_order.is_deleted', '=', '0');
 
             return Datatables::of($orderlist)
-                            ->editColumn("id", '<a href="/po/deletepoCustomer/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
+                            ->editColumn("id", '<a href="{{url("/")}}/po/deletepoCustomer/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                     . '<span class="fa fa-trash-o"></span></a>'
-                                    . '&nbsp<a href="/po/edit/{{ $id }}" class="btn btn-primary" id="btnEdit">'
+                                    . '&nbsp<a href="{{url("/")}}/po/edit/{{ $id }}" class="btn btn-primary" id="btnEdit">'
                                     . '<span class="fa fa-pencil"></span></a>')
                             ->editColumn("description", '')
                             ->make();

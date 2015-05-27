@@ -171,10 +171,10 @@ class PartController extends Controller
                 ->where('bom.is_deleted', ' !=', '1')
                 ->groupBy('part_number.id');
         return Datatables::of($partlist)
-                        ->editColumn("id", '<a href="part/{{ $id }}/bom" class="btn btn-info" id="btnBom">BOM</a>&nbsp;'
-                                . '<a href="part/delete/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
+                        ->editColumn("id", '<a href="{{url("/")}}/part/{{ $id }}/bom" class="btn btn-info" id="btnBom">BOM</a>&nbsp;'
+                                . '<a href="{{url("/")}}/part/delete/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                 . '<span class="fa fa-trash-o"></span></a>'
-                                . '&nbsp<a href="part/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
+                                . '&nbsp<a href="{{url("/")}}/part/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
                                 . '<span class="fa fa-pencil"></span></a>')
                         ->make();
     }

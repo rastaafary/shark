@@ -11,9 +11,9 @@ $(document).ready(function ()
     $("#openCloseToggle").change(function () {
         if ($('#openCloseToggle').prop('checked') == true) {
             // 0 
-            oTable.fnReloadAjax('/PLReport/orderlist/0');
+            oTable.fnReloadAjax(baseURL+'/PLReport/orderlist/0');
         } else {
-            oTable.fnReloadAjax('/PLReport/orderlist/1');
+            oTable.fnReloadAjax(baseURL+'/PLReport/orderlist/1');
 
             //1 
         }
@@ -63,7 +63,7 @@ $(document).ready(function ()
     oTable = $("#order-list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "/PLReport/orderlist/0",
+        "sAjaxSource": baseURL+"/PLReport/orderlist/0",
         "aaSorting": [[0, "asc"]],
         "aoColumnDefs": [
             {"bSearchable": false, "aTargets": [0]},
@@ -112,7 +112,7 @@ $(document).ready(function ()
             });
             $.ajax({
                 type: "GET",
-                url: "/PLReport/reOrderData",
+                url: baseURL+"/PLReport/reOrderData",
                 data: {orderId: orderId, max: Math.max.apply(Math, sequence), min: Math.min.apply(Math, sequence)},
                 success: function (data) {
                     oTable.fnReloadAjax();
@@ -146,7 +146,7 @@ $(document).ready(function ()
     $('#addPcsMadeBtn').click(function () {
         $.ajax({
             type: "GET",
-            url: '/PLReport/addPcsMade',
+            url: baseURL+'/PLReport/addPcsMade',
             data: "pcsMadeId=" + $('#pcsMadeId').val() + "&pcsMadeDate=" + $('#pcsMadeDate').val() + "&pcsMadeQty=" + $('#pcsMadeQty').val() + "&orderlist_id=" + $('#orderlist_id').val() + "&pcsMadeQty_old=" + $('#pcsMadeQty_old').val(),
             success: function (msg) {
                 var jason = $.parseJSON(msg);
@@ -181,7 +181,7 @@ function changePlValues(olId, fieldName, fieldValue) {
     $('.ESDate').datepicker("hide");
     $.ajax({
         type: "GET",
-        url: '/PLReport/changePlValues',
+        url: baseURL+'/PLReport/changePlValues',
         data: "olId=" + olId + "&fieldName=" + fieldName + "&fieldValue=" + fieldValue,
         success: function (msg) {
             oTable.fnReloadAjax();
@@ -201,7 +201,7 @@ function getpcsDetails(orderListId, po_number, sku, amount)
 
     $.ajax({
         type: "GET",
-        url: '/PLReport/getPcsMadeDetails',
+        url: baseURL+'/PLReport/getPcsMadeDetails',
         data: "orderListId=" + orderListId,
         success: function (msg) {
             var jason = $.parseJSON(msg);
@@ -259,7 +259,7 @@ function deletePcs(pcsMadeId) {
     if (confirm('Are you sure want to delete?')) {
         $.ajax({
             type: "GET",
-            url: '/PLReport/deletePcsMade',
+            url: baseURL+'/PLReport/deletePcsMade',
             data: "pcsMadeId=" + pcsMadeId,
             success: function (msg) {
                 var jason = $.parseJSON(msg);

@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $.ajax({
         type: 'GET',
-        url: '/part/getskudescription',
+        url: baseURL +'/part/getskudescription',
         data: 'skuId=' + part_id,
         async: false,
         success: function (responce)

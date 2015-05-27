@@ -16,7 +16,7 @@
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#" >List</a></li>
-                        <li><a href="/part/add">Add</a></li>
+                        <li><a href="{!!url('/part/add')!!}">Add</a></li>
                     </ul>
                 </header>
                 <div class="panel-body">

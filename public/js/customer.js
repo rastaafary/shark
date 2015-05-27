@@ -3,7 +3,7 @@ $(document).ready(function () {
     $("#customer-list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "/customerdata",
+        "sAjaxSource": baseURL+"/customerdata",
         "aoColumnDefs": [
            // {"bSearchable": false, "aTargets": [1,2,3,4,5]},
             {"bSortable": false, "aTargets": [9,10]}

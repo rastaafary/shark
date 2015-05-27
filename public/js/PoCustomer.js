@@ -30,7 +30,7 @@ $(document).ready(function () {
         id = $('#selectPOCustomer').val();      
         $.ajax({
             type: 'GET',
-            url: '/po/getIdentifireList',
+            url: baseURL+'/po/getIdentifireList',
             data: 'custId=' + id,
             async: false,
             success: function (responce)
@@ -48,7 +48,7 @@ $(document).ready(function () {
     $("#po_cust_order").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "/po/getorderlist",
+        "sAjaxSource": baseURL+"/po/getorderlist",
         "aaSorting": [[7, "desc"]],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
@@ -63,7 +63,7 @@ $(document).ready(function () {
     var t = $("#POCustomer_list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "/po/getPoCustomerlist",
+        "sAjaxSource": baseURL+"/po/getPoCustomerlist",
         "aaSorting": [[7, "desc"]],
         "order": [[1, 'asc']],
         "aoColumnDefs": [
@@ -104,8 +104,8 @@ $(document).ready(function () {
     var bestPictures = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('SKU'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: '/po/add/searchSKU',
-        remote: '/po/add/searchSKU/%QUERY'
+        prefetch: baseURL+'/po/add/searchSKU',
+        remote: baseURL+'/po/add/searchSKU/%QUERY'
     });
 
     bestPictures.initialize();
@@ -126,7 +126,7 @@ $(document).ready(function () {
         description = $('#searchSKU').val();
         $.ajax({
             type: 'GET',
-            url: '/po/getDescription',
+            url: baseURL+'/po/getDescription',
             data: 'description=' + description,
             async: false,
             success: function (responce)
@@ -176,7 +176,7 @@ $('#orderDate,#require_date').datepicker({format: "yyyy-mm-dd", todayBtn: true, 
     $("#addOrder").click(function () {
         $.ajax({
             type: 'post',
-            url: '/po/add/order',
+            url: baseURL+'/po/add/order',
             data: 'name=' + "ABC",
             async: false,
             success: function (responce)
@@ -193,7 +193,7 @@ $('#orderDate,#require_date').datepicker({format: "yyyy-mm-dd", todayBtn: true, 
         amount = $('#amount').val();
         $.ajax({
             type: 'GET',
-            url: '/po/add/order',
+            url: baseURL+'/po/add/order',
             data: {'customer_id': cust_id, 'searchSKU': searchSKU, 'searchQty': qty, 'amount': amount},
             async: false,
             headers: {
@@ -472,7 +472,7 @@ function getinfo(element)
 {
     $.ajax({
         type: 'GET',
-        url: '/po/getDescription',
+        url: baseURL+'/po/getDescription',
         data: 'description=' + $(element).attr('value'),
         async: false,
         success: function (responce)
@@ -516,7 +516,7 @@ function pocustEdit(id)
     $('#editProductModal').modal('show');
     $.ajax({
         type: 'GET',
-        url: '/po/geteditorderlist',
+        url: baseURL+'/po/geteditorderlist',
         data: 'id=' + id,
         async: false,
         success: function (responce)

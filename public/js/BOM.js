@@ -4,7 +4,7 @@ $(document).ready(function () {
     {
         $.ajax({
             type: 'GET',
-            url: '/part/getskudescription',
+            url: baseURL + '/part/getskudescription',
             data: 'skuId=' + part_id,
             async: false,
             success: function (responce)
@@ -19,7 +19,7 @@ $(document).ready(function () {
     $("#BOM_list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "/getBomList/" + part_id + "/" + route_name,
+        "sAjaxSource": baseURL + "/getBomList/" + part_id + "/" + route_name,
         "aaSorting": [[7, "desc"]],
         "aoColumnDefs": [
             {"bSortable": false, "aTargets": [6]},
@@ -140,7 +140,7 @@ $(document).ready(function () {
         id = $('#part_id').val();
         $.ajax({
             type: 'GET',
-            url: '/part/getskudescription',
+            url: baseURL + '/part/getskudescription',
             data: 'skuId=' + id,
             async: false,
             success: function (responce)
@@ -149,14 +149,14 @@ $(document).ready(function () {
                 $("#skuDescripton").val(jason.description);
             }
         });
-        var a = "/part/" + id + "/bom/add";
+        var a = baseURL + "/part/" + id + "/bom/add";
         $(location).attr('href', a);
     });
     var bestPictures = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('partnumber'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: '/part/bom/searchRawMaterial',
-        remote: '/part/bom/searchRawMaterial/%QUERY'
+        prefetch: baseURL+'/part/bom/searchRawMaterial',
+        remote: baseURL+'/part/bom/searchRawMaterial/%QUERY'
     });
 
     bestPictures.initialize();
@@ -173,7 +173,7 @@ $(document).ready(function () {
         id = $('#raw_material').val();
         $.ajax({
             type: 'GET',
-            url: '/part/bom/rawMaterialDescription',
+            url: baseURL + '/part/bom/rawMaterialDescription',
             data: 'rawMaterialId=' + id,
             async: false,
             success: function (responce)
@@ -368,7 +368,7 @@ function addOrder() {
     amount = $('#amount').val();
     $.ajax({
         type: 'POST',
-        url: '/po/add/order',
+        url: baseURL+'/po/add/order',
         data: {'customer_id': cust_id, 'searchSKU': searchSKU, 'searchQty': qty, 'amount': amount},
         async: false,
         headers: {

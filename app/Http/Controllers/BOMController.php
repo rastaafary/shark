@@ -245,9 +245,9 @@ class BOMController extends Controller
                 ->where('bom.is_deleted', '=', '0');
 
         return Datatables::of($bomlist)
-                        ->editColumn("id", '<a href="/part/' . $iidd . '/bom/delete/{{ $id }}/' . $route_name . '" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
+                        ->editColumn("id", '<a href="{{url("/")}}/part/' . $iidd . '/bom/delete/{{ $id }}/' . $route_name . '" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                 . '<span class="fa fa-trash-o"></span></a>'
-                                . '&nbsp<a href="/part/' . $iidd . '/bom/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
+                                . '&nbsp<a href="{{url("/")}}/part/' . $iidd . '/bom/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
                                 . '<span class="fa fa-pencil"></span></a>')
                         ->editColumn("partnumber", function($row) {
                             $part_no = substr($row->partnumber, 0, 3) . "-";
@@ -302,9 +302,9 @@ class BOMController extends Controller
                 ->where('bom.is_deleted', '=', '0');
 
         return Datatables::of($bomlist)
-                        ->editColumn("id", '<a href="/part/' . $iidd . '/bom/delete/{{ $id }}/' . $route_name . '" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
+                        ->editColumn("id", '<a href="{{url("/")}}/part/' . $iidd . '/bom/delete/{{ $id }}/' . $route_name . '" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete">'
                                 . '<span class="fa fa-trash-o"></span></a>'
-                                . '&nbsp<a href="/part/' . $iidd . '/bom/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
+                                . '&nbsp<a href="{{url("/")}}/part/' . $iidd . '/bom/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
                                 . '<span class="fa fa-pencil"></span></a>')
                         ->editColumn("partnumber", function($row) {
                             $part_no = substr($row->partnumber, 0, 3) . "-";

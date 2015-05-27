@@ -131,7 +131,7 @@ class RawMaterialController extends Controller
         ;
 
         return Datatables::of($rawMateriallist)
-                        ->editColumn("id", '<a href="RawMaterial/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
+                        ->editColumn("id", '<a href="{{url("/")}}/RawMaterial/edit/{{ $id }}" class="btn btn-primary" onClick = "return confirmEdit({{ $id }})" id="btnEdit">'
                                 . '<span class="fa fa-pencil"></span></a>')
                         ->editColumn("partnumber", function($row) {
                             $part_no = substr($row->partnumber, 0, 3) . "-";

@@ -3,7 +3,7 @@ $(document).ready(function () {
     $("#user-list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "/userdata",
+        "sAjaxSource": baseURL+"/userdata",
         "aaSorting": [[7, "desc"]],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({

@@ -54,7 +54,7 @@
                     @if(Auth::user()->hasRole('admin'))
                     <li class="<?php if($path == 'userList'||$path == 'userList/add'){ echo 'active'; } ?>"><a href="{{action('ManageUserController@userList')}}"> User List</a></li>
                     @endif
-                    <li class="<?php if($path == 'userProfile/edit/'.Auth::user()->id){ echo 'active'; } ?>"><a href="/userProfile/edit/{{Auth::user()->id}}"> Profile</a></li>
+                    <li class="<?php if($path == 'userProfile/edit/'.Auth::user()->id){ echo 'active'; } ?>"><a href="{!!url('/')!!}/userProfile/edit/{{Auth::user()->id}}"> Profile</a></li>
                 </ul>
             </li>
             @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))

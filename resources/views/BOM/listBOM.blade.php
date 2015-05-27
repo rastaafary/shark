@@ -11,8 +11,8 @@
             <section class="panel">
                 <header class="panel-heading custom-tab dark-tab">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#List">List</a></li>
-                        <li><a href="/part/{{$part_id}}/bom/add">Add</a></li>
+                        <li class="active"><a href="{!!url('#List')!!}">List</a></li>
+                        <li><a href="{!!url('/')!!}/part/{{$part_id}}/bom/add">Add</a></li>
                     </ul>
                 </header>
                 <div class="panel-body">

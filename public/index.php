@@ -1,4 +1,6 @@
 <?php
+//error_reporting(-1);
+//ini_set('error_reporting', E_ALL);
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
@@ -48,9 +50,14 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $kernel = $app->make('Illuminate\Contracts\Http\Kernel');
 
-$response = $kernel->handle(
+try {
+    $response = $kernel->handle(
 	$request = Illuminate\Http\Request::capture()
 );
+} catch (Exception $ex) {
+    echo $ex->getMessage();
+}
+
 
 $response->send();
 
