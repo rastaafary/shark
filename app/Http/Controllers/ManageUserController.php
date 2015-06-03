@@ -204,7 +204,7 @@ class ManageUserController extends Controller
           $last_query = end($queries); */
 
         return Datatables::of($userlist)
-                        ->editColumn("id", '<a href="/userList/delete/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete"><span class="fa fa-trash-o"></span></a>&nbsp<a href="/userList/edit/{{ $id }}" class="btn btn-primary" id="btnEdit"><span class="fa fa-pencil"></span></a>')
+                        ->editColumn("id", '<a href="{{url("/")}}/userList/delete/{{ $id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete"><span class="fa fa-trash-o"></span></a>&nbsp<a href="{{url("/")}}/userList/edit/{{ $id }}" class="btn btn-primary" id="btnEdit"><span class="fa fa-pencil"></span></a>')
                         ->make();
     }
 

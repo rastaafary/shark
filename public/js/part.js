@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+// $(".Books_Illustrations").select2("val", ["a", "c"]);
     $("#list-parts").dataTable({
         "bProcessing": true,
         "bServerSide": true,
@@ -19,6 +20,36 @@ $(document).ready(function () {
             });
         },
     });
+    
+      $('#sourceValues').change(function () {
+              
+        $.ajax({
+            type: 'GET',
+            url: baseURL+'/part/getSizeData',
+            data:  size,
+            async: false,
+            success: function (responce)
+            {
+                var jason = $.parseJSON(responce);
+                $("#oldIdentifire").html('');
+                $.each(jason, function (idx, data) {
+                       
+                       var sizeList = ["XS","S","M","L","XL","XXL","XXXL"];
+                       sizeList.push(size);
+                });
+            }
+        });
+    });
+
+    
+    $(".js-example-basic-multiple").select2();
+    
+    $(".js-example-basic-multipled").select2();
+    
+//        var selectedValues = new Array();
+//selectedValues[4] = "L";
+//selectedValues[5] = "XL";
+// $(".js-example-basic-multiple").select2(selectedValues);
 
     //cost validation    
     jQuery.validator.addMethod("amountValidation", function (value, element) {

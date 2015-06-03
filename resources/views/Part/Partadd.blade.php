@@ -54,6 +54,9 @@
                                                 <table  class="display table">
                                                     <tr>
                                                         <th>SKU</th>
+                                                        <th>Size</th>
+                                                        <th>Componenets</th>
+<!--                                                        <th>AiFile</th>-->
                                                         <th>Description</th>
                                                         <th>Cost</th>
                                                         <th>Currency</th>
@@ -63,14 +66,22 @@
                                                     <tr>
                                                         <td><!--<input type="text" class="form-control" id="SKU" placeholder="SKU">-->
                                                             {!! Form::text('SKU', Input::old('SKU',isset($part->SKU) ? $part->SKU : ''),array('class'=>'form-control','placeholder'=>'SKU','minlength'=>'6')) !!}<br/></td>
+<!--                                                        <td><select class="js-example-basic-multiple" multiple="multiple" style="width: 200px;">     </select></td>-->
+                                                        <td>
+                                                            {!! Form::select('labels[]',$sizelist,isset($size->labels) ? $size->labels:'', array('class' => 'js-example-basic-multiple','style'=>'width: 150px','multiple'=>'multiple','id'=>'sourceValues')) !!}<br/></td>
+
+                                                        <td>
+                                                            {!! Form::select('label[]',$componentslist,isset($part->label) ? $part->label:'', array('class' => 'js-example-basic-multipled','style'=>'width: 150px','multiple'=>'multiple')) !!}<br></td>
+<!--                                                        <td><input id="uploadArtAi" type="file" name="ai"><br/></td>-->
                                                         <td><!--<input type="text" class="form-control" id="Description">-->
                                                             {!! Form::text('description', Input::old('description',isset($part->description) ? $part->description : ''),array('class'=>'form-control','placeholder'=>'Description')) !!}<br/></td>
                                                         <td><!--<input type="text" class="form-control" id="Cost" size="3">-->
                                                             {!! Form::text('cost', Input::old('cost',isset($part->cost) ? $part->cost : ''),array('class'=>'form-control','placeholder'=>'Cost')) !!}<br/></td>
-                                                        <td><!--<select class="form-control" id="Currncy">       
-                                                                <option>USA</option>
-                                                                <option>MXN</option>
-                                                            </select>-->
+
+<td><!--<select class="form-control" id="Currncy">       
+        <option>USA</option>
+        <option>MXN</option>
+    </select>-->
                                                             {!! Form::select('currency_id', ['1' => 'USD', '2' => 'MXN'], isset($part->currency_id) ? $part->currency_id:'1', array('class' => 'form-control')) !!}
                                                             <!--{!! Form::select('currency_id',array('1' => 'USD', '2' => 'MXN'), null, array('class' => 'form-control')) !!}-->
                                                         </td>
@@ -79,6 +90,8 @@
                                                     </tr>
 
                                                 </table>
+
+                                                </select>
                                             </div>
                                             {!! Form::close() !!}
                                         </div>

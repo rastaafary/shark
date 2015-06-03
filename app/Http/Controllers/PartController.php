@@ -10,11 +10,9 @@ use Session;
 use Datatables;
 use Auth;
 
-class PartController extends Controller
-{
+class PartController extends Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
     }
 
@@ -40,8 +38,7 @@ class PartController extends Controller
      *
      * @return Response
      */
-    public function partList()
-    {
+    public function partList() {
         //$path = base_path();
         //echo $path;exit;
 //        if(Auth::User()->hasRole('customer'))
@@ -57,12 +54,13 @@ class PartController extends Controller
      * Edit part 
      */
 
-    public function editPart($id = null)
-    {
+    public function editPart($id = null) {
         $post = Input::all();
 
         if (isset($post['_token']))
             unset($post['_token']);
+//             $size = $post['labels'];
+//            unset($post['labels']);
 
         if (isset($post['id']) && $post['id'] != null) {
             $rules = array(
@@ -85,19 +83,50 @@ class PartController extends Controller
                   }
                   } */
             } else {
-                DB::table('part_number')
+//                $partid = $post['id'];
+//                $sizeData = $post['labels'];
+//                unset($post['labels']);
+//                unset($post['id']);
+               $part_data = DB::table('part_number')
+                        //->Join('labels', 'part_number.id', '=', 'size_data.part_id')
                         ->where('id', $post['id'])
                         ->update($post);
+                
+
+//                $postSize = array();
+//                $postSize['part_id'] = $id;
+//                $sizeData = DB::table('size_data')->select('id')->where('part_id', '=', $partid)->get();
+//                 
+//                foreach ($sizeData as $size) {
+//                    $postSize['part_id'] = $size;
+//                    $postSize['size_id'] = $size;
+//                    echo '<pre>';
+//                        print_r($postSize);exit;
+//                    if(isset($sizeData)){
+//                        DB::table('size_data')->where('id', '=', $sizeData->id)->update($postSize);
+//                    }
+//                }
+
                 Session::flash('message', 'Part Update Successfully!!');
                 Session::flash('status', 'success');
                 return redirect('/part');
             }
         } else if (isset($id) && $id != null) {
-            $part = DB::table('part_number')->where('id', $id)->first();
-            return View::make('Part.Partadd')->with('part', $part);
+           
+            $part = DB::table('part_number')             
+                    ->where('part_number.id', $id)->first();
+            $size = DB::table('size_data')->select('size_id')->where('part_id','=', $id)->get();
+           
+            
+                       
+            $size_list = DB::table('size')->select('labels', 'id')->lists('labels', 'id');
+            $components_list = DB::table('components')->select('label', 'id')->lists('label', 'id');
+            return View::make('Part.Partadd')->with(array('part'=> $part,'sizelist'=>$size_list,'componentslist'=>$components_list,'size'=>$size));
         } else {
             $partlist = DB::table('part_number')->get();
-            return view('Part.Part')->with('partlist', $partlist);
+            $sizelist = DB::table('size_data')->get();
+            $componentslist = DB::table('components_data')->select('label', 'id')->lists('label', 'id');
+            return view('Part.Part')->with(array('partlist'=>$partlist,'sizelist'=>$sizelist,'componentslist'=>$componentslist));
         }
         return view('Part.Part', ['page_title' => 'Edit Part Number']);
     }
@@ -106,11 +135,19 @@ class PartController extends Controller
      * Add part
      */
 
-    public function addPart()
-    {
+    public function addPart() {
         $post = Input::all();
+//        echo '<pre>';
+//                print_r($post);exit;
         if (isset($post['_token'])) {
             unset($post['_token']);
+            
+            $size = $post['labels'];
+            unset($post['labels']);
+            
+            $components = $post['label'];
+            unset($post['label']);
+            
             //if (isset($post['SKU']) && $post['SKU'] != null) {
             $rules = array(
                 'SKU' => 'required|Min:6|alpha_num|unique:part_number,SKU,' . $post['id'],
@@ -125,22 +162,56 @@ class PartController extends Controller
                                 ->withErrors($validator)
                                 ->withInput(Input::all());
             }
-            DB::table('part_number')->insert(
-                    array($post)
+//            if (isset($post['ai'])) {
+//                $aiName = $post['ai']->getClientOriginalName();
+//                $file = Input::file('ai');
+//                $destinationPath = 'files';
+//                $aiFilename = $aiName;
+//                Input::file('ai')->move($destinationPath, $aiFilename);
+//                $post['ai'] = $aiFilename;
+//            } else {
+//                $post['ai'] = '';
+//            }
+            $part = DB::table('part_number')->insertGetId(
+                    $post
             );
+            //for Size Table
+            foreach ($size as $s) {
+                $si['part_id'] = $part;
+                $si['size_id'] = $s;
+                $sizeId = DB::table('size_data')->insert(
+                        $si
+                );
+            }
+            
+            //for Component Table
+            foreach ($components as $c) {
+                
+                $sid['part_id'] = $part;
+                
+                $sid['components_id'] = $c;
+                
+                $componentsId = DB::table('components_data')->insert(
+                        $sid
+                );
+            }
+            
             Session::flash('message', 'Part Added Successfully!!');
             Session::flash('status', 'success');
             return redirect('/part');
         }
-        return view('Part.Partadd', ['page_title' => 'Add Part Number']);
+        
+        $size_list = DB::table('size')->select('labels', 'id')->lists('labels', 'id');
+        $components_list = DB::table('components')->select('label', 'id')->lists('label', 'id');
+
+        return view('Part.Partadd', ['page_title' => 'Add Part Number'])->with(array('sizelist' => $size_list,'componentslist' => $components_list));
     }
 
     /*
      *  Add part
      */
 
-    public function partAdddata()
-    {
+    public function partAdddata() {
         return view('Part.Partadd');
     }
 
@@ -148,8 +219,7 @@ class PartController extends Controller
      * delete part 
      */
 
-    public function deletePart($id = null)
-    {
+    public function deletePart($id = null) {
         //DB::table('part_number')->where('id', $id)->delete();
         DB::table('part_number')
                 ->where('id', $id)
@@ -158,17 +228,25 @@ class PartController extends Controller
         Session::flash('alert-success', 'success');
         return redirect('/part');
     }
-
+//For size
+    public function getSizeData(){
+        
+         $size = DB::table('size_data')
+                 ->leftjoin('size','size.id','=','size_data.size_id')
+                 ->select('size_id')
+                 ->where('part_id','=', $id)->get();
+          return Response(json_encode($size));
+        
+    }
     /*
      * get all part listing
      */
 
-    public function getPartData()
-    {
+    public function getPartData() {
         $partlist = DB::table('part_number')
                 ->leftJoin('bom', 'bom.part_id', '=', 'part_number.id')
                 ->select(array('part_number.SKU', 'part_number.description', 'part_number.cost', DB::raw('ROUND(SUM(bom.total),2) as bomTotal'), 'part_number.id'))
-                ->where('bom.is_deleted', ' !=', '1')
+                ->where('part_number.is_deleted', '=', '0')
                 ->groupBy('part_number.id');
         return Datatables::of($partlist)
                         ->editColumn("id", '<a href="{{url("/")}}/part/{{ $id }}/bom" class="btn btn-info" id="btnBom">BOM</a>&nbsp;'

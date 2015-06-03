@@ -287,7 +287,7 @@
                                                     if (isset($purchaseOrder->ai)) {
                                                         if (!empty($purchaseOrder->ai)) {
                                                             ?>
-                                                            <a href="/files/<?php echo isset($purchaseOrder->ai) ? $purchaseOrder->ai : '' ?>" target="_new">Click To View</a>
+                                                            <a href="{!!url('/')!!}/files/<?php echo isset($purchaseOrder->ai) ? $purchaseOrder->ai : '' ?>" target="_new">Click To View</a>
                                                             <?php
                                                         }
                                                     }

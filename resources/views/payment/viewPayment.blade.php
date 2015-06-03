@@ -82,7 +82,7 @@
                                                             <td class="p_comment">{{$payment->comments}}</td>
                                                             <td>
                                                                 <input type="hidden" class="p_id" value="{{$payment->id}}" />
-                                                                <a href="/payment/delete/{{$payment->id}}" class="btn btn-danger deletePayment"><span class="fa fa-trash-o"></span> </a> 
+                                                                <a href="{!!url('/')!!}/payment/delete/{{$payment->id}}" class="btn btn-danger deletePayment"><span class="fa fa-trash-o"></span> </a> 
                                                                 <button type="button" class="btn btn-primary" onclick="editPayment(this)"><span class="fa fa-pencil"></span></button>
                                                             </td>  
                                                         </tr>
