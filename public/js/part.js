@@ -1,5 +1,7 @@
 $(document).ready(function () {
-
+//    if(whichPage == 'Edit'){
+//            $(".js-example-basic-multiple").select2("val", [1,2,3]);
+//    }
 // $(".Books_Illustrations").select2("val", ["a", "c"]);
     $("#list-parts").dataTable({
         "bProcessing": true,
@@ -20,32 +22,31 @@ $(document).ready(function () {
             });
         },
     });
-    
-      $('#sourceValues').change(function () {
-              
+
+    $('#sourceValues').change(function () {
         $.ajax({
             type: 'GET',
-            url: baseURL+'/part/getSizeData',
-            data:  size,
+            url: baseURL + '/part/getSizeData',
+            data: size,
             async: false,
             success: function (responce)
             {
                 var jason = $.parseJSON(responce);
                 $("#oldIdentifire").html('');
                 $.each(jason, function (idx, data) {
-                       
-                       var sizeList = ["XS","S","M","L","XL","XXL","XXXL"];
-                       sizeList.push(size);
+
+                    var sizeList = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+                    sizeList.push(size);
                 });
             }
         });
     });
 
-    
+
     $(".js-example-basic-multiple").select2();
-    
+
     $(".js-example-basic-multipled").select2();
-    
+
 //        var selectedValues = new Array();
 //selectedValues[4] = "L";
 //selectedValues[5] = "XL";
@@ -104,7 +105,7 @@ $(document).ready(function () {
         rules: {
             'SKU': {
                 required: true,
-                 alphaNum: true
+                alphaNum: true
             },
             'description': {
                 required: true

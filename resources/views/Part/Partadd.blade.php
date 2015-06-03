@@ -1,7 +1,6 @@
 @extends('layouts.main')
 @section('content')
 {!! HTML::script('js/part.js') !!}
-
 <!--
 <a href="{{ action('PartController@partList')}}">List</a> 
 <a href="{{ action('PartController@addPart')}}">Add</a> 
@@ -19,6 +18,9 @@
 {!! Form::submit('save') !!}
 {!! Form::close() !!}
 -->
+<script>
+    var whichPage = '<?php echo isset($part->id) ? 'Edit' : 'Add'; ?>';
+</script>
 <!--body wrapper start-->
 <div class="wrapper">
     <div class="row">
@@ -68,25 +70,35 @@
                                                             {!! Form::text('SKU', Input::old('SKU',isset($part->SKU) ? $part->SKU : ''),array('class'=>'form-control','placeholder'=>'SKU','minlength'=>'6')) !!}<br/></td>
 <!--                                                        <td><select class="js-example-basic-multiple" multiple="multiple" style="width: 200px;">     </select></td>-->
                                                         <td>
-                                                            {!! Form::select('labels[]',$sizelist,isset($size->labels) ? $size->labels:'', array('class' => 'js-example-basic-multiple','style'=>'width: 150px','multiple'=>'multiple','id'=>'sourceValues')) !!}<br/></td>
-
-                                                        <td>
+                                                            <?php if (!isset($part->id)) { ?>
+                                                                {!! Form::select('labels[]',$sizelist,isset($size->labels) ? $size->labels:'', array('class' => 'js-example-basic-multiple','style'=>'width: 150px','multiple'=>'multiple','id'=>'sourceValues')) !!}<br/></td> 
+                                                        <?php } else {
+                                                            ?>
+                                                            {!! Form::select('labels[]',$sizelist,$size, array('class' => 'js-example-basic-multiple','style'=>'width: 150px','multiple'=>'multiple','id'=>'sourceValues')) !!}<br/></td>
+                                                    <?php } ?>
+                                                    <td>
+                                                        <?php if (!isset($part->id)) { ?>
                                                             {!! Form::select('label[]',$componentslist,isset($part->label) ? $part->label:'', array('class' => 'js-example-basic-multipled','style'=>'width: 150px','multiple'=>'multiple')) !!}<br></td>
+                                                        <?php
+                                                    } else {
+                                                        ?>
+                                                        {!! Form::select('label[]',$componentslist,$comp, array('class' => 'js-example-basic-multipled','style'=>'width: 150px','multiple'=>'multiple')) !!}<br></td>
+                                                    <?php } ?>
 <!--                                                        <td><input id="uploadArtAi" type="file" name="ai"><br/></td>-->
-                                                        <td><!--<input type="text" class="form-control" id="Description">-->
-                                                            {!! Form::text('description', Input::old('description',isset($part->description) ? $part->description : ''),array('class'=>'form-control','placeholder'=>'Description')) !!}<br/></td>
-                                                        <td><!--<input type="text" class="form-control" id="Cost" size="3">-->
-                                                            {!! Form::text('cost', Input::old('cost',isset($part->cost) ? $part->cost : ''),array('class'=>'form-control','placeholder'=>'Cost')) !!}<br/></td>
+                                            <td><!--<input type="text" class="form-control" id="Description">-->
+                                                        {!! Form::text('description', Input::old('description',isset($part->description) ? $part->description : ''),array('class'=>'form-control','placeholder'=>'Description')) !!}<br/></td>
+                                                    <td><!--<input type="text" class="form-control" id="Cost" size="3">-->
+                                                        {!! Form::text('cost', Input::old('cost',isset($part->cost) ? $part->cost : ''),array('class'=>'form-control','placeholder'=>'Cost')) !!}<br/></td>
 
 <td><!--<select class="form-control" id="Currncy">       
         <option>USA</option>
         <option>MXN</option>
     </select>-->
-                                                            {!! Form::select('currency_id', ['1' => 'USD', '2' => 'MXN'], isset($part->currency_id) ? $part->currency_id:'1', array('class' => 'form-control')) !!}
-                                                            <!--{!! Form::select('currency_id',array('1' => 'USD', '2' => 'MXN'), null, array('class' => 'form-control')) !!}-->
-                                                        </td>
-                                                        <td><!--<a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a>-->
-                                                            {!! Form::submit('Save',array('class'=>'btn btn-primary')) !!}</td>
+                                                        {!! Form::select('currency_id', ['1' => 'USD', '2' => 'MXN'], isset($part->currency_id) ? $part->currency_id:'1', array('class' => 'form-control')) !!}
+                                                        <!--{!! Form::select('currency_id',array('1' => 'USD', '2' => 'MXN'), null, array('class' => 'form-control')) !!}-->
+                                                    </td>
+                                                    <td><!--<a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a>-->
+                                                        {!! Form::submit('Save',array('class'=>'btn btn-primary')) !!}</td>
                                                     </tr>
 
                                                 </table>
