@@ -74,6 +74,9 @@ $(document).ready(function () {
             'cost': {
                 required: true,
                 amountValidation: true,
+            },
+            'ai': {
+                extension: "ai"
             }
         },
         messages: {
@@ -86,6 +89,9 @@ $(document).ready(function () {
             'cost': {
                 required: 'Please enter cost.'
 
+            },
+            'ai': {
+                extension: 'Please only upload ai file.'
             }
         },
         highlight: function (element) {
@@ -113,6 +119,9 @@ $(document).ready(function () {
             'cost': {
                 required: true,
                 amountValidation: true
+            },
+             'ai': {
+                extension: "ai"
             }
         },
         messages: {
@@ -125,6 +134,9 @@ $(document).ready(function () {
             'cost': {
                 required: 'Please enter cost.'
 
+            },
+            'ai': {
+                extension: 'Please only upload ai file.'
             }
         },
         highlight: function (element) {

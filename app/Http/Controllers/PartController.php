@@ -66,7 +66,7 @@ class PartController extends Controller
         if (isset($post['id']) && $post['id'] != null) {
             $rules = array(
                 'id' => 'required',
-                'SKU' => 'required|Min:6|alpha_num|unique:part_number,SKU,' . $post['id'],
+               // 'SKU' => 'required|Min:6|alpha_num|unique:part_number'.$post['id'],
                 'description' => 'required',
                 'cost' => 'required|numeric',
                 'currency_id' => 'required');
@@ -93,6 +93,21 @@ class PartController extends Controller
 //                $sizeData = $post['labels'];
                 unset($post['labels']);
                 unset($post['label']);
+                if (isset($post['ai'])) {
+
+//                    if (!empty($purchaseOrder->ai)) {
+//                        @unlink('files/' . $purchaseOrder->ai);
+//                    }
+
+                    $aiName = $post['ai']->getClientOriginalName();
+                    $file = Input::file('ai');
+                    $destinationPath = 'files';
+                    $aiFilename = $aiName;
+                    Input::file('ai')->move($destinationPath, $aiFilename);
+                    $post['ai'] = $aiFilename;
+                } else {
+                    $post['ai'] = '';
+                }
 
                 $part_data = DB::table('part_number')
                         //->Join('labels', 'part_number.id', '=', 'size_data.part_id')
@@ -194,7 +209,7 @@ class PartController extends Controller
 
             //if (isset($post['SKU']) && $post['SKU'] != null) {
             $rules = array(
-                'SKU' => 'required|Min:6|alpha_num|unique:part_number, SKU, ' . $post['id'],
+                'SKU' => 'required|Min:6|alpha_num|unique:part_number'.$post['id'],
                 'description' => 'required',
                 'cost' => 'required|numeric',
                 'currency_id' => 'required'
@@ -206,16 +221,16 @@ class PartController extends Controller
                                 ->withErrors($validator)
                                 ->withInput(Input::all());
             }
-//            if (isset($post['ai'])) {
-//                $aiName = $post['ai']->getClientOriginalName();
-//                $file = Input::file('ai');
-//                $destinationPath = 'files';
-//                $aiFilename = $aiName;
-//                Input::file('ai')->move($destinationPath, $aiFilename);
-//                $post['ai'] = $aiFilename;
-//            } else {
-//                $post['ai'] = '';
-//            }
+            if (isset($post['ai'])) {
+                $aiName = $post['ai']->getClientOriginalName();
+                $file = Input::file('ai');
+                $destinationPath = 'files';
+                $aiFilename = $aiName;
+                Input::file('ai')->move($destinationPath, $aiFilename);
+                $post['ai'] = $aiFilename;
+            } else {
+                $post['ai'] = '';
+            }
             $part = DB::table('part_number')->insertGetId(
                     $post
             );
@@ -268,6 +283,12 @@ class PartController extends Controller
         DB::table('part_number')
                 ->where('id', $id)
                 ->update(array('is_deleted' => '1'));
+        DB::table('size_data')
+                            ->where('part_id', '=',$id )
+                            ->delete();
+        DB::table('components_data')
+                            ->where('part_id', '=', $id)
+                            ->delete();
         Session::flash('message', 'Part delete Successfully!!');
         Session::flash('alert-success', 'success');
         return redirect('/part');
@@ -275,7 +296,7 @@ class PartController extends Controller
 
 //For size
     public function getSizeData() {
-
+        
         $size = DB::table('size_data')
                         ->leftjoin('size', 'size.id', ' = ', 'size_data.size_id')
                         ->select('size_id')

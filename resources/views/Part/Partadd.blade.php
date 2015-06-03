@@ -51,60 +51,90 @@
                                             <h3 class="panel-title"><i class="fa fa-bars"></i> Part Number</h3>
                                         </div>
                                         <div class="panel-body">
+                                            
+                                             <div class="row">
+                                <div style="color: red">
+                                    {!! HTML::ul($errors->all()) !!}
+                                </div>
 
-                                            <div class="table-responsive">
-                                                <table  class="display table">
-                                                    <tr>
-                                                        <th>SKU</th>
-                                                        <th>Size</th>
-                                                        <th>Componenets</th>
-<!--                                                        <th>AiFile</th>-->
-                                                        <th>Description</th>
-                                                        <th>Cost</th>
-                                                        <th>Currency</th>
-                                                        <th>Action</th>
-                                                    </tr> 
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="partnumber" class="col-sm-4 control-label">SKU:</label>
+                                        <div class="col-sm-8">
+                                            {!! Form::text('SKU', Input::old('SKU',isset($part->SKU) ? $part->SKU : ''),array('class'=>'form-control','placeholder'=>'SKU','minlength'=>'6')) !!}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-sm-4 control-label">Description:</label>
+                                        <div class="col-sm-8">
+                                            {!! Form::text('description', Input::old('description',isset($part->description) ? $part->description : ''),array('class'=>'form-control','placeholder'=>'Description')) !!}   
 
-                                                    <tr>
-                                                        <td><!--<input type="text" class="form-control" id="SKU" placeholder="SKU">-->
-                                                            {!! Form::text('SKU', Input::old('SKU',isset($part->SKU) ? $part->SKU : ''),array('class'=>'form-control','placeholder'=>'SKU','minlength'=>'6')) !!}<br/></td>
-<!--                                                        <td><select class="js-example-basic-multiple" multiple="multiple" style="width: 200px;">     </select></td>-->
-                                                        <td>
-                                                            <?php if (!isset($part->id)) { ?>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="purchasingcost" class="col-sm-4 control-label">Size:</label>
+                                        <div class="col-sm-8">
+                                            <?php if (!isset($part->id)) { ?>
                                                                 {!! Form::select('labels[]',$sizelist,isset($size->labels) ? $size->labels:'', array('class' => 'js-example-basic-multiple','style'=>'width: 150px','multiple'=>'multiple','id'=>'sourceValues')) !!}<br/></td> 
                                                         <?php } else {
                                                             ?>
                                                             {!! Form::select('labels[]',$sizelist,$size, array('class' => 'js-example-basic-multiple','style'=>'width: 150px','multiple'=>'multiple','id'=>'sourceValues')) !!}<br/></td>
                                                     <?php } ?>
-                                                    <td>
-                                                        <?php if (!isset($part->id)) { ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="unit" class="col-sm-4 control-label">Componenets:</label>
+                                        <div class="col-sm-8">
+                                            <?php if (!isset($part->id)) { ?>
                                                             {!! Form::select('label[]',$componentslist,isset($part->label) ? $part->label:'', array('class' => 'js-example-basic-multipled','style'=>'width: 150px','multiple'=>'multiple')) !!}<br></td>
                                                         <?php
                                                     } else {
                                                         ?>
                                                         {!! Form::select('label[]',$componentslist,$comp, array('class' => 'js-example-basic-multipled','style'=>'width: 150px','multiple'=>'multiple')) !!}<br></td>
                                                     <?php } ?>
-<!--                                                        <td><input id="uploadArtAi" type="file" name="ai"><br/></td>-->
-                                            <td><!--<input type="text" class="form-control" id="Description">-->
-                                                        {!! Form::text('description', Input::old('description',isset($part->description) ? $part->description : ''),array('class'=>'form-control','placeholder'=>'Description')) !!}<br/></td>
-                                                    <td><!--<input type="text" class="form-control" id="Cost" size="3">-->
-                                                        {!! Form::text('cost', Input::old('cost',isset($part->cost) ? $part->cost : ''),array('class'=>'form-control','placeholder'=>'Cost')) !!}<br/></td>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="equivalency" class="col-sm-4 control-label">AiFile:</label>
+                                        <div class="col-sm-5">
+                                           <!-- <input type="text" class="form-control" id="zipCode" placeholder="ZipCode"> -->
+                                            <input id="ai" type="file" name="ai">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bomcost" class="col-sm-4 control-label">Cost:</label>
+                                        <div class="col-sm-4">
+                                           <!-- <input type="text" class="form-control" id="zipCode" placeholder="ZipCode"> -->
+                                            {!! Form::text('cost', Input::old('cost',isset($part->cost) ? $part->cost : ''),array('class'=>'form-control','placeholder'=>'Cost')) !!}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="stockunit" class="col-sm-4 control-label">Currency:</label>
+                                        <div class="col-sm-4">
+                                           <!-- <input type="text" class="form-control" id="zipCode" placeholder="ZipCode"> -->
+                                            {!! Form::select('currency_id', ['1' => 'USD', '2' => 'MXN'], isset($part->currency_id) ? $part->currency_id:'1', array('class' => 'form-control')) !!}
 
-<td><!--<select class="form-control" id="Currncy">       
-        <option>USA</option>
-        <option>MXN</option>
-    </select>-->
-                                                        {!! Form::select('currency_id', ['1' => 'USD', '2' => 'MXN'], isset($part->currency_id) ? $part->currency_id:'1', array('class' => 'form-control')) !!}
-                                                        <!--{!! Form::select('currency_id',array('1' => 'USD', '2' => 'MXN'), null, array('class' => 'form-control')) !!}-->
-                                                    </td>
-                                                    <td><!--<a href="#" class="btn btn-primary"><span class="fa fa-plus"></span> Add</a>-->
-                                                        {!! Form::submit('Save',array('class'=>'btn btn-primary')) !!}</td>
-                                                    </tr>
+                                        </div>
+                                    </div>
+                                    
 
-                                                </table>
+                                </div>
 
-                                                </select>
-                                            </div>
+                                <div class="row">
+                                    <div class="col-sm-12 text-center">
+                                        {!! Form::submit('Save',array('class'=>'btn btn-lg btn-primary')) !!}
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            
+                                            
+                                            
+                                            
+
+
                                             {!! Form::close() !!}
                                         </div>
                                     </div>
