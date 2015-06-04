@@ -67,6 +67,7 @@ $(document).ready(function () {
 
     //edit part validation
     $('#editpart').validate({
+        ignore: '.select2-input',
         
         rules: {
             'SKU': {
@@ -77,7 +78,7 @@ $(document).ready(function () {
                 required: true,
             },
             'labels[]':{
-             ignore: '',
+             required: true,
             },
 
             'label[]': {
@@ -126,6 +127,7 @@ $(document).ready(function () {
     });
     //add part validation
     $('#addpart').validate({
+        ignore: '.select2-input',
         rules: {
             'SKU': {
                 required: true,
