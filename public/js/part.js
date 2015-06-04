@@ -43,9 +43,13 @@ $(document).ready(function () {
     });
 
 
-    $(".js-example-basic-multiple").select2();
+    $(".js-example-basic-multiple").select2({
+    placeholder: "Select a Size.."
+});    
 
-    $(".js-example-basic-multipled").select2();
+    $(".js-example-basic-multipled").select2({
+    placeholder: "Select a Size.."
+});    
 
 //        var selectedValues = new Array();
 //selectedValues[4] = "L";
@@ -63,12 +67,20 @@ $(document).ready(function () {
 
     //edit part validation
     $('#editpart').validate({
+        
         rules: {
             'SKU': {
                 required: true,
                 alphaNum: true
             },
             'description': {
+                required: true,
+            },
+            'labels[]':{
+             ignore: '',
+            },
+
+            'label[]': {
                 required: true,
             },
             'cost': {
@@ -85,6 +97,12 @@ $(document).ready(function () {
             },
             'description': {
                 required: 'Please enter description.'
+            },
+            'labels[]': {
+                required: 'Please enter size.'
+            },
+            'label[]': {
+                required: 'Please enter components.'
             },
             'cost': {
                 required: 'Please enter cost.'
@@ -116,6 +134,12 @@ $(document).ready(function () {
             'description': {
                 required: true
             },
+            'labels[]': {
+                ignore: '',
+            },
+            'label[]': {
+                required: true,
+            },
             'cost': {
                 required: true,
                 amountValidation: true
@@ -130,6 +154,12 @@ $(document).ready(function () {
             },
             'description': {
                 required: 'Please enter description.'
+            },
+            'labels[]': {
+                required: 'Please enter size.'
+            },
+            'label[]': {
+                required: 'Please enter components.'
             },
             'cost': {
                 required: 'Please enter cost.'

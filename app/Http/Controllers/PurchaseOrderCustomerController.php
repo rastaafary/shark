@@ -17,8 +17,7 @@ use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\User;
 
-class PurchaseOrderCustomerController extends Controller
-{
+class PurchaseOrderCustomerController extends Controller {
 
     public function __construct() {
         $this->middleware('auth');
@@ -435,11 +434,18 @@ class PurchaseOrderCustomerController extends Controller
 
             //Get list of Parts order
             $orderList = DB::table('order_list')
-                    ->select(array('order_list.*', 'part_number.*', 'order_list.id as order_id'))
+                    ->select(array('order_list.*', 'part_number.*', 'order_list.id as order_id', DB::raw('group_concat(DISTINCT size.labels) as size')))
+                    ->leftJoin('size_data', 'size_data.part_id', '=', 'order_list.part_id')
+                    ->leftJoin('size', 'size.id', '=', 'size_data.size_id')
                     ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
                     ->where('order_list.po_id', $id)
                     ->get();
-
+         
+//            $size = DB::table('size_data')
+//                ->leftJoin('part_number', 'part_number.id', '=', 'size_data.part_id')
+//                ->select('size.id','size.labels')
+//                ->where('size_data.part_id', '=', 'part_number')
+//                ->get();
             //echo '<pre>';print_r($purchaseOrder);exit;
             //get shipping address details
             if (isset($customer->id)) {
@@ -498,7 +504,7 @@ class PurchaseOrderCustomerController extends Controller
 
         $size = DB::table('size_data')
                 ->leftJoin('size', 'size.id', '=', 'size_data.size_id')
-                ->select('size.id','size.labels')
+                ->select('size.id', 'size.labels')
                 ->where('size_data.part_id', '=', $sku)
                 ->get();
 

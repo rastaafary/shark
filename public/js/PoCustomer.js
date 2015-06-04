@@ -218,6 +218,7 @@ $(document).ready(function () {
                     skuId: val.part_id,
                     skuLabel: val.SKU,
                     description: val.description,
+                    size: val.size,
                     purchaseQty: val.qty,
                     unitPrice: val.cost,
                     totalPrice: val.amount
@@ -245,6 +246,7 @@ $(document).ready(function () {
             template.data.skuId = $('#skuOrder').val();
             template.data.skuLabel = $('#skuOrder option:selected').text();
             template.data.description = $('#searchDescription').html();
+            template.data.size = $('#size').text();
             template.data.purchaseQty = $('#purchaseQty').val();
             template.data.unitPrice = $('#unitPrice').html();
             template.data.totalPrice = $('#totalPrice').html();
@@ -257,6 +259,7 @@ $(document).ready(function () {
                     skuId: $('#skuOrder').val(),
                     skuLabel: $('#skuOrder  option:selected').text(),
                     description: $('#searchDescription').html(),
+                    size: $('#size').text(),
                     purchaseQty: $('#purchaseQty').val(),
                     unitPrice: $('#unitPrice').html(),
                     totalPrice: $('#totalPrice').html(),
@@ -445,6 +448,7 @@ function resetInputOrderData() {
     $('#addMoreOrder').html('<i class="fa fa-plus"></i> Add');
     $('#cancelUpdate').hide();
     $('#searchDescription').html('');
+    $('#size').text('');
     $('#purchaseQty').val('0');
     $('#unitPrice').html('');
     $('#totalPrice').html('');
@@ -495,12 +499,19 @@ function getinfo(element)
         success: function (responce)
         {
             var jason = $.parseJSON(responce);
+            var size= '';
              $.each(jason, function (idx, data) {
-                 alert(data.id);
-                 alert(data.labels);
-    //             $('#searchDescription').val(data.description);
+//                 alert(data.id);
+//                 alert(data.labels);
+                   if(idx == '0'){
+                       size = data.labels;
+                   } else {
+                       size = size+","+data.labels;
+                   }
+                  
     //             $('#unitprice').val(data.cost);
              });
+             $('#size').text(size);
         }
     });
 }
@@ -522,6 +533,7 @@ function editNewOrder(element)
     $('#skuOrder').select2("val", $(trEle).find('.sku').attr('id'));
     $('#updateId').val($(trEle).attr('id'));
     $('#searchDescription').html($(trEle).find('.description').html());
+    $('#size').html($(trEle).find('.size').text());
     $('#purchaseQty').val($(trEle).find('.purchaseQty').html());
     $('#unitPrice').html($(trEle).find('.unitPrice').html());
     $('#totalPrice').html($(trEle).find('.totalPrice').html());

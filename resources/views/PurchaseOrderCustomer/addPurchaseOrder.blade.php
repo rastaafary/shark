@@ -4,6 +4,7 @@
 
 <script>
     var oldOrderData = <?php echo (isset($orderlist)) ? json_encode($orderlist) : '[]'; ?>;
+    
 </script>
 <div class="wrapper">
     <div class="row">
@@ -272,7 +273,7 @@
                                                     if (isset($purchaseOrder->pdf)) {
                                                         if (!empty($purchaseOrder->pdf)) {
                                                             ?>
-                                                            <a href="/files/<?php echo isset($purchaseOrder->pdf) ? $purchaseOrder->pdf : '' ?>" target="_new">Click To View</a>
+                                                            <a href="{!!url('/')!!}/files/<?php echo isset($purchaseOrder->pdf) ? $purchaseOrder->pdf : '' ?>" target="_new">Click To View</a>
                                                             <?php
                                                         }
                                                     }
@@ -315,7 +316,8 @@
                                                         <tr>
                                                             <th>#</th>
                                                             <th style="width: 18%;">SKU</th>
-                                                            <th style="width: 35%;">Description</th>
+                                                            <th style="width: 25%;">Description</th>
+                                                            <th style="width: 25%;">Size</th>
                                                             <th style="width: 10%;">Qty</th>
                                                             <th style="width: 10%;">Unit Price</th>
                                                             <th style="width: 10%;">Amount</th>
@@ -335,6 +337,10 @@
                                                             <td>
 <!--                                                                <input autocomplete="off" id="searchDescription" class="input form-control" name="searchDescription[]" type="text" placeholder="searchDescription"/>-->
                                                                 <label id="searchDescription" name="searchDescription[]" class="control-label"></label>
+                                                            </td>
+                                                            <td>
+<!--                                                                <input autocomplete="off" id="searchDescription" class="input form-control" name="searchDescription[]" type="text" placeholder="searchDescription"/>-->
+                                                                <label id="size" name="size[]" class="control-label"></label>
                                                             </td>
                                                             <td>
                                                                 <input autocomplete="off" id="purchaseQty" class="input form-control" type="text" placeholder="qty"/>
@@ -401,6 +407,9 @@
     </td>
     <td>
     <label class="description">${description}</label>
+    </td>
+    <td>
+    <label class="size">${size}</label>
     </td>
     <td>
     <label class="purchaseQty">${purchaseQty}</label>

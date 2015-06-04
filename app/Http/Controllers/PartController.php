@@ -67,7 +67,10 @@ class PartController extends Controller
             $rules = array(
                 'id' => 'required',
                // 'SKU' => 'required|Min:6|alpha_num|unique:part_number'.$post['id'],
+                'SKU' => 'required|Min:6|alpha_num|unique:part_number,SKU,' . $post['id'],
                 'description' => 'required',
+                'labels'=> 'required',
+                 'label'=> 'required',
                 'cost' => 'required|numeric',
                 'currency_id' => 'required');
 
@@ -95,9 +98,9 @@ class PartController extends Controller
                 unset($post['label']);
                 if (isset($post['ai'])) {
 
-//                    if (!empty($purchaseOrder->ai)) {
-//                        @unlink('files/' . $purchaseOrder->ai);
-//                    }
+                    if (!empty($id->ai)) {
+                        @unlink('files/' . $id->ai);
+                    }
 
                     $aiName = $post['ai']->getClientOriginalName();
                     $file = Input::file('ai');
@@ -209,9 +212,12 @@ class PartController extends Controller
 
             //if (isset($post['SKU']) && $post['SKU'] != null) {
             $rules = array(
-                'SKU' => 'required|Min:6|alpha_num|unique:part_number'.$post['id'],
+//                'SKU' => 'required|Min:6|alpha_num|unique:part_number'.$post['id'],
+                'SKU' => 'required|Min:6|alpha_num|unique:part_number,SKU,' . $post['id'],
                 'description' => 'required',
                 'cost' => 'required|numeric',
+                'labels'=> 'required',
+                 'label'=> 'required',
                 'currency_id' => 'required'
             );
 
