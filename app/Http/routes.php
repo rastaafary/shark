@@ -102,6 +102,7 @@ Route::get('/part/bom/searchRawMaterial/{var?}', 'BOMController@getRawMaterial')
 Route::get('/part/bom/rawMaterialDescription', 'BOMController@getRawMaterialDescription');
 Route::get('/part/bom/getBomData/{var?}', 'BOMController@getBomData');
 Route::get('/part/getSizeData', 'PartController@getSizeData');
+Route::get('/po/getSize', 'PurchaseOrderCustomerController@getSize');
 
 
 

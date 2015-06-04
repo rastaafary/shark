@@ -27,10 +27,10 @@ $(document).ready(function () {
     });
 
     $('#selectPOCustomer').change(function () {
-        id = $('#selectPOCustomer').val();      
+        id = $('#selectPOCustomer').val();
         $.ajax({
             type: 'GET',
-            url: baseURL+'/po/getIdentifireList',
+            url: baseURL + '/po/getIdentifireList',
             data: 'custId=' + id,
             async: false,
             success: function (responce)
@@ -38,7 +38,7 @@ $(document).ready(function () {
                 var jason = $.parseJSON(responce);
                 $("#oldIdentifire").html('');
                 $.each(jason, function (idx, data) {
-                       $("#oldIdentifire").append("<option value='" + data.id + "' class='shippingData'>" + data.identifier + "</option>");
+                    $("#oldIdentifire").append("<option value='" + data.id + "' class='shippingData'>" + data.identifier + "</option>");
 
                 });
             }
@@ -48,7 +48,7 @@ $(document).ready(function () {
     $("#po_cust_order").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": baseURL+"/po/getorderlist",
+        "sAjaxSource": baseURL + "/po/getorderlist",
         "aaSorting": [[7, "desc"]],
         "fnServerData": function (sSource, aoData, fnCallback) {
             $.ajax({
@@ -63,11 +63,11 @@ $(document).ready(function () {
     var t = $("#POCustomer_list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": baseURL+"/po/getPoCustomerlist",
+        "sAjaxSource": baseURL + "/po/getPoCustomerlist",
         "aaSorting": [[7, "desc"]],
         "order": [[1, 'asc']],
         "aoColumnDefs": [
-            {"bSearchable": false, "aTargets": [2,3,4,5,6]},
+            {"bSearchable": false, "aTargets": [2, 3, 4, 5, 6]},
             {"bSortable": false, "aTargets": [2, 5, 6]}
         ],
         "fnServerData": function (sSource, aoData, fnCallback) {
@@ -104,8 +104,8 @@ $(document).ready(function () {
     var bestPictures = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('SKU'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: baseURL+'/po/add/searchSKU',
-        remote: baseURL+'/po/add/searchSKU/%QUERY'
+        prefetch: baseURL + '/po/add/searchSKU',
+        remote: baseURL + '/po/add/searchSKU/%QUERY'
     });
 
     bestPictures.initialize();
@@ -124,9 +124,10 @@ $(document).ready(function () {
 
     $(".tt-dropdown-menu").click(function () {
         description = $('#searchSKU').val();
+
         $.ajax({
             type: 'GET',
-            url: baseURL+'/po/getDescription',
+            url: baseURL + '/po/getDescription',
             data: 'description=' + description,
             async: false,
             success: function (responce)
@@ -138,9 +139,10 @@ $(document).ready(function () {
                 });
             }
         });
+
     });
 
-$('#orderDate,#require_date').datepicker({format: "yyyy-mm-dd", todayBtn: true, todayHighlight: true}).on('changeDate', function (ev) {
+    $('#orderDate,#require_date').datepicker({format: "yyyy-mm-dd", todayBtn: true, todayHighlight: true}).on('changeDate', function (ev) {
         $(this).datepicker('hide');
         $(document.activeElement).trigger("blur");
     });
@@ -176,7 +178,7 @@ $('#orderDate,#require_date').datepicker({format: "yyyy-mm-dd", todayBtn: true, 
     $("#addOrder").click(function () {
         $.ajax({
             type: 'post',
-            url: baseURL+'/po/add/order',
+            url: baseURL + '/po/add/order',
             data: 'name=' + "ABC",
             async: false,
             success: function (responce)
@@ -193,7 +195,7 @@ $('#orderDate,#require_date').datepicker({format: "yyyy-mm-dd", todayBtn: true, 
         amount = $('#amount').val();
         $.ajax({
             type: 'GET',
-            url: baseURL+'/po/add/order',
+            url: baseURL + '/po/add/order',
             data: {'customer_id': cust_id, 'searchSKU': searchSKU, 'searchQty': qty, 'amount': amount},
             async: false,
             headers: {
@@ -291,7 +293,7 @@ $('#orderDate,#require_date').datepicker({format: "yyyy-mm-dd", todayBtn: true, 
             }
         }
     });
-    
+
     jQuery.validator.addMethod("mobileNo", function (value, element) {
         return this.optional(element) || /^[0-9 \-\(\)\+]+$/.test(value);
     }, "Please enter valid mobile no.");
@@ -472,7 +474,7 @@ function getinfo(element)
 {
     $.ajax({
         type: 'GET',
-        url: baseURL+'/po/getDescription',
+        url: baseURL + '/po/getDescription',
         data: 'description=' + $(element).attr('value'),
         async: false,
         success: function (responce)
@@ -483,6 +485,22 @@ function getinfo(element)
                 $('table #unitPrice').html(data.cost);
             });
             $('#purchaseQty').trigger('keyup');
+        }
+    });
+    $.ajax({
+        type: 'GET',
+        url: baseURL + '/po/getSize',
+        data: 'description=' + $(element).attr('value'),
+        async: false,
+        success: function (responce)
+        {
+            var jason = $.parseJSON(responce);
+             $.each(jason, function (idx, data) {
+                 alert(data.id);
+                 alert(data.labels);
+    //             $('#searchDescription').val(data.description);
+    //             $('#unitprice').val(data.cost);
+             });
         }
     });
 }
@@ -516,7 +534,7 @@ function pocustEdit(id)
     $('#editProductModal').modal('show');
     $.ajax({
         type: 'GET',
-        url: baseURL+'/po/geteditorderlist',
+        url: baseURL + '/po/geteditorderlist',
         data: 'id=' + id,
         async: false,
         success: function (responce)
@@ -547,9 +565,9 @@ function confirmDelete()
 
 //Edit Customer
 /*function confirmEdit(id) {
-    if (confirm("Are You Sure You Want To Edit This Record ?")) {
-        return true;
-    } else {
-        return false;
-    }
-}*/
+ if (confirm("Are You Sure You Want To Edit This Record ?")) {
+ return true;
+ } else {
+ return false;
+ }
+ }*/
