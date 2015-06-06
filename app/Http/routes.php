@@ -210,6 +210,9 @@ Route::get('/RawMaterialdata', 'RawMaterialController@getRawMaterialData');
  * 
  */
 
+/////POImageBlog
+Route::get('/blog/{var?}', 'PoImageBlogController@index');
+Route::post('/blog/{var?}', 'PoImageBlogController@index');
 
 Route::controllers([
     'auth' => 'Auth\AuthController',
