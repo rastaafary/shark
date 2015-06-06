@@ -4,7 +4,7 @@
 
 <script>
     var oldOrderData = <?php echo (isset($orderlist)) ? json_encode($orderlist) : '[]'; ?>;
-    
+
 </script>
 <div class="wrapper">
     <div class="row">
@@ -47,6 +47,9 @@
                                 <div class="form-group col-sm-4 col-md-3">
                                     <label for="orderpoId">Select Customer : </label>
                                     <select name="selectPOCustomer" id="selectPOCustomer" class ='POselect2 form-control'><?php echo $custData; ?></select>
+                                    <div style="color: red">
+                                        <?php echo $errors->first('selectPOCustomer'); ?>                                        
+                                    </div>    
                                 </div>
                                 @else
                                 <div class="form-group col-sm-6 col-md-4">
@@ -295,6 +298,35 @@
                                                     ?>
                                                 </div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Upload Image:</label>
+                                                <?php
+                                                if (isset($poImages) && !empty($poImages)) {
+                                                    foreach ($poImages as $image) {
+                                                        if (isset($image->fileName) && !empty($image->fileName)) {
+                                                            ?>
+                                                            <span class="col-lg-offset-4 col-sm-8">
+                                                                <a href="{!!url('/')!!}/files/poMultiImage/<?php echo $image->fileName; ?>" target="_new">Click To View</a>
+                                                                &nbsp;<a href='javascript:void(0);' class='deleteDbImage text-danger' title='Delete image' imageId="<?php echo $image->id; ?>"><i class='fa fa-trash-o margin-top-10'></i></a><br/>
+                                                            </span>                                                       
+                                                            <?php
+                                                        }
+                                                    }
+                                                }
+                                                ?>
+                                                <div class="col-lg-offset-4 col-md-6">
+                                                    <input type="file" name="uploadImage[]">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="button" class="btn btn-primary" title="Add more images" onclick="addMoreImages()"><i class="fa fa-plus"></i> Add</button>
+                                                </div>
+                                            </div>
+                                            <div id="moreImagesDiv"></div>
+                                            <div style="color: red">
+                                                <?php echo $errors->first('uploadImage'); ?>                                        
+                                            </div>   
+
                                             @if(isset($id))
                                             <a class="btn btn-link" href="{!!url('/blogArt')!!}<?= $purchaseOrder->po_id ?>" role="button"><strong>Blog Art</strong></a>                                          
                                             @endif

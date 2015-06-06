@@ -17,13 +17,16 @@ use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\User;
 
-class PurchaseOrderCustomerController extends Controller {
+class PurchaseOrderCustomerController extends Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
-    public function userDetails() {
+    public function userDetails()
+    {
         $post = Input::all();
         if (isset($post['_token']))
             unset($post['_token']);
@@ -34,7 +37,8 @@ class PurchaseOrderCustomerController extends Controller {
         return view('PurchaseOrderCustomer.addPurchaseOrder', ['page_title' => 'Add Purchase Order']);
     }
 
-    public function addPurchaseOrder($id = null) {
+    public function addPurchaseOrder($id = null)
+    {
         // echo upload_max_filesize "2M" PHP_INI_PERDIR;
         //Get Logged User Deatils
         $user = Auth::user();
@@ -62,17 +66,18 @@ class PurchaseOrderCustomerController extends Controller {
             if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager')) {
                 $customer = DB::table('customers')->where('id', $post['selectPOCustomer'])->first();
             }
-            $autoId = $this->getAutoPurchaseCustomerId($customer);
 
             unset($post['_token']);
 
             $rules = array(
+                'selectPOCustomer' => 'required',
                 'orderDate' => 'required',
                 'shippingMethod' => 'required',
                 'payment_terms' => 'required',
                 'require_date' => 'required',
                 'PDF' => 'mimes:pdf|max:10240',
-                'Ai' => 'max:10240'
+                'Ai' => 'max:10240',
+//                'uploadImage' => 'mimes:jpg,jpeg,png,gif',
             );
             $validator = Validator::make(Input::all(), $rules);
             if ($validator->fails()) {
@@ -81,6 +86,7 @@ class PurchaseOrderCustomerController extends Controller {
                                 ->withInput(Input::all());
             }
 
+            $autoId = $this->getAutoPurchaseCustomerId($customer);
             if (isset($post['addNew'])) {
                 // Add New Shipping Information
                 $shipAddId = DB::table('shipping_info')->insertGetId(
@@ -162,6 +168,26 @@ class PurchaseOrderCustomerController extends Controller {
                 );
             }
 
+            // Upload multiple Images
+            // multiple image file object
+            $multiFileArray = Input::file('uploadImage');
+            if (isset($multiFileArray) && !empty($multiFileArray)) {
+                foreach ($multiFileArray as $fileArray) {
+                    if (!empty($fileArray) && $fileArray->getError() != 4) {
+                        $fileName = $fileArray->getClientOriginalName();
+                        $destinationPath = 'files/poMultiImage';
+                        $imageFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $fileName;
+                        $fileArray->move($destinationPath, $imageFilename);
+
+                        // Add multi file to DB
+                        DB::table('po_images')->insertGetId(
+                                array('fileName' => $imageFilename, 'po_id' => $poId)
+                        );
+                    }
+                }
+            }
+            // Upload multiple Images END
+
             $localSeqNo = 1;
             $adminSeqNo = 1;
             $lastCustSeqId = DB::table('order_list')->select('*')->where('customer_id', '=', $customer->id)->orderBy('localSequence', 'DESC')->first();
@@ -217,7 +243,8 @@ class PurchaseOrderCustomerController extends Controller {
                         ->with('autoId', $autoId);
     }
 
-    public function editPurchaseOrder($id = null) {
+    public function editPurchaseOrder($id = null)
+    {
         //check Poid Is empty
         if (!empty($id)) {
             //Get Logged User Deatils
@@ -237,6 +264,13 @@ class PurchaseOrderCustomerController extends Controller {
                     ->leftJoin('blog_art_file', 'blog_art_file.po_id', '=', 'purchase_order.id')
                     ->where('purchase_order.id', $id)
                     ->first();
+
+            //Get multi images by PO Id
+            $poImages = DB::table('po_images')
+                    ->select(array('po_images.*'))
+                    ->where('po_images.po_id', $id)
+                    ->where('po_images.isDeleted', '0')
+                    ->get();
 
             if (Request::isMethod('post')) {
 
@@ -385,6 +419,27 @@ class PurchaseOrderCustomerController extends Controller {
                     }
                 }
 
+
+                // Upload multiple Images
+                // multiple image file object
+                $multiFileArray = Input::file('uploadImage');
+                if (isset($multiFileArray) && !empty($multiFileArray)) {
+                    foreach ($multiFileArray as $fileArray) {
+                        if (!empty($fileArray) && $fileArray->getError() != 4) {
+                            $fileName = $fileArray->getClientOriginalName();
+                            $destinationPath = 'files/poMultiImage';
+                            $imageFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $fileName;
+                            $fileArray->move($destinationPath, $imageFilename);
+
+                            // Add multi file to DB
+                            DB::table('po_images')->insertGetId(
+                                    array('fileName' => $imageFilename, 'po_id' => $id)
+                            );
+                        }
+                    }
+                }
+                // Upload multiple Images END
+                ///////////////////////
                 //add po order
                 $orders = json_decode($post['orders'], true);
                 $deleteOrderIds = explode(',', $post['deleteOrder']);
@@ -440,7 +495,7 @@ class PurchaseOrderCustomerController extends Controller {
                     ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
                     ->where('order_list.po_id', $id)
                     ->get();
-         
+
 //            $size = DB::table('size_data')
 //                ->leftJoin('part_number', 'part_number.id', '=', 'size_data.part_id')
 //                ->select('size.id','size.labels')
@@ -479,27 +534,32 @@ class PurchaseOrderCustomerController extends Controller {
                         ->with('purchaseOrder', $purchaseOrder)
                         ->with('autoId', $purchaseOrder->po_number)
                         ->with('sku', $sku)
-                        ->with('shipping', $shipping);
+                        ->with('shipping', $shipping)
+                        ->with('poImages', $poImages);
         // ->with('identifireList', $identifireData);
     }
 
-    public function listPurchaseOrder() {
+    public function listPurchaseOrder()
+    {
         return view('PurchaseOrderCustomer.listPurchaseOrder', ['page_title' => 'Purchase Order']);
     }
 
-    public function searchSKU() {
+    public function searchSKU()
+    {
         $sku = Request::segment(4);
         $data = DB::table('part_number')->select('SKU')->where('SKU', 'like', '%' . $sku . '%')->get();
         return Response(json_encode($data));
     }
 
-    public function getDescription() {
+    public function getDescription()
+    {
         $sku = Input::get('description');
         $data = DB::table('part_number')->select('description', 'cost')->where('id', $sku)->get();
         return Response(json_encode($data));
     }
 
-    public function getSize() {
+    public function getSize()
+    {
         $sku = Input::get('description');
 
         $size = DB::table('size_data')
@@ -511,7 +571,8 @@ class PurchaseOrderCustomerController extends Controller {
         return Response(json_encode($size));
     }
 
-    public function addOrder() {
+    public function addOrder()
+    {
         $post = Input::all();
 
         $last_PO_id = DB::table('purchase_order')->orderBy('id', 'desc')->first();
@@ -532,7 +593,8 @@ class PurchaseOrderCustomerController extends Controller {
         }
     }
 
-    public function getorderlist() {
+    public function getorderlist()
+    {
         $orderlist = DB::table('order_list')
                 ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
                 ->select(array('part_number.SKU', 'part_number.description', 'order_list.qty', 'part_number.cost', 'order_list.amount', 'order_list.id'));
@@ -545,7 +607,8 @@ class PurchaseOrderCustomerController extends Controller {
                         ->make();
     }
 
-    public function geteditorderlist() {
+    public function geteditorderlist()
+    {
         $id = Input::get('id');
         $data = DB::table('order_list')
                 ->join('part_number', 'part_number.id', '=', 'order_list.part_id')
@@ -555,7 +618,8 @@ class PurchaseOrderCustomerController extends Controller {
         return Response(json_encode($data));
     }
 
-    public function editpoCustomer() {
+    public function editpoCustomer()
+    {
         $post = Input::all();
         // $post['created_by'] = Auth::user()->id;
         //  var_dump($post);exit;
@@ -582,7 +646,8 @@ class PurchaseOrderCustomerController extends Controller {
         //  return View::make("PurchaseOrderCustomer.addPurchaseOrder");
     }
 
-    public function deletepoCustomer($id = null) {
+    public function deletepoCustomer($id = null)
+    {
 //        $firstDeleteSqeuence = DB::table('order_list')
 //                ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
 //                ->select('order_list.sequence', 'order_list.customer_id')
@@ -622,7 +687,8 @@ class PurchaseOrderCustomerController extends Controller {
     /**
      * get getPoCustomerlist
      */
-    public function getPoCustomerlist() {
+    public function getPoCustomerlist()
+    {
         if (Auth::user()->hasRole('customer')) {
             // Get PO List
             $customer = DB::table('customers')->where('user_id', Auth::user()->id)->first();
@@ -668,7 +734,8 @@ class PurchaseOrderCustomerController extends Controller {
     /**
      * UDF For Get Auto Purchase Customer Id
      */
-    public function getAutoPurchaseCustomerId($customerData) {
+    public function getAutoPurchaseCustomerId($customerData)
+    {
         //Get last purchase Id
         $purchaseOrderData = DB::table('purchase_order')->select('id')->orderBy('id', 'desc')->first();
 
@@ -684,7 +751,8 @@ class PurchaseOrderCustomerController extends Controller {
     /**
      * UDF For Get SKU Parts Data
      */
-    public function getSKUPartsData() {
+    public function getSKUPartsData()
+    {
         $partsData = DB::table('part_number')->select('SKU', 'id')->get();
         $sku = '';
         $sku .="<option value='" . '' . "' selected='selected' > select sku</option>";
@@ -697,7 +765,8 @@ class PurchaseOrderCustomerController extends Controller {
     /**
      * UDF For Get PO Customer Data
      */
-    public function getCustomerData() {
+    public function getCustomerData()
+    {
         $custData = DB::table('customers')->select('id', 'comp_name')->get();
         $cData = '';
         $cData .="<option value='" . '' . "' selected='selected' > Select Customer</option>";
@@ -707,10 +776,37 @@ class PurchaseOrderCustomerController extends Controller {
         return $cData;
     }
 
-    public function getIdentifireList($id = null) {
+    public function getIdentifireList($id = null)
+    {
         $id = Input::get('custId');
         $custData = DB::table('shipping_info')->select('id', 'identifier')->where('customer_id', '=', $id)->get();
         return Response(json_encode($custData));
+    }
+
+    /**
+     * PO image set as deleted
+     * 
+     * @return type
+     */
+    public function deletePoImage()
+    {
+        // return data
+        $returnArray = array('status' => false, 'msg' => 'Something went to wrong. Try again!!');
+
+        // Get values
+        $imageId = Input::get('id');
+
+        // set image as delete
+        $status = DB::table('po_images')
+                ->where('id', $imageId)
+                ->update(array('isDeleted' => 1));
+        if ($status) {
+            $returnArray['status'] = true;
+            $returnArray['msg'] = 'Image deleted successfully.';
+        }
+
+        // return response
+        return Response(json_encode($returnArray));
     }
 
 }

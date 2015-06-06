@@ -151,6 +151,7 @@ Route::post('/po/editorder', 'PurchaseOrderCustomerController@editpoCustomer');
 Route::get('/po/deletepoCustomer/{var?}', 'PurchaseOrderCustomerController@deletepoCustomer');
 Route::get('/po/getPoCustomerlist', 'PurchaseOrderCustomerController@getPoCustomerlist');
 Route::get('/po/getIdentifireList', 'PurchaseOrderCustomerController@getIdentifireList');
+Route::get('/po/deletePoImage', 'PurchaseOrderCustomerController@deletePoImage');
 // Blog Art
 Route::get('/blogArt/{var?}', 'BlogartController@index');
 Route::post('/blogArt/{var?}', 'BlogartController@index');
