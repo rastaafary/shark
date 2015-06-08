@@ -60,7 +60,7 @@ class PoImageBlogController extends Controller
 
                 $imgs = Input::file('images');
                 if (count($imgs) > 0) {
-                    $destinationPath = 'images/blog';
+                    $destinationPath = getcwd().'/images/blog';
                     foreach ($imgs as $key => $value) {
                         if ($value !== null) {
                             $filename = $post['id'] . '_' . Auth::user()->id . '_' . time() . '_' . $value->getClientOriginalName();

@@ -175,7 +175,7 @@ class PurchaseOrderCustomerController extends Controller
                 foreach ($multiFileArray as $fileArray) {
                     if (!empty($fileArray) && $fileArray->getError() != 4) {
                         $fileName = $fileArray->getClientOriginalName();
-                        $destinationPath = 'files/poMultiImage';
+                        $destinationPath = getcwd().'/files/poMultiImage';
                         $imageFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $fileName;
                         $fileArray->move($destinationPath, $imageFilename);
 
@@ -427,7 +427,7 @@ class PurchaseOrderCustomerController extends Controller
                     foreach ($multiFileArray as $fileArray) {
                         if (!empty($fileArray) && $fileArray->getError() != 4) {
                             $fileName = $fileArray->getClientOriginalName();
-                            $destinationPath = 'files/poMultiImage';
+                            $destinationPath = getcwd().'/files/poMultiImage';
                             $imageFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $fileName;
                             $fileArray->move($destinationPath, $imageFilename);
 

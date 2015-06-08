@@ -19,7 +19,7 @@
                                         <a class="btn btn-link" href="{!!url('/')!!}/po/edit/{!! $po_image_data->po_id !!}" role="button"><strong>Back To PO</strong></a> 
                                     </div>
                                     <div class="col-sm-1 pull-right">
-                                        <img height="126" width="192" class="avatar img-rounded" src="/files/poMultiImage/{{ $po_image_data->fileName }}"> 
+                                        <img height="126" width="192" class="avatar img-rounded" src="{!!url('/')!!}/files/poMultiImage/{{ $po_image_data->fileName }}"> 
                                     </div>
                                     
                                     @if($isValidUser)
@@ -67,7 +67,7 @@
                             @else
                         <li class="in">
                             @endif
-                            <img height="45px" width="45px" class="avatar" src="/images/user/{{ $data[$cnt]['image'] }}"> 
+                            <img height="45px" width="45px" class="avatar" src="{!!url('/')!!}/images/user/{{ $data[$cnt]['image'] }}"> 
                             <div class="message ">
                                 <span class="arrow"></span>
                                 <a class="name" href="#">{{ $data[$cnt]['name'] }}</a>                               
@@ -84,7 +84,7 @@
 <?php $flag = 1; ?>                                        
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#lightbox"> 
-                                    <img class="attach-img" height="30px" width="45px" src="/images/blog/{{ $val->filename }}">
+                                    <img class="attach-img" height="30px" width="45px" src="{!!url('/')!!}/images/blog/{{ $val->filename }}">
                                 </a>  
                                 @endif
                                 @endforeach
