@@ -84,6 +84,7 @@
                                                             <th>Sequence</th>
                                                             <th>PO Number</th>
                                                             <th>Part Number</th>
+                                                            <th>Image</th>
                                                             <th>Required Date</th>
                                                             <th>Estimated Shipping Date</th>
                                                             <th>PO Qty</th>

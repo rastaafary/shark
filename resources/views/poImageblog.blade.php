@@ -14,13 +14,35 @@
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">PO#:</label>
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-7">
                                         <label class="control-label">{!! $po_image_data->po_id !!}</label>
                                         <a class="btn btn-link" href="{!!url('/')!!}/po/edit/{!! $po_image_data->po_id !!}" role="button"><strong>Back To PO</strong></a> 
                                     </div>
-                                    <div>
-                                        <img height="45px" width="45px" class="avatar" src="/files/poMultiImage/{{ $po_image_data->fileName }}"> 
+                                    <div class="col-sm-1 pull-right">
+                                        <img height="126" width="192" class="avatar img-rounded" src="/files/poMultiImage/{{ $po_image_data->fileName }}"> 
                                     </div>
+                                    
+                                    @if($isValidUser)
+                                    <div class="col-sm-1 pull-right" style="margin: 11px -272px 0px 4px;">
+                                        <button class="btn btn-warning" onclick="$('#orderList').show();">Approve</button>
+                                        &nbsp;
+                                        {!! Form::open(array('method' => 'post','action'=> array('PoImageBlogController@approveImage',$id),'class'=>'form-inline', 'name'=>'frmApproved','id'=>'frmApproved')) !!}
+                                        {!! Form::hidden('id',Input::old('id',isset($id) ? $id : '')) !!}
+                                        {!! HTML::ul($errors->all()) !!}
+                                        
+                                            <div id="orderList" style="display: none;">
+                                                <select name="order" id="selectOrderList">
+                                                    @foreach($ordersList as $order)
+                                                    <option value="{{ $order->order_id }}">{{ $order->sku }}</option>
+                                                    @endforeach                                            
+                                                </select>
+                                                &nbsp;
+                                                <button type="submit" class="btn btn-primary">Done</button>
+                                            </div>
+                                        
+                                        {!! Form::close() !!}
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -28,7 +50,8 @@
                     <ul class="chats normal-chat">
                         <?php
                         $arr = array();
-                        foreach ($comments as $value) {
+                        foreach ($comments as $value)
+                        {
                             array_push($arr, array('id' => $value->id, 'customer_id' => $value->customer_id, 'name' => $value->name, 'comments' => $value->comments, 'image' => $value->image));
                         }
                         $data = $arr;
@@ -53,12 +76,12 @@
                                 </span>
                             </div>
                             <div class="attach">                              
-                                <?php $flag = 0; ?>
+<?php $flag = 0; ?>
                                 @foreach($image_data as $val)                               
                                 @if($val->comment_id == $data[$cnt]['id'])
                                 @if($flag == 0)
                                 <span class="name" href="#">Image Preview:</span>
-                                <?php $flag = 1; ?>                                        
+<?php $flag = 1; ?>                                        
                                 @endif
                                 <a href="#" data-toggle="modal" data-target="#lightbox"> 
                                     <img class="attach-img" height="30px" width="45px" src="/images/blog/{{ $val->filename }}">
@@ -116,7 +139,7 @@
                             </div>
                         </div>
                         <!--<button class="btn btn-primary" type="submit" id="submit">Send</button>-->
-                        <button class="btn btn-primary" type="submit" value="remove" id="submit">Send</button>                                    
+                        <button class="btn btn-primary" type="submit" value="remove" id="submit">Send</button>
                         {!! Form::close() !!}
                     </div>
                 </div>

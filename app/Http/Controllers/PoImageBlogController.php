@@ -37,7 +37,9 @@ class PoImageBlogController extends Controller
             $my_date = date('m/d/Y', strtotime($dt));
             $time = strtotime($my_date);
             $Date = date('Y/m/d', $time);
-
+            
+            $isValidUser = $this->isValidateForApprove($id);
+            
             if (isset($post['id']) && $post['id'] != null) {
                 $rules = array(
                     'txtMessage' => 'required'
@@ -87,8 +89,18 @@ class PoImageBlogController extends Controller
                     ->leftJoin('image_blog_comments', 'image_blog_comments.id', '=', 'image_blog_files.comment_id')
                     ->select(array('image_blog_files.*'))
                     ->get();
-//            echo "<pre>";print_r($image_data);exit;
-            return view('poImageblog', ['page_title' => 'Image Blog Art', 'po_image_data' => $po_image_data, 'id' => $id, 'comments' => $data, 'image_data' => $image_data]);
+            
+            $orderList =  array();
+            //get Order list
+            if ($isValidUser == true) {
+                $orderList = DB::table('order_list')
+                    ->select(array('part_number.SKU as sku', 'order_list.id as order_id'))
+                    ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
+                    ->where('order_list.po_id', $po_image_data->po_id)
+                    ->get();                
+            }
+            
+            return view('poImageblog', ['page_title' => 'Image Blog Art','ordersList' => $orderList , 'po_image_data' => $po_image_data, 'isValidUser' => $isValidUser, 'id' => $id, 'comments' => $data, 'image_data' => $image_data]);
         } else {
             Session::flash('message', "Opss..!,blog not found...!");
             Session::flash('status', 'error');
@@ -97,5 +109,52 @@ class PoImageBlogController extends Controller
 
         return view('poImageblog', ['page_title' => 'Blog Art']);
     }
+    
+    protected function isValidateForApprove($blodId) {
+        $count =  DB::table('po_images')
+                    ->leftJoin('purchase_order', 'purchase_order.id', '=', 'po_images.po_id')
+                    ->leftJoin('customers', 'customers.id', '=', 'purchase_order.customer_id')
+                    ->leftJoin('user', 'user.id', '=', 'customers.user_id')
+                    ->where('user.id', Auth::id())
+                    ->where('po_images.id', $blodId)
+                    ->count();
+        
+        if ((int)$count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function approveImage($id = null)
+    {
+        $po_image_data = DB::table('po_images')->where('id', $id)->first();
 
+        if ($po_image_data != null) {
+
+            $post = Input::all();
+
+            if (Request::isMethod('post')) {
+                
+                if ($this->isValidateForApprove($id)) {
+                    DB::table('po_images')
+                    ->where('id', $id)
+                    ->update(array('is_approved' => 1,'order_id' => $post['order']));
+                    
+                    Session::flash('message', "Approved successfuly.");
+                    Session::flash('status', 'success');                    
+                } else {
+                    Session::flash('message', "Access Denined.");
+                    Session::flash('status', 'error');                    
+                }
+                
+            }
+        } else {
+            Session::flash('message', "Opss..!,blog not found...!");
+            Session::flash('status', 'error');
+            return redirect('/po/add');
+        }
+        return redirect('/blog/' . $id);
+    }
+    
 }

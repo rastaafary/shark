@@ -306,10 +306,13 @@
                                                     foreach ($poImages as $image) {
                                                         if (isset($image->fileName) && !empty($image->fileName)) {
                                                             ?>
-                                                            <span class="col-lg-offset-4 col-sm-8">
+                                                            <span class="col-lg-offset-4 col-sm-8" style="margin-top: -19px;">
                                                                 <a href="{!!url('/')!!}/files/poMultiImage/<?php echo $image->fileName; ?>" target="_new">Click To View</a>
-                                                                &nbsp;<a href='javascript:void(0);' class='deleteDbImage text-danger' title='Delete image' imageId="<?php echo $image->id; ?>"><i class='fa fa-trash-o margin-top-10'></i></a><br/>
-                                                            </span>                                                       
+                                                                &nbsp;<a href="{!!url('/')!!}/blog/<?php echo $image->id; ?>" class='text-primary' title='View Blog' imageId="<?php echo $image->id; ?>">Blog</a>
+                                                                &nbsp;<a href='javascript:void(0);' class='deleteDbImage text-danger' title='Delete image' imageId="<?php echo $image->id; ?>"><i class='fa fa-trash-o margin-top-10'></i></a>
+                                                                <br/>
+                                                            </span>
+                                                            
                                                             <?php
                                                         }
                                                     }
