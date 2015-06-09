@@ -19,7 +19,7 @@
                                         <a class="btn btn-link" href="{!!url('/')!!}/po/edit/{!! $po_image_data->po_id !!}" role="button"><strong>Back To PO</strong></a> 
                                     </div>
                                     <div class="col-sm-1 pull-right">
-                                        <img height="126" width="192" class="avatar img-rounded" src="{!!url('/')!!}/files/poMultiImage/{{ $po_image_data->fileName }}"> 
+                                        <a href="{!!url('/')!!}/files/poMultiImage/<?php echo $po_image_data->fileName; ?>" target="_new">Click To View</a>
                                     </div>
                                     
                                     @if($isValidUser)
@@ -135,7 +135,7 @@
                                 <div class="form-control">
                                     <input type="file" name="images[]" id="images">
                                 </div>
-                                <a class="btn btn-primary add-Onemore" id='addImage'><i class="fa fa-plus"></i> </a>
+<!--                                <a class="btn btn-primary add-Onemore" id='addImage'><i class="fa fa-plus"></i> </a>-->
                             </div>
                         </div>
                         <!--<button class="btn btn-primary" type="submit" id="submit">Send</button>-->

@@ -332,15 +332,9 @@ $(document).ready(function() {
             },
             'require_date': {
                 required: true
-            },
-            'PDF': {
-                extension: "pdf"
-            },
-            'Ai': {
-                extension: "ai"
-            },
+            },           
             'uploadImage[]': {
-                extension: "JPG|JPEG|PNG|GIF"
+                extension: "JPG|JPEG|PNG|GIF|pdf|ai"
             },
         },
         messages: {
@@ -381,15 +375,9 @@ $(document).ready(function() {
             },
             'require_date': {
                 required: 'Please enter require date.'
-            },
-            'PDF': {
-                extension: 'Please only upload PDF file.'
-            },
-            'Ai': {
-                extension: 'Please only upload ai file.'
-            },
+            },            
             'uploadImage[]': {
-                extension: 'Only JPG,JPEG,PNG,GIF image allow.'
+                extension: 'Only JPG|JPEG|PNG|GIF|pdf|ai Files allow.'
             }
         },
         highlight: function(element) {

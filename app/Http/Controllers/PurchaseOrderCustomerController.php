@@ -75,8 +75,6 @@ class PurchaseOrderCustomerController extends Controller
                 'shippingMethod' => 'required',
                 'payment_terms' => 'required',
                 'require_date' => 'required',
-                'PDF' => 'mimes:pdf|max:10240',
-                'Ai' => 'max:10240',
 //                'uploadImage' => 'mimes:jpg,jpeg,png,gif',
             );
             $validator = Validator::make(Input::all(), $rules);
@@ -132,41 +130,6 @@ class PurchaseOrderCustomerController extends Controller
                         'comments' => $post['comments']
                     )
             );
-
-            //Upload the PDF
-            if (isset($post['PDF'])) {
-                $pdfName = $post['PDF']->getClientOriginalName();
-                $file = Input::file('PDF');
-                $destinationPath = 'files';
-                $pdfFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $pdfName;
-                Input::file('PDF')->move($destinationPath, $pdfFilename);
-                $post['PDF'] = $pdfFilename;
-            } else {
-                $post['PDF'] = '';
-            }
-
-            //Upload the Ai
-            if (isset($post['Ai'])) {
-                $aiName = $post['Ai']->getClientOriginalName();
-                $file = Input::file('Ai');
-                $destinationPath = 'files';
-                $aiFilename = str_replace(' ', '', $customer->comp_name) . time() . '_' . $aiName;
-                Input::file('Ai')->move($destinationPath, $aiFilename);
-                $post['Ai'] = $aiFilename;
-            } else {
-                $post['Ai'] = '';
-            }
-
-            if (!empty($post['PDF']) || !empty($post['Ai'])) {
-                //Add Blog Art Data
-                $blogArtId = DB::table('blog_art_file')->insertGetId(
-                        array('po_id' => $poId,
-                            'customer_id' => $customer->id,
-                            'name' => '',
-                            'pdf' => $post['PDF'],
-                            'ai' => $post['Ai'])
-                );
-            }
 
             // Upload multiple Images
             // multiple image file object
@@ -259,9 +222,8 @@ class PurchaseOrderCustomerController extends Controller
             }
             //Get data of purchase order
             $purchaseOrder = DB::table('purchase_order')
-                    ->select(array('shipping_info.*', 'purchase_order.*', 'blog_art_file.*', 'blog_art_file.id as art_id'))
-                    ->leftJoin('shipping_info', 'shipping_info.id', '=', 'purchase_order.shipping_id')
-                    ->leftJoin('blog_art_file', 'blog_art_file.po_id', '=', 'purchase_order.id')
+                    ->select(array('shipping_info.*', 'purchase_order.*'))
+                    ->leftJoin('shipping_info', 'shipping_info.id', '=', 'purchase_order.shipping_id')                   
                     ->where('purchase_order.id', $id)
                     ->first();
 
@@ -282,8 +244,6 @@ class PurchaseOrderCustomerController extends Controller
                     'shippingMethod' => 'required',
                     'payment_terms' => 'required',
                     'require_date' => 'required',
-                    'PDF' => 'mimes:pdf|max:10240',
-                    'PDF' => 'max:10240'
                 );
                 $validator = Validator::make(Input::all(), $rules);
                 if ($validator->fails()) {
@@ -336,89 +296,6 @@ class PurchaseOrderCustomerController extends Controller
                             'comments' => $post['comments']
                         )
                 );
-
-                //Upload the PDF
-                if (isset($post['PDF'])) {
-                    if (!empty($purchaseOrder->pdf)) {
-                        @unlink('files/' . $purchaseOrder->pdf);
-                    }
-                    $pdfName = $post['PDF']->getClientOriginalName();
-                    $file = Input::file('PDF');
-                    $destinationPath = 'files';
-                    $pdfFilename = str_replace(' ', '', $customer->comp_name) . rand() . '_' . $pdfName;
-                    Input::file('PDF')->move($destinationPath, $pdfFilename);
-                    $post['PDF'] = $pdfFilename;
-                } else {
-                    $post['PDF'] = '';
-                }
-
-                //Upload the Ai
-                if (isset($post['Ai'])) {
-
-                    if (!empty($purchaseOrder->ai)) {
-                        @unlink('files/' . $purchaseOrder->ai);
-                    }
-
-                    $aiName = $post['Ai']->getClientOriginalName();
-                    $file = Input::file('Ai');
-                    $destinationPath = 'files';
-                    $aiFilename = str_replace(' ', '', $customer->comp_name) . rand() . '_' . $aiName;
-                    Input::file('Ai')->move($destinationPath, $aiFilename);
-                    $post['Ai'] = $aiFilename;
-                } else {
-                    $post['Ai'] = '';
-                }
-
-
-
-                if (!empty($post['Ai']) || !empty($post['PDF'])) {
-                    if (!empty($post['PDF'])) {
-                        $blogArtData = DB::table('blog_art_file')->where('po_id', '=', $id)->first();
-                        if (empty($blogArtData)) {
-
-                            //Add Blog Art Data
-                            $blogArtId = DB::table('blog_art_file')->insertGetId(
-                                    array('po_id' => $id,
-                                        'customer_id' => $customer->id,
-                                        'name' => '',
-                                        'pdf' => $post['PDF'])
-                            );
-                        } else {
-                            //update Blog Art Data
-                            $blogArtId = DB::table('blog_art_file')
-                                    ->where('id', $blogArtData->id)
-                                    ->update(
-                                    array(
-                                        'name' => '',
-                                        'pdf' => $post['PDF']
-                                    )
-                            );
-                        }
-                    }
-                    if (!empty($post['Ai'])) {
-                        $blogArtData = DB::table('blog_art_file')->where('po_id', '=', $id)->first();
-                        if (empty($blogArtData)) {
-                            //Add Blog Art Data
-                            $blogArtId = DB::table('blog_art_file')->insertGetId(
-                                    array('po_id' => $id,
-                                        'customer_id' => $customer->id,
-                                        'name' => '',
-                                        'ai' => $post['Ai'])
-                            );
-                        } else {
-                            //update Blog Art Data
-                            $blogArtId = DB::table('blog_art_file')
-                                    ->where('id', $blogArtData->id)
-                                    ->update(
-                                    array(
-                                        'name' => '',
-                                        'ai' => $post['Ai']
-                                    )
-                            );
-                        }
-                    }
-                }
-
 
                 // Upload multiple Images
                 // multiple image file object
@@ -489,11 +366,12 @@ class PurchaseOrderCustomerController extends Controller
 
             //Get list of Parts order
             $orderList = DB::table('order_list')
-                    ->select(array('order_list.*', 'part_number.*', 'order_list.id as order_id', DB::raw('group_concat(DISTINCT size.labels) as size')))
+                    ->select(array('order_list.*', 'part_number.*', 'order_list.id as order_id','size.labels' ,DB::raw('group_concat(size.labels) as size')))
                     ->leftJoin('size_data', 'size_data.part_id', '=', 'order_list.part_id')
                     ->leftJoin('size', 'size.id', '=', 'size_data.size_id')
                     ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
                     ->where('order_list.po_id', $id)
+                    ->groupBy('order_list.id')
                     ->get();
 
 //            $size = DB::table('size_data')

@@ -269,37 +269,6 @@
                                                 <?php echo $errors->first('PDF'); ?>                                        
                                             </div>                                                                                  
                                             <div class="form-group">
-                                                <label for="uploadArtPDF" class="col-sm-4 control-label">Upload Art PDF:</label>
-                                                <div class="col-md-8">
-                                                    <input id="uploadArtPDF" type="file" name="PDF">
-                                                    <?php
-                                                    if (isset($purchaseOrder->pdf)) {
-                                                        if (!empty($purchaseOrder->pdf)) {
-                                                            ?>
-                                                            <a href="{!!url('/')!!}/files/<?php echo isset($purchaseOrder->pdf) ? $purchaseOrder->pdf : '' ?>" target="_new">Click To View</a>
-                                                            <?php
-                                                        }
-                                                    }
-                                                    ?>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="uploadArtPDF" class="col-sm-4 control-label">Upload Art Ai:</label>
-                                                <div class="col-md-8">
-                                                    <input id="uploadArtAi" type="file" name="Ai">
-                                                    <?php
-                                                    if (isset($purchaseOrder->ai)) {
-                                                        if (!empty($purchaseOrder->ai)) {
-                                                            ?>
-                                                            <a href="{!!url('/')!!}/files/<?php echo isset($purchaseOrder->ai) ? $purchaseOrder->ai : '' ?>" target="_new">Click To View</a>
-                                                            <?php
-                                                        }
-                                                    }
-                                                    ?>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
                                                 <label class="col-sm-4 control-label">Upload Image:</label>
                                                 <?php
                                                 if (isset($poImages) && !empty($poImages)) {
@@ -312,7 +281,7 @@
                                                                 &nbsp;<a href='javascript:void(0);' class='deleteDbImage text-danger' title='Delete image' imageId="<?php echo $image->id; ?>"><i class='fa fa-trash-o margin-top-10'></i></a>
                                                                 <br/>
                                                             </span>
-                                                            
+
                                                             <?php
                                                         }
                                                     }
@@ -329,10 +298,6 @@
                                             <div style="color: red">
                                                 <?php echo $errors->first('uploadImage'); ?>                                        
                                             </div>   
-
-                                            @if(isset($id))
-                                            <a class="btn btn-link" href="{!!url('/blogArt')!!}<?= $purchaseOrder->po_id ?>" role="button"><strong>Blog Art</strong></a>                                          
-                                            @endif
                                         </div>                                                       
                                     </div>
                                 </div>
