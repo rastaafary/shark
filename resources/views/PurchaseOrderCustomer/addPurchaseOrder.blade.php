@@ -340,7 +340,8 @@
                                                             </td>
                                                             <td>
 <!--                                                                <input autocomplete="off" id="searchDescription" class="input form-control" name="searchDescription[]" type="text" placeholder="searchDescription"/>-->
-                                                                <label id="size" name="size[]" class="control-label"></label>
+                                                                <div id="size" name="size[]" class="control-label"></div>
+                                                                <input type="hidden" id="hidSizeQty">
                                                             </td>
                                                             <td>
                                                                 <input autocomplete="off" id="purchaseQty" class="input form-control" type="text" placeholder="qty"/>
