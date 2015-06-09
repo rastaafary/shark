@@ -85,6 +85,7 @@
                                                             <th>PO Number</th>
                                                             <th>Part Number</th>
                                                             <th>Image</th>
+                                                            <th>Size Qty</th>
                                                             <th>Required Date</th>
                                                             <th>Estimated Shipping Date</th>
                                                             <th>PO Qty</th>

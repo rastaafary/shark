@@ -66,6 +66,15 @@ $(document).ready(function ()
         "sAjaxSource": baseURL+"/PLReport/orderlist/0",
         "aaSorting": [[0, "asc"]],
         "aoColumnDefs": [
+            {"sWidth": "2%", "aTargets": [0] },
+            {"sWidth": "2%", "aTargets": [1] },
+            {"sWidth": "2%", "aTargets": [2] },
+            {"sWidth": "2%", "aTargets": [3] },
+            {"sWidth": "20%", "aTargets": [4] },
+            {"sWidth": "2%", "aTargets": [5] },
+            {"sWidth": "15%", "aTargets": [6] },
+            {"sWidth": "2%", "aTargets": [7] },
+            {"sWidth": "6%", "aTargets": [8] },
             {"bSearchable": false, "aTargets": [0]},
             {"bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7, 8]}
         ],
@@ -93,7 +102,7 @@ $(document).ready(function ()
         },
         "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
             //$(nRow).find('td:first').html(sequence++);
-            $(nRow).attr('id', aData[10]);
+            $(nRow).attr('id', aData[11]);
             return nRow;
         }
     });

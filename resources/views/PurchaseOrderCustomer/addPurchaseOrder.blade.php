@@ -340,11 +340,10 @@
                                                             </td>
                                                             <td>
 <!--                                                                <input autocomplete="off" id="searchDescription" class="input form-control" name="searchDescription[]" type="text" placeholder="searchDescription"/>-->
-                                                                <div id="size" name="size[]" class="control-label"></div>
-                                                                <input type="hidden" id="hidSizeQty">
+                                                                <div id="size" name="size[]" class="control-label"></div>                                                                
                                                             </td>
                                                             <td>
-                                                                <input autocomplete="off" id="purchaseQty" class="input form-control" type="text" placeholder="qty"/>
+                                                                <label id="purchaseQty" class="control-label">0</label>
                                                             </td>
                                                             <td>
                                                                 <label id="unitPrice" class="control-label"></label>

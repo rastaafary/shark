@@ -66,14 +66,26 @@ class PurchaseOrderCustomerController extends Controller
 
             unset($post['_token']);
 
-            $rules = array(
-                'selectPOCustomer' => 'required',
-                'orderDate' => 'required',
-                'shippingMethod' => 'required',
-                'payment_terms' => 'required',
-                'require_date' => 'required',
+            if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))
+            {
+                $rules = array(
+                    'selectPOCustomer' => 'required',
+                    'orderDate' => 'required',
+                    'shippingMethod' => 'required',
+                    'payment_terms' => 'required',
+                    'require_date' => 'required',
 //                'uploadImage' => 'mimes:jpg,jpeg,png,gif',
-            );
+                );
+            } else
+            {
+                $rules = array(
+                    'orderDate' => 'required',
+                    'shippingMethod' => 'required',
+                    'payment_terms' => 'required',
+                    'require_date' => 'required',
+                );
+            }
+            
             $validator = Validator::make(Input::all(), $rules);
             if ($validator->fails()) {
                 return redirect('/po/add')
@@ -163,6 +175,7 @@ class PurchaseOrderCustomerController extends Controller
             $orders = json_decode($post['orders'], true);
 
             foreach ($orders as $orderlist) {
+                $orderlist['size_qty'] = json_encode($orderlist['size_qty']);
                 unset($orderlist['orderId']);
                 if ($orderlist['part_id'] > 0) {
                     $adminSeqNo++;
@@ -315,6 +328,7 @@ class PurchaseOrderCustomerController extends Controller
                 ///////////////////////
                 //add po order
                 $orders = json_decode($post['orders'], true);
+                
                 $deleteOrderIds = explode(',', $post['deleteOrder']);
 
                 if (count($deleteOrderIds) > 0) {
@@ -334,6 +348,7 @@ class PurchaseOrderCustomerController extends Controller
                     $adminSeqNo = $lastAdminSeqId->adminSequence;
                 }
                 foreach ($orders as $orderlist) {
+                    $orderlist['size_qty'] = json_encode($orderlist['size_qty']);
                     if ($orderlist['part_id'] > 0) {
                         $orderId = $orderlist['orderId'];
                         unset($orderlist['orderId']);
