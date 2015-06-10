@@ -132,7 +132,6 @@ class PoImageBlogController extends Controller
             $post = Input::all();
 
             if (Request::isMethod('post')) {
-
                 $imageCommentList = DB::table('image_blog_comments')
                         ->leftJoin('image_blog_files', 'image_blog_files.comment_id', '=', 'image_blog_comments.id')
                         ->select('image_blog_files.filename', 'image_blog_files.id')
@@ -140,15 +139,20 @@ class PoImageBlogController extends Controller
                         ->orderBy('image_blog_files.id', 'desc')
                         ->get();
 
-                if ($this->isValidateForApprove($id)) {
-                    DB::table('po_images')
-                            ->where('id', $id)
-                            ->update(array('is_approved' => 1, 'order_id' => $post['order'], 'approved_image' => $imageCommentList[0]->filename));
+                if (count($imageCommentList) > 0) {
+                    if ($this->isValidateForApprove($id)) {
+                        DB::table('po_images')
+                                ->where('id', $id)
+                                ->update(array('is_approved' => 1, 'order_id' => $post['order'], 'approved_image' => $imageCommentList[0]->filename));
 
-                    Session::flash('message', "Approved successfuly.");
-                    Session::flash('status', 'success');
+                        Session::flash('message', "Approved successfuly.");
+                        Session::flash('status', 'success');
+                    } else {
+                        Session::flash('message', "Access Denined.");
+                        Session::flash('status', 'error');
+                    }
                 } else {
-                    Session::flash('message', "Access Denined.");
+                    Session::flash('message', "No Image In Comment.");
                     Session::flash('status', 'error');
                 }
             }
