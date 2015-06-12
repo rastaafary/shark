@@ -52,7 +52,7 @@ class OrderStatusReportController extends Controller
                             ->where('purchase_order.is_deleted', '!=', 1)
                             ->where('order_list.pl_status', '=', $status)
                             ->groupBy('order_list.id')
-                            ->orderBy('order_list.adminSequence', 'ASC')->get();
+                            ->orderBy('order_list.adminSequence', 'ASC');
             // Return datatable
             $statusStr = '<select id="plStatusChange" class="form-control" olId="{{$orderId}}"><option value="0" {{ $pl_status == 0 ? "selected" : "" }}>Open</option><option value="1" {{ $pl_status == 1 ? "selected" : "" }}>Closed</option></select>';
 
