@@ -10,8 +10,7 @@ use Session;
 use Datatables;
 use Auth;
 
-class PartController extends Controller
-{
+class PartController extends Controller {
 
     public function __construct() {
         $this->middleware('auth');
@@ -60,17 +59,16 @@ class PartController extends Controller
 
         if (isset($post['_token']))
             unset($post['_token']);
-//             $size = $post['labels'];
-//            unset($post['labels']);
+        
 
         if (isset($post['id']) && $post['id'] != null) {
             $rules = array(
                 'id' => 'required',
-               // 'SKU' => 'required|Min:6|alpha_num|unique:part_number'.$post['id'],
+                // 'SKU' => 'required|Min:6|alpha_num|unique:part_number'.$post['id'],
                 'SKU' => 'required|Min:6|alpha_num|unique:part_number,SKU,' . $post['id'],
                 'description' => 'required',
-                'labels'=> 'required',
-                 'label'=> 'required',
+//                'labels'=> 'required',
+//                 'label'=> 'required',
                 'cost' => 'required|numeric',
                 'currency_id' => 'required');
 
@@ -90,12 +88,24 @@ class PartController extends Controller
 
 //                var_dump($post);
 //                exit("in");
-                $labels = $post['labels'];
-                $label = $post['label'];
+                 if (array_key_exists('labels', $post)) {
+               
+                     $labels = $post['labels'];
+                    unset($post['labels']);
+                
+            }
+            if (array_key_exists('label', $post)) {
+               
+                     $label = $post['label'];
+                    unset($post['label']);
+                
+            }
+               
+                
 //                $partid = $post['id'];
 //                $sizeData = $post['labels'];
-                unset($post['labels']);
-                unset($post['label']);
+               // unset($post['labels']);
+               // unset($post['label']);
                 if (isset($post['ai'])) {
 
                     if (!empty($id->ai)) {
@@ -117,11 +127,11 @@ class PartController extends Controller
                         ->where('id', $post['id'])
                         ->update($post);
 
-                if (isset($labels)) {
+                
                     DB::table('size_data')
                             ->where('part_id', '=', $post['id'])
                             ->delete();
-
+                    if (isset($labels)) {
                     foreach ($labels as $s) {
                         $si['part_id'] = $post['id'];
                         $si['size_id'] = $s;
@@ -130,11 +140,11 @@ class PartController extends Controller
                         );
                     }
                 }
-                if (isset($label)) {
+                
                     DB::table('components_data')
                             ->where('part_id', '=', $post['id'])
                             ->delete();
-
+                    if (isset($label)) {
                     foreach ($label as $s) {
                         $sid['part_id'] = $post['id'];
                         $sid['components_id'] = $s;
@@ -200,15 +210,23 @@ class PartController extends Controller
 
     public function addPart() {
         $post = Input::all();
+        //echo '<pre>';print_r($post);exit;
 
         if (isset($post['_token'])) {
             unset($post['_token']);
 
-            $size = $post['labels'];
-            unset($post['labels']);
-
-            $components = $post['label'];
-            unset($post['label']);
+            if (array_key_exists('labels', $post)) {
+               
+                    $size = $post['labels'];
+                    unset($post['labels']);
+                
+            }
+            
+            if (array_key_exists('label', $post)) {
+                   $components = $post['label'];
+                    unset($post['label']);
+            }
+            
 
             //if (isset($post['SKU']) && $post['SKU'] != null) {
             $rules = array(
@@ -216,8 +234,8 @@ class PartController extends Controller
                 'SKU' => 'required|Min:6|alpha_num|unique:part_number,SKU,' . $post['id'],
                 'description' => 'required',
                 'cost' => 'required|numeric',
-                'labels'=> 'required',
-                 'label'=> 'required',
+//                'labels'=> 'required',
+//                 'label'=> 'required',
                 'currency_id' => 'required'
             );
 
@@ -227,6 +245,9 @@ class PartController extends Controller
                                 ->withErrors($validator)
                                 ->withInput(Input::all());
             }
+             
+//            $size = $post['labels'];
+//                    unset($post['labels']);
             if (isset($post['ai'])) {
                 $aiName = $post['ai']->getClientOriginalName();
                 $file = Input::file('ai');
@@ -240,16 +261,25 @@ class PartController extends Controller
             $part = DB::table('part_number')->insertGetId(
                     $post
             );
+             //echo '<pre>';print_r($size);exit;
+           
             //for Size Table
+            //echo '<pre>';print_r($post['labels']);exit;
+            if(isset($size)){
+               
             foreach ($size as $s) {
+              //  var_dump($s);exit('call');
                 $si['part_id'] = $part;
                 $si['size_id'] = $s;
+               
                 $sizeId = DB::table('size_data')->insert(
                         $si
                 );
             }
+            }
 
             //for Component Table
+            if(isset($components)){
             foreach ($components as $c) {
 
                 $sid['part_id'] = $part;
@@ -259,6 +289,7 @@ class PartController extends Controller
                 $componentsId = DB::table('components_data')->insert(
                         $sid
                 );
+            }
             }
 
             Session::flash('message', 'Part Added Successfully!!');
@@ -290,11 +321,11 @@ class PartController extends Controller
                 ->where('id', $id)
                 ->update(array('is_deleted' => '1'));
         DB::table('size_data')
-                            ->where('part_id', '=',$id )
-                            ->delete();
+                ->where('part_id', '=', $id)
+                ->delete();
         DB::table('components_data')
-                            ->where('part_id', '=', $id)
-                            ->delete();
+                ->where('part_id', '=', $id)
+                ->delete();
         Session::flash('message', 'Part delete Successfully!!');
         Session::flash('alert-success', 'success');
         return redirect('/part');
@@ -302,7 +333,7 @@ class PartController extends Controller
 
 //For size
     public function getSizeData() {
-        
+
         $size = DB::table('size_data')
                         ->leftjoin('size', 'size.id', ' = ', 'size_data.size_id')
                         ->select('size_id')

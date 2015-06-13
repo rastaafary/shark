@@ -67,7 +67,7 @@ $(document).ready(function () {
 
     //edit part validation
     $('#editpart').validate({
-        ignore: '.select2-input',
+       // ignore: '.select2-input',
         
         rules: {
             'SKU': {
@@ -77,13 +77,13 @@ $(document).ready(function () {
             'description': {
                 required: true,
             },
-            'labels[]':{
-             required: true,
-            },
-
-            'label[]': {
-                required: true,
-            },
+//            'labels[]':{
+//             required: true,
+//            },
+//
+//            'label[]': {
+//                required: true,
+//            },
             'cost': {
                 required: true,
                 amountValidation: true,
@@ -99,12 +99,12 @@ $(document).ready(function () {
             'description': {
                 required: 'Please enter description.'
             },
-            'labels[]': {
-                required: 'Please enter size.'
-            },
-            'label[]': {
-                required: 'Please enter components.'
-            },
+//            'labels[]': {
+//                required: 'Please enter size.'
+//            },
+//            'label[]': {
+//                required: 'Please enter components.'
+//            },
             'cost': {
                 required: 'Please enter cost.'
 
@@ -127,7 +127,7 @@ $(document).ready(function () {
     });
     //add part validation
     $('#addpart').validate({
-        ignore: '.select2-input',
+       // ignore: '.select2-input',
         rules: {
             'SKU': {
                 required: true,
@@ -136,12 +136,12 @@ $(document).ready(function () {
             'description': {
                 required: true
             },
-            'labels[]': {
-                ignore: '',
-            },
-            'label[]': {
-                required: true,
-            },
+//            'labels[]': {
+//                ignore: '',
+//            },
+//            'label[]': {
+//                required: true,
+//            },
             'cost': {
                 required: true,
                 amountValidation: true

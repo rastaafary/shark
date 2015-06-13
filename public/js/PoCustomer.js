@@ -1,5 +1,24 @@
 $(document).ready(function () {
 
+//    $('#purchaseOrderTbl').delegate('#purchaseQtyNew', 'keyup', function () {
+//        if ($(this).val() == '') {
+//            $('#totalPrice').html('0');
+//            return false;
+//        }
+//        if ($.isNumeric($(this).val())) {
+//            tot_price = $('#unitPrice').html() * $(this).val();
+//            $('#totalPrice').html(tot_price.toFixed(2));
+//        } else {
+//            if (e.keyCode !== 8) {
+//                $('#totalPrice').html('0');
+//                alert('Please enter only Numeric value.');
+//            }
+//        }
+//    });
+
+
+
+
     $('.select2').select2();
     $(' .POselect2').select2();
     $('#orderTime').timepicker({
@@ -12,15 +31,15 @@ $(document).ready(function () {
         target.html(0).trigger("change");
         $('[name="dataQty[]"]').each(function (d) {
             valueOfText = $.trim(this.value);
-            
+
             if (valueOfText == '' || valueOfText == null)
                 valueOfText = 0;
-            
+
             target.html((parseFloat(target.html()) + parseFloat(valueOfText))).trigger("change");
         });
     });
 
-    $("body").delegate(".sizeQty","keydown",function (event) {
+    $("body").delegate(".sizeQty", "keydown", function (event) {
         if (!(event.keyCode == 8                                // backspace
                 || event.keyCode == 9                               // tab
                 || event.keyCode == 17                              // ctrl
@@ -37,7 +56,7 @@ $(document).ready(function () {
             prevControl = event.currentTarget.id;
         }
     });
-    
+
     $('#selectPOCustomer').change(function () {
         id = $('#selectPOCustomer').val();
         $.ajax({
@@ -205,7 +224,8 @@ $(document).ready(function () {
     var orderNo = 1;
     if (oldOrderData.length > 0) {
         $(oldOrderData).each(function (key, val) {
-            size_data = val.size.split(',');
+            //size_data = val.size.split(',');
+            ///alert(size_data);
             var order = [
                 {
                     orderNo: orderNo++,
@@ -213,7 +233,7 @@ $(document).ready(function () {
                     skuId: val.part_id,
                     skuLabel: val.SKU,
                     description: val.description,
-                    size: mapSize(val.size_qty,'string'),
+                    size: mapSize(val.size_qty, 'string'),
                     purchaseQty: val.qty,
                     unitPrice: val.cost,
                     totalPrice: val.amount
@@ -230,6 +250,7 @@ $(document).ready(function () {
         size_var = $('#size').text().split(":");
         var qty_val = [];
         var size_arr = [];
+        var qty = '';
         $('[name="dataQty[]"]').each(function (d) {
             qty_val.push(parseFloat(this.value));
         });
@@ -240,22 +261,41 @@ $(document).ready(function () {
             alert('Please select SKU');
             return false;
         }
-        if ($('#purchaseQty').html() == 0 || $('#purchaseQty').html() == '' || parseInt($('#purchaseQty').html()) < 1) {
+        if ($('#purchaseQtyNew').val() == 0 || $('#purchaseQtyNew').val() == '' || parseInt($('#purchaseQtyNew').val()) < 1) {
             alert('Please enter valid Quantity.');
             return false;
         }
         if ($('#updateId').val() !== '0') {
+            //  alert('hi');
             template = $('#' + $('#updateId').val()).tmplItem();
-            console.log(template);
+            // console.log(template);
             template.data.skuId = $('#skuOrder').val();
             template.data.skuLabel = $('#skuOrder option:selected').text();
             template.data.description = $('#searchDescription').html();
             template.data.size = size_arr;
-            template.data.purchaseQty = $('#purchaseQty').html();
+            // alert(template.data.size);
+            // alert($('#purchaseQtyNew').val());
+            //console.log() 
+            if (template.data.size.length == 0) {
+                //alert('if');
+                template.data.purchaseQty = $('#purchaseQtyNew').val();
+            } else {
+                // alert('else');
+                template.data.purchaseQty = $('#purchaseQty').html();
+            }
+
+            //alert(template.data.size);
+            // template.data.purchaseQty = $('#purchaseQty').html();
+            // template.data.purchaseQty = $('#purchaseQtyNew').val();
             template.data.unitPrice = $('#unitPrice').html();
             template.data.totalPrice = $('#totalPrice').html();
             template.update();
         } else {
+//            if(size_arr.length == 0){
+//                qty = $('#purchaseQtyNew').val();
+//            }else{
+//                qty = $('#purchaseQty').html();
+//            }
             var order = [
                 {
                     orderNo: orderNo++,
@@ -265,10 +305,17 @@ $(document).ready(function () {
                     description: $('#searchDescription').html(),
                     size: size_arr,
                     purchaseQty: $('#purchaseQty').html(),
+                    // purchaseQty: $('#purchaseQtyNew').val(),
                     unitPrice: $('#unitPrice').html(),
                     totalPrice: $('#totalPrice').html(),
                 }
             ];
+            if ($('#purchaseQtyNew').val()) {
+                //alert($('#purchaseQtyNew').val);
+
+                order[0].purchaseQty = $('#purchaseQtyNew').val();
+            }
+
             // Render the Order details
             $("#new-order-template").tmpl(order).appendTo("#purchaseOrderTbl tbody");
         }
@@ -281,23 +328,42 @@ $(document).ready(function () {
     $('#cancelUpdate').click(function () {
         resetInputOrderData();
     });
-    
-    $('body').delegate("#purchaseQty","change",function (e) {
-        
-        if ($(this).html() == '') {
-            $('#totalPrice').html('0');
-            return false;
-        }
-        if ($.isNumeric($(this).html())) {
-            tot_price = $('#unitPrice').html() * $(this).html();
-            $('#totalPrice').html(tot_price.toFixed(2));
-        } else {
-            if (e.keyCode !== 8) {
+    if ($('#purchaseQtyNew').is('input[type=text]')) {
+
+
+
+    } else {
+        $('body').delegate("#purchaseQty", "change", function (e) {
+
+            if ($(this).html() == '') {
                 $('#totalPrice').html('0');
-                alert('Please enter only Numeric value.');
+                return false;
             }
-        }
-    });
+            // console.log($('#purchaseQtyNew').val());
+            if ($.isNumeric($(this).html()) || $.isNumeric($('#purchaseQtyNew').val())) {
+                var text = $('#purchaseQtyNew').val();
+                var lbl = $(this).html();
+                // alert(text);
+                // tot_price = $('#unitPrice').html() * $(this).html();
+
+                if (text) {
+                    tot_price = $('#unitPrice').html() * $('#purchaseQtyNew').val();
+                } else {
+
+                    tot_price = $('#unitPrice').html() * $(this).html();
+                }
+                //console.log(tot_price);
+                $('#totalPrice').html(tot_price.toFixed(2));
+            } else {
+                if (e.keyCode !== 8) {
+                    $('#totalPrice').html('0');
+                    alert('Please enter only Numeric value.');
+                }
+            }
+        });
+    }
+
+
     jQuery.validator.addMethod("mobileNo", function (value, element) {
         return this.optional(element) || /^[0-9 \-\(\)\+]+$/.test(value);
     }, "Please enter valid mobile no.");
@@ -313,7 +379,7 @@ $(document).ready(function () {
                     'orderId': $(this).find('.orderId').val()
                 })
             });
-            
+
             if (orders.length > 0) {
                 $('#deleteOrder').val(deleteOrder);
                 $('#allOrderData').val(JSON.stringify(orders));
@@ -509,6 +575,7 @@ function getinfo(element)
             $('#purchaseQty').trigger('change');
         }
     });
+    //
     $.ajax({
         type: 'GET',
         url: baseURL + '/po/getSize',
@@ -517,14 +584,28 @@ function getinfo(element)
         success: function (responce)
         {
             var jason = $.parseJSON(responce);
+            //console.log(jason);
             var size = '';
-            $.each(jason, function (idx, data) {
-                if (idx == '0') {
-                    size = '<lable>' + data.labels + ' : </lable><input size="18" class="sizeQty" type="text" name="dataQty[]" value="0"><br>';
-                } else {
-                    size = size + '<lable>' + data.labels + ' : </lable><input size="18" class="sizeQty" type="text" name="dataQty[]" value="0" style="margin-top:5px;"><br>';
-                }
-            });
+            //alert('size');
+
+            if (jason.length > 0) {
+
+                $.each(jason, function (idx, data) {
+                    //console.log('if');
+
+                    //if(data.labels){
+                    if (idx == '0') {
+                        size = '<lable>' + data.labels + ' : </lable><input size="18" class="sizeQty" type="text" name="dataQty[]" value="0"><br>';
+                    } else {
+                        size = size + '<lable>' + data.labels + ' : </lable><input size="18" class="sizeQty" type="text" name="dataQty[]" value="0" style="margin-top:5px;"><br>';
+                    }
+
+
+                });
+            } else {
+                //console.log('els ');
+                $("#purchaseQty").html('<input type="text" style="width:90%;" id="purchaseQtyNew">');
+            }
             $('#size').html(size);
         }
     });
@@ -545,16 +626,29 @@ function editNewOrder(element)
 {
     trEle = $(element).closest('tr.newOrderData');
     var s_data = $(trEle).find('.size').text().split(",");
+    var q_data = $(trEle).find('.purchaseQty').text();
+    //console.log(q_data);
     var size = '';
     s_data.forEach(function (entry) {
         s_arr = entry.split(':');
-        size = size + '<lable>' + s_arr[0] + ' : </lable><input size="18" class="sizeQty" type="text" name="dataQty[]" value="' + s_arr[1] + '" style="margin-top:5px;"><br>';
+        // console.log(s_arr[0]);
+        if (s_arr[0] == '') {
+            size = '';
+        } else {
+
+            size = size + '<lable>' + s_arr[0] + ' : </lable><input size="18" class="sizeQty" type="text" name="dataQty[]" value="' + s_arr[1] + '" style="margin-top:5px;"><br>';
+        }
     });
     $('#skuOrder').select2("val", $(trEle).find('.sku').attr('id'));
     $('#updateId').val($(trEle).attr('id'));
     $('#searchDescription').html($(trEle).find('.description').html());
     $('#size').html(size);
-    $('#purchaseQty').html($(trEle).find('.purchaseQty').html()).trigger("change");
+    if (size == '') {
+        var qty = $("#purchaseQty").html('<input type="text" style="width:90%;" id="purchaseQtyNew" value="' + q_data + '">');
+    } else {
+        $('#purchaseQty').html($(trEle).find('.purchaseQty').html()).trigger("change");
+    }
+
     $('#unitPrice').html($(trEle).find('.unitPrice').html());
     $('#totalPrice').html($(trEle).find('.totalPrice').html());
     $('#addMoreOrder').html('<i class="fa fa-edit"></i> Update');
@@ -639,10 +733,16 @@ function mapSize(string, format) {
     } else if (format == 'string') {
         string = $.parseJSON(string);
         size = '';
-        $.each(string,function(key,val) {
-            size += Object.keys(val)[0] + ': ' + Object.keys(val).map(function(key){return val[key]})+',';
+        $.each(string, function (key, val) {
+            if (val == '')
+                size = ',';
+            else {
+                size += Object.keys(val)[0] + ': ' + Object.keys(val).map(function (key) {
+                    return val[key]
+                }) + ',';
+            }
         });
-        size = size.substring(0,size.length - 1);
+        size = size.substring(0, size.length - 1);
     }
 
     return size;
