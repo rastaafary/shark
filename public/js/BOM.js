@@ -1,5 +1,6 @@
 var new_order = 0;
-$(document).ready(function () {
+
+$(document).ready(function() {
     if (route_name == 'bom')
     {
         $.ajax({
@@ -7,7 +8,7 @@ $(document).ready(function () {
             url: baseURL + '/part/getskudescription',
             data: 'skuId=' + part_id,
             async: false,
-            success: function (responce)
+            success: function(responce)
             {
                 var jason = $.parseJSON(responce);
                 $("#skuName").html(jason.SKU);
@@ -16,7 +17,8 @@ $(document).ready(function () {
     }
     $('#part_id').change();
     $('.skuDropDown').select2();
-    $("#BOM_list").dataTable({
+
+   $("#BOM_list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": baseURL + "/getBomList/" + part_id + "/" + route_name,
@@ -24,7 +26,7 @@ $(document).ready(function () {
         "aoColumnDefs": [
             {"bSortable": false, "aTargets": [6]},
         ],
-        "fnServerData": function (sSource, aoData, fnCallback) {
+        "fnServerData": function(sSource, aoData, fnCallback) {
             $.ajax({
                 "dataType": 'json',
                 "type": "GET",
@@ -33,16 +35,17 @@ $(document).ready(function () {
                 "success": fnCallback
             });
         },
-        "fnInitComplete": function (oSettings, json) {
+        "fnInitComplete": function(oSettings, json) {
             total = 0;
-            $.each(oSettings.aoData, function (key, val) {
-                total = (parseFloat(total) + parseFloat(val._aData[5])).toFixed(2);
+            $.each(oSettings.aoData, function(key, val) {
+                total = (parseFloat(total) + parseFloat(val._aData[5])).toFixed(3);
             });
             $('#BOMtotals').html(total);
         }
     });
+
     var orderNo = 1;
-    $(oldBomData).each(function (key, val) {
+    $(oldBomData).each(function(key, val) {
         var order = [
             {
                 orderNo: orderNo++,
@@ -61,7 +64,7 @@ $(document).ready(function () {
         $("#new-order-template").tmpl(order).appendTo("#purchaseOrderTbl tbody");
     });
 
-    $("#scrap_rate, #yield").keydown(function (event) {
+    $("#scrap_rate, #yield").keydown(function(event) {
         if (!(event.keyCode == 8                                // backspace
                 || event.keyCode == 9                               // tab
                 || event.keyCode == 17                              // ctrl
@@ -81,7 +84,7 @@ $(document).ready(function () {
     });
 
 
-    $("#addMoreOrder").click(function (e) {
+    $("#addMoreOrder").click(function(e) {
         if ($('#raw_material').val() == '') {
             alert('Please select valid Raw Material.');
             return false;
@@ -131,19 +134,19 @@ $(document).ready(function () {
         resetTotalOrderData();
     });
 
-    $('#cancelUpdate').click(function () {
+    $('#cancelUpdate').click(function() {
         resetInputOrderData();
     });
 
 
-    $('#part_id').change(function () {
+    $('#part_id').change(function() {
         id = $('#part_id').val();
         $.ajax({
             type: 'GET',
             url: baseURL + '/part/getskudescription',
             data: 'skuId=' + id,
             async: false,
-            success: function (responce)
+            success: function(responce)
             {
                 var jason = $.parseJSON(responce);
                 $("#skuDescripton").val(jason.description);
@@ -155,8 +158,8 @@ $(document).ready(function () {
     var bestPictures = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('partnumber'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: baseURL+'/part/bom/searchRawMaterial',
-        remote: baseURL+'/part/bom/searchRawMaterial/%QUERY'
+        prefetch: baseURL + '/part/bom/searchRawMaterial',
+        remote: baseURL + '/part/bom/searchRawMaterial/%QUERY'
     });
 
     bestPictures.initialize();
@@ -165,18 +168,18 @@ $(document).ready(function () {
         name: 'best-pictures',
         displayKey: 'partnumber',
         source: bestPictures.ttAdapter()
-    }).on('typeahead:selected', function ($e, datum) {
+    }).on('typeahead:selected', function($e, datum) {
         $('input[name="raw_material"]').val(datum["id"]);
     })
 
-    $('#selectedRawMaterial').blur(function () {
+    $('#selectedRawMaterial').blur(function() {
         id = $('#raw_material').val();
         $.ajax({
             type: 'GET',
             url: baseURL + '/part/bom/rawMaterialDescription',
             data: 'rawMaterialId=' + id,
             async: false,
-            success: function (responce)
+            success: function(responce)
             {
                 var jason = $.parseJSON(responce);
                 $("#raw_material").val(jason.id);
@@ -188,7 +191,7 @@ $(document).ready(function () {
         //  $("#selectedRawMaterial").mask("aaa-aaa-9999");
     });
 
-    $("#yield").blur(function () {
+    $("#yield").blur(function() {
         // (Yield + Scrap Rate) * Bom Cost = total
 //        var a = ((parseFloat($("#bom_cost").val()) * parseFloat($("#scrap_rate").val()))/100) / parseFloat($("#bom_cost").val());
 //        var b = parseFloat($("#yield").val()) * parseFloat($(a).val());
@@ -196,10 +199,10 @@ $(document).ready(function () {
 //        mul = parseFloat($("#bom_cost").val()) + parseFloat($(c).val());
         mul = (((((parseFloat($("#bom_cost").val()) * parseFloat($("#scrap_rate").val())) / 100) / parseFloat($("#bom_cost").val())) * parseFloat($("#yield").val())) + parseFloat($("#yield").val())) * parseFloat($("#bom_cost").val());
         //mul = (parseFloat($("#scrap_rate").val()) + parseFloat($("#yield").val())) * parseFloat($("#bom_cost").val());
-        $("#total").val(mul.toFixed(2));
+        $("#total").val(mul.toFixed(3));
     });
 
-    $('.two-digits').keyup(function () {
+    $('.two-digits').keyup(function() {
         if ($(this).val().indexOf('.') != -1) {
             if ($(this).val().split(".")[1].length > 2) {
                 if (isNaN(parseFloat(this.value)))
@@ -211,7 +214,7 @@ $(document).ready(function () {
     });
 
 
-    $('.two-digits1').keyup(function () {
+    $('.two-digits1').keyup(function() {
         if ($(this).val().indexOf('.') != -1) {
             if ($(this).val().split(".")[1].length > 2) {
                 if (isNaN(parseFloat(this.value)))
@@ -223,9 +226,9 @@ $(document).ready(function () {
     });
 
     $('#BOM').validate({
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             orders = [];
-            $('tr.newOrderData').each(function () {
+            $('tr.newOrderData').each(function() {
                 orders.push({
                     'orderId': $(this).find('.orderId').val(),
                     'selectedRawMaterial': $(this).find('.selectedRawMaterial').html(),
@@ -280,15 +283,15 @@ $(document).ready(function () {
 //
 //            },
 //        },
-        highlight: function (element) {
+        highlight: function(element) {
             $(element).removeClass("textinput");
             $(element).addClass("errorHighlight");
         },
-        unhighlight: function (element) {
+        unhighlight: function(element) {
             $(element).removeClass("errorHighlight");
             $(element).addClass("textinput");
         },
-        errorPlacement: function (error, element) {
+        errorPlacement: function(error, element) {
             error.insertAfter(element);
         }
     });
@@ -368,13 +371,13 @@ function addOrder() {
     amount = $('#amount').val();
     $.ajax({
         type: 'POST',
-        url: baseURL+'/po/add/order',
+        url: baseURL + '/po/add/order',
         data: {'customer_id': cust_id, 'searchSKU': searchSKU, 'searchQty': qty, 'amount': amount},
         async: false,
         headers: {
             'X-XSRF-TOKEN': $('meta[name="_token"]').attr('content')
         },
-        success: function (responce)
+        success: function(responce)
         {
         }
     });
@@ -391,8 +394,8 @@ function confirmDelete()
 //reset total Data
 function resetTotalOrderData() {
     totalAmout = 0;
-    $('tr.newOrderData').each(function () {
+    $('tr.newOrderData').each(function() {
         totalAmout += parseFloat($(this).find('.total').html());
     });
-    $('#totalAmout').html(totalAmout.toFixed(2));
+    $('#totalAmout').html(totalAmout.toFixed(3));
 }

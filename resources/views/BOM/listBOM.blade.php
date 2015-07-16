@@ -1,6 +1,11 @@
 @extends('layouts.main')
 @section('content')
+    <!-- DataTables tableTools -->
+
 {!! HTML::script('js/BOM.js') !!}
+
+<!--{!! HTML::script('js/ZeroClipboard.js') !!}-->
+
 <script>
     var part_id = '<?php echo $part_id ?>';
     var route_name = '<?php echo $route_name ?>';
@@ -13,6 +18,7 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="{!!url('#List')!!}">List</a></li>
                         <li><a href="{!!url('/')!!}/part/{{$part_id}}/bom/add">Add</a></li>
+                        <li><a  target="_blank" href="{!!url('/')!!}/print/{{$part_id}}">Print</a></li>
                     </ul>
                 </header>
                 <div class="panel-body">
@@ -33,7 +39,7 @@
                                                         <label class="control-label" id="skuName" style="font-weight: bolder;"></label>
                                                     </div>
                                                 </div>
-                                                <div class="table-responsive">
+                                                   <div class="table-responsive">
                                                     <table class="display table table-bordered table-striped" id="BOM_list">
                                                         <thead>
                                                             <tr>

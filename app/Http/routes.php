@@ -90,6 +90,9 @@ Route::post('/customer/edit/{var?}', 'CustomerController@editCust');
 Route::get('/customer/delete/{var?}', 'CustomerController@deleteCust');
 Route::get('/customerdata', 'CustomerController@getCustData');
 // BOM
+
+Route::get('/print/{sid?}', 'BOMController@printBOMList');
+Route::post('/print/{sid?}', 'BOMController@printBOMList');
 Route::get('/part/{var?}/bom', 'BOMController@listBOM');
 Route::get('/part/{var?}/bom/add', 'BOMController@addBOM');
 Route::post('/part/{var?}/bom/add', 'BOMController@addBOM');
