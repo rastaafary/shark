@@ -18,7 +18,7 @@ $(document).ready(function() {
     $('#part_id').change();
     $('.skuDropDown').select2();
 
-   $("#BOM_list").dataTable({
+    $("#BOM_list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": baseURL + "/getBomList/" + part_id + "/" + route_name,
@@ -38,7 +38,7 @@ $(document).ready(function() {
         "fnInitComplete": function(oSettings, json) {
             total = 0;
             $.each(oSettings.aoData, function(key, val) {
-                total = (parseFloat(total) + parseFloat(val._aData[5])).toFixed(3);
+                total = (parseFloat(total) + parseFloat(val._aData[5])).toFixed(4);
             });
             $('#BOMtotals').html(total);
         }
@@ -201,7 +201,7 @@ $(document).ready(function() {
 //        mul = parseFloat($("#bom_cost").val()) + parseFloat($(c).val());
         mul = (((((parseFloat($("#bom_cost").val()) * parseFloat($("#scrap_rate").val())) / 100) / parseFloat($("#bom_cost").val())) * parseFloat($("#yield").val())) + parseFloat($("#yield").val())) * parseFloat($("#bom_cost").val());
         //mul = (parseFloat($("#scrap_rate").val()) + parseFloat($("#yield").val())) * parseFloat($("#bom_cost").val());
-        $("#total").val(mul.toFixed(3));
+        $("#total").val(mul.toFixed(4));
     });
 
     $('.two-digits').keyup(function() {
@@ -209,7 +209,7 @@ $(document).ready(function() {
             if ($(this).val().split(".")[1].length > 2) {
                 if (isNaN(parseFloat(this.value)))
                     return;
-                this.value = parseFloat(this.value).toFixed(2);
+                this.value = parseFloat(this.value).toFixed(4);
             }
         }
         return this; //for chaining
@@ -221,8 +221,33 @@ $(document).ready(function() {
             if ($(this).val().split(".")[1].length > 2) {
                 if (isNaN(parseFloat(this.value)))
                     return;
-                this.value = parseFloat(this.value).toFixed(2);
+                this.value = parseFloat(this.value).toFixed(4);
             }
+        }
+        return this; //for chaining
+    });
+    $('#scrap_rate').keyup(function() {
+
+        if ($(this).val().indexOf('.') != -1) {
+
+            if ($(this).val().split(".")[1].length > 4) {
+
+                if (isNaN(parseFloat(this.value)))
+                    return;
+                this.value = parseFloat(this.value).toFixed(4);
+
+            }
+            if ($(this).val().split(".")[0].length > 2 ) {
+                if (isNaN(parseFloat(this.value)))
+                    return;
+                //this.value = parseInt(this.value).toFixed(2);
+                var intvalue = parseFloat($(this).val().split(".")[0].substr(0,2));
+                this.value = parseFloat(intvalue+'.'+$(this).val().split(".")[1]);
+            }
+        } else if (parseInt($(this).val()) && $(this).val().length > 1 && $(this).val().indexOf('.') === -1) {
+            if (isNaN(parseFloat(this.value)))
+                return;
+            this.value = parseFloat(this.value).toFixed(2);
         }
         return this; //for chaining
     });
@@ -399,5 +424,5 @@ function resetTotalOrderData() {
     $('tr.newOrderData').each(function() {
         totalAmout += parseFloat($(this).find('.total').html());
     });
-    $('#totalAmout').html(totalAmout.toFixed(3));
+    $('#totalAmout').html(totalAmout.toFixed(4));
 }
