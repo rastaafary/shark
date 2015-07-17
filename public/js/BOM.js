@@ -95,7 +95,7 @@ $(document).ready(function() {
             alert('Please enter valid Scrape Rate.');
             return false;
         }
-        if ($('#yield').val() == 0 || $('#yield').val() == '' || parseInt($('#yield').val()) < 1) {
+        if ($('#yield').val() == 0 || $('#yield').val() == '' || parseInt($('#yield').val()) < 0) {
             alert('Please enter valid Yield.');
             return false;
         }
