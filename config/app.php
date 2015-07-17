@@ -123,6 +123,7 @@ return [
         'Illuminate\Html\HtmlServiceProvider',
         'yajra\Datatables\DatatablesServiceProvider',
         'Zizaco\Entrust\EntrustServiceProvider',
+        'Barryvdh\DomPDF\ServiceProvider',
         /*
          * Application Service Providers...
          */

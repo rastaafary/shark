@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use File;
 use Session;
 use Input;
@@ -16,7 +17,7 @@ use App\Http\Controllers\Image;
 use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\User;
-use PDF;
+use Barryvdh\DomPDF\PDF;
 
 class BOMController extends Controller
 {
@@ -363,7 +364,8 @@ class BOMController extends Controller
                 ->where('id', $id)
                 ->get();
 
-        $pdf = PDF::loadView('BOM.printBOM', array('bomlist' => $bomlist, 'partinfo' => $partinfo, 'total' => $total));
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('BOM.printBOM', array('bomlist' => $bomlist, 'partinfo' => $partinfo, 'total' => $total));
         return $pdf->download("bom_$id.pdf");
         //return $pdf->stream('contract.pdf');
         // return PDF::loadView('BOM.printBOM',$data)->save('/my_stored_file.pdf')->stream('download.pdf');
