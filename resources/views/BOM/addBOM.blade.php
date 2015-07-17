@@ -121,7 +121,7 @@
 <!--                                                                <input  autocomplete="off" type="text" class="form-control typeahead" name="bom_cost" id='bom_cost' readonly>-->
                                                             </td>
                                                             <td>    
-                                                                {!! Form::text('scrap_rate','' ,array('class'=>'form-control two-digits typeahead', 'placeholder' => '', 'id' => 'scrap_rate')) !!}
+                                                                {!! Form::text('scrap_rate','' ,array('class'=>'form-control typeahead', 'placeholder' => '', 'id' => 'scrap_rate')) !!}
 <!--                                                                <input  autocomplete="off" type="text" class="form-control typeahead" name="scrap_rate" id='scrap_rate' >-->
                                                             </td>
                                                             <td>    

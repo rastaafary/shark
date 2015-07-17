@@ -89,7 +89,9 @@ $(document).ready(function() {
             alert('Please select valid Raw Material.');
             return false;
         }
-        if ($('#scrap_rate').val() == 0 || $('#scrap_rate').val() == '' || parseInt($('#scrap_rate').val()) < 1) {
+        //if ($('#scrap_rate').val() == 0 || $('#scrap_rate').val() == '' || parseInt($('#scrap_rate').val()) < 1) {
+        //var scrap_ratedata =$('#scrap_rate').val();
+        if (parseInt($('#scrap_rate').val()) < 0) {
             alert('Please enter valid Scrape Rate.');
             return false;
         }
