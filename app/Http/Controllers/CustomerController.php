@@ -1,9 +1,7 @@
 <?php
-
 //namespace App\Http\Controllers\Customer;
 
 namespace App\Http\Controllers;
-
 use File;
 use DB;
 use View;
@@ -52,7 +50,7 @@ class CustomerController extends Controller
                 'contact_email' => 'required|Email|unique:user,email',
                 'password' => 'required',
                 'contact_mobile' => 'required',
-                'contact_birthdate' => 'required',
+                //'contact_birthdate' => 'optional',
             );
 
             $validator = Validator::make(Input::all(), $rules);
@@ -146,7 +144,7 @@ class CustomerController extends Controller
                 'position' => 'required',
                 'contact_email' => 'required|Email|unique:user,email,' . $emailId,
                 'contact_mobile' => 'required',
-                'contact_birthdate' => 'required',
+                //'contact_birthdate' => 'required',
             );
 
             $validator = Validator::make(Input::all(), $rules);
@@ -275,7 +273,7 @@ class CustomerController extends Controller
                 ->select(array('id', 'comp_name', 'building_no', 'street_addrs', 'interior_no', 'city', 'state', 'zipcode', 'country', 'phone_no', 'user_id', 'contact_name'))
                 ->where('is_deleted', '!=', '1');
         return Datatables::of($custlist)
-                        ->editColumn("user_id", '<a href="{{url("/")}}/customer/delete/{{ $user_id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete"><span class="fa fa-trash-o" ></span></a><a href="/customer/edit/{{ $user_id }}" class="btn btn-primary" id="btnEdit"><span class="fa fa-pencil"></span></a>')
+                        ->editColumn("user_id", '<a href="{{url("/")}}/customer/delete/{{ $user_id }}" class="btn btn-danger" onClick = "return confirmDelete({{ $id }})" id="btnDelete"><span class="fa fa-trash-o" ></span></a><a href="{{url("/")}}/customer/edit/{{ $user_id }}" class="btn btn-primary" id="btnEdit"><span class="fa fa-pencil"></span></a>')
                         ->make();
     }
 

@@ -348,8 +348,9 @@ class PartController extends Controller {
     public function getPartData() {
         $partlist = DB::table('part_number')
                 ->leftJoin('bom', 'bom.part_id', ' = ', 'part_number.id')
-                ->select(array('part_number.SKU', 'part_number.description', 'part_number.cost', DB::raw('ROUND(SUM(bom.total), 2) as bomTotal'), 'part_number.id'))
+                ->select(array('part_number.SKU', 'part_number.description', 'part_number.cost', DB::raw('ROUND(SUM(IF(bom.is_deleted =0,bom.total,0)), 2) as bomTotal'), 'part_number.id'))
                 ->where('part_number.is_deleted', ' = ', '0')
+                //->where('bom.is_deleted', ' = ', '0')
                 ->groupBy('part_number.id');
         return Datatables::of($partlist)
                         ->editColumn("id", '<a href = "{{url("/")}}/part/{{ $id }}/bom" class = "btn btn-info" id = "btnBom">BOM</a>&nbsp;
