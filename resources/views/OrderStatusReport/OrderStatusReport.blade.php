@@ -83,6 +83,7 @@
                                                         <tr>
                                                             <th>Sequence</th>
                                                             <th>PO Number</th>
+                                                            <th>Customer Name</th>
                                                             <th>Part Number</th>
                                                             <th>Image</th>
                                                             <th>Size Qty</th>
