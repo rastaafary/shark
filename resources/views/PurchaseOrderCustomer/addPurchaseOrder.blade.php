@@ -115,7 +115,7 @@
                                                         @endif
 
                                                         @if(isset($id))
-                                                        @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('admin'))
+                                                        @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))
                                                         @if(count($shipping) > 0)
                                                         @foreach($shipping as $value)
                                                         <option value="{{$value->id}}" <?php if (isset($purchaseOrder)) echo ($value->id == $purchaseOrder->shipping_id) ? 'selected' : ''; ?> >{{$value->identifier}}</option>
