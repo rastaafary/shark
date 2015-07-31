@@ -103,7 +103,7 @@ $(document).ready(function ()
         },
         "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
             //$(nRow).find('td:first').html(sequence++);
-            $(nRow).attr('id', aData[11]);
+            $(nRow).attr('id', aData[12]);
             return nRow;
         }
     });
@@ -120,6 +120,7 @@ $(document).ready(function ()
                 orderId.push($(this).attr('id'));
                 sequence.push(parseInt($(this).find('td:first').html()));
             });
+
             $.ajax({
                 type: "GET",
                 url: baseURL+"/PLReport/reOrderData",
