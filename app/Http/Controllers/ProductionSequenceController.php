@@ -33,7 +33,7 @@ class ProductionSequenceController extends Controller
         $id = Request::segment(3);
         $obj = null;
         if (Request::isMethod('post')) {
-            if (!is_null(Input::get('id'))) {
+            if (!empty(Input::get('id'))) {
                 $obj = ProductionSequence::find(Input::get('id'));
                 ProductionSequence::where('id', '=', Input::get('id'))->update(['title' => Input::get('title')]);
                 Session::flash('success', 'Successfully update.');
@@ -81,7 +81,7 @@ class ProductionSequenceController extends Controller
                     ->select(['id', 'title', 'created_at', 'seqId'])
                     ->where('isDelete', '!=', 1)
                     ->orWhereNull('isDelete');
-            $action = '<a type="button" class="btn btn-success btn-sm" onclick="javascript:window.location=\'' . URL::to('/sequence/add') . '/{{$id}}\'"><i class="fa fa-edit"></i></a>&nbsp;<a type="button" class="btn btn-danger btn-sm" onclick="javascript:window.location=\'' . URL::to('/sequence/delete') . '/{{$id}}\'"><i class="fa fa-trash"></i></a>';
+            $action = '<a type="button" class="btn btn-success btn-sm" onclick="javascript:window.location=\'' . URL::to('/sequence/add') . '/{{$id}}\'"><i class="fa fa-edit"></i></a>&nbsp;<a type="button" class="btn btn-danger btn-sm" onclick="javascript:window.location=\'' . URL::to('/sequence/delete') . '/{{$id}}\'"><i class="fa fa-trash-o"></i></a>';
             return Datatables::of($data)
                             ->editColumn("created_at", $action)
                             ->make();
