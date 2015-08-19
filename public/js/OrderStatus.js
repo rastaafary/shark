@@ -1,6 +1,16 @@
 var oTable;
 $(document).ready(function ()
 {
+    $(document).delegate(".production_status", 'change', function () {
+        postData = {
+            id: $(this).attr('id'),
+            production_status: $(this).val(),
+            _token: $("input[name=_token]").val()
+        },
+        $.post(baseURL + '/PLReport/productionStatus', postData, function (data) {
+            oTable.fnReloadAjax();
+        });
+    });
 
     $('#pcsMadeDate').datepicker({format: "yyyy-mm-dd", todayBtn: true, todayHighlight: true}).on('changeDate', function (ev) {
         $(this).datepicker('hide');
@@ -11,9 +21,9 @@ $(document).ready(function ()
     $("#openCloseToggle").change(function () {
         if ($('#openCloseToggle').prop('checked') == true) {
             // 0 
-            oTable.fnReloadAjax(baseURL+'/PLReport/orderlist/0');
+            oTable.fnReloadAjax(baseURL + '/PLReport/orderlist/0');
         } else {
-            oTable.fnReloadAjax(baseURL+'/PLReport/orderlist/1');
+            oTable.fnReloadAjax(baseURL + '/PLReport/orderlist/1');
 
             //1 
         }
@@ -63,19 +73,19 @@ $(document).ready(function ()
     oTable = $("#order-list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": baseURL+"/PLReport/orderlist/0",
+        "sAjaxSource": baseURL + "/PLReport/orderlist/0",
         "aaSorting": [[0, "asc"]],
         "aoColumnDefs": [
-            {"sWidth": "2%", "aTargets": [0] },
-            {"sWidth": "3%", "aTargets": [1] },
-            {"sWidth": "2%", "aTargets": [2] },
-            {"sWidth": "2%", "aTargets": [3] },
-            {"sWidth": "2%", "aTargets": [4] },
-            {"sWidth": "20%", "aTargets": [5] },
-            {"sWidth": "2%", "aTargets": [6] },
-            {"sWidth": "15%", "aTargets": [7] },
-            {"sWidth": "2%", "aTargets": [8] },
-            {"sWidth": "6%", "aTargets": [9] },
+            {"sWidth": "2%", "aTargets": [0]},
+            {"sWidth": "3%", "aTargets": [1]},
+            {"sWidth": "2%", "aTargets": [2]},
+            {"sWidth": "2%", "aTargets": [3]},
+            {"sWidth": "2%", "aTargets": [4]},
+            {"sWidth": "20%", "aTargets": [5]},
+            {"sWidth": "2%", "aTargets": [6]},
+            {"sWidth": "15%", "aTargets": [7]},
+            {"sWidth": "2%", "aTargets": [8]},
+            {"sWidth": "6%", "aTargets": [9]},
             {"bSearchable": false, "aTargets": [0]},
             {"bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
         ],
@@ -95,10 +105,10 @@ $(document).ready(function ()
                 todayBtn: true,
                 todayHighlight: true
             });
-            if($('#order-list_filter input').val() != '') {
-                $('#order-list tbody').sortable("disable" );
+            if ($('#order-list_filter input').val() != '') {
+                $('#order-list tbody').sortable("disable");
             } else {
-                $('#order-list tbody').sortable("enable" );
+                $('#order-list tbody').sortable("enable");
             }
         },
         "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
@@ -107,10 +117,10 @@ $(document).ready(function ()
             return nRow;
         }
     });
-    
-  
-    
-    
+
+
+
+
     $('#order-list tbody').sortable({
         stop: function () {
             $("#order-list_processing").css("visibility", "visible");
@@ -123,7 +133,7 @@ $(document).ready(function ()
 
             $.ajax({
                 type: "GET",
-                url: baseURL+"/PLReport/reOrderData",
+                url: baseURL + "/PLReport/reOrderData",
                 data: {orderId: orderId, max: Math.max.apply(Math, sequence), min: Math.min.apply(Math, sequence)},
                 success: function (data) {
                     oTable.fnReloadAjax();
@@ -157,7 +167,7 @@ $(document).ready(function ()
     $('#addPcsMadeBtn').click(function () {
         $.ajax({
             type: "GET",
-            url: baseURL+'/PLReport/addPcsMade',
+            url: baseURL + '/PLReport/addPcsMade',
             data: "pcsMadeId=" + $('#pcsMadeId').val() + "&pcsMadeDate=" + $('#pcsMadeDate').val() + "&pcsMadeQty=" + $('#pcsMadeQty').val() + "&orderlist_id=" + $('#orderlist_id').val() + "&pcsMadeQty_old=" + $('#pcsMadeQty_old').val(),
             success: function (msg) {
                 var jason = $.parseJSON(msg);
@@ -192,7 +202,7 @@ function changePlValues(olId, fieldName, fieldValue) {
     $('.ESDate').datepicker("hide");
     $.ajax({
         type: "GET",
-        url: baseURL+'/PLReport/changePlValues',
+        url: baseURL + '/PLReport/changePlValues',
         data: "olId=" + olId + "&fieldName=" + fieldName + "&fieldValue=" + fieldValue,
         success: function (msg) {
             oTable.fnReloadAjax();
@@ -212,7 +222,7 @@ function getpcsDetails(orderListId, po_number, sku, amount)
 
     $.ajax({
         type: "GET",
-        url: baseURL+'/PLReport/getPcsMadeDetails',
+        url: baseURL + '/PLReport/getPcsMadeDetails',
         data: "orderListId=" + orderListId,
         success: function (msg) {
             var jason = $.parseJSON(msg);
@@ -270,7 +280,7 @@ function deletePcs(pcsMadeId) {
     if (confirm('Are you sure want to delete?')) {
         $.ajax({
             type: "GET",
-            url: baseURL+'/PLReport/deletePcsMade',
+            url: baseURL + '/PLReport/deletePcsMade',
             data: "pcsMadeId=" + pcsMadeId,
             success: function (msg) {
                 var jason = $.parseJSON(msg);

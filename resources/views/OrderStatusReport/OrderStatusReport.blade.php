@@ -2,6 +2,7 @@
 @section('content')
 {!! HTML::script('js/OrderStatus.js') !!}
 
+<input type="hidden" name="_token" value="{!! csrf_token() !!}"/>
 
 <div class="wrapper">
     <div class="row">
@@ -94,6 +95,9 @@
                                                             <th>Balance</th>
                                                             <!--<th>Mark Pieces Made</th>-->
                                                             <th>Status</th>
+                                                            @if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))
+                                                            <th>Production Status</th>
+                                                            @endif
                                                         </tr> 
                                                     </thead>
                                                     <tbody><tbody>

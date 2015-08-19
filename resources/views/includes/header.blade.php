@@ -71,6 +71,9 @@
             @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))
             <li class="<?php if($path == 'customer'||$path == 'customer/add'){ echo 'active'; }else{ echo ''; } ?>"><a href="{{action('CustomerController@listCust')}}"><i class="fa fa-users"></i> <span>Customers</span></a></li>
             @endif
+            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))            
+            <li class="<?php if($path == 'sequence'||$path == 'sequence/add'||$path == 'sequence/view'){ echo 'active'; }?>"><a href="{{action('ProductionSequenceController@listSequence')}}"><i class="fa fa-list-ol"></i> <span>Production Sequence </span></a></li>
+            @endif
             <li><a href="{{action('LoginController@logout')}}"><i class="fa fa-key"></i> <span>Log Out</span></a></li>
         </ul>
         <!--sidebar nav end-->

@@ -16,37 +16,44 @@ Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
 // Login
 Route::post('/login', 'LoginController@login');
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth'], function()
+{
     Route::get('/part', 'PartController@partList');
 });
 
-Route::filter('invoice', function() {
+Route::filter('invoice', function()
+{
     //var_dump(!Entrust::can('list-invoice', 'add-invoice'));
     if (!Entrust::can(array('list-invoice', 'add-invoice', 'edit-invoice', 'delete-invoice'))) {
         return view('accessDenied');
     }
 });
-Route::filter('payment', function() {
+Route::filter('payment', function()
+{
     if (!Entrust::can(array('list-payment', 'add-payment', 'edit-payment', 'delete-payment', 'view-payment'))) {
         return view('accessDenied');
     }
 });
-Route::filter('pl', function() {
+Route::filter('pl', function()
+{
     if (!Entrust::can(array('list-pl', 'add-pl', 'edit-pl', 'delete-pl'))) {
         return view('accessDenied');
     }
 });
-Route::filter('user', function() {
+Route::filter('user', function()
+{
     if (!Entrust::can(array('list-user', 'add-user', 'edit-user', 'delete-user'))) {
         return view('accessDenied');
     }
 });
-Route::filter('part', function() {
+Route::filter('part', function()
+{
     if (!Entrust::can(array('list-partNumber', 'add-partNumber', 'edit-partNumber', 'delete-partNumber'))) {
         return view('accessDenied');
     }
 });
-Route::filter('customer', function() {
+Route::filter('customer', function()
+{
     if (!Entrust::can(array('list-customer', 'add-customer', 'edit-customer', 'delete-customer'))) {
         return view('accessDenied');
     }
@@ -188,6 +195,7 @@ Route::get('/userProfile/delete/{var?}', 'ManageUserController@deleteUser');
 Route::get('/PLReport/view', 'OrderStatusReportController@viewReport');
 Route::get('/PLReport/orderlist/{var?}', 'OrderStatusReportController@orderList');
 Route::get('/PLReport/changePlValues', 'OrderStatusReportController@changePlValues');
+Route::post('/PLReport/productionStatus', 'OrderStatusReportController@productionStatus');
 //changeSequence
 Route::get('/PLReport/changeSequence', 'OrderStatusReportController@changeSequence');
 Route::get('/PLReport/addPcsMade', 'OrderStatusReportController@addPcsMade');
@@ -206,7 +214,13 @@ Route::post('/RawMaterial/edit/{var?}', 'RawMaterialController@editRawMaterial')
 
 //get part data
 Route::get('/RawMaterialdata', 'RawMaterialController@getRawMaterialData');
-
+// production sequence
+Route::get('/sequence', 'ProductionSequenceController@listSequence');
+Route::get('/sequence/add/{id?}', 'ProductionSequenceController@add');
+Route::post('/sequence/add', 'ProductionSequenceController@add');
+Route::post('/sequence/order', 'ProductionSequenceController@order');
+Route::get('/sequence/delete/{id?}', 'ProductionSequenceController@delete');
+Route::get('/sequence/get-list', 'ProductionSequenceController@getList');
 
 /* Route::get('/customer/add', array('prefix' => 'customer','as' => 'customer.add',
   'uses' => 'Customer\customerController@addCustomer'));
@@ -222,4 +236,3 @@ Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
-
