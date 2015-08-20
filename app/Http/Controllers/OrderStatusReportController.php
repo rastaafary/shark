@@ -102,12 +102,14 @@ class OrderStatusReportController extends Controller
                     ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
                     ->leftJoin('pcs_made', 'pcs_made.orderlist_id', '=', 'order_list.id')
                     ->leftJoin('po_images', 'po_images.order_id', '=', 'order_list.id')
-                    ->select('order_list.localSequence', 'purchase_order.po_number', 'part_number.SKU', 'po_images.approved_image as fileName', 'order_list.size_qty', 'purchase_order.require_date', DB::raw("IF(order_list.ESDate IS NULL or order_list.ESDate = '','',order_list.ESDate) as estDate"), 'order_list.qty', DB::raw("IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)) as pcsMade"), 'order_list.amount', 'order_list.pl_status', 'order_list.id as orderId')
+                    ->leftJoin('customers', 'customers.id', '=', 'order_list.customer_id')
+                    ->select('order_list.localSequence', 'purchase_order.po_number', 'customers.comp_name','part_number.SKU', 'po_images.approved_image as fileName', 'order_list.size_qty', 'purchase_order.require_date', DB::raw("IF(order_list.ESDate IS NULL or order_list.ESDate = '','',order_list.ESDate) as estDate"), 'order_list.qty', DB::raw("IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)) as pcsMade"), 'order_list.amount', 'order_list.pl_status', 'order_list.production_status', 'order_list.id as orderId')
                     ->where('order_list.customer_id', '=', $customer->id)
                     ->where('purchase_order.is_deleted', '!=', 1)
                     ->where('order_list.pl_status', '=', $status)
                     ->groupBy('order_list.id')
                     ->orderBy('order_list.localSequence', 'ASC');
+
             // Return datatable
             $statusStr = '{{ $pl_status == 0 ? "Open" : "Close" }}';
             return Datatables::of($skuData)
@@ -126,8 +128,18 @@ class OrderStatusReportController extends Controller
                                     }
                                 return trim($string, ",");
                             })
-                            ->editColumn("estDate", '{{$estDate}}')                            
+                            ->editColumn("estDate", '{{$estDate}}')
                             ->editColumn("pl_status", $statusStr)
+                            ->editColumn("production_status", function($row)
+                            {
+                                
+                                $data = ProductionSequence::where('isDelete', '!=', 1)
+                                        ->orWhere('id', '=', $row->production_status)
+                                        ->orWhereNull('isDelete')
+                                        ->first();
+                                return \Form::label('', !is_null($data) ? $data->title : '');
+                                
+                            })
                             ->make();
         }
     }

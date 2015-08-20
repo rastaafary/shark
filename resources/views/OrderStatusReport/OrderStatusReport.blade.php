@@ -84,6 +84,7 @@
                                                         <tr>
                                                             <th>Sequence</th>
                                                             <th>PO Number</th>
+                                                            
                                                             <th>Customer Name</th>
                                                             <th>Part Number</th>
                                                             <th>Image</th>
@@ -95,9 +96,7 @@
                                                             <th>Balance</th>
                                                             <!--<th>Mark Pieces Made</th>-->
                                                             <th>Status</th>
-                                                            @if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))
                                                             <th>Production Status</th>
-                                                            @endif
                                                         </tr> 
                                                     </thead>
                                                     <tbody><tbody>
