@@ -113,7 +113,7 @@ $(document).ready(function ()
         },
         "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
             //$(nRow).find('td:first').html(sequence++);
-            $(nRow).attr('id', aData[12]);
+            $(nRow).attr('id', aData[13]);
             return nRow;
         }
     });
