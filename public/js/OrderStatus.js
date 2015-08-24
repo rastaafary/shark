@@ -1,4 +1,5 @@
 var oTable;
+var $row = 0;
 $(document).ready(function ()
 {
     $(document).delegate(".production_status", 'change', function () {
@@ -69,7 +70,7 @@ $(document).ready(function ()
         });
     }
     //var sequence = 1;
-    // Set datatable
+    // Set datatable    
     oTable = $("#order-list").dataTable({
         "bProcessing": true,
         "bServerSide": true,
@@ -90,6 +91,7 @@ $(document).ready(function ()
             {"bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
         ],
         "fnServerData": function (sSource, aoData, fnCallback) {
+
             $.ajax({
                 "dataType": 'json',
                 "type": "GET",
@@ -99,6 +101,7 @@ $(document).ready(function ()
             });
         },
         "fnDrawCallback": function (oSettings, json) {
+            $row = 0;
             $('.ESDate').datepicker({
                 format: 'yyyy-mm-dd',
                 autoclose: true,
@@ -112,7 +115,11 @@ $(document).ready(function ()
             }
         },
         "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-            //$(nRow).find('td:first').html(sequence++);
+            var s = $(nRow).find('td:first').html().toString();
+            $(nRow).find('td:first').attr('data', $.trim(s));
+            ++$row;
+            $idx = $row + oTable.fnSettings()._iDisplayStart;
+            $(nRow).find('td:first').html($idx);
             $(nRow).attr('id', aData[13]);
             return nRow;
         }
@@ -128,7 +135,7 @@ $(document).ready(function ()
             var sequence = [];
             $('#order-list tbody tr').each(function () {
                 orderId.push($(this).attr('id'));
-                sequence.push(parseInt($(this).find('td:first').html()));
+                sequence.push(parseInt($(this).find('td:first').attr('data')));
             });
 
             $.ajax({
