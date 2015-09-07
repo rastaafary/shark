@@ -61,13 +61,13 @@
                             </div>
                         </div>
 
-                
-                   <div class="example" id="demo">
 
-                       <input type="checkbox" name="toggle" data-toggle="toggle" checked data-on="open" data-off="closed" id="openCloseToggle">
-                       
-				
-                    </div>
+                        <div class="example" id="demo">
+
+                            <input type="checkbox" name="toggle" data-toggle="toggle" checked data-on="open" data-off="closed" id="openCloseToggle">
+
+
+                        </div>
                         <!-- Modal End -->
 
                         <form class="form-horizontal" method="post">
@@ -75,7 +75,9 @@
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <h3 class="panel-title"><i class="fa fa-bars"></i> Order Status Report List</h3>
+                                            <h3 class="panel-title col-md-4" ><i class="fa fa-bars"></i> Order Status Report List </h3>
+                                            <a data='pdf' class="record" href="{!!url('/')!!}/PLReport/print/pdf/0/0/10">PDF</a>
+                                            <a data='excel' class="record" href="{!!url('/')!!}/PLReport/print/excel/0/0/10">EXCEL</a>
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
@@ -84,7 +86,7 @@
                                                         <tr>
                                                             <th>Sequence</th>
                                                             <th>PO Number</th>
-                                                            
+
                                                             <th>Customer Name</th>
                                                             <th>Part Number</th>
                                                             <th>Image</th>

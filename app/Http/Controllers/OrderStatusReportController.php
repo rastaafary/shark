@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use File;
 use Session;
 use Input;
@@ -16,6 +17,8 @@ use App\Http\Controllers\Image;
 use Illuminate\Database\Query\Builder;
 use Form;
 use App\model\ProductionSequence;
+use Barryvdh\DomPDF\PDF;
+use Maatwebsite\Excel\Excel;
 
 class OrderStatusReportController extends Controller
 {
@@ -103,7 +106,7 @@ class OrderStatusReportController extends Controller
                     ->leftJoin('pcs_made', 'pcs_made.orderlist_id', '=', 'order_list.id')
                     ->leftJoin('po_images', 'po_images.order_id', '=', 'order_list.id')
                     ->leftJoin('customers', 'customers.id', '=', 'order_list.customer_id')
-                    ->select('order_list.localSequence', 'purchase_order.po_number', 'customers.comp_name','part_number.SKU', 'po_images.approved_image as fileName', 'order_list.size_qty', 'purchase_order.require_date', DB::raw("IF(order_list.ESDate IS NULL or order_list.ESDate = '','',order_list.ESDate) as estDate"), 'order_list.qty', DB::raw("IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)) as pcsMade"), 'order_list.amount', 'order_list.pl_status', 'order_list.production_status', 'order_list.id as orderId')
+                    ->select('order_list.localSequence', 'purchase_order.po_number', 'customers.comp_name', 'part_number.SKU', 'po_images.approved_image as fileName', 'order_list.size_qty', 'purchase_order.require_date', DB::raw("IF(order_list.ESDate IS NULL or order_list.ESDate = '','',order_list.ESDate) as estDate"), 'order_list.qty', DB::raw("IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)) as pcsMade"), 'order_list.amount', 'order_list.pl_status', 'order_list.production_status', 'order_list.id as orderId')
                     ->where('order_list.customer_id', '=', $customer->id)
                     ->where('purchase_order.is_deleted', '!=', 1)
                     ->where('order_list.pl_status', '=', $status)
@@ -132,13 +135,12 @@ class OrderStatusReportController extends Controller
                             ->editColumn("pl_status", $statusStr)
                             ->editColumn("production_status", function($row)
                             {
-                                
+
                                 $data = ProductionSequence::where('isDelete', '!=', 1)
                                         ->orWhere('id', '=', $row->production_status)
                                         ->orWhereNull('isDelete')
                                         ->first();
                                 return \Form::label('', !is_null($data) ? $data->title : '');
-                                
                             })
                             ->make();
         }
@@ -392,6 +394,67 @@ class OrderStatusReportController extends Controller
 
         // Return
         return Response(json_encode(array('status' => $status)));
+    }
+
+    public function printReport($type = 'pdf', $status = 0, $start = 0, $end = 10)
+    {
+        set_time_limit(0);
+        $data = array();
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('manager'))
+            $data = DB::table('order_list')
+                    ->leftJoin('pcs_made', 'pcs_made.orderlist_id', '=', 'order_list.id')
+                    ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
+                    ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
+                    ->leftJoin('po_images', 'po_images.order_id', '=', 'order_list.id')
+                    ->leftJoin('customers', 'customers.id', '=', 'order_list.customer_id')
+                    ->select(array('order_list.adminSequence as sequence', 'purchase_order.po_number', 'customers.comp_name', 'part_number.SKU', 'po_images.approved_image as fileName', 'order_list.size_qty', 'purchase_order.require_date', DB::raw("IF(order_list.ESDate IS NULL or order_list.ESDate = '','',order_list.ESDate) as estDate"), 'order_list.qty', DB::raw("IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)) as pcsMade"), DB::raw("(order_list.qty - (IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)))) as amount"), 'order_list.pl_status', 'order_list.production_status', 'order_list.id as orderId'))
+                    ->where('purchase_order.is_deleted', '!=', 1)
+                    ->where('order_list.pl_status', '=', $status)
+                    ->groupBy('order_list.id')
+                    ->orderBy('order_list.adminSequence', 'ASC')
+                    //->limit($end)
+                    //->skip($start)
+                    ->get();
+        else {
+            $customer = DB::table('customers')->where('user_id', Auth::user()->id)->first();
+            $data = DB::table('order_list')
+                    ->leftJoin('part_number', 'part_number.id', '=', 'order_list.part_id')
+                    ->leftJoin('purchase_order', 'purchase_order.id', '=', 'order_list.po_id')
+                    ->leftJoin('pcs_made', 'pcs_made.orderlist_id', '=', 'order_list.id')
+                    ->leftJoin('po_images', 'po_images.order_id', '=', 'order_list.id')
+                    ->leftJoin('customers', 'customers.id', '=', 'order_list.customer_id')
+                    ->select('order_list.localSequence as sequence', 'purchase_order.po_number', 'customers.comp_name', 'part_number.SKU', 'po_images.approved_image as fileName', 'order_list.size_qty', 'purchase_order.require_date', DB::raw("IF(order_list.ESDate IS NULL or order_list.ESDate = '','',order_list.ESDate) as estDate"), 'order_list.qty', DB::raw("IF(SUM(pcs_made.qty) IS NULL or SUM(pcs_made.qty) = '', '0', SUM(pcs_made.qty)) as pcsMade"), 'order_list.amount', 'order_list.pl_status', 'order_list.production_status', 'order_list.id as orderId')
+                    ->where('order_list.customer_id', '=', $customer->id)
+                    ->where('purchase_order.is_deleted', '!=', 1)
+                    ->where('order_list.pl_status', '=', $status)
+                    ->groupBy('order_list.id')
+                    ->orderBy('order_list.localSequence', 'ASC')
+                    //->limit($end)
+                    //->skip($start)
+                    ->get();
+        }
+
+        switch ($type)
+        {
+            case 'pdf':
+                $pdf = App::make('dompdf.wrapper');
+                $pdf->loadView('OrderStatusReport.PrintPDF', array('data' => $data));
+                return $pdf->download("PLReport.pdf");
+                break;
+            case 'excel':
+                $excel = App::make('excel');
+                if ($excel instanceof Excel) {
+                    $ex = $excel->loadView('OrderStatusReport.PrintExcel', array('data' => $data))
+                            ->setTitle("PLReport")
+                            ->sheet('Sheet');
+                    $rowCount = count($data) + 1;
+                    $ex->getSheet()
+                            ->setBorder("A1:L$rowCount", 'thin');
+                    return $ex->setFileName("PLReport")
+                                    ->download('xls');
+                }
+                break;
+        }
     }
 
 }

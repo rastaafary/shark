@@ -2,6 +2,9 @@ var oTable;
 var $row = 0;
 $(document).ready(function ()
 {
+    $('.record').click(function () {
+        $(this).attr('href', baseURL + '/PLReport/print/' + $(this).attr('data') + '/0/' + oTable.fnSettings()._iDisplayStart + '/' + oTable.fnSettings()._iDisplayLength)
+    });
     $(document).delegate(".production_status", 'change', function () {
         postData = {
             id: $(this).attr('id'),

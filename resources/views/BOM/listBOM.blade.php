@@ -18,7 +18,8 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="{!!url('#List')!!}">List</a></li>
                         <li><a href="{!!url('/')!!}/part/{{$part_id}}/bom/add">Add</a></li>
-                        <li><a  target="_blank" href="{!!url('/')!!}/print/{{$part_id}}">Print</a></li>
+                        <li><a href="{!!url('/')!!}/print/{{$part_id}}/pdf/0/10">Pdf</a></li>
+                        <li><a href="{!!url('/')!!}/print/{{$part_id}}/excel/0/10">Excel</a></li>
                     </ul>
                 </header>
                 <div class="panel-body">

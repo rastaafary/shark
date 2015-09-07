@@ -18,6 +18,7 @@ use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\User;
 use Barryvdh\DomPDF\PDF;
+use Maatwebsite\Excel\Excel;
 
 class BOMController extends Controller
 {
@@ -60,7 +61,8 @@ class BOMController extends Controller
                 return redirect('/part/' . $part_id . '/bom/add/')
                                 ->withErrors($validator)
                                 ->withInput(Input::all());
-            } else {
+            }
+            else {
                 if (array_key_exists('orders', $post)) {
                     $orders = json_decode($post['orders'], true);
                     $deleteOrderIds = explode(',', $post['deleteOrder']);
@@ -81,7 +83,8 @@ class BOMController extends Controller
                             DB::table('bom')->insertGetId($orderlist);
                         }
                     }
-                } else {
+                }
+                else {
                     Session::flash('message', 'Something Went Wrong..!!');
                     Session::flash('status', 'error');
                     return redirect('/part/' . $part_id . '/bom');
@@ -138,7 +141,8 @@ class BOMController extends Controller
                     return redirect('/part/' . $part_id . '/bom/edit/' . $post['id'])
                                     ->withErrors($validator)
                                     ->withInput(Input::all());
-                } else {
+                }
+                else {
                     if (array_key_exists('orders', $post)) {
                         $orders = json_decode($post['orders'], true);
                         $deleteOrderIds = explode(',', $post['deleteOrder']);
@@ -161,7 +165,8 @@ class BOMController extends Controller
                                     DB::table('bom')
                                             ->where('id', $orderId)
                                             ->update($orderlist);
-                                } else {
+                                }
+                                else {
 
                                     DB::table('bom')->insert($orderlist);
                                 }
@@ -208,15 +213,18 @@ class BOMController extends Controller
         if ($status) {
             Session::flash('message', 'BOM delete Successfully.');
             Session::flash('status', 'success');
-        } else {
+        }
+        else {
             Session::flash('message', "BOM delete Unsucessfully.");
             Session::flash('status', 'error');
         }
         if ($check_route == 'add') {
             return redirect('/part/' . $part_id . '/bom/add');
-        } else if ($check_route == 'edit') {
+        }
+        else if ($check_route == 'edit') {
             return redirect('/part/' . $part_id . '/bom/edit/' . $id);
-        } else {
+        }
+        else {
             return redirect('/part/' . $part_id . '/bom');
         }
     }
@@ -345,7 +353,7 @@ class BOMController extends Controller
         return Response(json_encode($bomData));
     }
 
-    public function printBOMList($id)
+    public function printBOMList($id = 0, $type = 'pdf', $start = 0, $end = 10)
     {
         $bomlist = DB::table('bom')
                 ->leftJoin('part_number', 'part_number.id', '=', 'bom.part_id')
@@ -354,6 +362,8 @@ class BOMController extends Controller
                 ->select(array('rawmaterial.partnumber', 'rawmaterial.description', 'rawmaterial.bomcost', 'unit.name', 'bom.yield', 'bom.total', 'bom.id'))
                 ->where('bom.part_id', '=', $id)
                 ->where('bom.is_deleted', '=', '0')
+                //->limit($end)
+                //->skip($start)
                 ->get();
         $total = 0;
         foreach ($bomlist as $boms) {
@@ -363,10 +373,28 @@ class BOMController extends Controller
                 ->select('SKU', 'description', 'cost')
                 ->where('id', $id)
                 ->get();
+        switch ($type)
+        {
+            case 'pdf':
+                $pdf = App::make('dompdf.wrapper');
+                $pdf->loadView('BOM.printBOM', array('bomlist' => $bomlist, 'partinfo' => $partinfo, 'total' => $total));
+                return $pdf->download("bom_$id.pdf");
+                break;
+            case 'excel':
+                $excel = App::make('excel');
+                if ($excel instanceof Excel) {
+                    $ex = $excel->loadView('BOM.printExcelBOM', array('bomlist' => $bomlist, 'partinfo' => $partinfo, 'total' => $total))
+                            ->setTitle("bom_$id")
+                            ->sheet('Sheet');
+                    $rowCount = count($bomlist) + 6;
+                    $ex->getSheet()
+                            ->mergeCells('A1:C4')->setBorder("A1:F$rowCount", 'thin');
+                    return $ex->setFileName("bom_$id")
+                                    ->download('xls');
+                }
+                break;
+        }
 
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('BOM.printBOM', array('bomlist' => $bomlist, 'partinfo' => $partinfo, 'total' => $total));
-        return $pdf->download("bom_$id.pdf");
         //return $pdf->stream('contract.pdf');
         // return PDF::loadView('BOM.printBOM',$data)->save('/my_stored_file.pdf')->stream('download.pdf');
     }

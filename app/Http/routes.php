@@ -98,7 +98,7 @@ Route::get('/customer/delete/{var?}', 'CustomerController@deleteCust');
 Route::get('/customerdata', 'CustomerController@getCustData');
 // BOM
 
-Route::get('/print/{sid?}', 'BOMController@printBOMList');
+Route::get('/print/{sid?}/{type?}/{start?}/{end?}', 'BOMController@printBOMList');
 Route::post('/print/{sid?}', 'BOMController@printBOMList');
 Route::get('/part/{var?}/bom', 'BOMController@listBOM');
 Route::get('/part/{var?}/bom/add', 'BOMController@addBOM');
@@ -139,6 +139,7 @@ Route::get('/invoice/listSKU', 'InvoiceController@listSKU');
 Route::get('/invoice/paymentTerm', 'InvoiceController@paymentTerm');
 Route::get('/invoice/dispSKUdata', 'InvoiceController@dispSKUdata');
 Route::get('/invoice/getInvoiceList', 'InvoiceController@getInvoiceList');
+Route::get('/invoice/print/{id}', 'InvoiceController@printInvoice');
 
 
 // Purchase Order Customer
@@ -196,6 +197,7 @@ Route::get('/PLReport/view', 'OrderStatusReportController@viewReport');
 Route::get('/PLReport/orderlist/{var?}', 'OrderStatusReportController@orderList');
 Route::get('/PLReport/changePlValues', 'OrderStatusReportController@changePlValues');
 Route::post('/PLReport/productionStatus', 'OrderStatusReportController@productionStatus');
+Route::get('/PLReport/print/{type?}/{status?}/{start?}/{end?}', 'OrderStatusReportController@printReport');
 //changeSequence
 Route::get('/PLReport/changeSequence', 'OrderStatusReportController@changeSequence');
 Route::get('/PLReport/addPcsMade', 'OrderStatusReportController@addPcsMade');
