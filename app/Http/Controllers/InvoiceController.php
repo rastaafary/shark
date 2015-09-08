@@ -355,7 +355,8 @@ class InvoiceController extends Controller
         $orderlist = DB::table('invoice')
                 ->leftJoin('invoice_order_list', 'invoice_order_list.invoice_id', '=', 'invoice.id')
                 ->leftJoin('purchase_order', 'purchase_order.id', '=', 'invoice.po_id')
-                ->select(array('invoice.invoice_no', DB::raw('SUM(invoice_order_list.amount) as amount'), DB::raw('SUM(invoice_order_list.discount) as discount'), DB::raw('SUM(invoice_order_list.invoice_id) as temp'), 'purchase_order.payment_terms', 'invoice.id', 'invoice.comp_name'))
+                ->leftJoin('payment', 'payment.invoice_id', '=', 'invoice.id')
+                ->select(array('invoice.invoice_no', DB::raw('SUM(invoice_order_list.amount) as amount'), DB::raw('SUM(payment.paid) as discount'), DB::raw('SUM(invoice_order_list.invoice_id) as temp'), 'purchase_order.payment_terms', 'invoice.id', 'invoice.comp_name'))
                 //->where('purchase_order.customer_id', '=',$customer->id )
                 ->where('invoice.is_deleted', '<>', 1)
                 ->groupBy('invoice.id');
