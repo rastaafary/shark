@@ -3,7 +3,7 @@
     <table style='border: 0px'>
         <thead>
             <tr>
-                <th><img src="{!!url('/')!!}/images/logo.png"></th>
+                <th><img src="{!!url('/')!!}/images/login-logo__.png"></th>
                 <th align='left'>SHARK SPORTSWEAR S DE RL DE<br>CV</th>
             </tr>
         </thead>
