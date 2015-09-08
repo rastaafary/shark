@@ -23,9 +23,10 @@
         <th>Status</th>
         <th>Pro Status</th>
     </tr>
-    @foreach ($data as $d)
+    
+    @foreach ($data as $key=>$d)
     <tr>
-        <td>{{$d->sequence}}</td>
+        <td>{{$key+1}}</td>
         <td>{{$d->po_number}}</td>
         <td>{{$d->comp_name}}</td>
         <td>{{$d->SKU}}</td>
