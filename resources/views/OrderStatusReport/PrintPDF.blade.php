@@ -11,8 +11,8 @@
 
     <tr>
         <th>Seq</th>
-        <th>PO Number</th>
         <th>Cust Name</th>
+        <th>PO Number</th>
         <th>Part Number</th>        
         <th>Size Qty</th>
         <th>Req Date</th>
@@ -25,9 +25,9 @@
     </tr>
     @foreach ($data as $key=>$d)
     <tr>
-        <th>{{$key+1}}</th>
-        <th>{{$d->po_number}}</th>
+        <th>{{$key+1}}</th>        
         <th>{{$d->comp_name}}</th>
+        <th>{{$d->po_number}}</th>
         <th>{{$d->SKU}}</th>
         <th>{{$d->size_qty}}</th>
         <th>{{$d->require_date}}</th>
@@ -35,7 +35,7 @@
         <th>{{$d->qty}}</th>
         <th>{{$d->pcsMade}}</th>
         <th>{{$d->amount}}</th>
-        <th>{{$d->pl_status}}</th>
+        <th>{{$d->pl_status==0?'Open':'Close'}}</th>
         <th>{{$d->production_status}}</th>
     </tr>
     @endforeach
